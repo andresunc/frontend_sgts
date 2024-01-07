@@ -1,0 +1,65 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 220px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #DFEEEE;
+    padding-top: 20px;
+}
+
+h2 {
+    margin-top: 25px;
+    margin-left: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #464545;
+}
+
+.btnNew {
+    margin-top: 10px;
+    margin-left: 15px;
+    width: 70%;
+    height: 30px;
+    color: #464545;
+    background-color: #FFE08C;
+    border: 1px solid #464545;
+    /* Borde sólido como base */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra estilo sombreado */
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.btn {
+    margin-top: 10px;
+    margin-left: 15px;
+    width: 70%;
+    height: 30px;
+    color: #464545;
+    background-color: #4DBDEB;
+    border: 1px solid #464545;
+    /* Borde sólido como base */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra estilo sombreado */
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #FFE08C;
+    transform: scale(1.05);
+    /* Efecto de "push" al hacer hover */
+}
+
+/* Establecer el espacio a los laterales */
+.sideContainer {
+    padding-left: 5px;
+    padding-right: 5px;
+}
