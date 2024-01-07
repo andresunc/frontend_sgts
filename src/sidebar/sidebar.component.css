@@ -13,6 +13,12 @@ body {
     padding-top: 20px;
 }
 
+/* Establecer el espacio a los laterales */
+.sideContainer {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
 h2 {
     margin-top: 25px;
     margin-left: 15px;
@@ -36,6 +42,7 @@ h2 {
     font-weight: bold;
     cursor: pointer;
 }
+
 .btn {
     margin-top: 10px;
     margin-left: 15px;
@@ -58,8 +65,18 @@ h2 {
     /* Efecto de "push" al hacer hover */
 }
 
-/* Establecer el espacio a los laterales */
-.sideContainer {
-    padding-left: 5px;
-    padding-right: 5px;
+h2 a {
+    color: inherit;
+    /* Hereda el color del texto del contenedor (en este caso, el color por defecto) */
+    text-decoration: none;
+    /* Elimina el subrayado predeterminado del enlace */
+    transition: color 0.3s ease, font-size 0.3s ease;
+    /* Transiciones para suavizar los cambios */
+}
+
+h2 a:hover {
+    color: #4DBDEB;
+    /* Cambia el color al pasar el ratón por encima */
+    font-size: 20px;
+    /* Aumenta el tamaño en 2 píxeles al pasar el ratón por encima */
 }
