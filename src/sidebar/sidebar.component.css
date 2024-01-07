@@ -93,7 +93,7 @@ h2 a {
 }
 h2 a:hover {
     /* Cambia el color al pasar el ratón por encima */
-    font-size: 20px;
+    font-size: 18px;
     /* Aumenta el tamaño en 2 píxeles al pasar el ratón por encima */
 }
 h2 img {
