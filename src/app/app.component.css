@@ -1,0 +1,9 @@
+/* Mismo formato que la sidebar */
+.rutasContainer {
+    background-color: #DFEEEE;
+    height: 100vh;
+    width: calc(99% - 220px); /* Resta el ancho del sidebar al 99% del ancho total */
+    margin-left: auto; /* Establece el margen izquierdo como automático para que ocupe el espacio restante a la derecha */
+    border-radius: 10px;
+    border: 3px solid #46454575;
+}
