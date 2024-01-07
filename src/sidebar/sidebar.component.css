@@ -3,6 +3,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
+/* Estilos para el sidebar */
 .sidebar {
     height: 100vh;
     width: 220px;
@@ -15,12 +16,12 @@ body {
     padding-top: 20px;
 }
 
-/* Establecer el espacio a los laterales */
 .sideContainer {
     padding-left: 5px;
     padding-right: 5px;
 }
 
+/* Estilos h2 normales dentro del sidebar*/
 h2 {
     margin-top: 25px;
     margin-left: 15px;
@@ -29,6 +30,7 @@ h2 {
     color: #464545;
 }
 
+/* Estilos para el botón nuevo */
 .btnNew {
     margin-top: 10px;
     margin-left: 15px;
@@ -51,6 +53,7 @@ h2 {
     /* Efecto de "push" al hacer hover */
 }
 
+/* Estilos para los botones normales */
 .btn {
     margin-top: 10px;
     margin-left: 15px;
@@ -74,6 +77,7 @@ h2 {
     /* Efecto de "push" al hacer hover */
 }
 
+/* Estilos para la interacción con el administrador */
 h2 a {
     color: inherit;
     /* Hereda el color del texto del contenedor (en este caso, el color por defecto) */
@@ -82,13 +86,11 @@ h2 a {
     transition: color 0.3s ease, font-size 0.3s ease;
     /* Transiciones para suavizar los cambios */
 }
-
 h2 a:hover {
     /* Cambia el color al pasar el ratón por encima */
     font-size: 20px;
     /* Aumenta el tamaño en 2 píxeles al pasar el ratón por encima */
 }
-
 h2 img {
     height: 20px;
     width: 20px;
