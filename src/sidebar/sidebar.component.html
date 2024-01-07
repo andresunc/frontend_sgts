@@ -1,25 +1,33 @@
 <div class="sidebar">
 
   <div class="sideContainer">
-    <button type="button" class="btnNew btn-sm">+ Nuevo</button>
 
-    <h2>Acceso rápido a servicios</h2>
+    <!-- Botón nuevo -->
+    <button type="button" class="btnNew btn-sm">+ Nuevo</button>
+    <mat-divider></mat-divider>
+
+    <!-- Gestión de servicios -->
+    <h2>Estado de servicio</h2>
     <div *ngFor="let boton of botones; let i = index">
       <button *ngIf="i < 3" type="button" class="btn btn-sm">{{ boton.nombre }}</button>
     </div>
 
-    <h2>Etiquetas</h2>
-
+    <h2>Tipo de servicio</h2>
     <button type="button" class="btn btn-sm">HOL</button>
     <button type="button" class="btn btn-sm">AMBI</button>
     <button type="button" class="btn btn-sm">HYS</button>
 
+    <!-- Reportes -->
+    <mat-divider></mat-divider>
     <h2>Reportes</h2>
     <button type="button" class="btn btn-sm">Ver Reportes</button>
 
+    <!-- admin -->
+    <mat-divider></mat-divider>
     <h2>
-      <a href="">Administrador <img src = "assets/img/arrowUp.png"></a>
+      <a href="">Administrador <img src="assets/img/arrowUp.png"></a>
     </h2>
+
   </div>
 
 </div>

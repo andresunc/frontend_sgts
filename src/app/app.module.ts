@@ -9,6 +9,7 @@ import { SidebarComponent } from 'src/sidebar/sidebar.component';
 
 // Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatDividerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
