@@ -33,7 +33,7 @@ mat-icon:hover {
 .contenido-izquierdo {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 /* Estilos para los logos de la barra */
@@ -50,7 +50,7 @@ mat-icon:hover {
     height: 45px;
 }
 .imagen-derecha {
-    margin: 0 15px;
+    margin: 0 10px;
     width: 35px;
     height: 35px;
 }
@@ -60,4 +60,11 @@ mat-icon:hover {
     font-size: 10px;
     white-space: pre-line;
     line-height: 1;
+}
+
+/* Estilos del divisor */
+mat-divider {
+    background-color: #ccc; /* Color del divider */
+    width: 1px; /* Grosor del divider */
+    height: 60%; /* Altura del divider */
 }

@@ -1,15 +1,18 @@
 <mat-toolbar>
     <div class="contenido-izquierdo">
-        <mat-icon matTooltip="Regresar al home" routerLink="" aria-hidden="false" fontIcon="home"></mat-icon>
+        <mat-icon matTooltip="Regresar al home" routerLink="" fontIcon="home"></mat-icon>
         <span class="titulo">{{titulo}}</span>
     </div>
     
     <div class="contenido-derecho">
+        <mat-divider [vertical]="true"></mat-divider>
         <!-- Puedes ajustar las rutas de las imágenes según tus necesidades -->
         <img src="./assets/img/gg-logo.png" alt="Imagen Izquierda" class="imagen-izquierda">
         <span class="texto-centro">Grupo Green
             <br> SGTS
         </span>
         <img src="./assets/img/logo-unc-escmb.png" alt="Imagen Derecha" class="imagen-derecha">
+        <mat-divider [vertical]="true"></mat-divider>
     </div>
+    
 </mat-toolbar>
