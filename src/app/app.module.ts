@@ -13,6 +13,7 @@ import { SidebarComponent } from 'src/app/componentsShared/sidebar/sidebar.compo
 import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
 import { NewServicioComponent } from './componentsServicios/new-servicio/new-servicio.component';
 import { TitlebarComponent } from './componentsShared/titlebar/titlebar.component';
+import { ReportesComponent } from './componentsReportes/reportes/reportes.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TitlebarComponent } from './componentsShared/titlebar/titlebar.componen
     SidebarComponent,
     VerServiciosComponent,
     NewServicioComponent,
-    TitlebarComponent
+    TitlebarComponent,
+    ReportesComponent,
   ],
   imports: [
     BrowserModule,
