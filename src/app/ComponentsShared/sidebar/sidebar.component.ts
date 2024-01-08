@@ -10,10 +10,16 @@ export class SidebarComponent {
   /**
    * Este array simula valores que podemos traer de la db para almacenarlos en la LS del usuario, de esta manera vamos a poder implementar una lógica que nos acomode los botones automáticamente.
    */
-  botones = [
+  estados = [
     { nombre: 'Presupuestados' },
     { nombre: 'Finalizados' },
     { nombre: '+' }
+  ];
+
+  tipos = [
+    { nombre: 'HOL' },
+    { nombre: 'AMBI' },
+    { nombre: 'HYS' }
   ];
 
 }

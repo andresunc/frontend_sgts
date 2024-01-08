@@ -3,19 +3,19 @@
   <div class="sideContainer">
 
     <!-- Botón nuevo -->
-    <button type="button" class="btnNew btn-sm" matTooltip="Crear nuevo servicio">+ Nuevo</button>
+    <button routerLink="/nuevo" type="button" class="btnNew btn-sm" matTooltip="Crear nuevo servicio">+ Nuevo</button>
     <mat-divider></mat-divider>
 
     <!-- Gestión de servicios -->
     <h2>Estado de servicio</h2>
-    <div *ngFor="let boton of botones; let i = index">
-      <button *ngIf="i < 3" type="button" class="btn btn-sm">{{ boton.nombre }}</button>
+    <div *ngFor=" let estado of estados; let i = index">
+      <button routerLink="" *ngIf="i < 3" type="button" class="btn btn-sm">{{ estado.nombre }}</button>
     </div>
 
     <h2>Tipo de servicio</h2>
-    <button type="button" class="btn btn-sm">HOL</button>
-    <button type="button" class="btn btn-sm">AMBI</button>
-    <button type="button" class="btn btn-sm">HYS</button>
+    <div *ngFor=" let tipo of tipos; let i = index">
+      <button routerLink="" *ngIf="i < 3" type="button" class="btn btn-sm">{{ tipo.nombre }}</button>
+    </div>
 
     <!-- Reportes -->
     <mat-divider></mat-divider>

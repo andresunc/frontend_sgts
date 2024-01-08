@@ -1,0 +1,9 @@
+mat-toolbar {
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+    background-color: #DFEEEE;
+}
+
+mat-icon {
+    cursor: pointer;
+}

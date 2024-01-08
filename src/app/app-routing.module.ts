@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
+import { NewServicioComponent } from './componentsServicios/new-servicio/new-servicio.component';
 
 const routes: Routes = [
-  {/* Ruta uno */},
-  {/* Ruta dos... */}
+  { path: '', component: VerServiciosComponent },
+  { path: 'nuevo', component: NewServicioComponent },
 ];
 
 @NgModule({
