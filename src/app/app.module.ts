@@ -3,13 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-// Componentes agregados
-import { SidebarComponent } from 'src/sidebar/sidebar.component';
-
-// Angular Material
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDividerModule} from '@angular/material/divider';
+import { MaterialModule } from './ComponentsShared/material/material.module';
+
+// Componentes pertenecientes a éste módulo
+import { SidebarComponent } from 'src/app/ComponentsShared/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +18,7 @@ import {MatDividerModule} from '@angular/material/divider';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatDividerModule
+    MaterialModule, // Uso el módulo de material compartido.
   ],
   providers: [],
   bootstrap: [AppComponent]
