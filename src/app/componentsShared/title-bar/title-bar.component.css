@@ -1,9 +1,63 @@
 mat-toolbar {
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
-    background-color: #DFEEEE;
+    background-color: #ffffff;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    height: 56px;
+    justify-content:space-between;
 }
 
 mat-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #DFEEEE;
     cursor: pointer;
+    color: #464545;
+    transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
+}
+
+mat-icon:hover {
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.titulo {
+    margin-left: 20px;
+    color: #464545;
+    font-size: 17px;
+}
+
+.contenido-izquierdo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos para los logos de la barra */
+.contenido-derecho {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background-color: white;
+}
+.imagen-izquierda {
+    margin: 0;
+    width: 45px;
+    height: 45px;
+}
+.imagen-derecha {
+    margin: 0 15px;
+    width: 35px;
+    height: 35px;
+}
+.texto-centro {
+    flex: 1;
+    text-align: center;
+    font-size: 10px;
+    white-space: pre-line;
+    line-height: 1;
 }
