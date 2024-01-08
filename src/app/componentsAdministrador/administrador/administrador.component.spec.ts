@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TitlebarComponent } from './titlebar.component';
+import { AdministradorComponent } from './administrador.component';
 
-describe('TitlebarComponent', () => {
-  let component: TitlebarComponent;
-  let fixture: ComponentFixture<TitlebarComponent>;
+describe('AdministradorComponent', () => {
+  let component: AdministradorComponent;
+  let fixture: ComponentFixture<AdministradorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TitlebarComponent ]
+      declarations: [ AdministradorComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TitlebarComponent);
+    fixture = TestBed.createComponent(AdministradorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
