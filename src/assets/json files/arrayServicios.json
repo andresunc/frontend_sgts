@@ -1,0 +1,29 @@
+[
+    {
+        "id": 10,
+        "tipo": "HOL",
+        "cliente": "YPF",
+        "rubro": "Estaciones de servicio",
+        "estado": "Presupuesto emitido",
+        "presentado": false,
+        "avance": 40,
+        "recurrencia": 0,
+        "fecha_notificacion": "",
+        "total_presupuestado": 58000.00,
+        "comentario": "",
+        "item_checklist": [
+            {
+                "nombre_item": "",
+                "inicio_estimado": "",
+                "fin_estimado": "",
+                "ejecucion_real": "",
+                "fin_real": "",
+                "notificado": false,
+                "valor_tasa": 7000.00,
+                "hojas": 5,
+                "responsable": "Facundo Manes",
+                "url_comprobante": "drive.google.com"
+            }
+        ]
+    }
+]

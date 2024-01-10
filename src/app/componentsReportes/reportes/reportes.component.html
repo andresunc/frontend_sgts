@@ -1,10 +1,6 @@
-<app-title-bar [titulo]="title"></app-title-bar>
-
-<!--
-    Ahora puedo hacer uso de rutas internas dentro de reportes.
-    Es decir que puedo renderizar componentes dentro de este componente
-    ej: localhost/reportes/tramites-con-mayor-desvios
-
-    solo se necesita declarar el componente tramites-con-mayor-desvios 
-    en el archivo reportes-routing.module.ts
--->
+<div class="moduleContainer">
+    <app-title-bar [titulo]="title"></app-title-bar>
+    <div class="childContainer">
+        Insertar componentes
+    </div>
+</div>

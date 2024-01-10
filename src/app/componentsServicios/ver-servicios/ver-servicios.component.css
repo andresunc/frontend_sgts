@@ -1,0 +1,76 @@
+.moduleContainer {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.childContainer {
+  display: flex;
+  margin: auto;
+  margin-top: 9px;
+  width: 99%;
+  height: calc(97% - 56px);
+  /* Resta el alto de la barra de título */
+  /* background-color: rgb(4, 0, 255); Desbloquear para ver el contenedor*/
+  border-radius: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Descomentar para eliminar el efecto display:flex 
+.childContainer > * {
+  display: block;
+}
+
+/* Estilos del contenedor la tabla */
+.tablaContainer {
+  width: 95%;
+}
+
+/* Estilos del buscador */
+.mat-mdc-form-field {
+  font-size: 12px;
+  width: 100%;
+}
+
+/* Estilos de las filas */
+table {
+  font-size: 12px;
+}
+.dataTable {
+  position: relative;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.estiloRow {
+  background: #ffffff;
+  cursor: pointer;
+}
+
+tr.estiloRow:hover {
+  background: #DFEEEE;
+}
+
+.estiloRow:active {
+  background: #FFE08C;
+  transform: translateX(3px);
+}
+
+.estiloRow tr {
+  border-bottom: #46454575;
+}
+
+/* Estilo para el comentario */
+.coment {
+  cursor: pointer;
+  display: flex; 
+  align-items: center; 
+  align-content: center; 
+  justify-content: center;
+}
+.coment:hover {
+  color: #4781ee;
+  text-decoration: underline;
+  cursor: pointer;
+}

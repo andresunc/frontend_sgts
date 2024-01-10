@@ -1,1 +1,79 @@
-<app-title-bar [titulo]="title"></app-title-bar>
+<div class="moduleContainer">
+    <app-title-bar [titulo]="title"></app-title-bar>
+    <div class="childContainer">
+
+        <div class="tablaContainer">
+
+            <!-- Barra de filtrado por input de texto: Busca por match con palabras -->
+            <mat-form-field>
+                <mat-label style="color: #464545;">Buscar...</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ej. #Nombre del cliente o empresa" #input>
+            </mat-form-field>
+
+            <!-- Tabla de servicios -->
+            <div class="mat-elevation-z1 dataTable">
+                <table mat-table [dataSource]="dataSource">
+
+                    <!-- cliente Column -->
+                    <ng-container matColumnDef="cliente">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> CLIENTES</th>
+                        <td mat-cell *matCellDef="let element" class="text-center" (click)="enviarObjeto(element)">
+                            {{element.cliente.toUpperCase()}}
+                        </td>
+                    </ng-container>
+
+                    <!-- servicio Column -->
+                    <ng-container matColumnDef="servicio">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> SERVICIOS </th>
+                        <td mat-cell *matCellDef="let element" class="text-center" (click)="enviarObjeto(element)">
+                            {{element.tipo.toUpperCase()}} </td>
+                    </ng-container>
+
+                    <!-- avance Column -->
+                    <ng-container matColumnDef="avance">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> AVANCE </th>
+                        <td mat-cell *matCellDef="let element" class="text-center" (click)="enviarObjeto(element)">
+                            {{element.avance +" %"}} </td>
+                    </ng-container>
+
+                    <!-- comentario Column -->
+                    <ng-container matColumnDef="comentario">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> COMENTARIO </th>
+                        <td mat-cell *matCellDef="let element" class="text-center"
+                            (click)="element.comentario !== '' ? openDialog(element) : enviarObjeto(element)">
+                            <span *ngIf="element.comentario" class="coment">
+                                Ver comentario
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <!-- alertas Column -->
+                    <ng-container matColumnDef="alertas">
+                        <th mat-header-cell *matHeaderCellDef class="text-center"> ALERTAS </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+
+                            <mat-icon *ngIf="!element.presentado" (click)="enviarObjeto(element)">-</mat-icon>
+                            <mat-icon matTooltip="Presentado" *ngIf="element.presentado" style="color: orange"
+                                (click)="enviarObjeto(element)">adjust</mat-icon>
+
+                            <mat-icon *ngIf="!checkNotificaciones(element)" (click)="enviarObjeto(element)">-</mat-icon>
+                            <mat-icon matTooltip="Notificado" *ngIf="checkNotificaciones(element)" style="color: red"
+                                (click)="enviarObjeto(element)">adjust</mat-icon>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; let element" class="estiloRow"></tr>
+                </table>
+            </div>
+
+            <!-- divider -->
+            <mat-divider style="margin-top: 20px;"></mat-divider>
+            <!-- Paginador -->
+            <mat-paginator [pageSizeOptions]="[30]" showFirstLastButtons aria-label="Seleccionar página">
+            </mat-paginator>
+
+        </div>
+
+    </div>
+</div>
