@@ -89,17 +89,23 @@ h2 a {
     /* Elimina el subrayado predeterminado del enlace */
     transition: color 0.3s ease, font-size 0.3s ease;
     /* Transiciones para suavizar los cambios */
-}
-h2 a:hover {
-    /* Cambia el color al pasar el ratón por encima */
-    font-size: 18px;
-    /* Aumenta el tamaño en 2 píxeles al pasar el ratón por encima */
+    cursor: pointer;
 }
 h2 img {
     height: 20px;
     width: 20px;
+    rotate: 90deg;
+}
+h2 a:hover > img {
+    transform: rotate(-90deg);
+    transition: transform 0.3s ease;
+}
+button span {
+    font-size: 12px;
 }
 
+
+/* Estilos para el divisior */
 .mat-divider {
     border-top: 1px solid #ccc;
     margin-top: 15px;

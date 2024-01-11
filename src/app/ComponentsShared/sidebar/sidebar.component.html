@@ -3,31 +3,62 @@
   <div class="sideContainer">
 
     <!-- Botón nuevo -->
-    <button routerLink="/nuevo" type="button" class="btnNew btn-sm" matTooltip="Crear nuevo servicio">+ Nuevo</button>
-    <mat-divider></mat-divider>
+    <section>
+
+      <button routerLink="/nuevo" type="button" class="btnNew btn-sm" matTooltip="Crear nuevo servicio">+ Nuevo</button>
+      <mat-divider></mat-divider>
+
+    </section>
 
     <!-- Gestión de servicios -->
-    <h2>Estado de servicio</h2>
-    <div *ngFor=" let estado of estados; let i = index">
-      <button routerLink="" *ngIf="i < 3" type="button" class="btn btn-sm">{{ estado.nombre }}</button>
-    </div>
+    <section>
 
-    <h2>Tipo de servicio</h2>
-    <div *ngFor=" let tipo of tipos; let i = index">
-      <button routerLink="" *ngIf="i < 3" type="button" class="btn btn-sm">{{ tipo.nombre }}</button>
-    </div>
+      <h2>Estado de servicio</h2>
+      <div *ngFor=" let estado of estados; let i = index">
+        <button routerLink="" *ngIf="i < 3" type="button" class="btn btn-sm">{{ estado.nombre }}</button>
+      </div>
+
+      <h2>Tipo de servicio</h2>
+      <div *ngFor=" let tipo of tipos; let i = index">
+        <button routerLink="" *ngIf="i < 3" type="button" class="btn btn-sm">{{ tipo.nombre }}</button>
+      </div>
+
+    </section>
 
     <!-- Reportes -->
-    <mat-divider></mat-divider>
-    <h2>Reportes</h2>
-    <button routerLink="/reportes" type="button" class="btn btn-sm">Ver Reportes</button>
+    <section>
+
+      <mat-divider></mat-divider>
+      <h2>Reportes</h2>
+      <button routerLink="/reportes" type="button" class="btn btn-sm">Ver Reportes</button>
+
+    </section>
 
     <!-- admin -->
-    <mat-divider></mat-divider>
-    <h2>
-      <a routerLink="/administrador" matTooltip="Administrar elementos del sistema">Administrador <img src="assets/img/arrowUp.png"></a>
-    </h2>
+    <section>
 
+      <mat-divider></mat-divider>
+      <h2 mat-button [matMenuTriggerFor]="menu" #menuTrigger>
+        <a matTooltip="Administrar elementos del sistema">Administrador <img src="assets/img/arrowUp.png"></a>
+      </h2>
+      <mat-menu #menu="matMenu">
+        
+        <button mat-menu-item routerLink="/administrador">
+          <mat-icon>chevron_right</mat-icon>
+          <span>Administrar Clientes</span>
+        </button>
+        <button mat-menu-item routerLink="/administrador">
+          <mat-icon>chevron_right</mat-icon>
+          <span>Administrar Servicios</span>
+        </button>
+        <button mat-menu-item routerLink="/administrador">
+          <mat-icon>chevron_right</mat-icon>
+          <span>Administrar Trámites</span>
+        </button>
+
+      </mat-menu>
+
+    </section>
   </div>
 
 </div>

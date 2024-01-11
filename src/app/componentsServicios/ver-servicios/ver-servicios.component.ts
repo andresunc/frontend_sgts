@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Servicios } from 'src/app/models/Servicios';
+import { ServicioService } from 'src/app/services/ServicioService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
 const OneServicio: Servicios = {
@@ -14,7 +15,7 @@ const OneServicio: Servicios = {
   cliente: "YPF",
   rubro: "Estaciones de servicio",
   estado: "Presentado",
-  presentado: false,
+  presentado: true,
   avance: 40,
   recurrencia: 0,
   fecha_notificacion: ".",
@@ -27,7 +28,7 @@ const OneServicio: Servicios = {
       fin_estimado: ".",
       ejecucion_real: ".",
       fin_real: ".",
-      notificado: false,
+      notificado: true,
       valor_tasa: 0,
       hojas: 0,
       responsable: "Many el constructor",
@@ -92,15 +93,12 @@ const TwoServicio: Servicios = {
   templateUrl: './ver-servicios.component.html',
   styleUrls: ['./ver-servicios.component.css'],
 })
-export class VerServiciosComponent implements OnInit {
+export class VerServiciosComponent  {
 
-  notify = false; // para la lógica de las notificaciones.
   title: string = "Gestión De Servicios";
   displayedColumns: string[] = ['cliente', 'servicio', 'avance', 'comentario', 'alertas']; // cfg columns table
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService, private router: Router) { }
-
-  ngOnInit(): void { }
 
   /**
    *     Zona de testeo. En listServicios debe ir el listado de servicios provinientes del backend
@@ -132,10 +130,10 @@ export class VerServiciosComponent implements OnInit {
   checkNotificaciones(element: Servicios): boolean {
     for (const item of element.item_checklist) {
       if (item.notificado === true) {
-        return this.notify = true;
+        return true;
       }
     }
-    return this.notify = false;
+    return false;
   }
 
   // Método para enviar el objeto al componente print-servicio
@@ -168,4 +166,4 @@ export class DialogModal {
   constructor(private dataShared: DataSharedService) {
     this.servicio = this.dataShared.getSharedObject();
   }
- }
+}
