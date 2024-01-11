@@ -1,6 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import {MatMenuTrigger} from '@angular/material/menu';
+import { Component } from '@angular/core';
 
 
 @Component({
@@ -10,9 +8,8 @@ import {MatMenuTrigger} from '@angular/material/menu';
 })
 export class SidebarComponent {
 
-  @ViewChild('menuTrigger') menuTrigger!: MatMenuTrigger;
 
-  constructor(public dialog: MatDialog) { }
+  constructor() { }
 
   /**
    * Este array simula valores que podemos traer de la db para almacenarlos en la LS del usuario, de esta manera vamos a poder implementar una lógica que nos acomode los botones automáticamente.

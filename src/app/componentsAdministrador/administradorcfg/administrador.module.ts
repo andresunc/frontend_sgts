@@ -5,11 +5,17 @@ import { AdministradorRoutingModule } from './administrador-routing.module';
 import { AdministradorComponent } from '../administrador/administrador.component';
 import { TitleBarModule } from 'src/app/componentsShared/title-bar/title-bar.module';
 import { MaterialModule } from 'src/app/componentsShared/material/material.module';
+import { CfgServiciosComponent } from '../bodyAdminComponents/cfg-servicios/cfg-servicios.component';
+import { CfgClientesComponent } from '../bodyAdminComponents/cfg-clientes/cfg-clientes.component';
+
 
 
 @NgModule({
   declarations: [
-    AdministradorComponent
+    AdministradorComponent,
+    CfgServiciosComponent,
+    CfgClientesComponent,
+
   ],
   imports: [
     CommonModule,

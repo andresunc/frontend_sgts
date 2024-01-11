@@ -94,10 +94,9 @@ h2 a {
 h2 img {
     height: 15px;
     width: 15px;
-    rotate: 90deg;
 }
 h2 a:hover > img {
-    transform: rotate(-90deg);
+    transform: rotate(90deg);
     transition: transform 0.3s ease;
 }
 button span {

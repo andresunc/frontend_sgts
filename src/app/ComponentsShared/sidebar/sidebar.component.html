@@ -36,25 +36,10 @@
 
     <!-- admin -->
     <section>
-
       <mat-divider></mat-divider>
-      <h2 mat-button [matMenuTriggerFor]="menu" #menuTrigger>
-        <a matTooltip="Administrar elementos del sistema">Administrador <img src="assets/img/arrowUp.png"></a>
+      <h2 mat-button>
+        <a matTooltip="Administrar elementos del sistema" routerLink="/administrador">Administrador <img src="assets/img/arrowUp.png"></a>
       </h2>
-      <mat-menu #menu="matMenu">
-        
-        <button onmouseover="this.style.borderLeft='3px solid #4DBDEB'" onmouseout="this.style.borderLeft='3px solid transparent'" mat-menu-item routerLink="/administrador">
-          <span>Administrar Clientes</span>
-        </button>
-        <button onmouseover="this.style.borderLeft='3px solid #4DBDEB'" onmouseout="this.style.borderLeft='3px solid transparent'" mat-menu-item routerLink="/administrador">
-          <span>Administrar Servicios</span>
-        </button>
-        <button onmouseover="this.style.borderLeft='3px solid #4DBDEB'" onmouseout="this.style.borderLeft='3px solid transparent'" mat-menu-item routerLink="/administrador">
-          <span>Administrar Trámites</span>
-        </button>
-
-      </mat-menu>
-
     </section>
   </div>
 

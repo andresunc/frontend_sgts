@@ -53,8 +53,7 @@ tr.estiloRow:hover {
 }
 
 .estiloRow:active {
-  background: #FFE08C;
-  transform: translateX(3px);
+  border-left: 3px solid #FFE08C;
 }
 
 .estiloRow tr {
