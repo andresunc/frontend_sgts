@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AdministradorComponent {
 
-  title: string = "Configuración De Servicios";
+  title: string = "Configuración General";
 }

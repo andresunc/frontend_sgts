@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class CfgServiciosComponent {
 
-  title: string = "Configuración de Servicios";
+  title: string = "Configuración De Servicios";
 }

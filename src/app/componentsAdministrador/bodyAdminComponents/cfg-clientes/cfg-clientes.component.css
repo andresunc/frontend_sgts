@@ -1,0 +1,71 @@
+.moduleContainer {
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.childContainer {
+  display: flex;
+  margin: auto;
+  margin-top: 10px;
+  width: 99%;
+  height: calc(97% - 56px);
+  /* Resta el alto de la barra de título */
+  border-radius: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Descomentar para eliminar el efecto display:flex 
+.childContainer > * {
+  display: block;
+}
+*/
+.menu {
+  width: 20%;
+  padding-left: 25px;
+  height: 100%;
+  background-color: #DFEEEE;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 2, 0.3);
+}
+
+.menu button:hover {
+  margin: 0;
+  border-left: 3px solid #FFE08C;
+}
+
+button span {
+  font-size: 16px;
+  font-weight: 200;
+  color: #464545;
+}
+
+.menu h2 {
+  margin-top: 15px;
+  margin-bottom: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #464545;
+
+}
+
+mat-divider {
+  margin: 0;
+  padding: 0;
+}
+
+.menuContent {
+  width: 78%;
+  height: 100%;
+  background-color: #DFEEEE;
+  border-radius: 10px;
+  box-shadow: 0px 2px 4px rgba(0, 0, 2, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mdc-list {
+  padding: 0;
+}

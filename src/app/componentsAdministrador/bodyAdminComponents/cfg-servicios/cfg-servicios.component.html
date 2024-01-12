@@ -1,1 +1,19 @@
-<p>Si te ves bien, trabajas bien.</p>
+<!-- Contenedor de la sección ver servicios -->
+<div class="moduleContainer">
+    <app-title-bar [titulo]="title"></app-title-bar>
+    <div class="childContainer">
+        <section class="menu">
+            <h2>Administrar</h2>
+                <mat-divider></mat-divider>
+            <mat-action-list class="action-list">
+                <button mat-list-item routerLink="clientes"><span>Clientes</span></button><mat-divider></mat-divider>
+                <button mat-list-item routerLink="servicios"><span>Servicios</span></button><mat-divider></mat-divider>
+                <button mat-list-item><span>Trámites</span></button><mat-divider></mat-divider>
+                <button mat-list-item><span>Usuarios</span></button><mat-divider></mat-divider>
+            </mat-action-list>
+        </section>
+        <section class="menuContent">
+            Insertar el contenido del administrador de servicios
+        </section>
+    </div>
+</div>
