@@ -6,109 +6,34 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { Servicios } from 'src/app/models/Servicios';
+import { ServicioService } from 'src/app/services/ServicioService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
-
-const OneServicio: Servicios = {
-  id: 10,
-  tipo: "Habilitaciones",
-  cliente: "YPF",
-  rubro: "Estaciones de servicio",
-  estado: "Presentado",
-  presentado: true,
-  avance: 40,
-  recurrencia: 0,
-  fecha_notificacion: ".",
-  total_presupuestado: 58000.00,
-  comentario: "",
-  item_checklist: [
-    {
-      nombre_item: "Certificado eléctrico",
-      inicio_estimado: "ku",
-      fin_estimado: ".",
-      ejecucion_real: ".",
-      fin_real: ".",
-      notificado: true,
-      valor_tasa: 0,
-      hojas: 0,
-      responsable: "Many el constructor",
-      url_comprobante: "drive.google.com/1"
-    },
-    {
-      nombre_item: "Ambiente",
-      inicio_estimado: "ka",
-      fin_estimado: ".",
-      ejecucion_real: ".",
-      fin_real: ".",
-      notificado: false,
-      valor_tasa: 7000.00,
-      hojas: 5,
-      responsable: "Facundo Manes",
-      url_comprobante: "drive.google.com"
-    }
-  ]
-};
-const TwoServicio: Servicios = {
-  id: 112,
-  tipo: "Ambiente",
-  cliente: "Mc Donalds",
-  rubro: "Alimentos",
-  estado: "Presentado",
-  presentado: false,
-  avance: 40,
-  recurrencia: 0,
-  fecha_notificacion: ".",
-  total_presupuestado: 58000.00,
-  comentario: "20-14292139-2 \nAxion2022 \nExte. Policia Ambiental: Laura Bertea 002714/2023",
-  item_checklist: [
-    {
-      nombre_item: "Certificado eléctrico",
-      inicio_estimado: "ku",
-      fin_estimado: ".",
-      ejecucion_real: ".",
-      fin_real: ".",
-      notificado: false,
-      valor_tasa: 0,
-      hojas: 0,
-      responsable: "Many el constructor",
-      url_comprobante: "drive.google.com/1"
-    },
-    {
-      nombre_item: "Ambiente",
-      inicio_estimado: "ka",
-      fin_estimado: ".",
-      ejecucion_real: ".",
-      fin_real: ".",
-      notificado: false,
-      valor_tasa: 7000.00,
-      hojas: 5,
-      responsable: "Facundo Manes",
-      url_comprobante: "drive.google.com"
-    }
-  ]
-};
 
 @Component({
   selector: 'app-ver-servicios',
   templateUrl: './ver-servicios.component.html',
   styleUrls: ['./ver-servicios.component.css'],
 })
-export class VerServiciosComponent  {
+export class VerServiciosComponent implements OnInit {
 
   title: string = "Gestión De Servicios";
-  displayedColumns: string[] = ['cliente', 'servicio', 'avance', 'comentario', 'alertas']; // cfg columns table
+  //displayedColumns: string[] = ['cliente', 'tipo', 'estado', 'comentario', 'alertas']; // cfg columns table
+  displayedColumns: string[] = ['cliente']; // cfg columns table
+  listServicios!: Servicios[];
 
-  constructor(public dialog: MatDialog, private dataShared: DataSharedService, private router: Router) { }
+  constructor(public dialog: MatDialog, private dataShared: DataSharedService,
+    private router: Router, private servicioService: ServicioService) { }
 
-  /**
-   *     Zona de testeo. En listServicios debe ir el listado de servicios provinientes del backend
-   */
-  listServicios: Servicios[] = [OneServicio, TwoServicio, OneServicio, OneServicio, TwoServicio,
-    OneServicio, OneServicio, OneServicio, OneServicio, TwoServicio, OneServicio, OneServicio, TwoServicio]; // emulo el servicio que recibe los objetos servicios
+  ngOnInit(): void {
+    this.servicioService.getAllService().subscribe((data) => {
+      data.forEach(x => console.log(x));
+      this.listServicios = data;
+    });
+  }
 
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
-  /**
-   * Métododos que usa el formulario: filtrado y páginado
-   */
+
+  // Métododos que usa el formulario: filtrado y páginado
   // función filtrado
   applyFilter(event: Event) {
 
@@ -127,10 +52,8 @@ export class VerServiciosComponent  {
 
   // Funciones para recorrer los trámites y verificar si ha sido notificado
   checkNotificaciones(element: Servicios): boolean {
-    for (const item of element.item_checklist) {
-      if (item.notificado === true) {
-        return true;
-      }
+    for (const item of element.ItemChecklist) {
+      if (item.notificado) return true;
     }
     return false;
   }

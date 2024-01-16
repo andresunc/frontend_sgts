@@ -1,4 +1,4 @@
-export class ItemChecklist {
+export class ItemChecklistDto {
     nombre_item?: string;
     inicio_estimado?: string;
     fin_estimado?: string;

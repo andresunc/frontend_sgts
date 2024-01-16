@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,6 +18,7 @@ import { PrintServicioComponent } from './componentsServicios/print-servicio/pri
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +33,7 @@ import { PrintServicioComponent } from './componentsServicios/print-servicio/pri
     BrowserAnimationsModule,
     MaterialModule, // Uso el módulo de material compartido.
     TitleBarModule, // Uso el módulo de titlebar compartido.
+    HttpClientModule, // Uso Módulo para peticiones HTTP
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Servicios } from '../models/Servicios';
 import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,19 +9,23 @@ import { HttpClient } from '@angular/common/http';
 
 export class ServicioService {
 
+  private url = 'http://localhost:8080/servicioDto/getAll';
   listServicio: Servicios[] = [];
-  url = './assets/arrayServicios.json';
-  
+
   constructor(private http: HttpClient) { }
 
-  cargarDatosDesdeJSON() {
-    this.http.get<Servicios[]>('./assets/arrayServicios.json').subscribe(
-      (data: Servicios[]) => {
+  getAllService(): Observable<Servicios[]> {
+
+    return this.http.get<Servicios[]>(this.url).pipe(
+      tap((data: Servicios[]) => {
+        console.log('* ServicioService: ok');
         this.listServicio = data;
-      },
-      (error) => {
-        console.error('Error cargando datos desde el archivo JSON', error);
-      }
+      }),
+      catchError((error) => {
+        console.error('Error en la solicitud getAllService', error);
+        return throwError(error);
+      })
     );
   }
+
 }

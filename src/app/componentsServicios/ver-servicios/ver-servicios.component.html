@@ -23,17 +23,17 @@
                     </ng-container>
 
                     <!-- servicio Column -->
-                    <ng-container matColumnDef="servicio">
+                    <ng-container matColumnDef="tipo">
                         <th mat-header-cell *matHeaderCellDef class="text-center"> SERVICIOS </th>
                         <td mat-cell *matCellDef="let element" class="text-center" (click)="enviarObjeto(element)">
                             {{element.tipo.toUpperCase()}} </td>
                     </ng-container>
 
                     <!-- avance Column -->
-                    <ng-container matColumnDef="avance">
+                    <ng-container matColumnDef="estado">
                         <th mat-header-cell *matHeaderCellDef class="text-center"> AVANCE </th>
                         <td mat-cell *matCellDef="let element" class="text-center" (click)="enviarObjeto(element)">
-                            {{element.avance +" %"}} </td>
+                            {{element.estado +" %"}} </td>
                     </ng-container>
 
                     <!-- comentario Column -->
