@@ -37,6 +37,7 @@ export class VerServiciosComponent implements OnInit {
   // función filtrado
   applyFilter(event: Event) {
 
+    console.log("applyFilter" + this.dataSource);
     const filterValue = (event.target as HTMLInputElement).value;
 
     // Filtrar servicios
