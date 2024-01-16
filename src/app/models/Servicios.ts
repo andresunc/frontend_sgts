@@ -2,22 +2,22 @@ import { ItemChecklistDto } from "./IItemChecklistDto";
 
 export class Servicios {
 
-    id?: number;
-    tipo?: string;
-    cliente?: string;
-    idEstado?: number;
-    estado?: string;
-    recurrencia?: number;
-    referencia?: number;
-    fecha_notificacion?: string;
-    rubro?: string;
+    id: number;
+    tipo: string;
+    cliente: string;
+    idEstado: number;
+    estado: string;
+    recurrencia: number;
+    referencia: number;
+    fecha_notificacion: string;
+    rubro: string;
     total_presupuestado?: number;
-    comentario?: string;
-    ItemChecklist: ItemChecklistDto[] = [];
+    comentario: string;
+    ItemChecklist: ItemChecklistDto[];
 
     constructor(id: number, tipo: string, cliente: string, idEstado: number, estado: string,
-        recurrencia: number, referencia: number, fecha_notificacion?: string, rubro?: string,
-        total_presupuestado?: number, comentario?: string, itemChecklist?: any) {
+        recurrencia: number, referencia: number, fecha_notificacion: string, rubro: string,
+        total_presupuestado: number, comentario: string, itemChecklist: ItemChecklistDto[]) {
         this.id = id;
         this.tipo = tipo;
         this.cliente = cliente;

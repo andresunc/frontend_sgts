@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ServicioService } from './services/ServicioService';
-import { DataSharedService } from './services/data-shared.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +7,7 @@ import { DataSharedService } from './services/data-shared.service';
 })
 export class AppComponent {
 
-  title = 'frontend_sgts';
+  title = 'Sistema de Gestión y Trazabilidad de Servicios';
 
-  constructor() {  }
+  constructor() { }
 }

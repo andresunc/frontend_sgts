@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -14,24 +14,23 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
   templateUrl: './ver-servicios.component.html',
   styleUrls: ['./ver-servicios.component.css'],
 })
-export class VerServiciosComponent implements OnInit {
+export class VerServiciosComponent {
 
   title: string = "Gestión De Servicios";
-  //displayedColumns: string[] = ['cliente', 'tipo', 'estado', 'comentario', 'alertas']; // cfg columns table
-  displayedColumns: string[] = ['cliente']; // cfg columns table
-  listServicios!: Servicios[];
+  displayedColumns: string[] = ['cliente', 'tipo', 'estado', 'comentario', 'alertas']; // cfg columns table
+  listServicios: Servicios[] = [];
+  dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
-    private router: Router, private servicioService: ServicioService) { }
+    private router: Router, private servicioService: ServicioService) {
 
-  ngOnInit(): void {
     this.servicioService.getAllService().subscribe((data) => {
-      data.forEach(x => console.log(x));
-      this.listServicios = data;
+      this.dataSource = new MatTableDataSource(data);
+      console.log('Listado en MatTableDataSource', this.dataSource);
+      console.log(data[0].ItemChecklist[0].notificado);
     });
-  }
 
-  dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
+  }
 
   // Métododos que usa el formulario: filtrado y páginado
   // función filtrado
@@ -51,12 +50,22 @@ export class VerServiciosComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  // Funciones para recorrer los trámites y verificar si ha sido notificado
+  // Función para recorrer los trámites y verificar si ha sido notificado
   checkNotificaciones(element: Servicios): boolean {
-    for (const item of element.ItemChecklist) {
-      if (item.notificado) return true;
+    if (element.ItemChecklist && Array.isArray(element.ItemChecklist)) {
+      for (const item of element.ItemChecklist) {
+        if (item && item.notificado) {
+          return true;
+        }
+      }
     }
     return false;
+  }
+
+  // Función para mostrar alerta en la lista de servicios
+  checkPresentado(element: Servicios): boolean {
+    if (element.idEstado === 5) return true
+    else return false;
   }
 
   // Método para enviar el objeto al componente print-servicio
