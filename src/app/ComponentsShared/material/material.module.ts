@@ -15,6 +15,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 /**
@@ -37,6 +38,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatMenuModule,
     MatListModule,
     MatSelectModule,
+    MatProgressBarModule,
   ],
   exports: [
     CommonModule,
@@ -53,6 +55,7 @@ import {MatSelectModule} from '@angular/material/select';
     MatMenuModule,
     MatListModule,
     MatSelectModule,
+    MatProgressBarModule,
   ]
 })
 export class MaterialModule { }

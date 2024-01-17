@@ -9,10 +9,11 @@ export class ItemChecklistDto {
     hojas: number;
     responsable: string;
     url_comprobante: string;
+    completo: boolean;
 
     constructor(nombre_item: string, inicio_estimado: string, fin_estimado: string,
         ejecucion_real: string, fin_real: string, notificado: boolean, valor_tasa: number,
-        hojas: number, responsable: string, url_comprobante: string) {
+        hojas: number, responsable: string, url_comprobante: string, completo: boolean) {
         this.nombre_item = nombre_item;
         this.inicio_estimado = inicio_estimado;
         this.fin_estimado = fin_estimado;
@@ -23,5 +24,6 @@ export class ItemChecklistDto {
         this.hojas = hojas;
         this.responsable = responsable;
         this.url_comprobante = url_comprobante;
+        this.completo = completo;
     }
 }

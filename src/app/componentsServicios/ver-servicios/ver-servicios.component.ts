@@ -17,7 +17,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 export class VerServiciosComponent {
 
   title: string = "Gestión De Servicios";
-  displayedColumns: string[] = ['cliente', 'tipo', 'estado', 'comentario', 'alertas']; // cfg columns table
+  displayedColumns: string[] = ['cliente', 'tipo', 'avance', 'comentario', 'alertas']; // cfg columns table
   listServicios: Servicios[] = [];
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
@@ -26,22 +26,17 @@ export class VerServiciosComponent {
 
     this.servicioService.getAllService().subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
-      console.log('Listado en MatTableDataSource', this.dataSource);
-      console.log(data[0].ItemChecklist[0].notificado);
+      console.log(data);
     });
-
   }
 
   // Métododos que usa el formulario: filtrado y páginado
   // función filtrado
   applyFilter(event: Event) {
 
-    console.log("applyFilter" + this.dataSource);
     const filterValue = (event.target as HTMLInputElement).value;
-
     // Filtrar servicios
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
   }
 
   // Funciones del paginator
@@ -52,20 +47,22 @@ export class VerServiciosComponent {
 
   // Función para recorrer los trámites y verificar si ha sido notificado
   checkNotificaciones(element: Servicios): boolean {
-    if (element.ItemChecklist && Array.isArray(element.ItemChecklist)) {
-      for (const item of element.ItemChecklist) {
-        if (item && item.notificado) {
-          return true;
-        }
-      }
-    }
-    return false;
+    return element.itemChecklistDto.some(item => item.notificado);
   }
 
   // Función para mostrar alerta en la lista de servicios
   checkPresentado(element: Servicios): boolean {
-    if (element.idEstado === 5) return true
-    else return false;
+    return element.idEstado === 5;
+  }
+
+  // Calcular el avance del servicio en base a los items completados
+  calcularAvance(element: Servicios): number {
+
+    const totalItems = element.itemChecklistDto.length;
+    // 1 Si el total de items es mayor a 0 hacer...
+    // 2 Filtrar los completos? y cuentarlos
+    // 3 Calcular el porcentaje de items completados (Total/Completos) * 100
+    return totalItems > 0 ? (element.itemChecklistDto.filter(item => item.completo).length / totalItems) * 100 : 0;
   }
 
   // Método para enviar el objeto al componente print-servicio

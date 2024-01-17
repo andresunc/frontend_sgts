@@ -18,7 +18,7 @@ export class ServicioService {
     return this.http.get<Servicios[]>(this.url)
       .pipe(
         tap((data) => {
-          return data;
+         return data;
         }),
         catchError((error) => {
           console.error('Error en la solicitud getAllService', error);
