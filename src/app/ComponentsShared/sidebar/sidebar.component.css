@@ -22,37 +22,18 @@ body {
     padding-right: 5px;
 }
 
+mat-card * {
+    margin: 0;
+}
+
 /* Estilos h2 normales dentro del sidebar*/
 h2 {
     margin-top: 20px;
     margin-left: 15px;
     margin-bottom: 5px;
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 400;
     color: #464545;
-}
-
-/* Estilos para el botón nuevo */
-.btnNew {
-    margin-top: 10px;
-    margin-left: 15px;
-    width: 70%;
-    height: 30px;
-    color: #464545;
-    background-color: #FFE08C;
-    border: 1px solid #464545;
-    /* Borde sólido como base */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Sombra estilo sombreado */
-    font-size: 13px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.btnNew:hover {
-    color: #000000;
-    border: 1px solid #4645456e;
-    transform: scale(1.05);
-    /* Efecto de "push" al hacer hover */
 }
 
 /* Estilos para los botones normales */
@@ -63,42 +44,43 @@ h2 {
     height: 30px;
     color: #464545;
     background-color: #4DBDEB;
-    border: 1px solid #464545;
-    /* Borde sólido como base */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    /* Sombra estilo sombreado */
     font-size: 13px;
-    font-weight: bold;
+    font-weight: 400;
     cursor: pointer;
 }
+
 .btn:hover {
     background-color: #FFE08C;
-    color: #000000;
-    border: 1px solid #4645456e;
+    color: #ffffff;
     transform: scale(1.05);
     /* Efecto de "push" al hacer hover */
 }
 
-/* Estilos para la interacción con el administrador */
+/* Estilos reportes y backoffice */
+img {
+    height: 15px;
+    width: 15px;
+    margin-left: 5px;
+}
+
 h2 a {
-    color: inherit;
+    color: #464545;
     font-weight: 500;
     font-size: 16px;
     /* Hereda el color del texto del contenedor (en este caso, el color por defecto) */
-    text-decoration: none;
     /* Elimina el subrayado predeterminado del enlace */
-    transition: color 0.3s ease, font-size 0.3s ease;
+    transition: color 0.4s, font-size 0.3s ease;
     /* Transiciones para suavizar los cambios */
     cursor: pointer;
 }
-h2 img {
-    height: 15px;
-    width: 15px;
-}
-h2 a:hover > img {
+
+h2 a:hover>img {
     transform: rotate(90deg);
-    transition: transform 0.3s ease;
+    border-radius: 50%;
+    transition: transform 0.4s ease;
 }
+
 button span {
     font-size: 12px;
 }

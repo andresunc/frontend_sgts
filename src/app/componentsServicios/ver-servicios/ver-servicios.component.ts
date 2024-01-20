@@ -24,20 +24,52 @@ export class VerServiciosComponent {
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
     private router: Router, private servicioService: ServicioService) {
 
+    // Cargar todos los servicios
     this.servicioService.getAllService().subscribe((data) => {
-      this.dataSource = new MatTableDataSource(data);
-      console.log(data);
+      this.listServicios = data;
+      // Ejecuto applyFilterByCheckbox() para mostrar los servicios si tienen restricción al iniciar la página
+      this.applyFilterByCheckbox();
     });
+
+    // Emitir evento applyFilterByCheckbox() para aplicar filtro desde el sidebar
+    this.dataShared.getFuncionEmitida().subscribe(() => {
+      this.applyFilterByCheckbox();
+    });
+
   }
 
-  // Métododos que usa el formulario: filtrado y páginado
-  // función filtrado
+  // Métododo para filtrar servicios por el buscador
   applyFilter(event: Event) {
-
     const filterValue = (event.target as HTMLInputElement).value;
-    // Filtrar servicios
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
+
+  // Filtrar servicios por estados, función activada desde el Sidebar
+  applyFilterByCheckbox() {
+
+    // Cargo las preferencias de estados y tipos de servicios seleccionados desde el sidebar
+    const filterStatus: any[] = this.dataShared.getSharedEstado();
+    const filterTipoServicio: any[] = this.dataShared.getSharedTipoServicio();
+
+    // Si la lista de "estados" o "tipo de servicios" a filtrar está vacía mostrar todos los servicios
+    // Sino armar un nuevo array[Servicios] con los servicios que coincidan con las preferencias del filtro
+
+    // Filtrar por tipo de servicio y/o estado
+    let filteredServices = this.listServicios;
+
+    if (filterTipoServicio.length > 0) {
+      filteredServices = filteredServices.filter(servicio => filterTipoServicio.includes(servicio.tipo));
+    }
+
+    if (filterStatus.length > 0) {
+      filteredServices = filteredServices.filter(servicio => filterStatus.includes(servicio.estado));
+    }
+
+    // Actualizar la tabla con los servicios filtrados
+    this.dataSource = new MatTableDataSource(filteredServices);
+    console.log(filteredServices);
+  }
+
 
   // Funciones del paginator
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -59,9 +91,9 @@ export class VerServiciosComponent {
   calcularAvance(element: Servicios): number {
 
     const totalItems = element.itemChecklistDto.length;
-    // 1 Si el total de items es mayor a 0 hacer...
-    // 2 Filtrar los completos? y cuentarlos
-    // 3 Calcular el porcentaje de items completados (Total/Completos) * 100
+    // 1 Si el total de items es mayor a 0 hacer, sino retornar 0
+    // 2 Filtrar los completos? y contarlos
+    // 3 Calcular y retornar el porcentaje de items completados (Completos/Total) * 100
     return totalItems > 0 ? (element.itemChecklistDto.filter(item => item.completo).length / totalItems) * 100 : 0;
   }
 
@@ -73,7 +105,7 @@ export class VerServiciosComponent {
 
   // Función para mostrar el servicio por modal
   openDialog(element: Servicios) {
-    this.dataShared.setSharedObject(element);
+    this.dataShared.setSharedMessage(element);
     const dialogRef = this.dialog.open(DialogModal);
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
@@ -93,6 +125,6 @@ export class VerServiciosComponent {
 export class DialogModal {
   servicio: any;
   constructor(private dataShared: DataSharedService) {
-    this.servicio = this.dataShared.getSharedObject();
+    this.servicio = this.dataShared.getSharedMessage();
   }
 }

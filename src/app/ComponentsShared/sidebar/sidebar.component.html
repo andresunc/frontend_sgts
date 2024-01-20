@@ -5,42 +5,63 @@
     <!-- Botón nuevo -->
     <section>
 
-      <button routerLink="/nuevo" type="button" class="btnNew btn-sm" matTooltip="Crear nuevo servicio">+ Nuevo</button>
+      <button routerLink="/nuevo" type="button" class="btn btn-sm" matTooltip="Crear nuevo servicio">+ Nuevo</button>
       <mat-divider></mat-divider>
 
     </section>
 
-    <!-- Gestión de servicios -->
-    <section>
+    <section class="seccion">
 
-      <h2>Estado de servicio</h2>
-      <div *ngFor=" let estado of estados; let i = index">
-        <button routerLink="" *ngIf="i < 3" type="button" class="btn btn-sm">{{ estado.nombre }}</button>
+      <div>
+        <h2>Filtar estados</h2>
+        <mat-card>
+          <section class="checkBox" *ngFor=" let estado of listEstados; let i = index">
+            <p *ngIf="i < 5">
+              <mat-checkbox (change)="sendStatus(estado.tipoEstado)">
+                {{ estado.tipoEstado }}</mat-checkbox>
+            </p>
+          </section>
+        </mat-card>
       </div>
 
-      <h2>Tipo de servicio</h2>
-      <div *ngFor=" let tipo of tipos; let i = index">
-        <button routerLink="" *ngIf="i < 3" type="button" class="btn btn-sm">{{ tipo.nombre }}</button>
+      <div>
+        <h2>Tipo de servicio</h2>
+        <mat-card>
+          <section class="checkBox" *ngFor=" let tipo of tipoServicios; let i = index">
+            <p *ngIf="i < 3">
+              <mat-checkbox (change)="sendTipoServicio(tipo.tipoServicio)">
+                {{ tipo.tipoServicio }}</mat-checkbox></p>
+          </section>
+        </mat-card>
       </div>
 
     </section>
 
-    <!-- Reportes -->
-    <section>
-
+    <section class="seccion">
+      <!-- Reportes -->
       <mat-divider></mat-divider>
-      <h2>Reportes</h2>
-      <button routerLink="/reportes" type="button" class="btn btn-sm">Ver Reportes</button>
+      <div>
+        <mat-card>
+          <h2>
+            <a matTooltip="Administrar elementos del sistema" routerLink="/reportes">Ver Reportes<img
+                src="assets/img/arrowUp.png"></a>
+          </h2>
+        </mat-card>
+      </div>
+
+      <!-- admin -->
+      <mat-divider></mat-divider>
+      <div>
+        <mat-card>
+          <h2>
+            <a matTooltip="Administrar elementos del sistema" routerLink="/administrador">BackOffice<img
+                src="assets/img/arrowUp.png"></a>
+          </h2>
+        </mat-card>
+      </div>
 
     </section>
 
-    <!-- admin -->
-    <section>
-      <mat-divider></mat-divider>
-      <h2 mat-button>
-        <a matTooltip="Administrar elementos del sistema" routerLink="/administrador">BackOffice <img src="assets/img/arrowUp.png"></a>
-      </h2>
-    </section>
   </div>
 
 </div>

@@ -39,7 +39,7 @@ table {
 }
 .dataTable {
   position: relative;
-  max-height: 300px;
+  max-height: calc(100vh * 0.39);
   overflow: auto;
 }
 

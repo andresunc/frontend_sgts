@@ -6,7 +6,7 @@
 
             <!-- Barra de filtrado por input de texto: Busca por match con palabras -->
             <mat-form-field>
-                <mat-label style="color: #464545;">Buscar...</mat-label>
+                <mat-label style="color: #464545; font-size: 12px;">Buscar...</mat-label>
                 <input matInput (keyup)="applyFilter($event)" placeholder="Ej. #Nombre del cliente o empresa" #input>
             </mat-form-field>
 
@@ -63,8 +63,8 @@
                         </td>
                     </ng-container>
 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns; let element" class="estiloRow"></tr>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #DFEEEE;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns; let element;" class="estiloRow"></tr>
                 </table>
             </div>
 

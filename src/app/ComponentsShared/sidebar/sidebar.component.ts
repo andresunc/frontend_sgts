@@ -1,29 +1,73 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { Estados } from 'src/app/models/Estados';
+import { TipoServicio } from 'src/app/models/TipoServicio';
+import { DataSharedService } from 'src/app/services/data-shared.service';
+import { PreferenciasService } from 'src/app/services/preferencias.service';
 
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
 
+  listEstados: Estados[] = [];
+  tipoServicios: TipoServicio[] = [];
 
-  constructor() { }
+  constructor(private preference: PreferenciasService,
+    private dataShared: DataSharedService) { }
 
-  /**
-   * Este array simula valores que podemos traer de la db para almacenarlos en la LS del usuario, de esta manera vamos a poder implementar una lógica que nos acomode los botones automáticamente.
-   */
-  estados = [
-    { nombre: 'Presupuestados' },
-    { nombre: 'Finalizados' },
-    { nombre: '+' }
-  ];
+  ngOnInit(): void {
+    // Cargo los "Estados No Eliminados" de los servicios
+    this.preference.getStatusNotDeleted().subscribe((data) => {
+      this.listEstados = data;
+    });
 
-  tipos = [
-    { nombre: 'HOL' },
-    { nombre: 'AMBI' },
-    { nombre: 'HYS' }
-  ];
+    // Cargo los "Tipos de Servicios No Eliminados"
+    this.preference.getTipoServicesNotDeleted().subscribe((data) => {
+      this.tipoServicios = data;
+    });
+  }
 
+  // Función para agregar o quitar Estados[] a filtrar.
+  selectedStatusToFilter: string[] = [];
+  sendStatus(status: string) {
+
+    /* 
+    1 Devolver el índice de la primera aparición de <status> en el array. indexOf(status);
+    2 Si <status> no está presente, indexOf(status) devuelve -1: Agregar x al array. push(status);
+    3 Sino quitarlo. splice(index, 1), donde index es el índice de <status> en el array 
+    y 1 es la cantidad de elementos a eliminar.
+    */
+    const index = this.selectedStatusToFilter.indexOf(status);
+
+    if (index === -1) {
+      this.selectedStatusToFilter.push(status);
+      this.dataShared.setSharedEstado(this.selectedStatusToFilter);
+      this.dataShared.triggerFuncionEmitida();
+    }
+    else {
+      this.selectedStatusToFilter.splice(index, 1)
+      this.dataShared.setSharedEstado(this.selectedStatusToFilter);
+      this.dataShared.triggerFuncionEmitida();
+    }
+  }
+
+  // Función para agregar o quitar TipoServicio[] a filtrar.
+  selectedTipoServicioToFilter: string[] = [];
+  sendTipoServicio(tipoServicio: string) {
+
+    const index = this.selectedTipoServicioToFilter.indexOf(tipoServicio);
+
+    if (index === -1) {
+      this.selectedTipoServicioToFilter.push(tipoServicio);
+      this.dataShared.setSharedTipoServicio(this.selectedTipoServicioToFilter);
+      this.dataShared.triggerFuncionEmitida();
+    }
+    else {
+      this.selectedTipoServicioToFilter.splice(index, 1)
+      this.dataShared.setSharedTipoServicio(this.selectedTipoServicioToFilter);
+      this.dataShared.triggerFuncionEmitida();
+    }
+  }
 }
