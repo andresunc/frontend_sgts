@@ -47,16 +47,12 @@ mat-icon:hover {
     justify-content: flex-end;
     background-color: white;
 }
-.imagen-izquierda {
-    margin: 0;
-    width: 2.25rem;
-    height: 2.25rem;
-}
-.imagen-derecha {
-    margin: 0 0.5rem;
+.logos {
+    margin: 0.5rem;
     width: 1.75rem;
     height: 1.75rem;
 }
+
 .texto-centro {
     flex: 1;
     text-align: center;
