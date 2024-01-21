@@ -4,11 +4,27 @@
 
         <div class="tablaContainer">
 
-            <!-- Barra de filtrado por input de texto: Busca por match con palabras -->
-            <mat-form-field>
-                <mat-label style="color: #464545; font-size: 12px;">Buscar...</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Ej. #Nombre del cliente o empresa" #input>
-            </mat-form-field>
+            <!-- Barra de filtrado por input de texto y selector de cantidad a mostrar -->
+            <section style="display: flex; align-items: center;">
+                <div class="buscador">
+                    <mat-form-field style="width: 99%;">
+                        <mat-label>Buscar...</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Ej. #Nombre del cliente o empresa"
+                            #input>
+                    </mat-form-field>
+                </div>
+
+                <div>
+                    <mat-form-field>
+                        <mat-label>Listar</mat-label>
+                        <mat-select disableRipple [(value)]="defaulSelected">
+                            <mat-option *ngFor="let opcion of verUltimos" [value]="opcion.value">
+                                {{ opcion.label }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </section>
 
             <!-- Tabla de servicios -->
             <div class="mat-elevation-z1 dataTable">
@@ -69,7 +85,7 @@
             </div>
 
             <!-- divider -->
-            <mat-divider style="margin-top: 20px;"></mat-divider>
+            <mat-divider style="margin-top: 1rem;"></mat-divider>
             <!-- Paginador -->
             <mat-paginator [pageSizeOptions]="[30]" showFirstLastButtons aria-label="Seleccionar página">
             </mat-paginator>

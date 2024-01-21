@@ -1,18 +1,18 @@
 .moduleContainer {
   height: 100%;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 0.5rem;
 }
 
 .childContainer {
   display: flex;
   margin: auto;
-  margin-top: 9px;
+  margin-top: 0.45rem;
   width: 99%;
-  height: calc(97% - 56px);
+  height: calc(97% - 2.8rem);
   /* Resta el alto de la barra de título */
   /* background-color: rgb(4, 0, 255); Desbloquear para ver el contenedor*/
-  border-radius: 10px;
+  border-radius: 0.5rem;
   justify-content: center;
   align-items: center;
 }
@@ -28,15 +28,21 @@
 }
 
 /* Estilos del buscador */
-.mat-mdc-form-field {
-  font-size: 12px;
+.filert-selecter {
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
 }
 
-/* Estilos de las filas */
-table {
-  font-size: 12px;
+.buscador {
+  width: 80%;
 }
+
+.lastServices {
+  flex: 30%;
+  
+}
+/* Estilos de las filas */
 .dataTable {
   position: relative;
   max-height: calc(100vh * 0.39);
@@ -53,7 +59,7 @@ tr.estiloRow:hover {
 }
 
 .estiloRow:active {
-  border-left: 3px solid #FFE08C;
+  border-left: 0.15rem solid #FFE08C;
 }
 
 .estiloRow tr {

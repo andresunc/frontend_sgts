@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -8,34 +8,44 @@ import { Router } from '@angular/router';
 import { Servicios } from 'src/app/models/Servicios';
 import { ServicioService } from 'src/app/services/ServicioService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-ver-servicios',
   templateUrl: './ver-servicios.component.html',
   styleUrls: ['./ver-servicios.component.css'],
 })
-export class VerServiciosComponent {
+export class VerServiciosComponent implements OnInit, OnDestroy {
 
   title: string = "Gestión De Servicios";
   displayedColumns: string[] = ['cliente', 'tipo', 'avance', 'comentario', 'alertas']; // cfg columns table
-  listServicios: Servicios[] = [];
+  listServicios!: Servicios[];
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
-    private router: Router, private servicioService: ServicioService) {
+    private router: Router, private servicioService: ServicioService) {  }
 
-    // Cargar todos los servicios
-    this.servicioService.getAllService().subscribe((data) => {
+  ngOnInit() {
+    this.loadServicios();
+    this.dataShared.getFuncionEmitida().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.applyFilterByCheckbox();
+    });
+  }
+
+  // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
+  private unsubscribe$ = new Subject<void>();
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  loadServicios() {
+    this.servicioService.getAllService().pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
       this.listServicios = data;
-      // Ejecuto applyFilterByCheckbox() para mostrar los servicios si tienen restricción al iniciar la página
+      this.dataSource.data = this.listServicios;
       this.applyFilterByCheckbox();
     });
-
-    // Emitir evento applyFilterByCheckbox() para aplicar filtro desde el sidebar
-    this.dataShared.getFuncionEmitida().subscribe(() => {
-      this.applyFilterByCheckbox();
-    });
-
   }
 
   // Métododo para filtrar servicios por el buscador
@@ -112,7 +122,17 @@ export class VerServiciosComponent {
     });
 
   }
+
+  // Función y opciones para seleccionar la cantidad de servicios a mostrar
+  verUltimos = [
+    { value: '1', label: 'Últimos 30' },
+    { value: '2', label: 'Últimos 60' },
+    { value: '3', label: 'Últimos 90' },
+    { value: '4', label: 'Todos' }
+  ];
+  defaulSelected = this.verUltimos[0].value;
 }
+
 /**
  * Este es el componente modal. Exportado para usar el html
  */

@@ -1,7 +1,33 @@
-/* You can add global styles to this file, and also import other style files */
+/* rem = px / tamaño fuente base en px */
 html,
 body {
     height: 100%;
     margin: 0;
     font-family: 'Roboto', sans-serif;
+    font-size: 16px; /* 1rem = 16px */
+    font-weight: 300;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+    color: #202020;
+}
+
+h2 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin: 0;
+    color: #464545;
+}
+
+p {
+    font-size: 1rem;
+    font-weight: 300;
+    margin: 0;
+}
+
+mat-divider {
+    background-color: #ccc; /* Color del divider */
 }

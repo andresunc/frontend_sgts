@@ -1,18 +1,18 @@
 .moduleContainer {
     height: 100%;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 0.5rem;
 }
 
 .childContainer {
     display: flex;
     margin:auto;
-    margin-top: 9px;
+    margin-top: 0.45rem;
     width: 99%;
-    height: calc(97% - 56px); /* Resta el alto de la barra de título */
+    height: calc(97% - 2.8rem); /* Resta el alto de la barra de título */
     background-color: #ffff;
-    border-radius: 10px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 2, 0.3);
+    border-radius: 0.5rem;
+    box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     justify-content: center;
     align-items: center;
 }

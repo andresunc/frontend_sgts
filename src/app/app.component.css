@@ -2,12 +2,12 @@
 .rutasContainer {
     background-color: #DFEEEE;
     height: 100vh;
-    width: calc(99% - 220px); /* Resta el ancho del sidebar al 99% del ancho total */
+    width: calc(99% - 14rem); /* Resta el ancho del sidebar al 99% del ancho total */
     margin-left: auto; /* Establece el margen izquierdo como automático para que ocupe el espacio restante a la derecha */
-    border-radius: 10px;
-    border: 3px solid #46454575;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    border-radius: 0.5rem;
+    border: 0.15rem solid #46454575;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
     display: flex; /* Agrega un contenedor flexible */
     justify-content: center; /* Centra los elementos horizontalmente */
     align-items: center; /* Centra los elementos verticalmente */
@@ -20,6 +20,6 @@
     height: 98%;
     width: 97%;
     margin: auto;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Agrega una sombra con desplazamiento horizontal 0, desplazamiento vertical 0, desenfoque 10px y opacidad 0.5 */
+    border-radius: 0.5rem;
+    box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5); /* Agrega una sombra con desplazamiento horizontal 0, desplazamiento vertical 0, desenfoque 0.5rem y opacidad 0.5 */
 }

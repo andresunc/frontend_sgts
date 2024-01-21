@@ -1,17 +1,17 @@
 .moduleContainer {
     height: 100%;
     width: 100%;
-    border-radius: 10px;
+    border-radius: 0.5rem;
   }
   
   .childContainer {
     display: flex;
     margin: auto;
-    margin-top: 10px;
+    margin-top: 0.5rem;
     width: 99%;
-    height: calc(97% - 56px);
+    height: calc(97% - 2.8rem);
     /* Resta el alto de la barra de título */
-    border-radius: 10px;
+    border-radius: 0.5rem;
     justify-content: space-between;
     align-items: center;
   }
@@ -23,31 +23,27 @@
   */
   .menu {
     width: 20%;
-    padding-left: 25px;
+    padding-left: 1.25rem;
     height: 100%;
     background-color: #DFEEEE;
-    border-radius: 10px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 2, 0.3);
+    border-radius: 0.5rem;
+    box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
   }
   
   .menu button:hover {
     margin: 0;
-    border-left: 3px solid #FFE08C;
+    border-left: 0.15rem solid #FFE08C;
   }
   
   button span {
-    font-size: 16px;
     font-weight: 200;
     color: #464545;
   }
   
   .menu h2 {
-    margin-top: 15px;
+    margin-top: 0.75rem;
     margin-bottom: 0;
-    font-size: 16px;
     font-weight: 500;
-    color: #464545;
-  
   }
   
   mat-divider {
@@ -59,8 +55,8 @@
     width: 78%;
     height: 100%;
     background-color: #DFEEEE;
-    border-radius: 10px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 2, 0.3);
+    border-radius: 0.5rem;
+    box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     display: flex;
     justify-content: center;
     align-items: center;
