@@ -45,7 +45,7 @@
 /* Estilos de las filas */
 .dataTable {
   position: relative;
-  max-height: calc(100vh * 0.39);
+  max-height: 15rem;
   overflow: auto;
 }
 
