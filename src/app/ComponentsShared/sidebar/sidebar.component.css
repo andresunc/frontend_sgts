@@ -6,7 +6,7 @@ body {
 /* Estilos para el sidebar */
 .sidebar {
     height: 100vh;
-    width: 14rem;
+    width: 14rem; /* Anchura del sidebar */
     position: fixed;
     top: 0;
     left: 0;
@@ -49,21 +49,18 @@ h2 {
     background-color: #FFE08C;
     color: #ffffff;
     transform: scale(1.05);
-    /* Efecto de "push" al hacer hover */
 }
 
 /* Estilos reportes y backoffice */
 img {
-    height: 0.75rem;
-    width: 0.75rem;
-    margin-left: 0.25rem;
+    height: 1.2rem;
+    width: 1.2rem;
+    margin-left: 0.5rem;
 }
 
 h2 a {
-    /* Hereda el color del texto del contenedor (en este caso, el color por defecto) */
-    /* Elimina el subrayado predeterminado del enlace */
+    color: #464545;
     transition: color 0.4s, font-size 0.3s ease;
-    /* Transiciones para suavizar los cambios */
     cursor: pointer;
 }
 
