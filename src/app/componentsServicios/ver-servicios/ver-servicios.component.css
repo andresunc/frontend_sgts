@@ -22,40 +22,59 @@
   display: block;
 }
 
-/* Estilos del contenedor la tabla */
+/* Ancho general de la tabla */
 .tablaContainer {
   width: 95%;
 }
 
-/* Estilos del buscador */
-.filert-selecter {
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+/* Estilos de la barra de desplazamiento no compatible con todos los navegadores */
+::-webkit-scrollbar {
+  width: 0.8rem;
+  /* Ancho de la barra de desplazamiento */
 }
 
-.buscador {
-  width: 80%;
+::-webkit-scrollbar-thumb {
+  border-radius: 3.2rem;
+  /* Altura de la barra de desplazamiento */
+  background-color: #ddd;
+  /* Color de la barra de desplazamiento */
 }
 
-.lastServices {
-  flex: 30%;
-  
+/* Establece el espaciado vertical entre las filas */
+table {
+  border-collapse: separate;
+  border-spacing: 0 0.5rem;
+  background-color: #4DBDEB;
+  /* Color de fondo de la tabla */
 }
+
+/* Estilos de las celdas cabeceras */
+th {
+  border: 0.05rem solid #ddd;
+  padding: 0.5rem;
+  top: 0;
+  background-color: #ffffff;
+  position: sticky;
+  z-index: 2;
+  /* Asegura que el encabezado aparezca sobre las celdas al hacer scroll */
+}
+
 /* Estilos de las filas */
 .dataTable {
   position: relative;
   max-height: 15rem;
+  /* Altura máxima de la tabla */
   overflow: auto;
+  /* Añade una barra de desplazamiento cuando el contenido excede el tamaño del contenedor */
 }
 
 .estiloRow {
-  background: #ffffff;
+  background: #DFEEEE;
   cursor: pointer;
 }
 
 tr.estiloRow:hover {
-  background: #DFEEEE;
+  background: #ddd;
 }
 
 .estiloRow:active {
@@ -66,14 +85,30 @@ tr.estiloRow:hover {
   border-bottom: #46454575;
 }
 
+/* Estilos del buscador */
+.filert-selecter {
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.buscador {
+  width: 99%;
+}
+
+.lastServices {
+  flex: 30%;
+}
+
 /* Estilo para el comentario */
 .coment {
   cursor: pointer;
-  display: flex; 
-  align-items: center; 
-  align-content: center; 
+  display: flex;
+  align-items: center;
+  align-content: center;
   justify-content: center;
 }
+
 .coment:hover {
   color: #4781ee;
   text-decoration: underline;
