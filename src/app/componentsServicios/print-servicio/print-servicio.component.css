@@ -10,7 +10,7 @@
     margin-top: 0.45rem;
     width: 99%;
     height: calc(97% - 2.8rem); /* Resta el alto de la barra de título */
-    background-color: #ff0000;
+    background-color: #ffffff;
     border-radius: 0.5rem;
     box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     justify-content: center;
@@ -22,11 +22,16 @@
 }
 */
 
-.childContainer > div {
+section {
   display: block;
   flex: 1; /* Hace que ambos divs ocupen el mismo espacio */
-  width: 90%;
-  margin: 0 5%; /* Añade márgenes equivalentes al 5% del ancho total a ambos lados */
-  box-sizing: border-box;
-  border: 1px solid #000;
+  margin: 2%; /* Añade márgenes equivalentes al 5% del ancho total a ambos lados */
+}
+
+.fila {
+  display: flex;
+  flex-direction: row;
+}
+.column {
+  flex: 1; 
 }

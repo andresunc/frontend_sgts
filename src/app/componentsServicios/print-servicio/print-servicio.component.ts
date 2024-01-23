@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
 @Component({
@@ -10,10 +11,12 @@ export class PrintServicioComponent {
 
   servicioRecibido: any;
   title: string = 'Gestión De Servicios';
+  svService: ManagerService;
   
-  constructor(private dataShared: DataSharedService) { 
+  constructor(private dataShared: DataSharedService, svManager: ManagerService) { 
     this.servicioRecibido = this.dataShared.getSharedObject();
-    this.title = 'Gestión De Servicios/' + this.servicioRecibido.tipo + '/' + this.servicioRecibido.cliente ; 
+    this.title = 'Gestión De Servicios | ' + this.servicioRecibido.tipo + ' | ' + this.servicioRecibido.cliente ; 
+    this.svService = svManager;
   }
 
 }

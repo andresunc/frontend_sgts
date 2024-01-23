@@ -36,7 +36,7 @@ export class PreferenciasService {
         tap(() => {
         }),
         catchError((error) => {
-          console.error('Error en la solicitud cargarTipoServicios', error);
+          console.error('Error en la solicitud cargar tipos de Servicios', error);
           return throwError(error);
         })
       );

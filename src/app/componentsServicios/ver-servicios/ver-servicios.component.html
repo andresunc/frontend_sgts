@@ -33,7 +33,7 @@
                     <!-- cliente Column -->
                     <ng-container matColumnDef="cliente">
                         <th mat-header-cell *matHeaderCellDef class="text-center"> CLIENTES</th>
-                        <td mat-cell *matCellDef="let element" class="text-center" (click)="enviarObjeto(element)">
+                        <td mat-cell *matCellDef="let element" class="text-center" (click)="svService.enviarObjeto(element)">
                             {{element.cliente.toUpperCase()}}
                         </td>
                     </ng-container>
@@ -41,15 +41,15 @@
                     <!-- servicio Column -->
                     <ng-container matColumnDef="tipo">
                         <th mat-header-cell *matHeaderCellDef class="text-center"> SERVICIOS </th>
-                        <td mat-cell *matCellDef="let element" class="text-center" (click)="enviarObjeto(element)">
+                        <td mat-cell *matCellDef="let element" class="text-center" (click)="svService.enviarObjeto(element)">
                             {{element.tipo.toUpperCase()}} </td>
                     </ng-container>
 
                     <!-- avance Column -->
                     <ng-container matColumnDef="avance">
                         <th mat-header-cell *matHeaderCellDef class="text-center"> AVANCE </th>
-                        <td mat-cell *matCellDef="let element" class="text-center" (click)="enviarObjeto(element)">
-                            <span>{{calcularAvance(element) + '%'}}</span>
+                        <td mat-cell *matCellDef="let element" class="text-center" (click)="svService.enviarObjeto(element)">
+                            <span>{{svService.calcularAvance(element) + '%'}}</span>
                         </td>
                     </ng-container>
 
@@ -57,7 +57,7 @@
                     <ng-container matColumnDef="comentario">
                         <th mat-header-cell *matHeaderCellDef class="text-center"> COMENTARIO </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
-                            (click)="element.comentario !== '' ? openDialog(element) : enviarObjeto(element)">
+                            (click)="element.comentario !== '' ? openDialog(element) : svService.enviarObjeto(element)">
                             <span *ngIf="element.comentario" class="coment">
                                 Ver comentario
                             </span>
@@ -69,13 +69,13 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center"> ALERTAS </th>
                         <td mat-cell *matCellDef="let element" class="text-center">
 
-                            <mat-icon *ngIf="!checkPresentado(element)" (click)="enviarObjeto(element)">-</mat-icon>
-                            <mat-icon matTooltip="Presentado" *ngIf="checkPresentado(element)" style="color: orange"
-                                (click)="enviarObjeto(element)">adjust</mat-icon>
+                            <mat-icon *ngIf="!svService.checkPresentado(element)" (click)="svService.enviarObjeto(element)">-</mat-icon>
+                            <mat-icon matTooltip="Presentado" *ngIf="svService.checkPresentado(element)" style="color: orange"
+                                (click)="svService.enviarObjeto(element)">adjust</mat-icon>
 
-                            <mat-icon *ngIf="!checkNotificaciones(element)" (click)="enviarObjeto(element)">-</mat-icon>
-                            <mat-icon matTooltip="Notificado" *ngIf="checkNotificaciones(element)" style="color: red"
-                                (click)="enviarObjeto(element)">adjust</mat-icon>
+                            <mat-icon *ngIf="!svService.checkNotificaciones(element)" (click)="svService.enviarObjeto(element)">-</mat-icon>
+                            <mat-icon matTooltip="Notificado" *ngIf="svService.checkNotificaciones(element)" style="color: red"
+                                (click)="svService.enviarObjeto(element)">adjust</mat-icon>
                         </td>
                     </ng-container>
 

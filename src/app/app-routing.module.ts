@@ -5,7 +5,6 @@ import { NewServicioComponent } from './componentsServicios/new-servicio/new-ser
 import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: 'home', component: VerServiciosComponent },
   { path: 'nuevo', component: NewServicioComponent },
   { path: 'home/servicio', component: PrintServicioComponent },
@@ -15,6 +14,7 @@ const routes: Routes = [
   { path: 'administrador', loadChildren: () => import ('./componentsAdministrador/administradorcfg/administrador.module').then(x => x.AdministradorModule) },
 
   // uso ** evitar error 400 (Éste objeto redirect siempre va al último)W
+  { path: '', redirectTo: 'home', pathMatch: 'full'},
   { path: '**', redirectTo: 'home', pathMatch: 'full'},
 ];
 

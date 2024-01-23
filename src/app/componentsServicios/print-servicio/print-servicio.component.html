@@ -2,11 +2,28 @@
 <div class="moduleContainer">
     <app-title-bar [titulo]="title"></app-title-bar>
     <div class="childContainer">
-        <div>
-            contenido 1
-        </div>
-        <div>
-            contenido 2
-        </div>
+        <section style="display: flex;">
+
+            <!-- Fila uno-->
+            <div class="informacion-servicio">
+                <h2>Información del Servicio</h2>
+                <ul>
+                  <li><strong>ID:</strong> {{ servicioRecibido.id }}</li>
+                  <li><strong>Tipo:</strong> {{ servicioRecibido.tipo }}</li>
+                  <li><strong>Cliente:</strong> {{ servicioRecibido.cliente }}</li>
+                  <li><strong>Rubro:</strong> {{ servicioRecibido.rubro }}</li>
+                  <li><strong>Estado:</strong> {{ servicioRecibido.estado }}</li>
+                  <li><strong>Presentado:</strong> {{ servicioRecibido.presentado ? 'Sí' : 'No' }}</li>
+                  <li><strong>Avance:</strong> {{ servicioRecibido.avance }}%</li>
+                  <li><strong>Recurrencia:</strong> {{ servicioRecibido.recurrencia }}</li>
+                  <li><strong>Fecha de Notificación:</strong> {{ servicioRecibido.fecha_notificacion }}</li>
+                  <li><strong>Total Presupuestado:</strong> ${{ servicioRecibido.total_presupuestado.toFixed(2) }}</li>
+                  <li><strong>Comentario:</strong> {{ servicioRecibido.comentario || 'No disponible' }}</li>
+                  <li><strong>Avance:</strong>{{svService.calcularAvance(servicioRecibido)}}</li>
+                </ul>
+                
+              </div>
+
+        </section>
     </div>
 </div>

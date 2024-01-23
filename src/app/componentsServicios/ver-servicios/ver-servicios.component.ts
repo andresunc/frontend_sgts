@@ -4,12 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
 import { Servicios } from 'src/app/models/Servicios';
 import { ServicioService } from 'src/app/services/ServicioService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
 
 @Component({
   selector: 'app-ver-servicios',
@@ -21,10 +21,14 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   title: string = "Gestión De Servicios";
   displayedColumns: string[] = ['cliente', 'tipo', 'avance', 'comentario', 'alertas']; // cfg columns table
   listServicios!: Servicios[];
+  svService: ManagerService; // Trabaja para calcular algunos valores de los servicios
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
-  constructor(public dialog: MatDialog, private dataShared: DataSharedService,
-    private router: Router, private servicioService: ServicioService) {  }
+  constructor(public dialog: MatDialog, private dataShared: DataSharedService, 
+    private servicioService: ServicioService,
+    svManager: ManagerService) { 
+      this.svService = svManager;
+     }
 
   ngOnInit() {
     this.loadServicios();
@@ -85,32 +89,6 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
-
-  // Función para recorrer los trámites y verificar si ha sido notificado
-  checkNotificaciones(element: Servicios): boolean {
-    return element.itemChecklistDto.some(item => item.notificado);
-  }
-
-  // Función para mostrar alerta en la lista de servicios
-  checkPresentado(element: Servicios): boolean {
-    return element.idEstado === 5;
-  }
-
-  // Calcular el avance del servicio en base a los items completados
-  calcularAvance(element: Servicios): number {
-
-    const totalItems = element.itemChecklistDto.length;
-    // 1 Si el total de items es mayor a 0 hacer, sino retornar 0
-    // 2 Filtrar los completos? y contarlos
-    // 3 Calcular y retornar el porcentaje de items completados (Completos/Total) * 100
-    return totalItems > 0 ? (element.itemChecklistDto.filter(item => item.completo).length / totalItems) * 100 : 0;
-  }
-
-  // Método para enviar el objeto al componente print-servicio
-  enviarObjeto(element: Servicios) {
-    this.dataShared.setSharedObject(element);
-    this.router.navigate(['/home/servicio']);
   }
 
   // Función para mostrar el servicio por modal
