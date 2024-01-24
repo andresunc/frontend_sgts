@@ -6,11 +6,16 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * Clase para calcular algunos valores de los servicios
+ */
 export default class ManagerService {
 
   constructor(private dataShared: DataSharedService,
     private router: Router) { }
 
+    // Método para calcular el avance de un servicio
   calcularAvance(servicio: Servicios): number {
 
     const totalItems = servicio.itemChecklistDto.length;
@@ -35,6 +40,5 @@ export default class ManagerService {
     this.dataShared.setSharedObject(servicio);
     this.router.navigate(['/home/servicio']);
   }
-
 
 }

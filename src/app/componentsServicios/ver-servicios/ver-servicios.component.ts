@@ -24,17 +24,33 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   svService: ManagerService; // Trabaja para calcular algunos valores de los servicios
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
-  constructor(public dialog: MatDialog, private dataShared: DataSharedService, 
+  constructor(public dialog: MatDialog, private dataShared: DataSharedService,
     private servicioService: ServicioService,
-    svManager: ManagerService) { 
-      this.svService = svManager;
-     }
+    svManager: ManagerService) {
+    this.svService = svManager;
+  }
 
   ngOnInit() {
-    this.loadServicios();
+    this.loadServicios(this.defaulSelected); // Cargar servicios
+
+    // Comparto la función para filtrar servicios. Emitida desde el sidebar
     this.dataShared.getFuncionEmitida().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.applyFilterByCheckbox();
     });
+  }
+
+  // Método para cargar los servicios
+  loadServicios(limit: number) {
+    this.dataShared.mostrarSpinner();
+    this.servicioService.getTopServices(limit)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (data) => {
+          this.listServicios = data; // Asigno los servicios a la lista
+          this.dataSource.data = this.listServicios; // Asigno los servicios a la tabla
+          this.applyFilterByCheckbox(); // Aplico el filtro de estados y tipos de servicios
+        }
+      ).add(() => this.dataShared.ocultarSpinner());
   }
 
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
@@ -42,14 +58,6 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-
-  loadServicios() {
-    this.servicioService.getAllService().pipe(takeUntil(this.unsubscribe$)).subscribe((data) => {
-      this.listServicios = data;
-      this.dataSource.data = this.listServicios;
-      this.applyFilterByCheckbox();
-    });
   }
 
   // Métododo para filtrar servicios por el buscador
@@ -81,7 +89,6 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 
     // Actualizar la tabla con los servicios filtrados
     this.dataSource = new MatTableDataSource(filteredServices);
-    console.log(filteredServices);
   }
 
 
@@ -96,19 +103,20 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     this.dataShared.setSharedMessage(element);
     const dialogRef = this.dialog.open(DialogModal);
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      console.log(`Resultado del modal: ${result}`);
     });
 
   }
 
   // Función y opciones para seleccionar la cantidad de servicios a mostrar
   verUltimos = [
-    { value: '1', label: 'Últimos 30' },
-    { value: '2', label: 'Últimos 60' },
-    { value: '3', label: 'Últimos 90' },
-    { value: '4', label: 'Todos' }
+    { value: 30, label: "Últimos 30" },
+    { value: 60, label: "Últimos 60" },
+    { value: 90, label: "Últimos 90" },
+    { value: 0, label: "Todos" }
   ];
   defaulSelected = this.verUltimos[0].value;
+
 }
 
 /**

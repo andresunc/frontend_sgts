@@ -1,4 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,9 @@ export class DataSharedService {
   private sharedEstado: any[] = [];
   private sharedTipoServicio: any[] = [];
   private EventEmitter: EventEmitter<void> = new EventEmitter<void>();
+  /* Atributos para el Spinner */
+  private spinner = new BehaviorSubject<boolean>(false);
+  goSpinner = this.spinner.asObservable();
 
   constructor() { }
 
@@ -51,5 +55,14 @@ export class DataSharedService {
 
   getSharedTipoServicio() {
     return this.sharedTipoServicio;
+  }
+
+  /* Funciones del Spinner */
+  mostrarSpinner() {
+    this.spinner.next(true);
+  }
+
+  ocultarSpinner() {
+    this.spinner.next(false);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Servicios } from '../models/Servicios';
 import { HttpClient } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 
 @Injectable({
@@ -9,19 +10,21 @@ import { Observable, catchError, tap, throwError } from 'rxjs';
 
 export class ServicioService {
 
-  private url = 'http://localhost:8080/servicioDto/getAll';
+  private url = 'http://localhost:8080/servicioDto/getTopServices';
 
   constructor(private http: HttpClient) { }
 
-  getAllService(): Observable<Servicios[]> {
+  getTopServices(limit: number): Observable<Servicios[]> {
 
-    return this.http.get<Servicios[]>(this.url)
+    const params = new HttpParams().set('limit', limit.toString());
+
+    return this.http.get<Servicios[]>(this.url, { params: params } )
       .pipe(
         tap((data) => {
           return data;
         }),
         catchError((error) => {
-          console.error('Error en la solicitud getAllService', error);
+          console.error('Error en la solicitud getTopServices', error);
           return throwError(error);
         })
       );

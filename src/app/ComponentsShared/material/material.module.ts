@@ -17,6 +17,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 /**
  * Todo componente material se debe importar y exportar
@@ -40,6 +41,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSelectModule,
     MatProgressBarModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     CommonModule,
@@ -58,6 +60,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSelectModule,
     MatProgressBarModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class MaterialModule { }

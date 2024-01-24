@@ -15,6 +15,7 @@ import { SidebarComponent } from 'src/app/componentsShared/sidebar/sidebar.compo
 import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
 import { NewServicioComponent } from './componentsServicios/new-servicio/new-servicio.component';
 import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
+import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.component';
 
 
 
@@ -26,6 +27,7 @@ import { PrintServicioComponent } from './componentsServicios/print-servicio/pri
     VerServiciosComponent,
     NewServicioComponent,
     PrintServicioComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
