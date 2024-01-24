@@ -18,9 +18,12 @@ body {
 }
 
 .sideContainer {
+    
     padding-left: 0.25rem;
     padding-right: 0.25rem;
+    
 }
+
 
 mat-card * {
     margin: 0;
@@ -39,16 +42,23 @@ h2 {
     margin-left: 0.75rem;
     width: 70%;
     height: 1.8rem;
-    color: #464545;
-    background-color: #4DBDEB;
-    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+    color: #000000;
+    background-color: #4dbeeb;
+    box-shadow: 0 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
-}
+    border-color: #0982b3;
+    font-weight:bold;
+   }
 
 .btn:hover {
     background-color: #FFE08C;
-    color: #ffffff;
+    color: #080808;
     transform: scale(1.05);
+    border-color: #e8a723;
+}
+
+.btn-nuevo{
+    text-align: center;
 }
 
 /* Estilos reportes y backoffice */
@@ -75,3 +85,5 @@ h2 a:hover>img {
     border-top: 1px solid #ccc;
     margin-top: 0.75rem;
 }
+
+

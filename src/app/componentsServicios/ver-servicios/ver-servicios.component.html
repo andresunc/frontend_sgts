@@ -5,9 +5,9 @@
         <div class="tablaContainer">
 
             <!-- Barra de filtrado por input de texto y selector de cantidad a mostrar -->
-            <section style="display: flex; justify-content: space-between;">
+            <section class= "gestor-svs">
                 <div class="buscador">
-                    <mat-form-field style="width: 99%;">
+                    <mat-form-field class="buscador-field">
                         <mat-label>Buscar...</mat-label>
                         <input matInput (keyup)="applyFilter($event)" placeholder="Ej. #Nombre del cliente o empresa"
                             #input>
@@ -15,7 +15,7 @@
                 </div>
 
                 <div>
-                    <mat-form-field style="width: 100%;">
+                    <mat-form-field class="listar-field">
                         <mat-label>Listar</mat-label>
                         <mat-select [(value)]="defaulSelected">
                             <mat-option *ngFor="let opcion of verUltimos" [value]="opcion.value"
