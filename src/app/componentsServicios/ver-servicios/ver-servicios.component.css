@@ -121,7 +121,7 @@ tr.estiloRow:hover {
 .gestor-svs{
   display: flex; 
   justify-content: space-between;
-  width: 99%;
+  
 }
 
 .buscador-field{
@@ -129,5 +129,5 @@ tr.estiloRow:hover {
 }
 
 .listar-field{
-  width: 104%;
+  width: 101%;
 }

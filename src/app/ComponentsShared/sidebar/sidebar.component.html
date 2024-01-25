@@ -12,8 +12,8 @@
 
     <section class="seccion">
 
-      <div>
-        <h2>Filtar estados</h2>
+      <div class="estados">
+        <h2>Filtar Estados</h2>
         <mat-card>
           <section class="checkBox" *ngFor=" let estado of listEstados; let i = index">
             <p *ngIf="i < 5">
@@ -25,7 +25,7 @@
       </div>
 
       <div>
-        <h2>Tipo de servicio</h2>
+        <h2>Tipo de Servicio</h2>
         <mat-card>
           <section class="checkBox" *ngFor=" let tipo of tipoServicios; let i = index">
             <p *ngIf="i < 3">
