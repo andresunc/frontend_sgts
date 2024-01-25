@@ -10,13 +10,13 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 export class PrintServicioComponent {
 
   servicioRecibido: any;
-  title: string = 'Gestión De Servicios';
-  svService: ManagerService;
+  title: string = 'Información del servicio:';
+  
   
   constructor(private dataShared: DataSharedService, svManager: ManagerService) { 
     this.servicioRecibido = this.dataShared.getSharedObject();
-    this.title = 'Gestión De Servicios | ' + this.servicioRecibido.tipo + ' | ' + this.servicioRecibido.cliente ; 
-    this.svService = svManager;
+    this.title = this.title + this.servicioRecibido.cliente + ' | ' + this.servicioRecibido.tipo;
+    this.servicioRecibido.avance = svManager.calcularAvance(this.servicioRecibido);
   }
 
 }
