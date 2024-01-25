@@ -1,29 +1,44 @@
 body {
     margin: 0;
     padding: 0;
+    
 }
 
 /* Estilos para el sidebar */
 .sidebar {
     height: 100vh;
-    width: 14rem; /* Anchura del sidebar */
+    width: 14.5rem; /* Anchura del sidebar */
     position: fixed;
     top: 0;
-    left: 0;
-    background-color: #DFEEEE;
+    left: 0.17rem;
+    background-color: #eaf3f3f1;
     border-radius: 0.5rem;
     border: 0.15rem solid #46454575;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
+   
 }
 
 .sideContainer {
+    
     padding-left: 0.25rem;
     padding-right: 0.25rem;
+     
 }
+
 
 mat-card * {
     margin: 0;
+    background-color:#DFEEEE;
+    
+}
+
+
+mat-card {
+    border: 1px solid rgba(45, 190, 234, 0.122); /* Borde general */
+    border-radius: 5px; /* Radio de borde */
+    box-shadow: 0 2px 4px rgba(45, 190, 234, 0.586); /* Sombra general */
+    
 }
 
 /* Estilos h2 normales dentro del sidebar*/
@@ -39,16 +54,23 @@ h2 {
     margin-left: 0.75rem;
     width: 70%;
     height: 1.8rem;
-    color: #464545;
-    background-color: #4DBDEB;
-    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+    color: #000000;
+    background-color: #4dbeeb;
+    box-shadow: 0 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
-}
+    border-color: #0982b3;
+    font-weight:bold;
+   }
 
 .btn:hover {
     background-color: #FFE08C;
-    color: #ffffff;
+    color: #080808;
     transform: scale(1.05);
+    border-color: #e8a723;
+}
+
+.btn-nuevo{
+    text-align: center;
 }
 
 /* Estilos reportes y backoffice */
@@ -62,6 +84,7 @@ h2 a {
     color: #464545;
     transition: color 0.4s, font-size 0.3s ease;
     cursor: pointer;
+    
 }
 
 h2 a:hover>img {
@@ -75,3 +98,8 @@ h2 a:hover>img {
     border-top: 1px solid #ccc;
     margin-top: 0.75rem;
 }
+
+
+
+
+

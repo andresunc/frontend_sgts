@@ -38,6 +38,7 @@
   /* Altura de la barra de desplazamiento */
   background-color: #ddd;
   /* Color de la barra de desplazamiento */
+
 }
 
 /* Establece el espaciado vertical entre las filas */
@@ -45,6 +46,8 @@ table {
   border-collapse: separate;
   border-spacing: 0 0.5rem;
   background-color: #4DBDEB;
+  padding-right: 1%;
+
   /* Color de fondo de la tabla */
 }
 
@@ -113,4 +116,18 @@ tr.estiloRow:hover {
   color: #4781ee;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.gestor-svs{
+  display: flex; 
+  justify-content: space-between;
+  
+}
+
+.buscador-field{
+  width: 99%;
+}
+
+.listar-field{
+  width: 101%;
 }
