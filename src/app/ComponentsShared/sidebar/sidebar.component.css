@@ -96,9 +96,8 @@ h2 a:hover>img {
 /* Estilos para el divisior */
 .mat-divider {
     border-top: 1px solid #ccc;
-    margin-top: 0.75rem;
+    margin-top: 0.75rem; 
 }
-
 
 
 
