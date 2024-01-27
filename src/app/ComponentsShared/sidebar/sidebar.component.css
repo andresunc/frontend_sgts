@@ -87,6 +87,11 @@ h2 a {
     
 }
 
+mat-checkbox span {
+    align-content: center;
+    color: red;
+}
+
 h2 a:hover>img {
     transform: rotate(90deg);
     border-radius: 50%;
@@ -102,4 +107,3 @@ h2 a:hover>img {
 mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
     justify-items: end;
 }
-
