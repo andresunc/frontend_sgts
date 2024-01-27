@@ -99,7 +99,8 @@ h2 a:hover>img {
     margin-top: 0.75rem;
 }
 
-
-
+mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
+    justify-items: end;
+}
 
 
