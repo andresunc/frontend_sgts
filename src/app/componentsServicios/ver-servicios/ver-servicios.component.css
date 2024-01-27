@@ -1,8 +1,10 @@
 .moduleContainer {
+  
   height: 100%;
   width: 100%;
   border-radius: 0.5rem;
 }
+
 
 .childContainer {
   display: flex;
@@ -129,5 +131,23 @@ tr.estiloRow:hover {
 }
 
 .listar-field{
-  width: 101%;
+  width: 99%;
 }
+
+/*Pude forzar el cambio de fuente con el * en el css excepto por 
+las tres etiquetas que siguen de la tabla de servicios*/
+
+.mat-mdc-header-cell{
+  font-family:'Quicksand', sans-serif;
+ 
+} /*fuente para header de la tabla de servicios*/
+
+.mat-mdc-cell{
+  font-family:'Quicksand', sans-serif;
+ 
+} /*fuente para las filas de la tabla de servicios*/
+
+.mat-mdc-option{
+  font-family:'Quicksand', sans-serif;
+
+} /*fuente para el interior del selector de la tabla de servicios*/
