@@ -1,29 +1,29 @@
 export class ItemChecklistDto {
-    nombre_item: string;
-    inicio_estimado: string;
-    fin_estimado: string;
+    nombreItem: string;
+    inicioEstimado: string;
+    finEstimado: string;
     ejecucion_real: string;
-    fin_real: string;
+    finReal: string;
     notificado: boolean;
-    valor_tasa: number;
+    valorTasa: number;
     hojas: number;
     responsable: string;
-    url_comprobante: string;
+    urlComprobante: string;
     completo: boolean;
 
-    constructor(nombre_item: string, inicio_estimado: string, fin_estimado: string,
-        ejecucion_real: string, fin_real: string, notificado: boolean, valor_tasa: number,
-        hojas: number, responsable: string, url_comprobante: string, completo: boolean) {
-        this.nombre_item = nombre_item;
-        this.inicio_estimado = inicio_estimado;
-        this.fin_estimado = fin_estimado;
+    constructor(nombreItem: string, inicioEstimado: string, finEstimado: string,
+        ejecucion_real: string, finReal: string, notificado: boolean, valorTasa: number,
+        hojas: number, responsable: string, urlComprobante: string, completo: boolean) {
+        this.nombreItem = nombreItem;
+        this.inicioEstimado = inicioEstimado;
+        this.finEstimado = finEstimado;
         this.ejecucion_real = ejecucion_real;
-        this.fin_real = fin_real;
+        this.finReal = finReal;
         this.notificado = notificado;
-        this.valor_tasa = valor_tasa;
+        this.valorTasa = valorTasa;
         this.hojas = hojas;
         this.responsable = responsable;
-        this.url_comprobante = url_comprobante;
+        this.urlComprobante = urlComprobante;
         this.completo = completo;
     }
 }

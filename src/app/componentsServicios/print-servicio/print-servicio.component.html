@@ -2,9 +2,9 @@
 <div class="moduleContainer">
   <app-title-bar [titulo]="title"></app-title-bar>
   <div class="childContainer">
-    <section class="container-sm" id="seccionInfoServicio">
+    <section class="container-md" id="seccionInfoServicio">
 
-      <div id="header">
+      <div class="header">
 
         <div class="input-group container">
 
@@ -99,6 +99,14 @@
           </div>
         </div>
 
+      </div>
+      <br>
+      <div class="header">
+        <div *ngFor="let item of servicioRecibido.itemChecklistDto">
+          <mat-checkbox>
+            <span>{{item.nombreItem}}</span>
+          </mat-checkbox>
+        </div>
       </div>
 
     </section>
