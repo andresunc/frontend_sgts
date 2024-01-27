@@ -2,44 +2,101 @@
 <div class="moduleContainer">
   <app-title-bar [titulo]="title"></app-title-bar>
   <div class="childContainer">
-    <section style="">
+    <section class="container-sm" id="seccionInfoServicio">
 
-      <div>
-        <div class="input-group" style="justify-content: space-between;">
-          <div class="input-group" style="max-width: 40%" id="right">
+      <div id="header">
+
+        <div class="input-group container">
+
+          <div class="input-group col-md-4">
             <span class="input-group-text">ID Servicio</span>
             <!-- <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"> -->
-            <label type="number" class="form-control">{{ servicioRecibido.id }}</label>
+            <label type="number" class="form-control"><span>{{ servicioRecibido.id }}</span></label>
           </div>
 
-          <div class="input-group" style="max-width: 40%" id="left">
+          <div class="input-group col-md-4">
             <span class="input-group-text">Recurrencia</span>
-            <label type="number" class="form-control">{{ servicioRecibido.recurrencia}}</label>
+            <label type="number" class="form-control"><span>{{ servicioRecibido.recurrencia}}</span></label>
           </div>
+
+          <div class="input-group col-md-4">
+            <span class="input-group-text">Presupuestado</span>
+            <label type="number" class="form-control">
+              <span>{{"$ "+servicioRecibido.total_presupuestado}}</span></label>
+          </div>
+
         </div>
 
-        <div class="input-group">
-          <span class="input-group-text">Tipo de servicio</span>
-          <label type="number" class="form-control">{{ servicioRecibido.tipo }}</label>
+        <div class="input-group container">
 
-          <span class="input-group-text">Fecha de notificación</span>
-          <label type="number" class="form-control">{{ servicioRecibido.fecha_notificacion }}</label>
+          <div class="input-group col-md-4">
+            <span class="input-group-text">Tipo de servicio</span>
+            <!-- <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"> -->
+            <label type="number" class="form-control"><span>{{ servicioRecibido.tipo }}</span></label>
+          </div>
+
+          <div class="input-group col-md-4">
+
+            <span class="input-group-text">Fecha de notificación</span>
+            <label type="number" class="form-control">
+              <span>{{ servicioRecibido.fecha_notificacion |
+                date:'dd/MM/yyyy'}}</span>
+            </label>
+
+          </div>
+
+          <div class="input-group col-md-4">
+
+            <span class="input-group-text">Hora</span>
+            <label type="number" class="form-control">
+              <span>{{ servicioRecibido.fecha_notificacion | date:'HH:mm'}}</span>
+            </label>
+
+          </div>
+
         </div>
 
-        <div class="input-group">
-          <span class="input-group-text">Cliente</span>
-          <label type="number" class="form-control">{{ servicioRecibido.cliente }}</label>
+        <div class="input-group container">
 
-          <span class="input-group-text">Rubro del cliente</span>
-          <label type="number" class="form-control">{{ servicioRecibido.rubro }}</label>
+          <div class="input-group col-md-4">
+            <span class="input-group-text">Cliente</span>
+            <!-- <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"> -->
+            <label type="number" class="form-control"><span>{{ servicioRecibido.cliente }}</span></label>
+          </div>
+
+          <div class="input-group col-md-4">
+            <span class="input-group-text">Rubro</span>
+            <label type="number" class="form-control"><span>{{ servicioRecibido.rubro}}</span></label>
+          </div>
+
+          <div class="input-group col-md-4">
+            <mat-icon>info</mat-icon>
+          </div>
+
         </div>
 
-        <div class="input-group">
-          <span class="input-group-text">Estado del servicio</span>
-          <label type="number" class="form-control">{{ servicioRecibido.estado }}</label>
+        <div class="input-group container">
 
-          <span class="input-group-text">Avance</span>
-          <label type="number" class="form-control">{{ servicioRecibido.avance +" %" }}</label>
+          <div class="input-group col-md-4">
+            <span class="input-group-text">Estado del servicio</span>
+            <label type="number" class="form-control"><span>{{ servicioRecibido.estado }}</span></label>
+          </div>
+
+          <div class="input-group col-md-4">
+            <span class="input-group-text">Avance</span>
+            <label type="number" class="form-control"><span>{{ servicioRecibido.avance +" %" }}</span></label>
+          </div>
+
+        </div>
+
+        <div class="input-group container">
+          <div class="input-group col-md-11">
+            <span class="input-group-text">Comentario</span>
+            <label type="number" class="form-control"><span>{{servicioRecibido.comentario}}</span></label>
+          </div>
+          <div class="input-group col-md-1" style="justify-content: flex-end;">
+            <mat-icon>settings</mat-icon>
+          </div>
         </div>
 
       </div>
