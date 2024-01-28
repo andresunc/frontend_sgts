@@ -49,12 +49,13 @@ h2 {
 }
 
 /* Estilos para los botones normales */
+
 .btn {
     margin-top: 0.35rem;
     margin-left: 0.75rem;
     width: 70%;
     height: 1.8rem;
-    color: #000000;
+    color: #464545;
     background-color: #4dbeeb;
     box-shadow: 0 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
@@ -64,7 +65,7 @@ h2 {
 
 .btn:hover {
     background-color: #FFE08C;
-    color: #080808;
+    color: #673ab7;
     transform: scale(1.05);
     border-color: #e8a723;
 }

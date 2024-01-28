@@ -21,6 +21,7 @@ mat-icon {
 }
 
 mat-icon:hover {
+    color: #673ab7;
     box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 

@@ -31,15 +31,13 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.loadServicios(this.defaulSelected); // Cargar servicios
-
     // Comparto la función para filtrar servicios. Emitida desde el sidebar
     this.dataShared.getFuncionEmitida().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.applyFilterByCheckbox();
     });
   }
 
-  // Método para cargar los servicios
+  // Método para cargar los servicios con limite de cantidad
   loadServicios(limit: number) {
     this.dataShared.mostrarSpinner();
     this.servicioService.getTopServices(limit)

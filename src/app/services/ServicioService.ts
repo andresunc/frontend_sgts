@@ -21,6 +21,7 @@ export class ServicioService {
     return this.http.get<Servicios[]>(this.url, { params: params } )
       .pipe(
         tap((data) => {
+          console.log('getTopServices: ', data);
           return data;
         }),
         catchError((error) => {

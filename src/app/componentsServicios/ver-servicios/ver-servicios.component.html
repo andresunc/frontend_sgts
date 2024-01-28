@@ -5,18 +5,18 @@
         <div class="tablaContainer">
 
             <!-- Barra de filtrado por input de texto y selector de cantidad a mostrar -->
-            <section class= "gestor-svs">
+            <section class="gestor-svs">
                 <div class="buscador">
                     <mat-form-field class="buscador-field">
                         <mat-label>Buscar...</mat-label>
-                        <input matInput (keyup)="applyFilter($event)" placeholder="Ej. #Nombre del cliente o empresa"
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Ej. Nombre del cliente o empresa"
                             #input>
                     </mat-form-field>
                 </div>
 
                 <div>
-                    <mat-form-field class="listar-field">
-                        <mat-label>Listar</mat-label>
+                    <mat-form-field>
+                        <mat-label>Listar por cantidad</mat-label>
                         <mat-select [(value)]="defaulSelected">
                             <mat-option *ngFor="let opcion of verUltimos" [value]="opcion.value"
                                 (onSelectionChange)="loadServicios(opcion.value)">
