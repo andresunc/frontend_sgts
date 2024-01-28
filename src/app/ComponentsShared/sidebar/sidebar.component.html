@@ -30,7 +30,7 @@
         <h2>Tipo de Servicio</h2>
         <mat-card>
 
-          <div *ngFor=" let tipo of tipoServicios; let i = index">
+          <div class="checkboxContainer" *ngFor=" let tipo of tipoServicios; let i = index">
             <p *ngIf="i < 3"> <!-- Para ver todos, eliminar: *ngIf="i < 3" & let i = index" -->
               <mat-checkbox  (change)="sendTipoServicio(tipo.tipoServicio)"></mat-checkbox>
              {{ tipo.tipoServicio }}
