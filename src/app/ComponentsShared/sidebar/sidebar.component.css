@@ -102,3 +102,10 @@ h2 a:hover>img {
 mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
     justify-items: end;
 }
+
+p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.8rem;
+    color: #464545;
+}

@@ -12,32 +12,37 @@
 
     <section id="serviceFilter">
 
-      <div class="estados">
+      <div>
         <h2>Filtar Estados</h2>
         <mat-card>
-          <section class="checkBox" *ngFor=" let estado of listEstados; let i = index">
-            <p *ngIf="i < 5">
-              <mat-checkbox (change)="sendStatus(estado.tipoEstado)">
-                <span>{{ estado.tipoEstado }}</span></mat-checkbox>
+
+          <div class="checkboxContainer" *ngFor=" let estado of listEstados; let i = index">
+            <p *ngIf="i < 5"> <!-- Para ver todos, eliminar: *ngIf="i < 5" & let i = index" -->
+              <mat-checkbox (change)="sendStatus(estado.tipoEstado)"></mat-checkbox>
+             {{estado.tipoEstado}}
             </p>
-          </section>
+          </div>
+
         </mat-card>
       </div>
 
       <div>
         <h2>Tipo de Servicio</h2>
         <mat-card>
-          <section class="checkBox" *ngFor=" let tipo of tipoServicios; let i = index">
-            <mat-checkbox *ngIf="i < 3" (change)="sendTipoServicio(tipo.tipoServicio)">
-              <span>{{ tipo.tipoServicio }}</span>
-            </mat-checkbox>
-          </section>
+
+          <div *ngFor=" let tipo of tipoServicios; let i = index">
+            <p *ngIf="i < 3"> <!-- Para ver todos, eliminar: *ngIf="i < 3" & let i = index" -->
+              <mat-checkbox  (change)="sendTipoServicio(tipo.tipoServicio)"></mat-checkbox>
+             {{ tipo.tipoServicio }}
+            </p>
+          </div>
+
         </mat-card>
       </div>
 
     </section>
 
-    <section class="seccion">
+    <section id="Reportes">
       <!-- Reportes -->
       <mat-divider></mat-divider>
       <div>
@@ -45,6 +50,10 @@
           <a matTooltip="Panel de informes" routerLink="/reportes">Ver Reportes<img src="assets/img/arrowUp.png"></a>
         </h2>
       </div>
+
+    </section>
+
+    <section id="Administrar">
 
       <!-- admin -->
       <mat-divider></mat-divider>
