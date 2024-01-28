@@ -4,9 +4,9 @@
   <div class="childContainer">
     <section class="container-md" id="seccionInfoServicio">
 
-      <div class="header">
+      <div class="cardContainer">
 
-        <div class="input-group container">
+        <div class="input-group">
 
           <div class="input-group col-md-4">
             <span class="input-group-text">ID Servicio</span>
@@ -14,9 +14,14 @@
             <label type="number" class="form-control"><span>{{ servicioRecibido.id }}</span></label>
           </div>
 
-          <div class="input-group col-md-4">
+          <div class="input-group col-md-2">
             <span class="input-group-text">Recurrencia</span>
             <label type="number" class="form-control"><span>{{ servicioRecibido.recurrencia}}</span></label>
+          </div>
+
+          <div class="input-group col-md-2">
+            <span class="input-group-text">Referencia</span>
+            <label type="number" class="form-control"><span>{{ servicioRecibido.referencia}}</span></label>
           </div>
 
           <div class="input-group col-md-4">
@@ -27,7 +32,7 @@
 
         </div>
 
-        <div class="input-group container">
+        <div class="input-group">
 
           <div class="input-group col-md-4">
             <span class="input-group-text">Tipo de servicio</span>
@@ -56,7 +61,7 @@
 
         </div>
 
-        <div class="input-group container">
+        <div class="input-group">
 
           <div class="input-group col-md-4">
             <span class="input-group-text">Cliente</span>
@@ -75,7 +80,7 @@
 
         </div>
 
-        <div class="input-group container">
+        <div class="input-group">
 
           <div class="input-group col-md-4">
             <span class="input-group-text">Estado del servicio</span>
@@ -89,7 +94,7 @@
 
         </div>
 
-        <div class="input-group container">
+        <div class="input-group">
           <div class="input-group col-md-11">
             <span class="input-group-text">Comentario</span>
             <label type="number" class="form-control"><span>{{servicioRecibido.comentario}}</span></label>
@@ -101,12 +106,15 @@
 
       </div>
       <br>
-      <div class="header">
-        <div *ngFor="let item of servicioRecibido.itemChecklistDto">
-          <mat-checkbox>
+      <div class="cardContainer input-group">
+
+        <div class="checkboxContainer" *ngFor="let item of servicioRecibido.itemChecklistDto">
+          <p> <!-- Para ver todos, eliminar: *ngIf="i < 5" & let i = index" -->
+            <mat-checkbox></mat-checkbox>
             <span>{{item.nombreItem}}</span>
-          </mat-checkbox>
+          </p>
         </div>
+
       </div>
 
     </section>
