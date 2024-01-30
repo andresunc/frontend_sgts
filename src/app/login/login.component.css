@@ -1,39 +1,79 @@
-.login-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(251, 245, 245); /* Color semitransparente */
-  display:flex;
-  align-items: center;
-  justify-content:center;
-  z-index: 999; /* Asegura que esté por encima de todo */
 
+
+.login-container {
+  
+    display:flex;
+    justify-content: space-around; /* Cambié space-between a space-around para un poco más de espacio */
+    align-items:center;
+    height: 100vh; /* Ajusté la altura al 100% del viewport para ocupar toda la altura */
+    background-color: #1abcfc2c;
   }
 
+  
+  .portada {
+    text-align: center;
+    flex: 2; /* Ahora tiene un factor de flex 2, será más ancho que el login */
+    padding: 7% 30px;
+    box-sizing: border-box;
+    border-radius: 5%;
+    margin: 0 5px;
+    height: 80vh;
+    max-width: 70%; /* Nuevo: establece un ancho máximo del 60% */
+    background-color: #9f9f9f3b;
+    }
+
+   .img-portada img {
+    width: 100%; /* Hace que la imagen ocupe el 100% del ancho del contenedor */
+    height: 100%; /* Haz que la imagen ocupe el 100% de la altura */
+    object-fit: cover; /* Ajusta la imagen para que cubra todo el contenedor manteniendo la proporción */
+    border-radius: 3%;
+    border-color: #605f5f48;
+    border-style:solid;
+    border-width: 10px;
+  }
+
+  .login {
+    text-align: center;
+    flex: 1;
+    padding: 5% 20px;
+    box-sizing: border-box;
+    border-radius: 5%;
+    margin: 0 5px;
+    height: 80vh;
+    background-color: #1abcfc61;  
+  }
+
+  .saludo{
+    margin-bottom: 15%;
+    font-size: 30px;
+  }
    
-  label {
-    display: block;
+ label {
+    display:flex;
     margin-bottom: 10px;
+  
   }
   
   input {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     margin-bottom: 15px;
     box-sizing: border-box;
+    border-radius: 10px;
+    border-color: #9f9f9f5e;
   }
   
   button {
-    background-color: #4caf50;
+    margin-top: 10%;
+    background-color: #11b7f8;
     color: white;
     padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    border-color:white;
     cursor: pointer;
   }
   
   button:hover {
-    background-color: #45a049;
+    
+    background-color: #493dc7;
   }

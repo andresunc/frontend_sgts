@@ -1,6 +1,12 @@
 <div class="login-container">
-    <div class="acd">
-        <h2>Login</h2>
+    <div class="portada">
+        <div class="img-portada">
+        <img src="\assets\img\portada.png" alt="imagen de portada">  
+        </div> 
+    </div>
+
+    <div class="login">
+        <h2 class="saludo">BIENVENIDO</h2>
         <form>
             <div class="form-group">
                 <label for="username">Usuario:</label>
@@ -17,23 +23,5 @@
             <button type="submit" (click)="login()">Login</button>
         </form>
     </div>
-
-    <div class="acd">
-        <h2>Login</h2>
-        <form>
-            <div class="form-group">
-                <label for="username">Usuario:</label>
-                <input type="text" id="username" [(ngModel)]="username" name="username" required
-                    autocomplete="username">
-            </div>
-
-            <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" [(ngModel)]="password" name="password" required
-                    autocomplete="current-password">
-            </div>
-
-            <button type="submit" (click)="login()">Login</button>
-        </form>
-    </div>
+   
 </div>
