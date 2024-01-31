@@ -30,6 +30,7 @@ mat-icon:hover {
 }
 
 .titulo {
+    font-size: 1.25rem;
     margin-left: 1rem;
     color: #464545;
 }

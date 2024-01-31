@@ -1,21 +1,16 @@
 .moduleContainer {
-  position: relative;
   height: 100%;
   width: 100%;
   border-radius: 0.5rem;
-  overflow: hidden;
 }
 
 .childContainer {
-  position: absolute;
   margin-top: 0.45rem;
   width: 99%;
-  height: 99%;
   /* Resta el alto de la barra de título */
   justify-content: center;
   align-items: center;
-  /*display: flex; /* Add this line to make it a flex container */
-  overflow: auto;
+  display: flex; /* Add this line to make it a flex container */
 }
 
 #seccionInfoServicio {  
@@ -69,49 +64,4 @@
 .matIcon:hover {
   color: #673ab7;
   box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
-}
-
-/******************/
-
-h6 {
-  font-size: 0.9rem;
-  font-weight: 500;
-  background-color: #e9ecef;
-  margin: 0;
-  padding: 0.5rem;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-}
-
-button {
-  background-color: #e9ecef;
-  margin: 0;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
-}
-
-button:hover {
-  color: #673ab7;
-  box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
-}
-
-.datoServicio {
-  font-size: 0.8rem;
-  color: #464545;
-  margin: 0;
-  padding: 0.5rem;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-ul li {
-  margin-bottom: 8px; /* Ajusta el margen según sea necesario */
 }

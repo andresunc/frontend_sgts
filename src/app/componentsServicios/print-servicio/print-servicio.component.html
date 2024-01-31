@@ -2,90 +2,68 @@
 <div class="moduleContainer">
   <app-title-bar [titulo]="title"></app-title-bar>
   <div class="childContainer">
-    <section class="container-md" id="seccionInfoServicio">
+    <section class="" id="seccionInfoServicio">
 
       <div class="cardContainer">
 
         <div class="input-group">
 
-          <div class="input-group col-md-4">
-            <span class="input-group-text">ID Servicio</span>
-            <!-- <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"> -->
-            <label type="number" class="form-control"><span>{{ servicioRecibido.id }}</span></label>
+          <div class="col-md-4">
+            <h6>Datos del Servicio</h6>
+
+            <div class="datoServicio">
+              <ul>
+                <li>
+                  <strong>Identificador:</strong> {{ servicioRecibido.id }}
+                </li>
+                <li *ngIf="servicioRecibido.recurrencia > 0">
+                  <strong>Recurrencia: </strong> {{ servicioRecibido.recurrencia }} <strong>/ </strong>
+                  <strong>Referencia: </strong> {{ servicioRecibido.referencia }}
+                </li>
+                <li><strong>Tipo: </strong>{{ servicioRecibido.tipo }}</li>
+                <li><strong>Estado: </strong>{{ servicioRecibido.estado }}</li>
+                <li><strong>Fecha de notificación: </strong>{{ servicioRecibido.fecha_notificacion | date:'dd/MM/yyyy'}}
+                </li>
+                <li><strong>Hora de notificación: </strong>{{ servicioRecibido.fecha_notificacion | date:'HH:mm'}}</li>
+              </ul>
+
+            </div>
+
+            Avance
+            <div class="progress" role="progressbar" aria-label="Warning example"
+            aria-valuenow="{servicioRecibido.avance}" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar text-bg-warning" style="width: {{ servicioRecibido.avance }}%">{{
+              servicioRecibido.avance }}</div>
           </div>
-
-          <div class="input-group col-md-2">
-            <span class="input-group-text">Recurrencia</span>
-            <label type="number" class="form-control"><span>{{ servicioRecibido.recurrencia}}</span></label>
-          </div>
-
-          <div class="input-group col-md-2">
-            <span class="input-group-text">Referencia</span>
-            <label type="number" class="form-control"><span>{{ servicioRecibido.referencia}}</span></label>
-          </div>
-
-          <div class="input-group col-md-4">
-            <span class="input-group-text">Presupuestado</span>
-            <label type="number" class="form-control">
-              <span>{{"$ "+servicioRecibido.total_presupuestado}}</span></label>
-          </div>
-
-        </div>
-
-        <div class="input-group">
-
-          <div class="input-group col-md-4">
-            <span class="input-group-text">Tipo de servicio</span>
-            <!-- <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"> -->
-            <label type="number" class="form-control"><span>{{ servicioRecibido.tipo }}</span></label>
-          </div>
-
-          <div class="input-group col-md-4">
-
-            <span class="input-group-text">Fecha de notificación</span>
-            <label type="number" class="form-control">
-              <span>{{ servicioRecibido.fecha_notificacion |
-                date:'dd/MM/yyyy'}}</span>
-            </label>
 
           </div>
 
-          <div class="input-group col-md-4">
 
-            <span class="input-group-text">Hora</span>
-            <label type="number" class="form-control">
-              <span>{{ servicioRecibido.fecha_notificacion | date:'HH:mm'}}</span>
-            </label>
+          <div class="col-md-4">
+            <div>
+              <h6>Datos del cliente</h6>
+            </div>
 
-          </div>
+            <div class="datoServicio">
+              <ul>
+                <li><strong>Cliente: </strong>
+                  {{ servicioRecibido.cliente }}</li>
+                <li><strong>Rubro: </strong>
+                  {{ servicioRecibido.rubro}}</li>
+                <li><strong>Se le ha presupuestado: </strong>{{"$ "+servicioRecibido.total_presupuestado}}</li>
+                <button>contacto</button>
+              </ul>
 
-        </div>
 
-        <div class="input-group">
+            </div>
 
-          <div class="input-group col-md-4">
-            <span class="input-group-text">Cliente</span>
-            <!-- <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm"> -->
-            <label type="number" class="form-control"><span>{{ servicioRecibido.cliente }}</span></label>
-          </div>
-
-          <div class="input-group col-md-4">
-            <span class="input-group-text">Rubro</span>
-            <label type="number" class="form-control"><span>{{ servicioRecibido.rubro}}</span></label>
-          </div>
-
-          <div class="input-group col-md-4">
-            <mat-icon>info</mat-icon>
           </div>
 
         </div>
 
         <div class="input-group">
 
-          <div class="input-group col-md-4">
-            <span class="input-group-text">Estado del servicio</span>
-            <label type="number" class="form-control"><span>{{ servicioRecibido.estado }}</span></label>
-          </div>
+
 
           <div class="input-group col-md-4">
             <span class="input-group-text">Avance</span>
@@ -99,20 +77,30 @@
             <span class="input-group-text">Comentario</span>
             <label type="number" class="form-control"><span>{{servicioRecibido.comentario}}</span></label>
           </div>
-          <div class="input-group col-md-1" style="justify-content: flex-end;">
-            <mat-icon>settings</mat-icon>
+          <div class="input-group col-md-1" style="justify-content: center;">
+            <span class="input-group-text matIcon"><mat-icon>settings_applications </mat-icon></span>
           </div>
         </div>
 
       </div>
-      <br>
+
+      <!-- Checklist -->
+
       <div class="cardContainer input-group">
 
-        <div class="checkboxContainer" *ngFor="let item of servicioRecibido.itemChecklistDto">
-          <p> <!-- Para ver todos, eliminar: *ngIf="i < 5" & let i = index" -->
-            <mat-checkbox></mat-checkbox>
-            <span>{{item.nombreItem}}</span>
-          </p>
+        <div class="d-flex flex-column mb-3">
+
+          <div class="p-2">
+
+            <div class="checkboxContainer" *ngFor="let item of servicioRecibido.itemChecklistDto">
+              <p> <!-- Para ver todos, eliminar: *ngIf="i < 5" & let i = index" -->
+                <mat-checkbox></mat-checkbox>
+                <span>{{item.nombreItem}}</span>
+              </p>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
