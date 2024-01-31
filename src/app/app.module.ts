@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 
 // Módulos compartidos
@@ -39,6 +39,7 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
     TitleBarModule, // Uso el módulo de titlebar compartido.
     HttpClientModule, // Uso Módulo para peticiones HTTP
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
