@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router'; //servicio que permite la navegación entre vistas o componentes en una aplicación Angular.
 import { Estados } from 'src/app/models/Estados';
 import { TipoServicio } from 'src/app/models/TipoServicio';
 import { DataSharedService } from 'src/app/services/data-shared.service';
@@ -13,11 +14,19 @@ export class SidebarComponent implements OnInit {
 
   listEstados: Estados[] = [];
   tipoServicios: TipoServicio[] = [];
+  shouldShowSidebar: boolean = true;
 
-  constructor(private preference: PreferenciasService,
-    private dataShared: DataSharedService) { }
+
+  constructor(
+    private router: Router,
+    private preference: PreferenciasService,
+    private dataShared: DataSharedService
+    ) { }
 
   ngOnInit(): void {
+    // Verifica la ruta actual y decide si mostrar la barra lateral
+    this.shouldShowSidebar = this.router.url !== '/login';
+    
     // Cargo los "Estados No Eliminados" de los servicios
     this.preference.getStatusNotDeleted().subscribe((data) => {
       this.listEstados = data;

@@ -1,14 +1,18 @@
 <!-- 
 ** app-component es el componente madre que va a contener a los demás componentes para renderizarse.
 -->
+
+<!-- Login componente-->
+<app-login *ngIf="!islogged"></app-login>
+
 <!-- Sidebar componente-->
-<app-sidebar></app-sidebar>
+<app-sidebar *ngIf="islogged"></app-sidebar>
 
 <!-- Contenedor de componentes que serán rutas dinámicas-->
-<div class="rutasContainer">
-    
-    <div  class="rutaSubContainer">
-        <router-outlet ></router-outlet>
+<div *ngIf="islogged" class="rutasContainer">
+
+    <div class="rutaSubContainer">
+        <router-outlet></router-outlet>
     </div>
 
 </div>

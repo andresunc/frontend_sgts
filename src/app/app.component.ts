@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
+  islogged = false;
 
   constructor() { }
   

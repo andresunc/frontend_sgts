@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
 
 // Módulos compartidos
 import { MaterialModule } from './componentsShared/material/material.module';
@@ -19,7 +21,6 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
 
 
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +29,8 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
     NewServicioComponent,
     PrintServicioComponent,
     SpinnerComponent,
-  ],
+    LoginComponent,
+      ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -36,6 +38,7 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
     MaterialModule, // Uso el módulo de material compartido.
     TitleBarModule, // Uso el módulo de titlebar compartido.
     HttpClientModule, // Uso Módulo para peticiones HTTP
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
