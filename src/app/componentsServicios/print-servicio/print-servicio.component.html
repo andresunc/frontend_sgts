@@ -1,17 +1,21 @@
 <!-- Contenedor de la sección ver servicios -->
 <div class="moduleContainer">
+
   <app-title-bar [titulo]="title"></app-title-bar>
+
   <div class="childContainer">
+
     <section class="" id="seccionInfoServicio">
 
-      <div class="cardContainer">
+      <div class="cardContainer" style="display: flex;">
 
-        <div class="input-group">
+        <section class="container" style="display: flex;">
 
-          <div class="col-md-4">
+          <div class="container">
+
             <h6>Datos del Servicio</h6>
 
-            <div class="datoServicio">
+            <div class="dataConteiner">
               <ul>
                 <li>
                   <strong>Identificador:</strong> {{ servicioRecibido.id }}
@@ -29,22 +33,16 @@
 
             </div>
 
-            Avance
-            <div class="progress" role="progressbar" aria-label="Warning example"
-            aria-valuenow="{servicioRecibido.avance}" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar text-bg-warning" style="width: {{ servicioRecibido.avance }}%">{{
-              servicioRecibido.avance }}</div>
           </div>
 
-          </div>
+          
 
 
-          <div class="col-md-4">
-            <div>
-              <h6>Datos del cliente</h6>
-            </div>
+          <section class="container" id="sec-b">
 
-            <div class="datoServicio">
+            <h6>Datos del cliente</h6>
+            
+            <div class="dataConteiner">
               <ul>
                 <li><strong>Cliente: </strong>
                   {{ servicioRecibido.cliente }}</li>
@@ -53,44 +51,21 @@
                 <li><strong>Se le ha presupuestado: </strong>{{"$ "+servicioRecibido.total_presupuestado}}</li>
                 <button>contacto</button>
               </ul>
-
-
             </div>
 
-          </div>
+            <div class="container">
+              <strong>Comentario: </strong> {{servicioRecibido.Comentario}}
+            </div>
 
-        </div>
+          </section>
 
-        <div class="input-group">
+        </section>
 
+        <div class="container">
 
+          <section>
 
-          <div class="input-group col-md-4">
-            <span class="input-group-text">Avance</span>
-            <label type="number" class="form-control"><span>{{ servicioRecibido.avance +" %" }}</span></label>
-          </div>
-
-        </div>
-
-        <div class="input-group">
-          <div class="input-group col-md-11">
-            <span class="input-group-text">Comentario</span>
-            <label type="number" class="form-control"><span>{{servicioRecibido.comentario}}</span></label>
-          </div>
-          <div class="input-group col-md-1" style="justify-content: center;">
-            <span class="input-group-text matIcon"><mat-icon>settings_applications </mat-icon></span>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- Checklist -->
-
-      <div class="cardContainer input-group">
-
-        <div class="d-flex flex-column mb-3">
-
-          <div class="p-2">
+            <h6>Check List</h6>
 
             <div class="checkboxContainer" *ngFor="let item of servicioRecibido.itemChecklistDto">
               <p> <!-- Para ver todos, eliminar: *ngIf="i < 5" & let i = index" -->
@@ -99,12 +74,14 @@
               </p>
             </div>
 
-          </div>
+          </section>
 
         </div>
 
       </div>
 
     </section>
+
   </div>
+
 </div>
