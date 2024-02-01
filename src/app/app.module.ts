@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 
-
 // Módulos compartidos
 import { MaterialModule } from './componentsShared/material/material.module';
 import { TitleBarModule } from './componentsShared/title-bar/title-bar.module';
