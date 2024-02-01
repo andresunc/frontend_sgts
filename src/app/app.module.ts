@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 // Módulos compartidos
 import { MaterialModule } from './componentsShared/material/material.module';
@@ -30,6 +31,7 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
     PrintServicioComponent,
     SpinnerComponent,
     LoginComponent,
+    
       ],
   imports: [
     BrowserModule,
@@ -39,6 +41,7 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
     TitleBarModule, // Uso el módulo de titlebar compartido.
     HttpClientModule, // Uso Módulo para peticiones HTTP
     FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
