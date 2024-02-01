@@ -7,20 +7,23 @@
 
     <div class="login">
         <h2 class="saludo">BIENVENIDO</h2>
-        <form class="form">
-            <div class="form-group">
-                <label for="username">Usuario:</label>
-                <input type="text" id="username" [(ngModel)]="username" name="username" required
-                    autocomplete="username">
-            </div>
+        <form (ngSubmit)="login()" class="form">
+            <mat-form-field class="form-group">
+                <mat-label>Usuario / Email</mat-label>
+                <input matInput placeholder="pat@example.com" [formControl]="email" required>
+                <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+              </mat-form-field>
+        
+              <mat-form-field>
+                <mat-label>Enter your password</mat-label>
+                <input matInput [type]="hide ? 'password' : 'text'">
+                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </mat-form-field>
 
-            <div class="form-group">
-                <label for="password">Contraseña:</label>
-                <input type="password" id="password" [(ngModel)]="password" name="password" required
-                    autocomplete="current-password">
-            </div>
-
-            <button type="submit" (click)="login()">Login</button>
+            
+            <button class="login-but" type="submit" (click)="login()">Login</button>
         </form>
     </div>
    
