@@ -3,8 +3,9 @@
 .login-container {
   
     display:flex;
+    flex-wrap: wrap;
     justify-content: space-around; /* Cambié space-between a space-around para un poco más de espacio */
-    /*align-items:center;*/
+    align-items:center;
     align-items: center; /* Estira ambos elementos para que tengan la misma altura */
     height: 100vh; /* Ajusté la altura al 100% del viewport para ocupar toda la altura */
     background-color: #1abcfc2c;
@@ -14,39 +15,47 @@
 
   
   .portada {
-    
+    display:flex;
     text-align: center;
+    align-content: center;
     justify-content: center;
     flex: 2; /* Ahora tiene un factor de flex 2, será más ancho que el login */
-    padding: 7% 5vw; /* Ajusta el padding en función del ancho de la pantalla */
+    padding: 3%; /* Ajusta el padding en función del ancho de la pantalla */
     box-sizing: border-box;
     border-radius: 3%;
     margin: 0 5px;
-    height: 80vh;
-    max-width: 70%; /* Nuevo: establece un ancho máximo del 70% */
+    height: 95vh;
+    max-width: 80%; /* Nuevo: establece un ancho máximo del 70% */
     background-color: #9f9f9f47;
     }
 
-  .img-portada img {
+  .img-portada{
+    top: 0;
+    left: 0;
+    object-fit:fill;
+  }
 
+  .img-portada img {
     width: 100%; /* Hace que la imagen ocupe el 100% del ancho del contenedor */
-    height: 100%; /* Haz que la imagen ocupe el 100% de la altura */
+    height: 100%; /* Haz que la imagen ocupe el 100% de la altura*/
     object-fit:cover; /* Ajusta la imagen para que cubra todo el contenedor manteniendo la proporción */
     border-radius: 3%;
     border: 10px solid #605f5f21;
        
   }
 
+
   .login {
-    
+    position: relative;
     text-align: center;
+    flex-wrap: wrap;
     flex: 1;
-    padding: 5% 5vw;/* Ajusta el padding en función del ancho de la pantalla */
+    padding:3%;/* Ajusta el padding en función del ancho de la pantalla */
     box-sizing: border-box;
     border-radius: 3%;
     border: 5px solid #888e901d;
     margin: 0 5px;
-    height: 80vh;
+    height: 95vh;
     background-color: #1abcfc4a; 
    
    
@@ -54,7 +63,7 @@
 
   .saludo{
     margin-bottom: 15%;
-    font-size: 30px;
+    font-size: 1.5rem;
   }
    
  label {
@@ -65,20 +74,19 @@
   
   input {
     width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
+    padding: 0.6rem;
     box-sizing: border-box;
-    border-radius: 10px;
-    border: 2px solid #9f9f9f5e;
+    border-radius: 0.5rem;
+    border: 0.1rem solid #9f9f9f5e;
   }
   
   button {
-    margin-top: 20%;
+    margin-top: 0.3rem;
     background-color: #11b7f8;
     color: white;
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: 2px solid white;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.8rem;
+    border: 0.1rem solid white;
     cursor: pointer;
   }
   
@@ -87,3 +95,5 @@
     background-color: #FFE08C;
     color: black;
   }
+
+  
