@@ -10,12 +10,12 @@
         <form (ngSubmit)="login()" class="form">
             <mat-form-field class="form-group">
                 <mat-label>Usuario / Email</mat-label>
-                <input matInput placeholder="pat@example.com" [formControl]="email" required>
-                <mat-error *ngIf="email.invalid">{{ getErrorMessage() }}</mat-error>
+                <input matInput placeholder="mi.email@ejemplo.com" [formControl]="email" required>
+                <mat-error *ngIf="email invalido">{{ getErrorMessage() }}</mat-error>
               </mat-form-field>
         
               <mat-form-field>
-                <mat-label>Enter your password</mat-label>
+                <mat-label>Contraseña</mat-label>
                 <input matInput [type]="hide ? 'password' : 'text'">
                 <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
                   <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
