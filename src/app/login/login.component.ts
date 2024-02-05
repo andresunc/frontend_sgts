@@ -23,10 +23,10 @@ export class LoginComponent {
 
   getErrorMessage() {
     if (this.email.hasError('required')) {
-      return 'You must enter a value';
+      return 'Debes completar el campo';
     }
 
-    return this.email.hasError('email') ? 'Not a valid email' : '';
+    return this.email.hasError('email') ? 'No es un usuario valido' : '';
   }
   hide = true;
 }
