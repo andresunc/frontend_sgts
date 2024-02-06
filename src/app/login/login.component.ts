@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-
+import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,14 +12,34 @@ import { FormControl, Validators } from '@angular/forms';
 export class LoginComponent {
   username: string = '';
   password: string = '';
-  
   email = new FormControl('', [Validators.required, Validators.email]);
+  hide = true;
 
+  errorMessage: string = '';
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    // Aquí puedes implementar la lógica de autenticación
-    console.log('Username:', this.username);
-    console.log('Password:', this.password);
+    // Llama al método login de AuthService
+    this.authService.login(this.username, this.password).subscribe(
+      (loginSuccessful: boolean) => {
+        if (loginSuccessful) {
+          console.log('Inicio de sesión exitoso');
+          this.router.navigate(['./componentsServicios/ver-servicios/ver-servicios.component']);  // Redirige a la página de inicio
+        } else {
+          this.handleLoginError('Credenciales incorrectas. Por favor, intenta de nuevo.');
+          console.log('Inicio de sesión fallido');
+        }
+      },
+      (error) => {
+        console.error('Error en el inicio de sesión:', error);
+        this.handleLoginError('Hubo un error durante el inicio de sesión. Por favor, intenta de nuevo más tarde.');
+      }
+    );
+  }
+
+  private handleLoginError(message: string) {
+    this.errorMessage = message;
   }
 
   getErrorMessage() {
@@ -28,6 +49,6 @@ export class LoginComponent {
 
     return this.email.hasError('email') ? 'No es un usuario valido' : '';
   }
-  hide = true;
+  
 }
 
