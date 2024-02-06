@@ -6,6 +6,7 @@ import { NewServicioComponent } from './componentsServicios/new-servicio/new-ser
 import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
 
 const routes: Routes = [
+  { path: 'login', component: LoginComponent }, // Nueva ruta para LoginComponent
   { path: 'home', component: VerServiciosComponent },
   { path: 'nuevo', component: NewServicioComponent },
   { path: 'home/servicio', component: PrintServicioComponent },
@@ -13,10 +14,10 @@ const routes: Routes = [
   // Hago uso del "lazy loading" para cargar los siguientes módulos por demánda.
   { path: 'reportes', loadChildren: () => import ('./componentsReportes/reportescfg/reportes.module').then(x => x.ReportesModule) },
   //{ path: 'administrador', loadChildren: () => import ('./componentsAdministrador/administradorcfg/administrador.module').then(x => x.AdministradorModule) },
-  { path: 'administrador', loadChildren: () => import('./componentsAdministrador/administradorcfg/administrador.module').then(x => x.AdministradorModule) },
+  { path: 'administrador/home', loadChildren: () => import('./componentsAdministrador/administradorcfg/administrador.module').then(x => x.AdministradorModule) },
   // uso ** evitar error 400 (Éste objeto redirect siempre va al último)W
-  { path: '', redirectTo: 'home', pathMatch: 'full'}, // Redirige a la pantalla de inicio de sesión por defecto
-  { path: '**', redirectTo: 'home', pathMatch: 'full'}, // Redirige a la pantalla de inicio de sesión para cualquier ruta desconocida
+  { path: '', redirectTo: 'login', pathMatch: 'full'}, // Redirige a la pantalla de inicio de sesión por defecto
+  { path: '**', redirectTo: 'login', pathMatch: 'full'}, // Redirige a la pantalla de inicio de sesión para cualquier ruta desconocida
   //{ path: '', redirectTo: 'home', pathMatch: 'full'},
   //{ path: '**', redirectTo: 'home', pathMatch: 'full'},
   
