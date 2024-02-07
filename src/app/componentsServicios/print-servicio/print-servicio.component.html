@@ -12,31 +12,71 @@
         <div class="container">
 
           <div class="row">
-            <div class="col-md-12 mb-3 p-0">
+
+            <div class="col-md-10 mb-3 p-0">
               <div class="card">
                 <div class="card-body paddingBody">
-                  <h6 style="margin: 0 auto;">
-                    Datos del servicio: 
-                    ID: {{ servicioRecibido.id }}
-                    <ng-container *ngIf="servicioRecibido.recurrencia > 0">
-                      Renovaciones: {{ servicioRecibido.recurrencia }}
-                      ID Referente: {{ servicioRecibido.referencia }}
-                    </ng-container>
+                  <h6 class="card-title">
+                    <span class="mr-3">{{ recurrencia > 0 ? 'Cantidad de renovaciones: ' + recurrencia :'Este servicio no presenta renovaciones'}}</span>
+                    <span class="mr-3" *ngIf="recurrencia > 0">ID Referente: {{ servicioRecibido.referencia }}</span>
                   </h6>
-                </div>                
+                </div>
               </div>
+            </div>
+
+            <div class="col-md-2 mb-3 p-0">
+              <div class="card">
+                <div class="card-body paddingBody">
+                  <h6 class="card-title textCenter">
+                    <span>ID: {{ servicioRecibido.id }}</span>
+                  </h6>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <div class="col-md-12 mb-3 p-0">
+
+              <div class="card">
+                <div class="card-body paddingBody">
+                  <h6 class="card-title">
+                    <span class="mr-3">Cliente: {{ servicioRecibido.cliente }}</span>
+                    <span class="mr-3">Rubro: {{ servicioRecibido.rubro }}</span>
+                    <span class="mr-3 link">Datos de contacto</span>
+                  </h6>
+                </div>
+              </div>
+
             </div>
           </div>
 
           <div class="row">
+            <div class="col-md-12 mb-3 p-0">
 
+              <div class="card">
+                <div class="card-body paddingBody">
+                  <h6 class="card-title">Avance</h6>
+                  <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%">%75</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row">
             <div class="col-md-3 mb-3 p-0">
+
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Tipo de servicio</h6>
                   <p class="card-text">{{ servicioRecibido.tipo }}</p>
                 </div>
               </div>
+
             </div>
 
             <div class="col-md-3 mb-3 p-0">
@@ -63,7 +103,7 @@
 
             <div class="col-md-3 mb-3 p-0">
               <div class="card">
-                <div class="card-body paddingBody">
+                <div class="card-body paddingBody textCenter">
                   <h6 class="card-title">Se ha presupuestado</h6>
                   <p class="card-text">{{"$ "+servicioRecibido.total_presupuestado}}</p>
                 </div>
@@ -72,49 +112,34 @@
 
           </div>
 
-          <div class="row">
+          <div class="row" style="display: flex; justify-content: space-between;">
 
-            <div class="col-md-9 mb-3 p-0">
+            <div class="col-md-7 mb-3 p-0">
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Comentario</h6>
-                  <p class="card-text">{{servicioRecibido.comentario}}</p>
+                  <p style="font-style: oblique;" class="card-text">{{servicioRecibido.comentario}}</p>
                 </div>
               </div>
             </div>
 
-            <div class="col-md-3 mb-3 p-0">
-
+            <div class="col-md-4 mb-3 p-0">
+            
               <div class="card">
                 <div class="card-body paddingBody">
-                  <h6 class="card-title">
-                    Cliente: {{ servicioRecibido.cliente }}
-                    <span style="color: #673ab7;">Rubro: {{ servicioRecibido.rubro }}</span>
-                  </h6>
-                  <a href="#">Datos de contacto</a>
+                  <h6>Check List</h6>
+                  <div id="checkBox" class="list-group" *ngFor="let item of servicioRecibido.itemChecklistDto">
+                    
+                    <p class="list-group-item list-group-item-action checkboxContainer">
+                      <mat-checkbox></mat-checkbox> {{item.nombreItem}}
+                    </p>
+                  </div>
                 </div>
               </div>
 
             </div>
 
           </div>
-
-        </div>
-
-        <div class="container">
-
-          <section>
-
-            <h6>Check List</h6>
-
-            <div class="checkboxContainer" *ngFor="let item of servicioRecibido.itemChecklistDto">
-              <p> <!-- Para ver todos, eliminar: *ngIf="i < 5" & let i = index" -->
-                <mat-checkbox></mat-checkbox>
-                <span>{{item.nombreItem}}</span>
-              </p>
-            </div>
-
-          </section>
 
         </div>
 
