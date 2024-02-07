@@ -25,7 +25,7 @@ export class LoginComponent {
       (loginSuccessful: boolean) => {
         if (loginSuccessful) {
           console.log('Inicio de sesión exitoso');
-          this.router.navigate(['./componentsServicios/ver-servicios/ver-servicios.component']);  // Redirige a la página de inicio
+          this.router.navigate(['/home']);  // Redirige a la página de inicio
         } else {
           this.handleLoginError('Credenciales incorrectas. Por favor, intenta de nuevo.');
           console.log('Inicio de sesión fallido');
