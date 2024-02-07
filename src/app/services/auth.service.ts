@@ -12,7 +12,7 @@ export class AuthService {
 
   login(username: string, password: string): Observable<boolean> {
     // Simular lógica de inicio de sesión
-    if (username === 'usuario' && password === 'contraseña') {
+    if (username === 'jniferalvarez@gmail.com' && password === 'Contraseña1234') {
       this.isLoggedIn = true;
       return of(true); // Simula un inicio de sesión exitoso
     } else {

@@ -20,6 +20,8 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   login() {
+    console.log(this.username);
+    console.log(this.password);
     // Llama al método login de AuthService
     this.authService.login(this.username, this.password).subscribe(
       (loginSuccessful: boolean) => {
