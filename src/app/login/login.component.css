@@ -17,11 +17,11 @@
     text-align: center;
     align-content: center;
     justify-content: center;
-    flex: 1; /* Ahora tiene un factor de flex 2, será más ancho que el login */
+    flex: 1;
     padding: 3%; /* Ajusta el padding en función del ancho de la pantalla */
     box-sizing: border-box;
     border-radius: 3%;
-    margin: 0 5px;
+    margin: 0 0.31rem;
     height: 95vh;
     max-width: 80%; /* Nuevo: establece un ancho máximo del 70% */
     background-color: #9f9f9f47;
@@ -38,7 +38,7 @@
     height: 100%; /* Haz que la imagen ocupe el 100% de la altura*/
     object-fit:cover; /* Ajusta la imagen para que cubra todo el contenedor manteniendo la proporción */
     border-radius: 3%;
-    border: 10px solid #605f5f21;
+    border: 0.625rem solid #605f5f21;
        
   }
 
@@ -50,8 +50,9 @@
     justify-content: center;
     align-items: center;
     padding:3vw;/* Ajusta el padding en función del ancho de la pantalla */
+    margin-right: 0.31rem;
     border-radius: 3%;
-    border: 5px solid #888e901d;
+    border: 0.32rem solid #888e901d;
     height: 95vh;
     background-color: #1abcfc4a;
     transition: padding 0.5s;
@@ -61,7 +62,7 @@
  
   .form-group,.login-but {
       
-    margin-bottom: 10px; /* Añade espacio entre los elementos */
+    margin-bottom: 0.625rem; /* Añade espacio entre los elementos */
           
     }
 
@@ -90,9 +91,14 @@
 
   
   .mat-icon{
-    height:22px;
-    width: 22px;
- 
+    height:1.37rem;
+    width: 1.37rem;
+    
+  }
+
+  .ng-tns-c17-1{
+   margin-right: 0.1rem;
+      
   }
  
     
