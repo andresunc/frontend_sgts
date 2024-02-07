@@ -58,7 +58,8 @@
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Avance</h6>
-                  <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                  <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75"
+                    aria-valuemin="0" aria-valuemax="100">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%">%75</div>
                   </div>
                 </div>
@@ -70,7 +71,7 @@
           <div class="row">
             <div class="col-md-3 mb-3 p-0">
 
-              <div class="card">
+              <div class="card selectStyle">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Tipo de servicio</h6>
                   <p class="card-text">{{ servicioRecibido.tipo }}</p>
@@ -80,7 +81,7 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card">
+              <div class="card selectStyle">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Estado</h6>
                   <p class="card-text" style="color: #673ab7;">{{ servicioRecibido.estado }}</p>
@@ -89,7 +90,7 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card">
+              <div class="card selectStyle">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Recordatorio</h6>
                   <span style="display: flex;">
@@ -102,7 +103,7 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card">
+              <div class="card selectStyle">
                 <div class="card-body paddingBody textCenter">
                   <h6 class="card-title">Se ha presupuestado</h6>
                   <p class="card-text">{{"$ "+servicioRecibido.total_presupuestado}}</p>
@@ -124,13 +125,12 @@
             </div>
 
             <div class="col-md-4 mb-3 p-0">
-            
+
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6>Check List</h6>
                   <div id="checkBox" class="list-group" *ngFor="let item of servicioRecibido.itemChecklistDto">
-                    
-                    <p class="list-group-item list-group-item-action checkboxContainer">
+                    <p class="list-group-item list-group-item-action checkboxContainer selectStyle">
                       <mat-checkbox></mat-checkbox> {{item.nombreItem}}
                     </p>
                   </div>
