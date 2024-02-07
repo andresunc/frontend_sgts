@@ -11,6 +11,7 @@ export class PrintServicioComponent {
 
   servicioRecibido: any;
   title: string = 'Información del servicio: ';
+  recurrencia: number = 0;
 
   constructor(private dataShared: DataSharedService, svManager: ManagerService) {
     this.servicioRecibido = this.dataShared.getSharedObject();

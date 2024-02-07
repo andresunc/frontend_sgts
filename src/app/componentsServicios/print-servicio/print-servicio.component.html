@@ -9,55 +9,103 @@
 
       <div class="cardContainer">
 
-        <section class="container">
+        <div class="container">
 
-          <div class="container">
+          <div class="row">
+            <div class="col-md-12 mb-3 p-0">
+              <div class="card">
+                <div class="card-body" style="padding-bottom: 0.4rem; padding-top: 0.4rem; background-color: red;">
+                  <h6 style="margin: 0 auto;">
+                    Datos del servicio: 
+                    ID: {{ servicioRecibido.id }}
+                    <ng-container *ngIf="servicioRecibido.recurrencia > 0">
+                      Renovaciones: {{ servicioRecibido.recurrencia }}
+                      ID Referente: {{ servicioRecibido.referencia }}
+                    </ng-container>
+                  </h6>
+                </div>                
+              </div>
+            </div>
+          </div>
 
-            <h6>Datos del Servicio</h6>
+          <div class="row">
 
-            <div>
-              <ul>
-                <li>
-                  <strong>Identificador:</strong> {{ servicioRecibido.id }}
-                </li>
-                <li *ngIf="servicioRecibido.recurrencia > 0">
-                  <strong>Recurrencia: </strong> {{ servicioRecibido.recurrencia }} <strong>/ </strong>
-                  <strong>Referencia: </strong> {{ servicioRecibido.referencia }}
-                </li>
-                <li><strong>Tipo: </strong>{{ servicioRecibido.tipo }}</li>
-                <li><strong>Estado: </strong>{{ servicioRecibido.estado }}</li>
-                <li><strong>Fecha de notificación: </strong>{{ servicioRecibido.fecha_notificacion | date:'dd/MM/yyyy'}}
-                </li>
-                <li><strong>Hora de notificación: </strong>{{ servicioRecibido.fecha_notificacion | date:'HH:mm'}}</li>
-              </ul>
+            <div class="col-md-3 mb-3 p-0">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Tipo de servicio</h6>
+                  <p class="card-text">{{ servicioRecibido.tipo }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3 p-0">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Estado</h6>
+                  <p class="card-text" style="color: #673ab7;">{{ servicioRecibido.estado }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3 p-0">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Recordatorio</h6>
+                  <span style="display: flex;">
+                    <p class="card-text">{{ servicioRecibido.fecha_notificacion | date:'dd/MM/yyyy'}}</p>
+                    <p class="card-text" style="margin-left: .5rem;">{{ servicioRecibido.fecha_notificacion |
+                      date:'HH:mm'}}</p>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3 p-0">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Se ha presupuestado</h6>
+                  <p class="card-text">{{"$ "+servicioRecibido.total_presupuestado}}</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row">
+
+            <div class="col-md-6 mb-3 p-0">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Comentario</h6>
+                  <p class="card-text">{{servicioRecibido.comentario}}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3 p-0">
+
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">
+                    Cliente: {{ servicioRecibido.cliente }}
+                    <span style="color: #673ab7;">Rubro: {{ servicioRecibido.rubro }}</span>
+                  </h6>
+                  <a href="#">Datos de contacto</a>
+                </div>
+              </div>
 
             </div>
 
           </div>
 
-          
+        </div>
 
+        <section class="container" id="sec-b">
 
-          <section class="container" id="sec-b">
-
-            <h6>Datos del cliente</h6>
-            
-            <div class="dataConteiner">
-              <ul>
-                <li><strong>Cliente: </strong>
-                  {{ servicioRecibido.cliente }}</li>
-                <li><strong>Rubro: </strong>
-                  {{ servicioRecibido.rubro}}</li>
-                <li><strong>Se le ha presupuestado: </strong>{{"$ "+servicioRecibido.total_presupuestado}}</li>
-                <button>contacto</button>
-              </ul>
-            </div>
-
-            <div class="container">
-              <strong>Comentario: </strong> {{servicioRecibido.Comentario}}
-            </div>
-
-          </section>
+          <div class="container">
+            <strong>Comentario: </strong> {{servicioRecibido.Comentario}}
+          </div>
 
         </section>
 
