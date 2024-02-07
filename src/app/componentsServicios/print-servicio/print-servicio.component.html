@@ -14,7 +14,7 @@
           <div class="row">
             <div class="col-md-12 mb-3 p-0">
               <div class="card">
-                <div class="card-body" style="padding-bottom: 0.4rem; padding-top: 0.4rem; background-color: red;">
+                <div class="card-body paddingBody">
                   <h6 style="margin: 0 auto;">
                     Datos del servicio: 
                     ID: {{ servicioRecibido.id }}
@@ -32,7 +32,7 @@
 
             <div class="col-md-3 mb-3 p-0">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body paddingBody">
                   <h6 class="card-title">Tipo de servicio</h6>
                   <p class="card-text">{{ servicioRecibido.tipo }}</p>
                 </div>
@@ -41,7 +41,7 @@
 
             <div class="col-md-3 mb-3 p-0">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body paddingBody">
                   <h6 class="card-title">Estado</h6>
                   <p class="card-text" style="color: #673ab7;">{{ servicioRecibido.estado }}</p>
                 </div>
@@ -50,7 +50,7 @@
 
             <div class="col-md-3 mb-3 p-0">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body paddingBody">
                   <h6 class="card-title">Recordatorio</h6>
                   <span style="display: flex;">
                     <p class="card-text">{{ servicioRecibido.fecha_notificacion | date:'dd/MM/yyyy'}}</p>
@@ -63,7 +63,7 @@
 
             <div class="col-md-3 mb-3 p-0">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body paddingBody">
                   <h6 class="card-title">Se ha presupuestado</h6>
                   <p class="card-text">{{"$ "+servicioRecibido.total_presupuestado}}</p>
                 </div>
@@ -74,19 +74,19 @@
 
           <div class="row">
 
-            <div class="col-md-6 mb-3 p-0">
+            <div class="col-md-9 mb-3 p-0">
               <div class="card">
-                <div class="card-body">
+                <div class="card-body paddingBody">
                   <h6 class="card-title">Comentario</h6>
                   <p class="card-text">{{servicioRecibido.comentario}}</p>
                 </div>
               </div>
             </div>
 
-            <div class="col-md-6 mb-3 p-0">
+            <div class="col-md-3 mb-3 p-0">
 
               <div class="card">
-                <div class="card-body">
+                <div class="card-body paddingBody">
                   <h6 class="card-title">
                     Cliente: {{ servicioRecibido.cliente }}
                     <span style="color: #673ab7;">Rubro: {{ servicioRecibido.rubro }}</span>
@@ -100,14 +100,6 @@
           </div>
 
         </div>
-
-        <section class="container" id="sec-b">
-
-          <div class="container">
-            <strong>Comentario: </strong> {{servicioRecibido.Comentario}}
-          </div>
-
-        </section>
 
         <div class="container">
 
