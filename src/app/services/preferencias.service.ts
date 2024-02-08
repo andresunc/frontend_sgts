@@ -3,16 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { Estados } from '../models/Estados';
 import { TipoServicio } from '../models/TipoServicio';
+import { UrlBackend } from '../models/Url';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PreferenciasService {
+  urlBackend = new UrlBackend().getUrlBackend();
+  getStatusNotDeletedUrl = this.urlBackend + '/estado/getAllNotDeleted';
+  getTipoServicesNotDeletedUrl = this.urlBackend + '/tipoServicio/getAllNotDeleted';
 
-  getStatusNotDeletedUrl = 'http://localhost:8080/estado/getAllNotDeleted';
-  getTipoServicesNotDeletedUrl = 'http://localhost:8080/tipoServicio/getAllNotDeleted';
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // Método para obtener los estados de los servicios: Quien lo invoque deberá suscribirse
   getStatusNotDeleted(): Observable<Estados[]> {
