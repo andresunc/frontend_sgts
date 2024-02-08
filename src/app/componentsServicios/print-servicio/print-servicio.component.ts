@@ -1,7 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ItemChecklistDto } from 'src/app/models/IItemChecklistDto';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ContactoEmpesa } from 'src/app/models/ContactoEmpresa';
 import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
+import { PrintService } from 'src/app/services/print.service';
 
 @Component({
   selector: 'app-print-servicio',
@@ -14,18 +18,60 @@ export class PrintServicioComponent {
   title: string = 'Información del servicio: ';
   recurrencia: number;
   avance: number;
-  svManager: ManagerService;
+  contactoEmpresa: ContactoEmpesa[] = [];
 
-  constructor(private dataShared: DataSharedService, svManager: ManagerService) {
-    this.svManager = svManager;
+  constructor(private dataShared: DataSharedService, public dialog: MatDialog,
+    private svManager: ManagerService,private printService: PrintService) {
     this.servicioRecibido = this.dataShared.getSharedObject();
     this.title = this.title + this.servicioRecibido.cliente + ' | ' + this.servicioRecibido.tipo;
     this.avance = this.svManager.calcularAvance(this.servicioRecibido);
     this.recurrencia = this.servicioRecibido.recurrencia;
+    this.getContactoEmpresa();
   }
 
   updateAvance(item: any) {
     item.completo = !item.completo;
     this.avance = this.svManager.calcularAvance(this.servicioRecibido);
+  }
+
+  private getContactoEmpresa() {
+    this.printService.getContactoEmpresa(this.servicioRecibido.idCliente).subscribe(
+      (data) => {
+        this.contactoEmpresa = data;
+        console.log('Contactos de la empresa: ', data);
+      },
+      (error) => {
+        console.error('Error al consultar los contactos de la empresa', error);
+      }
+    );
+  }
+
+  // Función para mostrar el servicio por modal
+  openDialog() {
+    this.dataShared.setSharedMessage(this.contactoEmpresa);
+    const dialogRef = this.dialog.open(DialogModal);
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Resultado del modal: ${result}`);
+    });
+
+  }
+
+
+}
+
+/**
+ * Este es el componente modal. Exportado para usar el html
+ */
+@Component({
+  selector: 'dialog-content-example-dialog',
+  templateUrl: 'ShowContacts.html',
+  standalone: true,
+  imports: [MatDialogModule, MatButtonModule, CommonModule]
+})
+export class DialogModal {
+  
+  contacts: any;
+  constructor(private dataShared: DataSharedService) {
+    this.contacts = this.dataShared.getSharedMessage();
   }
 }

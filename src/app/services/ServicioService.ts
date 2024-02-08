@@ -3,6 +3,7 @@ import { Servicios } from '../models/Servicios';
 import { HttpClient } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http';
 import { Observable, catchError, tap, throwError } from 'rxjs';
+import { UrlBackend } from '../models/Url';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,8 @@ import { Observable, catchError, tap, throwError } from 'rxjs';
 
 export class ServicioService {
 
-  private url = 'http://localhost:8080/servicioDto/getTopServices';
+  urlBackend = new UrlBackend().getUrlBackend();
+  private url = this.urlBackend + '/servicioDto/getTopServices';
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +20,7 @@ export class ServicioService {
 
     const params = new HttpParams().set('limit', limit.toString());
 
-    return this.http.get<Servicios[]>(this.url, { params: params } )
+    return this.http.get<Servicios[]>(this.url, { params: params })
       .pipe(
         tap((data) => {
           console.log('getTopServices: ', data);

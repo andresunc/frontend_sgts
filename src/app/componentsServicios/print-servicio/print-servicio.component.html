@@ -44,7 +44,7 @@
                   <h6 class="card-title">
                     <span class="mr-3">Cliente: {{ servicioRecibido.cliente }}</span>
                     <span class="mr-3">Rubro: {{ servicioRecibido.rubro }}</span>
-                    <span class="mr-3 link">Datos de contacto</span>
+                    <span (click)="openDialog()" class="mr-3 link">Datos de contacto</span>
                   </h6>
                 </div>
               </div>
