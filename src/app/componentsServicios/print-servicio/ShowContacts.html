@@ -1,26 +1,6 @@
-<h2 mat-dialog-title>Contactos de la empresa</h2>
+<h4 mat-dialog-title style="text-align: center;">Contactos de la empresa</h4>
 <mat-dialog-content>
 
-  <!--
-  <thead>
-    <tr>
-      <th scope="col">Nombre</th>
-      <th scope="col">Apellido</th>
-      <th scope="col">Teléfono</th>
-      <th scope="col">Email</th>
-    </tr>
-  </thead>
-  <table *ngFor="let contacto of contacts" class="table">
-    <tbody>
-      <tr>
-        <th>{{ contacto.nombre }}</th>
-        <td>{{ contacto.apellido }}</td>
-        <td>{{ contacto.telefono }}</td>
-        <td>{{ contacto.email }}</td>
-      </tr>
-    </tbody>
-  </table>
-  -->
 
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z0">
 
@@ -29,25 +9,25 @@
   
     <!-- Position Column -->
     <ng-container matColumnDef="nombre">
-      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <th mat-header-cell *matHeaderCellDef><strong>Nombre</strong></th>
       <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
     </ng-container>
   
     <!-- Name Column -->
     <ng-container matColumnDef="apellido">
-      <th mat-header-cell *matHeaderCellDef> Apellido </th>
+      <th mat-header-cell *matHeaderCellDef><strong>Apellido</strong></th>
       <td mat-cell *matCellDef="let element"> {{element.apellido}} </td>
     </ng-container>
   
     <!-- Weight Column -->
     <ng-container matColumnDef="telefono">
-      <th mat-header-cell *matHeaderCellDef> Teléfono </th>
+      <th mat-header-cell *matHeaderCellDef><strong>Teléfono</strong></th>
       <td mat-cell *matCellDef="let element"> {{element.telefono}} </td>
     </ng-container>
   
     <!-- Symbol Column -->
     <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <th mat-header-cell *matHeaderCellDef><strong>Email</strong></th>
       <td mat-cell *matCellDef="let element"> {{element.email}} </td>
     </ng-container>
   
