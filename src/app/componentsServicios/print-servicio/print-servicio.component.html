@@ -126,18 +126,17 @@
             </div>
 
             <div class="col-md-4 mb-3 p-0">
-
+              
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6>Check List</h6>
                   <div id="checkBox" class="list-group" *ngFor="let item of servicioRecibido.itemChecklistDto">
                     <p class="list-group-item list-group-item-action checkboxContainer selectStyle">
-                      <mat-checkbox></mat-checkbox> {{item.nombreItem}}
+                      <mat-checkbox [checked]="item.completo" (change)="updateAvance(item)"></mat-checkbox> {{item.nombreItem}}
                     </p>
                   </div>
                 </div>
               </div>
-
             </div>
 
           </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ItemChecklistDto } from 'src/app/models/IItemChecklistDto';
 import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -23,7 +24,8 @@ export class PrintServicioComponent {
     this.recurrencia = this.servicioRecibido.recurrencia;
   }
 
-  updateAvance() {
+  updateAvance(item: any) {
+    item.completo = !item.completo;
     this.avance = this.svManager.calcularAvance(this.servicioRecibido);
   }
 }
