@@ -48,6 +48,7 @@
 
 .link:hover {
   cursor: pointer;
+  text-decoration: underline;
   color: #673ab7;
 }
 

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 import { ContactoEmpesa } from 'src/app/models/ContactoEmpresa';
 import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
@@ -66,12 +67,16 @@ export class PrintServicioComponent {
   selector: 'dialog-content-example-dialog',
   templateUrl: 'ShowContacts.html',
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule, CommonModule]
+  imports: [MatDialogModule, MatButtonModule, CommonModule, MatTableModule]
 })
 export class DialogModal {
   
   contacts: any;
+  displayedColumns: string[] = ['nombre', 'apellido', 'telefono', 'email'];
+  dataSource: any;
+
   constructor(private dataShared: DataSharedService) {
     this.contacts = this.dataShared.getSharedMessage();
+    this.dataSource = this.contacts;
   }
 }
