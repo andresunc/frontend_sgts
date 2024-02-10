@@ -3,12 +3,11 @@
 
   <app-title-bar [titulo]="title"></app-title-bar>
 
-  <div class="childContainer">
+  <ng-container class="childContainer">
 
     <section class="" id="seccionInfoServicio">
 
       <div class="cardContainer">
-
         <div class="container">
 
           <div class="row">
@@ -37,8 +36,8 @@
           </div>
 
           <div class="row">
-            <div class="col-md-12 mb-3 p-0">
 
+            <div class="col-md-12 mb-3 p-0">
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">
@@ -48,13 +47,13 @@
                   </h6>
                 </div>
               </div>
-
             </div>
+
           </div>
 
           <div class="row">
+
             <div class="col-md-12 mb-3 p-0">
-          
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">{{avance === 0 ? 'Aún no se ha comenzado a trabajar' : avance === 100 ? 'Servicio finalizado':'Avance'}}</h6>
@@ -65,20 +64,19 @@
                   </div>
                 </div>
               </div>
-          
             </div>
+
           </div>
 
           <div class="row">
-            <div class="col-md-3 mb-3 p-0">
 
+            <div class="col-md-3 mb-3 p-0">
               <div class="card selectStyle">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Tipo de servicio</h6>
                   <p class="card-text">{{ servicioRecibido.tipo }}</p>
                 </div>
               </div>
-
             </div>
 
             <div class="col-md-3 mb-3 p-0">
@@ -126,7 +124,6 @@
             </div>
 
             <div class="col-md-4 mb-3 p-0">
-
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6>Check List</h6>
@@ -142,11 +139,10 @@
           </div>
 
         </div>
-
       </div>
 
     </section>
 
-  </div>
+  </ng-container>
 
 </div>
