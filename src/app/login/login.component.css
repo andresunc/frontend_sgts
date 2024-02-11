@@ -80,29 +80,35 @@
   }
 
    .mat-icon{
-   
+  
     cursor: pointer;
-    padding: 10%;
-    border-radius:50%;
     font-size:larger;
+    padding: 0.1rem;
     
+   }
+
+
+  .ojo{
+    
+    border-radius:50%;
+    border-color: transparent; /* Establece el color de borde inicial */
+    color: rgb(57, 54, 54);
+    margin-right: 0.2rem;
+    background-color: transparent;
+  }
+ 
+  
+  .ojo:hover {
+    border-radius:60%;
+    color:#4404b1fb;
+    transform: scale(1.5)
+   
   }
 
-  .ng-tns-c17-1{
-    
-    background-color:transparent;
-    border-color: transparent; /* Establece el color de borde inicial */
-    color: dimgrey;
-    
+  .ojo:focus {
+    outline:none; /* Anula el borde de enfoque */
   }
-  
-  .ng-tns-c17-1 >*:hover {
-    border-radius:50%;
-    color:#4404b1fb;
-    border-color: transparent;
-    transform: scale(1.5);
-  }
-    
+
   .login-but {
 
     background-color: #11b7f8;
