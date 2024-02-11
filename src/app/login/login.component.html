@@ -1,34 +1,37 @@
 <div class="login-container">
-    <div class="portada">
-        <div class="img-portada">
-        <img src="\assets\img\portada.png" alt="imagen de portada">  
-        </div> 
+  <div class="portada">
+    <div class="img-portada">
+      <img src="\assets\img\portada.png" alt="imagen de portada">
     </div>
-<!-- Se agrega [(ngModel)] (linea 14 y 20) Para capturar los valores de los elementos HTML (usuario y contraseña) 
+  </div>
+  <!-- Se agrega [(ngModel)] (linea 14 y 20) Para capturar los valores de los elementos HTML (usuario y contraseña) 
     y pasarlos como argumentos al método login del servicio AuthService -->
-    <div class="login">
-        <h2 class="saludo">BIENVENIDO</h2>
-        <form (ngSubmit)="login()" class="form">
-            <mat-form-field class="form-group">
-                <mat-label>Usuario / Email</mat-label>
-                <input matInput placeholder="mi.email@ejemplo.com" [(ngModel)]="username" name="username" required>
-                <mat-error *ngIf="email invalido">{{ getErrorMessage() }}</mat-error>
-              </mat-form-field>
-        
-              <mat-form-field>
-                <mat-label>Contraseña</mat-label>
-                <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password" name="password" required>
-                <button class="ojo" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
-                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
-              </mat-form-field>
+  <div class="login">
+    <h2 class="saludo">BIENVENIDO</h2>
+    <form (ngSubmit)="login()" class="form">
+      <mat-form-field class="form-group">
+        <mat-label>Usuario / Email</mat-label>
+        <input matInput placeholder="mi.email@ejemplo.com" [(ngModel)]="username" name="username" required>
+        <mat-error *ngIf="email invalido">{{ getErrorMessage() }}</mat-error>
+      </mat-form-field>
 
-            
-            <button class="login-but" type="submit">Login</button>
-        </form>
-        <div class="error-message" *ngIf="errorMessage">
-            {{ errorMessage }}
-          </div>
+      <mat-form-field>
+        <mat-label>Contraseña</mat-label>
+        <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password" name="password" required>
+
+        <button type="button" class="ojo" mat-icon-button matSuffix (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+          <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+
+      </mat-form-field>
+
+
+      <button class="login-but" type="submit">Login</button>
+    </form>
+    <div class="error-message" *ngIf="errorMessage">
+      {{ errorMessage }}
     </div>
-   
+  </div>
+
 </div>
