@@ -79,29 +79,36 @@
            
   }
 
-    
-  button{
-    background-color: #11b7f8bb;
-    color: white;
-    border-radius: 0.5rem;
-    border: 0.1rem solid white;
-    cursor: pointer;
-    
-  }
-
+   .mat-icon{
   
-  .mat-icon{
-    height:1.37rem;
-    width: 1.37rem;
+    cursor: pointer;
+    font-size:larger;
+    padding: 0.1rem;
     
-  }
+   }
 
-  .ng-tns-c17-1{
-   margin-right: 0.1rem;
-      
+
+  .ojo{
+    
+    border-radius:50%;
+    border-color: transparent; /* Establece el color de borde inicial */
+    color: rgb(57, 54, 54);
+    margin-right: 0.2rem;
+    background-color: transparent;
   }
  
-    
+  
+  .ojo:hover {
+    border-radius:60%;
+    color:#4404b1fb;
+    transform: scale(1.5)
+   
+  }
+
+  .ojo:focus {
+    outline:none; /* Anula el borde de enfoque */
+  }
+
   .login-but {
 
     background-color: #11b7f8;
@@ -115,7 +122,7 @@
     
   }
   
-  button:hover{
+  .login-but:hover{
     
     background-color: #673ab7;
     color: rgb(255, 255, 255);

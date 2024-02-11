@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from './services/auth.service';
+
 
 @Component({
   selector: 'app-root',
@@ -8,8 +11,21 @@ import { Component } from '@angular/core';
 export class AppComponent {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
-  islogged = true;
+  islogged = false;
 
-  constructor() { }
+  titleBarLogout: EventEmitter<void> = new EventEmitter<void>();
 
-}
+  constructor(private authService: AuthService, private router: Router) { }
+
+  
+  handleLoginSuccess() {
+    this.islogged = true; // Actualizar el estado islogged cuando se inicie sesión correctamente
+
+  }
+
+  handleLogout() {
+    this.islogged = false;
+    this.router.navigate(['/login']);
+  }
+
+ }

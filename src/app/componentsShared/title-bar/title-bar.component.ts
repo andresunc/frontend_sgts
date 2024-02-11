@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-title-bar',
@@ -8,4 +10,14 @@ import { Component, Input } from '@angular/core';
 export class TitleBarComponent {
 
   @Input() titulo: string = '';
+  @Output() logout: EventEmitter<void> = new EventEmitter<void>();
+
+  constructor(private router: Router) {} 
+  
+  handleLogout() {
+    this.logout.emit();
+    console.log('Logout realizado desde TitleBarComponent');
+    this.router.navigate(['/login']);
+  }
+  
 }
