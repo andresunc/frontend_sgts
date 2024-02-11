@@ -1,7 +1,3 @@
-/**
- * Modelo ServicioEmpresa
- */
-
 export class ServicioEmpresa {
     idServicioEmpresa: number;
     costoServicio: number;
