@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
@@ -19,6 +19,8 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  @Output() loginSuccess: EventEmitter<void> = new EventEmitter<void>();
+
   login() {
     console.log(this.username);
     console.log(this.password);
@@ -26,7 +28,7 @@ export class LoginComponent {
     this.authService.login(this.username, this.password).subscribe(
       (loginSuccessful: boolean) => {
         if (loginSuccessful) {
-          console.log('Inicio de sesión exitoso');
+          this.loginSuccess.emit();  // Emitir el evento de inicio de sesión exitoso
           this.router.navigate(['/home']);  // Redirige a la página de inicio
         } else {
           this.handleLoginError('Credenciales incorrectas. Por favor, intenta de nuevo.');

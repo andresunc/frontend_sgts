@@ -3,7 +3,7 @@
 -->
 
 <!-- Login componente-->
-<app-login *ngIf="!islogged"></app-login>
+<app-login *ngIf="!islogged" (loginSuccess)="handleLoginSuccess()"></app-login>
 
 <!-- Sidebar componente-->
 <app-sidebar *ngIf="islogged"></app-sidebar>
