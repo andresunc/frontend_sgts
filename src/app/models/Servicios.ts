@@ -1,5 +1,8 @@
 import { ItemChecklistDto } from "./IItemChecklistDto";
 
+/**
+ * Esta clase hace referencia al modelo de datos de ServiciosDTO
+ */
 export class Servicios {
 
     idServicio: number;
