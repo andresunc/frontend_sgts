@@ -25,16 +25,16 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
-    private servicioService: ServicioService,
-    svManager: ManagerService) {
+    private servicioService: ServicioService, svManager: ManagerService) {
     this.svService = svManager;
   }
 
   ngOnInit() {
     // Comparto la función para filtrar servicios. Emitida desde el sidebar
-    this.dataShared.getFuncionEmitida().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+    this.dataShared.getFilterByCheckbox().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
       this.applyFilterByCheckbox();
     });
+    this.loadServicios(this.defaultSelected); // Cargar los servicios con limite de cantidad
   }
 
   // Método para cargar los servicios con limite de cantidad
@@ -75,7 +75,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     // Sino armar un nuevo array[Servicios] con los servicios que coincidan con las preferencias del filtro
 
     // Filtrar por tipo de servicio y/o estado
-    let filteredServices = this.listServicios;
+    let filteredServices: Servicios[] = this.listServicios;
 
     if (filterTipoServicio.length > 0) {
       filteredServices = filteredServices.filter(servicio => filterTipoServicio.includes(servicio.tipo));
@@ -106,15 +106,14 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 
   }
 
-  // Función y opciones para seleccionar la cantidad de servicios a mostrar
+  // Configuración del limite de servicios a mostrar
   verUltimos = [
     { value: 30, label: "Últimos 30" },
     { value: 60, label: "Últimos 60" },
     { value: 90, label: "Últimos 90" },
     { value: 0, label: "Todos" }
   ];
-  defaulSelected = this.verUltimos[0].value;
-
+  defaultSelected = this.verUltimos[0].value;
 }
 
 /**

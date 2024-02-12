@@ -10,7 +10,7 @@ export class DataSharedService {
   private sharedMessage: any;
   private sharedEstado: any[] = [];
   private sharedTipoServicio: any[] = [];
-  private EventEmitter: EventEmitter<void> = new EventEmitter<void>();
+  private filterByCheckbox: EventEmitter<void> = new EventEmitter<void>();
   private ControlAccess: EventEmitter<void> = new EventEmitter<void>();
   /* Atributos para el Spinner */
   private spinner = new BehaviorSubject<boolean>(false);
@@ -42,12 +42,12 @@ export class DataSharedService {
     return this.sharedEstado;
   }
 
-  triggerFuncionEmitida() {
-    this.EventEmitter.emit();
+  triggerFilterByCheckbox() {
+    this.filterByCheckbox.emit();
   }
 
-  getFuncionEmitida() {
-    return this.EventEmitter;
+  getFilterByCheckbox() {
+    return this.filterByCheckbox;
   }
 
   setSharedTipoServicio(data: any) {
