@@ -13,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 export class AppComponent implements OnInit, OnDestroy {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
-  access: boolean = true;
+  access: boolean = false;
 
   constructor(private authService: AuthService, 
     private dataShared: DataSharedService) { }
