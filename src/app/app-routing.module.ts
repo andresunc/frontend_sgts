@@ -16,7 +16,6 @@ const routes: Routes = [
   // uso ** evitar error 400 (Éste objeto redirect siempre va al último)
   { path: '', component: VerServiciosComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full'},
-
   
 ];
 
