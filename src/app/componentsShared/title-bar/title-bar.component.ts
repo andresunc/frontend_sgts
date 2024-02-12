@@ -1,8 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
-
 
 @Component({
   selector: 'app-title-bar',

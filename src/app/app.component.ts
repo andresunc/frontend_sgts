@@ -16,8 +16,6 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
   access: boolean = false;
 
-  titleBarLogout: EventEmitter<void> = new EventEmitter<void>();
-
   constructor(private authService: AuthService, 
     private dataShared: DataSharedService) { }
 
@@ -37,9 +35,5 @@ export class AppComponent implements OnInit, OnDestroy {
   controlAccess() {
     this.access = this.authService.isLoggedInUser();
   }
-  
-  /**
-   *  handleLoginSuccess() y handleLogout() eliminados
-   */
 
  }
