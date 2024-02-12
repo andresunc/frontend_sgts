@@ -1,8 +1,7 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
-
+import { DataSharedService } from '../services/data-shared.service';
 
 @Component({
   selector: 'app-login',
@@ -17,19 +16,16 @@ export class LoginComponent {
 
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
-
-  @Output() loginSuccess: EventEmitter<void> = new EventEmitter<void>();
+  constructor(private authService: AuthService, private dataShared: DataSharedService) {}
 
   login() {
     console.log(this.username);
     console.log(this.password);
     // Llama al método login de AuthService
     this.authService.login(this.username, this.password).subscribe(
-      (loginSuccessful: boolean) => {
+      (loginSuccessful) => {
         if (loginSuccessful) {
-          this.loginSuccess.emit();  // Emitir el evento de inicio de sesión exitoso
-          this.router.navigate(['/home']);  // Redirige a la página de inicio
+          this.dataShared.triggerControlAccess();
         } else {
           this.handleLoginError('Credenciales incorrectas. Por favor, intenta de nuevo.');
           console.log('Inicio de sesión fallido');

@@ -1,6 +1,9 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { DataSharedService } from './services/data-shared.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 
 @Component({
@@ -8,24 +11,35 @@ import { AuthService } from './services/auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
-  islogged = false;
+  access: boolean = false;
 
   titleBarLogout: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, 
+    private dataShared: DataSharedService) { }
 
+  ngOnInit() {
+    this.dataShared.getControlAccess().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+      this.controlAccess();
+    });
+  }
+
+  // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
+  private unsubscribe$ = new Subject<void>();
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  controlAccess() {
+    this.access = this.authService.isLoggedInUser();
+  }
   
-  handleLoginSuccess() {
-    this.islogged = true; // Actualizar el estado islogged cuando se inicie sesión correctamente
-
-  }
-
-  handleLogout() {
-    this.islogged = false;
-    this.router.navigate(['/login']);
-  }
+  /**
+   *  handleLoginSuccess() y handleLogout() eliminados
+   */
 
  }

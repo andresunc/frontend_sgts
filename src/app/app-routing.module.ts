@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'reportes', loadChildren: () => import ('./componentsReportes/reportescfg/reportes.module').then(x => x.ReportesModule) },
   { path: 'administrador', loadChildren: () => import ('./componentsAdministrador/administradorcfg/administrador.module').then(x => x.AdministradorModule) },
   // uso ** evitar error 400 (Éste objeto redirect siempre va al último)
-  { path: '', redirectTo: 'home', pathMatch: 'full'},
+  { path: '', component: VerServiciosComponent },
   { path: '**', redirectTo: 'home', pathMatch: 'full'},
 
   

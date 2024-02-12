@@ -11,6 +11,7 @@ export class DataSharedService {
   private sharedEstado: any[] = [];
   private sharedTipoServicio: any[] = [];
   private EventEmitter: EventEmitter<void> = new EventEmitter<void>();
+  private ControlAccess: EventEmitter<void> = new EventEmitter<void>();
   /* Atributos para el Spinner */
   private spinner = new BehaviorSubject<boolean>(false);
   goSpinner = this.spinner.asObservable();
@@ -64,5 +65,13 @@ export class DataSharedService {
 
   ocultarSpinner() {
     this.spinner.next(false);
+  }
+
+  triggerControlAccess() {
+    this.ControlAccess.emit();
+  }
+
+  getControlAccess() {
+    return this.ControlAccess;
   }
 }

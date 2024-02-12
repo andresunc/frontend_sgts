@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 @Injectable({
@@ -8,12 +9,13 @@ export class AuthService {
 
   private isLoggedIn = false;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   login(username: string, password: string): Observable<boolean> {
     // Simular lógica de inicio de sesión
     if (username === 'jniferalvarez@gmail.com' && password === 'Contraseña1234') {
       this.isLoggedIn = true;
+      this.router.navigate(['/home']);
       return of(true); // Simula un inicio de sesión exitoso
     } else {
       this.isLoggedIn = false;
@@ -23,6 +25,7 @@ export class AuthService {
 
   logout(): void {
     this.isLoggedIn = false;
+    this.router.navigate(['']);
   }
 
   isLoggedInUser(): boolean {

@@ -3,13 +3,13 @@
 -->
 
 <!-- Login componente-->
-<app-login *ngIf="!islogged" (loginSuccess)="handleLoginSuccess()"></app-login>
+<app-login *ngIf="!access"></app-login>
 
 <!-- Sidebar componente-->
-<app-sidebar *ngIf="islogged"></app-sidebar>
+<app-sidebar *ngIf="access"></app-sidebar>
 
 <!-- Contenedor de componentes que serán rutas dinámicas-->
-<div *ngIf="islogged" class="rutasContainer">
+<div *ngIf="access" class="rutasContainer">
 
     <div class="rutaSubContainer">
         <router-outlet></router-outlet>
