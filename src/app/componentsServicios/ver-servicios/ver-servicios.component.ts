@@ -87,8 +87,9 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 
     // Actualizar la tabla con los servicios filtrados
     this.dataSource = new MatTableDataSource(filteredServices);
+    // Actualizar el paginador con los servicios filtrados
+    this.dataSource.paginator = this.paginator;
   }
-
 
   // Funciones del paginator
   @ViewChild(MatPaginator) paginator!: MatPaginator;
