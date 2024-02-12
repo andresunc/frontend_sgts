@@ -17,9 +17,9 @@
                 <div>
                     <mat-form-field>
                         <mat-label>Listar por cantidad</mat-label>
-                        <mat-select [(value)]="defaulSelected">
+                        <mat-select [value]="defaulSelected">
                             <mat-option *ngFor="let opcion of verUltimos" [value]="opcion.value"
-                                (onSelectionChange)="loadServicios(opcion.value)">
+                            (onSelectionChange)="loadServicios(opcion.value)">
                                 {{ opcion.label }}
                             </mat-option>
                         </mat-select>
