@@ -53,12 +53,12 @@ export class SidebarComponent implements OnInit {
     if (index === -1) {
       this.selectedStatusToFilter.push(status);
       this.dataShared.setSharedEstado(this.selectedStatusToFilter);
-      this.dataShared.triggerFuncionEmitida();
+      this.dataShared.triggerFilterByCheckbox();
     }
     else {
       this.selectedStatusToFilter.splice(index, 1)
       this.dataShared.setSharedEstado(this.selectedStatusToFilter);
-      this.dataShared.triggerFuncionEmitida();
+      this.dataShared.triggerFilterByCheckbox();
     }
   }
 
@@ -71,12 +71,12 @@ export class SidebarComponent implements OnInit {
     if (index === -1) {
       this.selectedTipoServicioToFilter.push(tipoServicio);
       this.dataShared.setSharedTipoServicio(this.selectedTipoServicioToFilter);
-      this.dataShared.triggerFuncionEmitida();
+      this.dataShared.triggerFilterByCheckbox();
     }
     else {
       this.selectedTipoServicioToFilter.splice(index, 1)
       this.dataShared.setSharedTipoServicio(this.selectedTipoServicioToFilter);
-      this.dataShared.triggerFuncionEmitida();
+      this.dataShared.triggerFilterByCheckbox();
     }
   }
 }

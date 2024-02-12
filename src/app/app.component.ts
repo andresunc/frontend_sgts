@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { DataSharedService } from './services/data-shared.service';
 import { Subject } from 'rxjs';
@@ -14,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 export class AppComponent implements OnInit, OnDestroy {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
-  access: boolean = false;
+  access: boolean = true;
 
   constructor(private authService: AuthService, 
     private dataShared: DataSharedService) { }
