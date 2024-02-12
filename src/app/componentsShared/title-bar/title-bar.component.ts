@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { DataSharedService } from 'src/app/services/data-shared.service';
 
 
 @Component({
@@ -10,14 +12,12 @@ import { Router } from '@angular/router';
 export class TitleBarComponent {
 
   @Input() titulo: string = '';
-  @Output() logout: EventEmitter<void> = new EventEmitter<void>();
 
-  constructor(private router: Router) {} 
+  constructor(private dataShared: DataSharedService, private authService: AuthService) {} 
   
   handleLogout() {
-    this.logout.emit();
-    console.log('Logout realizado desde TitleBarComponent');
-    this.router.navigate(['/login']);
+    this.authService.logout();
+    this.dataShared.triggerControlAccess();
   }
   
 }
