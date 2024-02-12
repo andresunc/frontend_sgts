@@ -113,7 +113,7 @@ mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
 }
 
 .scrollContainerStatus {
-    height: 10.6rem;
+    max-height: 10.6rem;
     overflow: auto;
     scrollbar-width: auto;
     scrollbar-color: #ddd #DFEEEE;
@@ -121,7 +121,7 @@ mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
 }
 
 .scrollContainerTipoServicio {
-    height: 7.6rem;
+    max-height: 7.6rem;
     overflow: auto;
     scrollbar-width: auto;
     scrollbar-color: #ddd #DFEEEE;
