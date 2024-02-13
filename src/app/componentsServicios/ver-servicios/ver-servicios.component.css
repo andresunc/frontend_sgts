@@ -6,15 +6,11 @@
 
 .childContainer {
   display: flex;
-  margin: auto;
-  margin-top: 0.45rem;
-  width: 99%;
-  height: calc(97% - 2.8rem);
-  /* Resta el alto de la barra de título */
-  /* background-color: rgb(4, 0, 255); Desbloquear para ver el contenedor*/
-  border-radius: 0.5rem;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; /* Alinear los elementos verticalmente */
+  align-items: center; /* Centrar horizontalmente los elementos */
+  width: 100%; /* Utiliza el 100% del ancho del padre */
+  height: calc(100% - 2.8rem); /* Ajusta la altura del contenedor hijo */
+  overflow: auto; /* Agrega desplazamiento vertical si es necesario */
 }
 
 /* Descomentar para eliminar el efecto display:flex 
@@ -24,7 +20,14 @@
 
 /* Ancho general de la tabla */
 .tablaContainer {
-  width: 95%;
+  width: 95%; /* Reducir el ancho para evitar que quede pegado al borde de la pantalla */
+  max-width: 95%; /* Agregar un ancho máximo */
+  margin-top: 1rem; /* Agregar un espacio superior */
+}
+
+.mat-paginator {
+  margin-top: 1rem; /* Agregar un espacio superior */
+  margin-bottom: 1rem; /* Agregar un espacio inferior */
 }
 
 /* Establece el espaciado vertical entre las filas */
@@ -32,8 +35,9 @@ table {
   border-collapse: separate;
   border-spacing: 0 0.5rem;
   background-color: #4DBDEB;
-  padding-right: 1%;
-  /* Color de fondo de la tabla */
+  width: 90%; /* Utiliza el 100% del ancho del contenedor */
+  max-width: 90%; /* Establece el ancho máximo */
+  
 }
 
 /* Estilos de las celdas cabeceras */
@@ -50,8 +54,6 @@ th {
 /* Estilos de las filas */
 .dataTable {
   position: relative;
-  max-height: 15rem;
-  /* Altura máxima de la tabla */
   overflow: auto;
   /* Añade una barra de desplazamiento cuando el contenido excede el tamaño del contenedor */
   scrollbar-width: auto;
@@ -135,3 +137,7 @@ las tres etiquetas que siguen de la tabla de servicios*/
   font-family:'Quicksand', sans-serif;
 
 } /*fuente para el interior del selector de la tabla de servicios*/
+
+*::-webkit-scrollbar {
+  width: 0.05rem; /* Ancho del scrollbar */
+}

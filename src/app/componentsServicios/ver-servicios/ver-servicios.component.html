@@ -27,6 +27,7 @@
             </section>
 
             <!-- Tabla de servicios -->
+        
             <div class="mat-elevation-z0 dataTable">
                 <table mat-table [dataSource]="dataSource">
 
@@ -83,19 +84,21 @@
                                 style="color: red" (click)="svService.enviarObjeto(element)">adjust</mat-icon>
                         </td>
                     </ng-container>
-
+                
                     <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #ffffff;"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns; let element;" class="estiloRow"></tr>
                 </table>
             </div>
-
+      
             <!-- divider -->
             <mat-divider style="margin-top: 1rem;"></mat-divider>
+       
             <!-- Paginador -->
             <mat-paginator [pageSizeOptions]="[30]" showFirstLastButtons aria-label="Seleccionar página">
             </mat-paginator>
-
+        
         </div>
-
+    
     </div>
+
 </div>
