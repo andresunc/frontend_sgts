@@ -21,13 +21,14 @@ export class LoginComponent {
   login() {
     console.log(this.username);
     console.log(this.password);
+    if (this.username === '' || this.password === '') return;
     // Llama al método login de AuthService
     this.authService.login(this.username, this.password).subscribe(
       (loginSuccessful) => {
         if (loginSuccessful) {
           this.dataShared.triggerControlAccess();
         } else {
-          this.handleLoginError('Credenciales incorrectas. Por favor, intenta de nuevo.');
+          this.handleLoginError('Credenciales incorrectas o inexistentes.');
           console.log('Inicio de sesión fallido');
         }
       },
@@ -40,6 +41,9 @@ export class LoginComponent {
 
   private handleLoginError(message: string) {
     this.errorMessage = message;
+     setTimeout(() => {
+        this.errorMessage = '';
+        }, 3000);
   }
 
   getErrorMessage() {

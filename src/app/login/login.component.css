@@ -129,4 +129,13 @@
     
   }
 
+  .error {
+    color: #f44336;
+    font-size: 0.8rem;
+    font-weight: 100;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    align-items: center;
+  }
+
   
