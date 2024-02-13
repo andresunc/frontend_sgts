@@ -10,8 +10,8 @@
     <h2 class="saludo">BIENVENIDO</h2>
     <form (ngSubmit)="login()" class="form">
       <mat-form-field class="form-group">
-        <mat-label>Usuario / Email</mat-label>
-        <input matInput placeholder="mi.email@ejemplo.com" [(ngModel)]="username" name="username" required>
+        <mat-label>Usuario</mat-label>
+        <input matInput placeholder="Usuario" [(ngModel)]="username" name="username" required>
         <mat-error *ngIf="email invalido">{{ getErrorMessage() }}</mat-error>
       </mat-form-field>
 
@@ -28,10 +28,11 @@
 
 
       <button class="login-but" type="submit">Login</button>
+      
+      <mat-error class="error" *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+   
     </form>
-    <div class="error-message" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </div>
+    
   </div>
 
 </div>
