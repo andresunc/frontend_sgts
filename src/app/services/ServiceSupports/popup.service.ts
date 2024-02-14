@@ -39,7 +39,7 @@ export class PopupService {
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
       data: {
         msj: mensaje,
-        btn: 'Reintentar',
+        btn: 'OK',
         icon: 'warning',
         snackBar: this._snackBar,
         color: 'text-warning'
