@@ -18,6 +18,7 @@ import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-s
 import { NewServicioComponent } from './componentsServicios/new-servicio/new-servicio.component';
 import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
 import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.component';
+import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
 
 
 
@@ -30,6 +31,7 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
     PrintServicioComponent,
     SpinnerComponent,
     LoginComponent,
+    CustomSnackbarComponent,
     
       ],
   imports: [

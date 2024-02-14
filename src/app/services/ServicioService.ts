@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http';
 import { Observable, catchError, tap, throwError } from 'rxjs';
 import { UrlBackend } from '../models/Url';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { PopupService } from './ServiceSupports/popup.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class ServicioService {
   urlBackend = new UrlBackend().getUrlBackend();
   private url = this.urlBackend + '/servicioDto/getTopServices';
 
-  constructor(private http: HttpClient, private _snackBar: MatSnackBar) { }
+  constructor(private http: HttpClient, private _snackBar: PopupService) { }
 
   getTopServices(limit: number): Observable<Servicios[]> {
 
@@ -28,15 +28,11 @@ export class ServicioService {
           return data;
         }),
         catchError((error) => {
-          this.openSnackBar('Error en la conexión con el servidor. Por favor, intenta de nuevo más tarde.');
+          this._snackBar.warnSnackBar('Error en la conexión');
           console.error('Error en la solicitud getTopServices', error);
           return throwError(error);
         })
       );
-  }
-
-  openSnackBar(errorMessage: string) {
-    this._snackBar.open(errorMessage, 'cerrar', { duration: 5000 });
   }
 
 }
