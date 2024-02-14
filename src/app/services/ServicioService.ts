@@ -28,7 +28,7 @@ export class ServicioService {
           return data;
         }),
         catchError((error) => {
-          this.openSnackBar('Error en la conexión con el servidor. Por favor, intenta de nuevo más tarde.');
+          this.openSnackBar('Error en la conexión con el servidor');
           console.error('Error en la solicitud getTopServices', error);
           return throwError(error);
         })
@@ -36,7 +36,7 @@ export class ServicioService {
   }
 
   openSnackBar(errorMessage: string) {
-    this._snackBar.open(errorMessage, 'cerrar', { duration: 5000 });
+    this._snackBar.open(errorMessage, 'cerrar', { duration: 3000, panelClass: 'error'});
   }
 
 }

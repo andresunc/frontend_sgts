@@ -74,4 +74,5 @@ export class DataSharedService {
   getControlAccess() {
     return this.ControlAccess;
   }
+
 }

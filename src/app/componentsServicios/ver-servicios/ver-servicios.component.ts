@@ -10,6 +10,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
+import { PopupService } from 'src/app/services/ServiceSupports/popup.service';
 
 @Component({
   selector: 'app-ver-servicios',
@@ -25,7 +26,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
-    private servicioService: ServicioService, svManager: ManagerService) {
+    private servicioService: ServicioService, svManager: ManagerService, private _snackBar: PopupService) {
     this.svService = svManager;
   }
 
@@ -47,6 +48,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
           this.listServicios = data; // Asigno los servicios a la lista
           this.dataSource.data = this.listServicios; // Asigno los servicios a la tabla
           this.applyFilterByCheckbox(); // Aplico el filtro de estados y tipos de servicios
+          this._snackBar.okSnackBar('Servicios cargados');
         }
       ).add(() => this.dataShared.ocultarSpinner());
   }

@@ -1,0 +1,6 @@
+<div id="snackContainer">
+    <mat-icon [class]="color">{{data?.icon}}</mat-icon>
+    <p [class]="color">{{data?.msj}}</p>
+    <button mat-button class="text-light"
+    (click)="closeSnackbar()">{{data?.btn}}</button>
+</div>

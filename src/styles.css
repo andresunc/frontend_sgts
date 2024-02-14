@@ -4,12 +4,13 @@ body {
     height: 100%;
     margin: 0;
     font-family: 'Quicksand', sans-serif;
-    font-size: 16px; /* 1rem = 16px */
+    font-size: 16px;
+    /* 1rem = 16px */
     font-weight: 300;
 }
 
 * {
-    font-family:'Quicksand', sans-serif;
+    font-family: 'Quicksand', sans-serif;
     /* 'Josefin Sans', sans-serif; */
 }
 
@@ -34,5 +35,6 @@ p {
 }
 
 mat-divider {
-    background-color: #ccc; /* Color del divider */
+    background-color: #ccc;
+    /* Color del divider */
 }
