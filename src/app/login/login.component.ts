@@ -28,13 +28,13 @@ export class LoginComponent {
         if (loginSuccessful) {
           this.dataShared.triggerControlAccess();
         } else {
-          this.handleLoginError('Credenciales incorrectas o inexistentes.');
+          this.handleLoginError('Credenciales incorrectas o inexistentes');
           console.log('Inicio de sesión fallido');
         }
       },
       (error) => {
         console.error('Error en el inicio de sesión:', error);
-        this.handleLoginError('Hubo un error durante el inicio de sesión. Por favor, intenta de nuevo más tarde.');
+        this.handleLoginError('Hubo un error durante el inicio de sesión. Por favor, intenta de nuevo más tarde');
       }
     );
   }
