@@ -58,15 +58,14 @@ h2 {
     background-color: #4dbeeb;
     box-shadow: 0 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    border-color: #0982b3;
     font-weight: bold;
 }
 
 .btn:hover {
-    background-color: #ffd740; /* #ffd740 */
+    background-color: #ffd740;
+    box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
     color: #673ab7;
     transform: scale(1.05);
-    border-color: #e8a723;
 }
 
 .btn-nuevo {
