@@ -79,36 +79,18 @@
            
   }
 
-   .mat-icon{
-  
-    cursor: pointer;
-    font-size:larger;
-    padding: 0.1rem;
-    
-   }
-
-
+ 
   .ojo{
-    
+    cursor: pointer;
+    font-size:smaller;
+    padding: 0.1rem;
     border-radius:50%;
     border-color: transparent; /* Establece el color de borde inicial */
-    color: rgb(57, 54, 54);
     margin-right: 0.2rem;
-    background-color: transparent;
+    
   }
  
   
-  .ojo:hover {
-    border-radius:60%;
-    color:#7b38ef;
-    transform: scale(1.5)
-   
-  }
-
-  .ojo:focus {
-    outline:none; /* Anula el borde de enfoque */
-  }
-
   .login-but {
 
     background-color: #11b7f8;
