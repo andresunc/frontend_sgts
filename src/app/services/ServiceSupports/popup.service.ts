@@ -19,7 +19,6 @@ export class PopupService {
         color: 'text-success'
       },
       duration: 2000,
-      panelClass: 'custom-snackbar',
     });
   }
 
@@ -39,7 +38,7 @@ export class PopupService {
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
       data: {
         msj: mensaje,
-        btn: 'OK',
+        btn: 'Reintentar',
         icon: 'warning',
         snackBar: this._snackBar,
         color: 'text-warning'
