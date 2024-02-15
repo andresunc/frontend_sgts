@@ -63,7 +63,7 @@ h2 {
 }
 
 .btn:hover {
-    background-color: #FFE08C;
+    background-color: #ffd740; /* #ffd740 */
     color: #673ab7;
     transform: scale(1.05);
     border-color: #e8a723;
@@ -121,7 +121,7 @@ mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
 }
 
 .scrollContainerTipoServicio {
-    max-height: 7.6rem;
+    max-height: 8rem;
     overflow: auto;
     scrollbar-width: auto;
     scrollbar-color: #ddd #DFEEEE;

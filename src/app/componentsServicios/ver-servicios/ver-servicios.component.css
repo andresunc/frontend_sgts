@@ -93,7 +93,7 @@ tr.estiloRow:hover {
 }
 
 .estiloRow:active {
-  border-left: 0.15rem solid #FFE08C;
+  border-left: 0.15rem solid #ffd740;
 }
 
 .estiloRow tr {

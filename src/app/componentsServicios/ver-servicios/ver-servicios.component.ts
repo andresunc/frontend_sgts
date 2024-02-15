@@ -48,7 +48,9 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
           this.listServicios = data; // Asigno los servicios a la lista
           this.dataSource.data = this.listServicios; // Asigno los servicios a la tabla
           this.applyFilterByCheckbox(); // Aplico el filtro de estados y tipos de servicios
-          this._snackBar.errorSnackBar('Servicios cargadosServicios cargadosServicios cargados');
+          limit === 0 ? this._snackBar.okSnackBar(`Todos los servicios cargados correctamente`) 
+          : limit > 30 ? this._snackBar.okSnackBar(`Últimos ${limit} servicios cargados`)
+          : undefined;
         }
       ).add(() => this.dataShared.ocultarSpinner());
   }
