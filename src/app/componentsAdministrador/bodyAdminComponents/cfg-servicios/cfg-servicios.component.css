@@ -32,7 +32,7 @@
   
   .menu button:hover {
     margin: 0;
-    border-left: 0.15rem solid #FFE08C;
+    border-left: 0.15rem solid #ffd740;
   }
   
   button span {
