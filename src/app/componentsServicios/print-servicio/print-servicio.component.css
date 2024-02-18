@@ -167,7 +167,7 @@
 }
 
 .cdk-accordion-content-body {
-  background-color: #DFEEEE;
+  background-color: #7f45e40a;
   padding: 0.5rem;
   p {
     margin-bottom: 0.1rem; /* agrego un interlineado entre los párrafos */
