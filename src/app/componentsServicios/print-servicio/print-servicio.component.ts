@@ -31,8 +31,13 @@ export class PrintServicioComponent {
   }
 
   updateAvance(item: any) {
+    console.log('Servicio recibido: ', this.servicioRecibido);
     item.completo = !item.completo;
     this.avance = this.svManager.calcularAvance(this.servicioRecibido);
+  }
+
+  updateNotificado(item: any) {
+    item.notificado = !item.notificado;
   }
 
   private getContactoEmpresa() {

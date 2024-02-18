@@ -20,6 +20,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatButtonModule} from '@angular/material/button';
+import {CdkAccordionModule} from '@angular/cdk/accordion';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatChipsModule} from '@angular/material/chips';
 
 /**
  * Todo componente material se debe importar y exportar
@@ -46,6 +49,9 @@ import {MatButtonModule} from '@angular/material/button';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatButtonModule,
+    CdkAccordionModule,
+    MatSlideToggleModule,
+    MatChipsModule,
   ],
   exports: [
     CommonModule,
@@ -67,6 +73,9 @@ import {MatButtonModule} from '@angular/material/button';
     MatProgressSpinnerModule,
     MatSnackBarModule,
     MatButtonModule,
+    CdkAccordionModule,
+    MatSlideToggleModule,
+    MatChipsModule,
   ]
 })
 export class MaterialModule { }
