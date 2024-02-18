@@ -12,19 +12,7 @@
 
           <div class="row">
 
-            <div class="col-md-12 mb-3 p-0 row-2">
-              <mat-toolbar>
-                <button class="matIcon btnCheck">
-                  <span>Abrir Checklist</span>
-                </button>
-                <span class="spacer"></span>
-                <button class="matIcon" mat-icon-button>
-                  <mat-icon matTooltip="Administrar">settings</mat-icon>
-                </button>
-              </mat-toolbar>
-            </div>
-
-            <div class="col-md-10 mb-3 p-0">
+            <div class="col-md-8 mb-3 p-0">
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">
@@ -35,13 +23,18 @@
               </div>
             </div>
 
-            <div class="col-md-2 mb-3 p-0">
-              <div class="card" id="cardId">
-                <div class="card-body paddingBody">
+            <div class="col-md-4 mb-3 p-0">
+              <div class="card p-0">
+                <div mat-button [matMenuTriggerFor]="menu" class="paddingBody selectPrint">
                   <h6 class="card-title textCenter">
-                    <span>Servicio N°: {{ servicioRecibido.idServicio }}</span>
+                      SERVICIO N° {{ servicioRecibido.idServicio }}
+                      <mat-icon class="mat-icon">keyboard_arrow_down</mat-icon>
                   </h6>
                 </div>
+                <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
+                  <button mat-menu-item><span>Editar</span></button>
+                  <button mat-menu-item><span>Eliminar</span></button>
+                </mat-menu>
               </div>
             </div>
 
@@ -124,7 +117,7 @@
 
           </div>
 
-          <div class="row row-2" >
+          <div class="row" >
 
             <div class="col-md-12 mb-3 p-0">
               <div class="card custom-background">
@@ -135,21 +128,119 @@
               </div>
             </div>
 
-            <div class="col-md-8 mb-3 p-0">
-              <div class="card">
+          </div>
+
+          <!-- Sección para el pop up del checklist -->
+          <div class="row">
+
+            <div class="col-md-12 mb-3 p-0">
+              <div class="card" style="align-items: center;">
                 <div class="card-body paddingBody">
-                  <h6>Check List</h6>
-                  <div id="checkBox" class="list-group" *ngFor="let item of servicioRecibido.itemChecklistDto">
-                    <p class="list-group-item list-group-item-action checkboxContainer selectStyle">
-                      <mat-checkbox [checked]="item.completo" (change)="updateAvance(item)"></mat-checkbox> {{item.nombreItem}}
-                    </p>
+
+                  <!-- Button trigger modal -->
+                  <button type="button" class="btn selectPrint" data-toggle="modal" data-target="#exampleModal">
+                    Abrir checklist
+                  </button>
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h6 class="modal-title font-weight-bold">CHECKLIST</h6> &nbsp;
+                          <h5>"Selecciona un elemento para ver su descripción"</h5>
+                          <button type="button" style="font-size: 1.2rem !important;" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+
+                        <!-- Cuerpo del checklist -->
+                        <div class="modal-body">
+                          <!-- Progress bar -->
+                          <span style="display: block; padding-bottom: 0.3rem;">
+                            <mat-progress-bar mode="determinate" [value]="avance"></mat-progress-bar>
+                          </span>
+                          <!-- Lista de items del checklist -->
+                          <div id="checkBox" class="list-group">
+
+                            <cdk-accordion *ngFor="let item of servicioRecibido.itemChecklistDto; let index = index">
+                              
+                                <cdk-accordion-item
+                            
+                                  #accordionItem="cdkAccordionItem"
+                                  
+                                  role="button"
+                                  tabindex="0"
+                                  [attr.id]="'accordion-header-' + index"
+                                  [attr.aria-expanded]="accordionItem.expanded"
+                                  [attr.aria-controls]="'accordion-body-' + index">
+                                  <div (click)="accordionItem.toggle()">
+
+                                    <!-- Header del item del checklist -->
+                                    <p class="list-group-item list-group-item-action checkboxContainer selectStyle">
+                                      <mat-checkbox [checked]="item.completo" 
+                                      (change)="updateAvance(item)" (click)="$event.stopPropagation()"></mat-checkbox>
+                                      <span>
+                                        {{item.nombreItem}} &nbsp;
+                                        <span style="font-style: oblique; color: #f44336;">
+                                          {{item.notificado ? '"Se considera notificado"' : ''}}
+                                        </span>
+                                      </span>
+                                    </p>
+                                  </div>
+
+                                  <!-- Cuerpo o región del item del checklist -->
+                                  <div
+                                    role="region"
+                                    class="cdk-accordion-content-body"
+                                    [style.display]="accordionItem.expanded ? '' : 'none'"
+                                    [attr.id]="'accordion-body-' + index"
+                                    [attr.aria-labelledby]="'accordion-header-' + index">
+                                    <!-- Contenido del item del checklist-->
+                                    <span>
+                                        <p>Se ha iniciado el: {{ item.inicioEstimado | date:'dd/MM/yyyy' }}</p>
+                                        <p>Se pensó terminar el: {{ item.finEstimado | date:'dd/MM/yyyy' }}</p>
+                                        <!-- 
+                                          <p>Ejecución Real: {{ item.ejecucion_real | date:'dd/MM/yyyy' }}</p> 
+                                          La ejecución real será igual que la del inicio estimado
+                                        -->
+                                        <!-- El fin real será igual al momento en que el usuario seleccione completar -->
+                                        <p>Fin Real: {{ item.finReal | date:'dd/MM/yyyy' }}</p>
+                                        <!-- El valor de la tasa se mostrará siempre que sea mayor a cero -->
+                                        <span *ngIf="item.valorTasa > 0">
+                                          <p>Valor Tasa: {{ item.valorTasa }}</p>
+                                          <p>Hojas: {{ item.hojas }}</p>
+                                        </span>
+                                        <p>Responsable: {{ item.responsable }}</p>
+                                        <p>URL Comprobante: {{ item.urlComprobante }}</p>
+                                        <!-- Zona para marcar al item como notificado -->
+                                        <p>
+                                          <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn" (click)="updateNotificado(item)">
+                                            <span>{{ item.notificado? 'Notificado' : 'Notificar'}}</span>
+                                          </mat-chip-option>
+                                        </p>
+                                    </span>
+                                  </div>
+                                </cdk-accordion-item>
+                              
+                            </cdk-accordion>
+
+                            
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                          <button type="button" class="btn selectPrint">Aceptar</button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+
                 </div>
               </div>
             </div>
-
+            
           </div>
-
         </div>
       </div>
 
