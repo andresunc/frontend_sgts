@@ -40,6 +40,17 @@ export class PrintServicioComponent {
     item.notificado = !item.notificado;
   }
 
+  // Función para detectar cambios en el listado de items
+  modified: boolean = false;
+  indicesCambiados: number[] = [];
+  getChange(index: number) {
+    // Verifica si el índice ya está en el array
+    const indexEncontrado = this.indicesCambiados.indexOf(index);
+    indexEncontrado === -1 ? this.indicesCambiados.push(index) : this.indicesCambiados.splice(indexEncontrado, 1);
+    // Verificar si hay cambios finalmente
+    this.modified = this.indicesCambiados.length > 0;
+  }
+
   private getContactoEmpresa() {
     this.printService.getContactoEmpresa(this.servicioRecibido.idCliente).subscribe(
       (data) => {

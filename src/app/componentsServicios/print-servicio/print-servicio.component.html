@@ -26,7 +26,7 @@
             <div class="col-md-4 mb-3 p-0">
               <div class="card p-0">
                 <div mat-button [matMenuTriggerFor]="menu" class="paddingBody selectPrint">
-                  <h6 class="card-title textCenter">
+                  <h6 class="card-title textCenter btnChecklist">
                       SERVICIO N° {{ servicioRecibido.idServicio }}
                       <mat-icon class="mat-icon">keyboard_arrow_down</mat-icon>
                   </h6>
@@ -64,7 +64,7 @@
                   <h6 class="card-title">{{avance === 0 ? 'Aún no se ha comenzado a trabajar' : avance === 100 ? 'Servicio finalizado':'Avance'}}</h6>
                   <div class="progress" role="progressbar" [attr.aria-valuenow]="avance" aria-valuemin="0" aria-valuemax="100">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="avance">
-                      {{ avance === 100 ? 'Completo' : avance + '%'}}
+                      <span>{{ avance === 100 ? 'Completo' : avance + '%'}}</span>
                     </div>
                   </div>
                 </div>
@@ -134,32 +134,40 @@
           <div class="row">
 
             <div class="col-md-12 mb-3 p-0">
-              <div class="card" style="align-items: center;">
+              <div class="card custom-background" style="align-items: center;">
                 <div class="card-body paddingBody">
 
                   <!-- Button trigger modal -->
-                  <button type="button" class="btn selectPrint" data-toggle="modal" data-target="#exampleModal">
-                    Abrir checklist
+                  <button type="button" class="btn selectPrint contentChecklist" data-toggle="modal" data-target="#checklistModal">
+                    <h6 class="card-title textCenter btnChecklist">
+                      <mat-icon class="mat-icon">checklist</mat-icon>
+                      ABRIR CHECKLIST
+                    </h6>
                   </button>
-                  <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+
+                  <!-- Modal del Checklist -->
+                  <div class="modal fade" id="checklistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h6 class="modal-title font-weight-bold">CHECKLIST</h6> &nbsp;
-                          <h5>"Selecciona un elemento para ver su descripción"</h5>
-                          <button type="button" style="font-size: 1.2rem !important;" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                          <div style="display: block;">
+                            <h6 class="modal-title font-weight-bold">CHECKLIST</h6>
+                            <p>Seleccioná un elemento para ver su descripción</p>
+                          </div>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <div aria-hidden="true">&times;</div>
                           </button>
                         </div>
 
                         <!-- Cuerpo del checklist -->
                         <div class="modal-body">
+
                           <!-- Progress bar -->
                           <span style="display: block; padding-bottom: 0.3rem;">
                             <mat-progress-bar mode="determinate" [value]="avance"></mat-progress-bar>
                           </span>
+
                           <!-- Lista de items del checklist -->
                           <div id="checkBox" class="list-group">
 
@@ -168,18 +176,16 @@
                                 <cdk-accordion-item
                             
                                   #accordionItem="cdkAccordionItem"
-                                  
                                   role="button"
                                   tabindex="0"
                                   [attr.id]="'accordion-header-' + index"
                                   [attr.aria-expanded]="accordionItem.expanded"
                                   [attr.aria-controls]="'accordion-body-' + index">
                                   <div (click)="accordionItem.toggle()">
-
-                                    <!-- Header del item del checklist -->
+                                    <!-- Rotulo del item del checklist -->
                                     <p class="list-group-item list-group-item-action checkboxContainer selectStyle">
                                       <mat-checkbox [checked]="item.completo" 
-                                      (change)="updateAvance(item)" (click)="$event.stopPropagation()"></mat-checkbox>
+                                      (change)="updateAvance(item); getChange(index)" (click)="$event.stopPropagation()"></mat-checkbox>
                                       <span>
                                         {{item.nombreItem}} &nbsp;
                                         <span style="font-style: oblique; color: #f44336;">
@@ -215,10 +221,11 @@
                                         <p>URL Comprobante: {{ item.urlComprobante }}</p>
                                         <!-- Zona para marcar al item como notificado -->
                                         <p>
-                                          <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn" (click)="updateNotificado(item)">
+                                          <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn" (click)="updateNotificado(item); getChange(index+1)">
                                             <span>{{ item.notificado? 'Notificado' : 'Notificar'}}</span>
                                           </mat-chip-option>
                                         </p>
+                                        
                                     </span>
                                   </div>
                                 </cdk-accordion-item>
@@ -228,9 +235,13 @@
                             
                           </div>
                         </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                          <button type="button" class="btn selectPrint">Aceptar</button>
+                        <div id="checklist-footer" class="modal-footer">
+                          <button id="btnAddNewItem" type="button" class="btn btn-success" data-dismiss="modal">
+                            <span>+ NUEVO ITEM</span>
+                          </button>
+                          <button id="btnSave" *ngIf="modified" type="button" class="btn">
+                            <mat-icon>save</mat-icon>
+                          </button>
                         </div>
                       </div>
                     </div>

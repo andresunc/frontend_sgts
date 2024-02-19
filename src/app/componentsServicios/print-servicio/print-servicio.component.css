@@ -1,4 +1,4 @@
-* {
+span, p, .mat-icon {
   font-size: 0.8rem;
 }
 
@@ -19,7 +19,8 @@
   justify-content: center;
   align-items: center;
   overflow: auto;
-  
+  scrollbar-width: auto;
+  scrollbar-color: #ddd #ffffff;
 }
 
 #seccionInfoServicio {  
@@ -28,6 +29,8 @@
   width: 100%;
   height: 100%;
   overflow:auto;
+  scrollbar-width: auto;
+  scrollbar-color: #ddd #ffffff;
 }
 
 .container{
@@ -56,6 +59,7 @@
 }
 
 .card-title {
+  font-size: 0.8rem;
   margin: 0 auto;
 }
 
@@ -70,6 +74,7 @@
 .selectPrint:hover {
   color: #673ab7;
   background: #ffd740;
+  box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
 }
 .mat-icon {
   height: auto;
@@ -115,11 +120,11 @@
 }
 
 .selectStyle:hover {
+  background-color: #7f45e40a;
   background: #ddd;
 }
 
 .custom-background{
-
   background-color: #7f45e40a;
 }
 
@@ -142,13 +147,13 @@
 .btnChecklist {
   display: flex;
   align-items: center;
-  font-size: 1rem;
-  .mat-icon {
-    font-size: 1rem;
-  }
-  * {
-    align-self: center;
-  }
+  cursor: pointer;
+}
+
+.contentChecklist {
+  box-shadow: 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
+  color: #464545;
+  transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
 }
 
 .btn-primary {
@@ -172,4 +177,29 @@
   p {
     margin-bottom: 0.1rem; /* agrego un interlineado entre los párrafos */
   }
+}
+
+.modal-body {
+  max-height: 23rem;
+  overflow: auto;
+  scrollbar-width: auto;
+  scrollbar-color: #ddd #ffffff;
+}
+
+#checklist-footer > * {
+  display: flex;
+  mat-icon {
+    font-size: 1.2rem;
+  }
+}
+
+#btnSave {
+  background-color: #DFEEEE;
+  background: #DFEEEE;
+  transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
+}
+#btnSave:hover {
+  color: #673ab7;
+  background: #ffd740;
+  box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
 }
