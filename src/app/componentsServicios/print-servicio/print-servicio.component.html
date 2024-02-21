@@ -32,7 +32,7 @@
                   </h6>
                 </div>
                 <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
-                  <button mat-menu-item><span>Editar</span></button>
+                  <button mat-menu-item (click)="editItem()"><span>Editar</span></button>
                   <button mat-menu-item><span>Eliminar</span></button>
                 </mat-menu>
               </div>
@@ -43,7 +43,7 @@
           <div class="row">
 
             <div class="col-md-12 mb-3 p-0">
-              <div class="card">
+              <div class="card editable">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">
                     <span class="mr-3">Cliente: {{ servicioRecibido.cliente }}</span>
@@ -76,7 +76,7 @@
           <div class="row">
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card selectStyle">
+              <div class="card editable">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Tipo de servicio</h6>
                   <p class="card-text">{{ servicioRecibido.tipo }}</p>
@@ -85,7 +85,7 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card selectStyle">
+              <div class="card editable">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Estado</h6>
                   <p class="card-text" style="color: #673ab7;">{{ servicioRecibido.estado }}</p>
@@ -94,7 +94,7 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card selectStyle">
+              <div class="card editable">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Recordatorio</h6>
                   <span style="display: flex;">
@@ -107,7 +107,7 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card selectStyle">
+              <div class="card editable">
                 <div class="card-body paddingBody textCenter">
                   <h6 class="card-title">Se ha presupuestado</h6>
                   <p class="card-text">{{"$ "+servicioRecibido.total_presupuestado}}</p>
@@ -120,7 +120,7 @@
           <div class="row" >
 
             <div class="col-md-12 mb-3 p-0">
-              <div class="card custom-background">
+              <div class="card custom-background editable">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Comentario</h6>
                   <p style="font-style: oblique;" class="card-text">{{servicioRecibido.comentario}}</p>
@@ -173,59 +173,57 @@
 
                             <cdk-accordion *ngFor="let item of servicioRecibido.itemChecklistDto; let index = index">
                               
-                                <cdk-accordion-item
-                            
-                                  #accordionItem="cdkAccordionItem"
-                                  role="button"
-                                  tabindex="0"
-                                  [attr.id]="'accordion-header-' + index"
-                                  [attr.aria-expanded]="accordionItem.expanded"
-                                  [attr.aria-controls]="'accordion-body-' + index">
+                                <cdk-accordion-item #accordionItem="cdkAccordionItem" role="button" tabindex="0" [attr.id]="'accordion-header-' + index"
+                                  [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + index">
                                   <div (click)="accordionItem.toggle()">
                                     <!-- Rotulo del item del checklist -->
-                                    <p class="list-group-item list-group-item-action checkboxContainer selectStyle">
-                                      <mat-checkbox [checked]="item.completo" 
-                                      (change)="updateAvance(item); getChange(index)" (click)="$event.stopPropagation()"></mat-checkbox>
+                                    <p class="list-group-item list-group-item-action checkboxContainer selectStyle rowDetail">
                                       <span>
-                                        {{item.nombreItem}} &nbsp;
-                                        <span style="font-style: oblique; color: #f44336;">
-                                          {{item.notificado ? '"Se considera notificado"' : ''}}
+                                        <mat-checkbox [checked]="item.completo" (change)="updateAvance(item); getChange(index)"
+                                          (click)="$event.stopPropagation()"></mat-checkbox>
+                                        <span>
+                                          {{item.nombreItem}} &nbsp;
+                                          <span style="font-style: oblique; color: #f44336;">
+                                            {{item.notificado ? '"Se considera notificado"' : ''}}
+                                          </span>
                                         </span>
+                                      </span>
+                                      <span *ngIf="editable">
+                                        <mat-icon matTooltip="editar" class="btnAdmin edit-btn">edit</mat-icon>
+                                        <mat-icon matTooltip="eliminar" class="btnAdmin delete-btn">delete</mat-icon>
                                       </span>
                                     </p>
                                   </div>
-
+                                
                                   <!-- Cuerpo o región del item del checklist -->
-                                  <div
-                                    role="region"
-                                    class="cdk-accordion-content-body"
-                                    [style.display]="accordionItem.expanded ? '' : 'none'"
-                                    [attr.id]="'accordion-body-' + index"
-                                    [attr.aria-labelledby]="'accordion-header-' + index">
+                                  <div role="region" class="cdk-accordion-content-body" [style.display]="accordionItem.expanded ? '' : 'none'"
+                                    [attr.id]="'accordion-body-' + index" [attr.aria-labelledby]="'accordion-header-' + index">
                                     <!-- Contenido del item del checklist-->
                                     <span>
-                                        <p>Se ha iniciado el: {{ item.inicioEstimado | date:'dd/MM/yyyy' }}</p>
-                                        <p>Se pensó terminar el: {{ item.finEstimado | date:'dd/MM/yyyy' }}</p>
-                                        <!-- 
-                                          <p>Ejecución Real: {{ item.ejecucion_real | date:'dd/MM/yyyy' }}</p> 
-                                          La ejecución real será igual que la del inicio estimado
-                                        -->
-                                        <!-- El fin real será igual al momento en que el usuario seleccione completar -->
-                                        <p>Fin Real: {{ item.finReal | date:'dd/MM/yyyy' }}</p>
-                                        <!-- El valor de la tasa se mostrará siempre que sea mayor a cero -->
-                                        <span *ngIf="item.valorTasa > 0">
-                                          <p>Valor Tasa: {{ item.valorTasa }}</p>
-                                          <p>Hojas: {{ item.hojas }}</p>
-                                        </span>
-                                        <p>Responsable: {{ item.responsable }}</p>
-                                        <p>URL Comprobante: {{ item.urlComprobante }}</p>
-                                        <!-- Zona para marcar al item como notificado -->
-                                        <p>
-                                          <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn" (click)="updateNotificado(item); getChange(index+1)">
-                                            <span>{{ item.notificado? 'Notificado' : 'Notificar'}}</span>
-                                          </mat-chip-option>
-                                        </p>
-                                        
+                                      <p>
+                                        Se ha iniciado el: {{ item.inicioEstimado | date:'dd/MM/yyyy' }}
+                                      </p>
+                                      <p>Se pensó terminar el: {{ item.finEstimado | date:'dd/MM/yyyy' }}</p>
+                                      <!-- 
+                                      <p>Ejecución Real: {{ item.ejecucion_real | date:'dd/MM/yyyy' }}</p> 
+                                      La ejecución real será igual que la del inicio estimado
+                                      -->
+                                      <!-- El fin real será igual al momento en que el usuario seleccione completar -->
+                                      <p>Fin Real: {{ item.finReal | date:'dd/MM/yyyy' }}</p>
+                                      <!-- El valor de la tasa se mostrará siempre que sea mayor a cero -->
+                                      <span *ngIf="item.valorTasa > 0">
+                                        <p>Valor Tasa: {{ item.valorTasa }}</p>
+                                        <p>Hojas: {{ item.hojas }}</p>
+                                      </span>
+                                      <p>Responsable: {{ item.responsable }}</p>
+                                      <p>URL Comprobante: {{ item.urlComprobante }}</p>
+                                      <!-- Zona para marcar al item como notificado -->
+                                      <p>
+                                        <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
+                                          (click)="updateNotificado(item); getChange(index+1)">
+                                          <span>{{ item.notificado? 'Notificado' : 'Notificar'}}</span>
+                                        </mat-chip-option>
+                                      </p>
                                     </span>
                                   </div>
                                 </cdk-accordion-item>

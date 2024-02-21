@@ -38,3 +38,12 @@ mat-divider {
     background-color: #ccc;
     /* Color del divider */
 }
+.edit-btn:hover {
+    font-size: 1.2rem !important;
+    color: darkblue;
+}
+
+.delete-btn:hover {
+    font-size: 1.2rem !important;
+    color: darkred;
+}
