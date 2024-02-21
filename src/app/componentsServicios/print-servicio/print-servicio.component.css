@@ -124,6 +124,11 @@ span, p, .mat-icon {
   border-color: darkblue;
 }
 
+.rowChecklist:hover {
+  background-color: #7f45e40a;
+  cursor: pointer;
+}
+
 .custom-background{
   background-color: #7f45e40a;
 }
@@ -208,11 +213,4 @@ span, p, .mat-icon {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.btnAdmin {
-  /* Estilos comunes para ambos botones */
-  font-size: 1.1rem;
-  cursor: pointer;
-  margin: 0 0.7rem;
 }

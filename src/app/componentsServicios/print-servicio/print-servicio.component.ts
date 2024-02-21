@@ -43,7 +43,7 @@ export class PrintServicioComponent {
 
   editable: boolean = false;
   // Función para activar la edición de los items
-  editItem() {
+  editarServicio() {
     this.editable = !this.editable;
     var items = document.getElementsByClassName('editable');
     for (let element of Array.from(items)) {
