@@ -5,6 +5,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { ContactoEmpesa } from 'src/app/models/ContactoEmpresa';
 import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
+import { PopupService } from 'src/app/services/ServiceSupports/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PrintService } from 'src/app/services/print.service';
 
@@ -22,7 +23,7 @@ export class PrintServicioComponent {
   contactoEmpresa: ContactoEmpesa[] = [];
 
   constructor(private dataShared: DataSharedService, public dialog: MatDialog,
-    private svManager: ManagerService,private printService: PrintService) {
+    private svManager: ManagerService,private printService: PrintService, private _snackBar: PopupService) {
     this.servicioRecibido = this.dataShared.getSharedObject();
     this.title = this.title + this.servicioRecibido.cliente + ' | ' + this.servicioRecibido.tipo;
     this.avance = this.svManager.calcularAvance(this.servicioRecibido);
@@ -38,6 +39,21 @@ export class PrintServicioComponent {
 
   updateNotificado(item: any) {
     item.notificado = !item.notificado;
+  }
+
+  editable: boolean = false;
+  // Función para activar la edición de los items
+  editItem() {
+    this.editable = !this.editable;
+    var items = document.getElementsByClassName('editable');
+    for (let element of Array.from(items)) {
+      if (element.classList.contains("selectStyle")) {
+        element.classList.remove("selectStyle");
+      } else {
+        element.classList.add("selectStyle");
+      }
+    }
+    if (this.editable) this._snackBar.warnSnackBar('Modo edición activado', 'Ok', 'edit');
   }
 
   // Función para detectar cambios en el listado de items

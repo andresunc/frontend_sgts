@@ -34,12 +34,14 @@ export class PopupService {
     });
   }
 
-  warnSnackBar(mensaje?: string) {
+  warnSnackBar(mensaje?: string, action?: string, icon?: string) {
+    icon = icon || 'warning';
+    action = action || 'Reintentar';
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
       data: {
         msj: mensaje,
-        btn: 'Reintentar',
-        icon: 'warning',
+        btn: action,
+        icon: icon,
         snackBar: this._snackBar,
         color: 'text-warning'
       },
