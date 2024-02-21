@@ -9,7 +9,7 @@ export class PopupService {
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  okSnackBar(mensaje?: string) {
+  okSnackBar(mensaje: string) {
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
       data: {
         msj: mensaje,
@@ -22,7 +22,7 @@ export class PopupService {
     });
   }
 
-  errorSnackBar(mensaje?: string) {
+  errorSnackBar(mensaje: string) {
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
       data: {
         msj: mensaje,
@@ -34,7 +34,7 @@ export class PopupService {
     });
   }
 
-  warnSnackBar(mensaje?: string, action?: string, icon?: string) {
+  warnSnackBar(mensaje: string, action?: string, icon?: string) {
     icon = icon || 'warning';
     action = action || 'Reintentar';
     this._snackBar.openFromComponent(CustomSnackbarComponent, {

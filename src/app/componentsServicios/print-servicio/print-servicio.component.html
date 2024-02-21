@@ -32,7 +32,7 @@
                   </h6>
                 </div>
                 <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
-                  <button mat-menu-item (click)="editItem()"><span>Editar</span></button>
+                  <button mat-menu-item (click)="editarServicio()"><span>Editar</span></button>
                   <button mat-menu-item><span>Eliminar</span></button>
                 </mat-menu>
               </div>
@@ -177,7 +177,7 @@
                                   [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + index">
                                   <div (click)="accordionItem.toggle()">
                                     <!-- Rotulo del item del checklist -->
-                                    <p class="list-group-item list-group-item-action checkboxContainer selectStyle rowDetail">
+                                    <p class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
                                       <span>
                                         <mat-checkbox [checked]="item.completo" (change)="updateAvance(item); getChange(index)"
                                           (click)="$event.stopPropagation()"></mat-checkbox>
@@ -189,7 +189,6 @@
                                         </span>
                                       </span>
                                       <span *ngIf="editable">
-                                        <mat-icon matTooltip="editar" class="btnAdmin edit-btn">edit</mat-icon>
                                         <mat-icon matTooltip="eliminar" class="btnAdmin delete-btn">delete</mat-icon>
                                       </span>
                                     </p>
