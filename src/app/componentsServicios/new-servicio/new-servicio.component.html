@@ -2,5 +2,146 @@
 <div class="moduleContainer">
     <app-title-bar [titulo]="title"></app-title-bar>
     <div class="childContainer">
+        <mat-tab-group animationDuration="1000ms" [(selectedIndex)]="selectedTabIndex"
+            (selectedTabChange)="tabChanged($event)" dynamicHeight>
+            <form [formGroup]="servicioForm">
+                <!-- Tab de Servicio -->
+                <mat-tab label="Servicio">
+                    <div class="formContainer">
+                        <div class="formContent">
+                            <h2>SERVICIO Y ESTADO</h2>
+                            <div class="row p-5">
+                                <div class="col-md-6">
+                                    <h5>Tipo de servicio que se va a prestar</h5>
+                                    <mat-form-field>
+                                        <mat-label>Tipo de Servicio</mat-label>
+                                        <mat-select formControlName="tipo" placeholder="Seleccionar tipo">
+                                            <mat-option value="opcion1">Opción 1</mat-option>
+                                            <mat-option value="opcion2">Opción 2</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <h5>En que estado se declara el servicio</h5>
+                                    <mat-form-field>
+                                        <mat-label>Estado del Servicio</mat-label>
+                                        <mat-select formControlName="estado"
+                                            placeholder="Seleccionar estado del servicio">
+                                            <!-- Agregar opciones para el estado del servicio -->
+                                            <mat-option value="activo">Activo</mat-option>
+                                            <mat-option value="inactivo">Inactivo</mat-option>
+                                            <!-- Agregar más opciones según sea necesario -->
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <mat-icon color="primary">
+                                radio_button_checked
+                            </mat-icon>
+                            <mat-icon color="primary" (click)="goToNextTab(1)">
+                                radio_button_unchecked
+                            </mat-icon>
+                            <mat-icon color="primary" (click)="goToNextTab(2)">
+                                radio_button_unchecked
+                            </mat-icon>
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <!-- Tab de Prestación a la empresa -->
+                <mat-tab label="Prestación a la empresa">
+                    <div class="formContainer">
+                        <div class="formContent">
+                            <h2>DETALLES DE LA ASIGNACIÓN DEL SERVICIO</h2>
+                            <div class="row p-5">
+                                <div class="col-md-4">
+                                    <h5>Personal que presta el servicio</h5>
+                                    <mat-form-field>
+                                        <mat-label>Responsable</mat-label>
+                                        <mat-select formControlName="responsable" placeholder="Seleccionar responsable">
+                                            <!-- Agregar opciones para el responsable -->
+                                            <mat-option value="responsable1">Responsable 1</mat-option>
+                                            <mat-option value="responsable2">Responsable 2</mat-option>
+                                            <!-- Agregar más opciones según sea necesario -->
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <h5>Empresa a la que se le presta el servicio</h5>
+                                    <mat-form-field>
+                                        <mat-label>Empresa</mat-label>
+                                        <mat-select formControlName="empresa" placeholder="Seleccionar empresa">
+                                            <!-- Agregar opciones para la empresa -->
+                                            <mat-option value="empresa1">Empresa 1</mat-option>
+                                            <mat-option value="empresa2">Empresa 2</mat-option>
+                                            <!-- Agregar más opciones según sea necesario -->
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <h5>Presupuesto del servicio</h5>
+                                    <mat-form-field formControlName="presupuesto">
+                                        <mat-label>$ Presupesto</mat-label>
+                                        <input matInput formControlName="monto" placeholder="Ej: 100.0" type="text"
+                                            inputmode="numeric"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
+                                        <mat-error *ngIf="servicioForm.get('monto')?.hasError('pattern')">
+                                            Ejemplo .
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+
+                            <mat-icon color="primary" (click)="goToNextTab(0)">
+                                radio_button_unchecked
+                            </mat-icon>
+                            <mat-icon color="primary">
+                                radio_button_checked
+                            </mat-icon>
+                            <mat-icon color="primary" (click)="goToNextTab(2)">
+                                radio_button_unchecked
+                            </mat-icon>
+
+                        </div>
+                    </div>
+                </mat-tab>
+
+                <!-- Tab de Checklist -->
+                <mat-tab label="Checklist">
+                    <div class="formContainer">
+                        <div class="formContent">
+                            <h2>CREACIÓN DEL CHECKLIST</h2>
+                            <div class="row p-5">
+                                <div class="col-md-12">
+                                    <p> Lugar para insertar el Checklist </p>
+                                </div>
+                            </div>
+                            <button class="p-2" mat-raised-button color="primary" [disabled]="!servicioForm.valid">
+                                {{ servicioForm.valid ? 'Guardar' : 'Completar campos'}}
+                            </button>
+                            <mat-error class="p-2" style="font-size: 0.9rem; margin-top: 0.5rem"
+                                *ngIf="!servicioForm.valid">
+                                <span>Hay campos requeridos* incompletos</span>
+                            </mat-error>
+                            <div style="padding-top: 1rem;">
+                                <mat-icon (click)="goToNextTab(0)">
+                                    radio_button_unchecked
+                                </mat-icon>
+                                <mat-icon color="primary" (click)="goToNextTab(1)">
+                                    radio_button_unchecked
+                                </mat-icon>
+                                <mat-icon color="primary">
+                                    radio_button_checked
+                                </mat-icon>
+                            </div>
+                        </div>
+
+                    </div>
+                </mat-tab>
+            </form>
+        </mat-tab-group>
     </div>
 </div>

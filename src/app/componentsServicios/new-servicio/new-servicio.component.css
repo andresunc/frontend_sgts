@@ -6,13 +6,57 @@
 
 .childContainer {
     display: flex;
-    margin:auto;
+    margin: auto;
     margin-top: 0.45rem;
     width: 99%;
-    height: calc(97% - 2.8rem); /* Resta el alto de la barra de título */
-    background-color: #ffff;
+    height: calc(97% - 2.8rem);
+    /* Resta el alto de la barra de título */
+    background: linear-gradient(0deg, #f3e5f5, #f3e5f5);
     border-radius: 0.5rem;
     box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     justify-content: center;
     align-items: center;
+}
+
+mat-tab-group {
+    width: 100%;
+    height: 100%;
+}
+
+mat-icon {
+    color: #673ab7;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+mat-icon:hover {
+    color: #512da8;
+    font-size: 1.6rem;
+}
+
+.formContainer {
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    overflow: hidden;
+    scrollbar-width: none;
+    scroll-snap-type: none;
+}
+
+.formContent {
+    text-align: center;
+    align-items: center;
+    .row {
+        scrollbar-width: none;
+    }
+}
+
+h5,
+h2 {
+    color: #673ab7;
+}
+
+h5 {
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-style: oblique;
 }
