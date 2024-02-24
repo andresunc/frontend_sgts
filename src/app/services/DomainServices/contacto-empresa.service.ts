@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
-import { ContactoEmpesa } from 'src/app/models/ContactoEmpresa';
+import { ContactoEmpesa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { UrlBackend } from 'src/app/models/Url';
 
 @Injectable({

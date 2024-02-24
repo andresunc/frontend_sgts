@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Servicios } from 'src/app/models/Servicios';
+import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { DataSharedService } from '../data-shared.service';
 import { Router } from '@angular/router';
 

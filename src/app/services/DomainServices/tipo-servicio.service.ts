@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
-import { TipoServicio } from 'src/app/models/TipoServicio';
+import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { UrlBackend } from 'src/app/models/Url';
 
 @Injectable({

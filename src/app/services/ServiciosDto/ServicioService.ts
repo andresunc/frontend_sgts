@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Servicios } from '../../models/Servicios';
+import { Servicios } from '../../models/DomainModels/Servicios';
 import { HttpClient } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http';
 import { Observable, catchError, tap, throwError } from 'rxjs';

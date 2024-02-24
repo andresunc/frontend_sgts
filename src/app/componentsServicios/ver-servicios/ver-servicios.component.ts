@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Servicios } from 'src/app/models/Servicios';
+import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { takeUntil } from 'rxjs/operators';

@@ -1,31 +1,36 @@
 import { Injectable } from '@angular/core';
 import { TipoServicioService } from './DomainServices/tipo-servicio.service';
 import { EstadosService } from './DomainServices/estados.service';
+import { RecursoDtoService } from './ServiciosDto/recurso-dto.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewServicioService {
 
-  constructor(private estados: EstadosService, private tipo: TipoServicioService) { }
+  constructor(private estado: EstadosService, 
+    private tipo: TipoServicioService, private recurso: RecursoDtoService) { }
 
   /** Este Servicio requiere de los siguientes datos:
-   * Tipo de servicio / GET
-   * Estado del servicio / GET
-   * Recurso gg / GET
-   * Empresa / GET
+   * Tipos de servicio / GET
+   * Estados del servicio / GET
+   * Recursos gg / GET
+   * Empresas / GET
    */
 
   // Tipo de servicios disponibles
   getTipoServicesNotDeleted() {
     return this.tipo.getTipoServicesNotDeleted();
   }
+  
   // Estados de servicios disponibles
   getStatusNotDeleted(){
-    return this.estados.getStatusNotDeleted();
+    return this.estado.getStatusNotDeleted();
   }
 
   // Método para consultar los Recurso gg disponibles
-
+  getRecursos() {
+    return this.recurso.getRecursos();
+  }
 
 }

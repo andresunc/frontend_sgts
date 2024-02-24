@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'; //servicio que permite la navegación entre vistas o componentes en una aplicación Angular.
-import { Estados } from 'src/app/models/Estados';
-import { TipoServicio } from 'src/app/models/TipoServicio';
+import { Estados } from 'src/app/models/DomainModels/Estados';
+import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PreferenciasService } from 'src/app/services/preferencias.service';
 
