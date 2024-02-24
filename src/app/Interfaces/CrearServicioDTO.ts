@@ -1,4 +1,5 @@
 import { HistoricoEstado } from "../models/HistoricoEstado";
+import { ItemChecklist } from "../models/ItemChecklist";
 import { Servicio } from "../models/Servicio";
 import { ServicioEmpresa } from "../models/ServicioEmpresa";
 
@@ -11,4 +12,5 @@ export interface CrearServicioDTO {
   servicio: Servicio;
   historicoEstado: HistoricoEstado;
   servicioEmpresa: ServicioEmpresa;
+  itemChecklist: ItemChecklist[] | null;
 }

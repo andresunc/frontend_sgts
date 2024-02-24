@@ -11,6 +11,8 @@ export class NewServicioComponent implements OnInit {
 
   servicioForm!: FormGroup;
   title: string = "Nuevo Servicio";
+  presupuesto: number = 0.0;
+
 
   constructor(private fb: FormBuilder, private cdr: ChangeDetectorRef) { }
 
@@ -22,6 +24,11 @@ export class NewServicioComponent implements OnInit {
       estado: ['', [Validators.required]],
       responsable: ['', [Validators.required]],
       empresa: ['', [Validators.required]],
+    });
+    // Suscribirse a los cambios en el formulario
+    this.servicioForm.get('monto')?.valueChanges.subscribe((value) => {
+      // Actualizar la variable presupuesto cada vez que cambie el valor del formulario
+      this.presupuesto = parseFloat(value) || 0.0;
     });
   }
 

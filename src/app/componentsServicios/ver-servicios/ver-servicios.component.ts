@@ -5,12 +5,12 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Servicios } from 'src/app/models/Servicios';
-import { ServicioService } from 'src/app/services/ServicioService';
+import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
-import { PopupService } from 'src/app/services/ServiceSupports/popup.service';
+import ManagerService from 'src/app/services/SupportServices/ManagerService';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
 
 @Component({
   selector: 'app-ver-servicios',

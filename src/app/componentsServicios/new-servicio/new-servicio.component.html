@@ -84,9 +84,9 @@
                                 <div class="col-md-4">
                                     <h5>Presupuesto del servicio</h5>
                                     <mat-form-field formControlName="presupuesto">
-                                        <mat-label>$ Presupesto</mat-label>
+                                        <mat-label>$ {{presupuesto | number:'1.2'}}</mat-label>
                                         <input matInput formControlName="monto" placeholder="Ej: 100.0" type="text"
-                                            inputmode="numeric"
+                                            inputmode="numeric" (value)="presupuesto"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
                                         <mat-error *ngIf="servicioForm.get('monto')?.hasError('pattern')">
                                             Ejemplo .

@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { ContactoEmpesa } from 'src/app/models/ContactoEmpresa';
-import ManagerService from 'src/app/services/ServiceSupports/ManagerService';
-import { PopupService } from 'src/app/services/ServiceSupports/popup.service';
+import ManagerService from 'src/app/services/SupportServices/ManagerService';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PrintService } from 'src/app/services/print.service';
 
