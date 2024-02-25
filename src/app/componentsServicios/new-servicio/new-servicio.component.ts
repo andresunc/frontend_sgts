@@ -1,12 +1,11 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Subject, catchError, delay, retryWhen, scan, takeUntil, throwError } from 'rxjs';
+import { Subject, delay, retryWhen, scan, takeUntil } from 'rxjs';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
-import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { NewServicioService } from 'src/app/services/new-servicio.service';
 
 @Component({
@@ -19,13 +18,12 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   servicioForm!: FormGroup;
   title: string = "Nuevo Servicio";
   presupuesto: number = 0.0;
-  tipoServicios: TipoServicio[] = [];
-  estadoServicios: Estado[] = [];
-  recursoGG: RecursoDto[] = [];
-  empresa: EmpresaDto[] = [];
+  tipoServiciosList: TipoServicio[] = [];
+  estadoList: Estado[] = [];
+  recursoList: RecursoDto[] = [];
+  empresaList: EmpresaDto[] = [];
 
-  constructor(private fb: FormBuilder, private dataNewServ: NewServicioService,
-    private _snackBar: PopupService) { }
+  constructor(private fb: FormBuilder, private dataNewServ: NewServicioService) { }
 
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
   private unsubscribe$ = new Subject<void>();
@@ -73,8 +71,8 @@ export class NewServicioComponent implements OnInit, OnDestroy {
           )
         ),
       ).subscribe((data) => {
-        this.tipoServicios = data;
-        console.log(this.tipoServicios);
+        this.tipoServiciosList = data;
+        console.log(this.tipoServiciosList);
       });
 
       // 2 Obtener los estados de los servicios
@@ -94,8 +92,8 @@ export class NewServicioComponent implements OnInit, OnDestroy {
           )
         ),
       ).subscribe((data) => {
-        this.estadoServicios = data;
-        console.log(this.estadoServicios);
+        this.estadoList = data;
+        console.log(this.estadoList);
       });
 
       // 3 Obtener los recursos gg
@@ -115,8 +113,8 @@ export class NewServicioComponent implements OnInit, OnDestroy {
           )
         ),
       ).subscribe((data) => {
-        this.recursoGG = data;
-        console.log(this.recursoGG);
+        this.recursoList = data;
+        console.log(this.recursoList);
       });
 
       // 4 Obtener las empresas
@@ -136,8 +134,8 @@ export class NewServicioComponent implements OnInit, OnDestroy {
           )
         ),
       ).subscribe((data) => {
-        this.empresa = data;
-        console.log(this.empresa);
+        this.empresaList = data;
+        console.log(this.empresaList);
       });
 
     } catch (error) {

@@ -4,6 +4,10 @@
     border-radius: 0.5rem;
 }
 
+* {
+    font-size: 0.8rem;
+}
+
 .childContainer {
     display: flex;
     margin: auto;
@@ -54,9 +58,13 @@ h5,
 h2 {
     color: #673ab7;
 }
+h2 {
+    font-size: 0.9rem !important;
+    font-weight: bold;
+    text-decoration: underline;
+}
 
 h5 {
-    font-size: 0.8rem;
     font-weight: 500;
     font-style: oblique;
     text-decoration: underline;

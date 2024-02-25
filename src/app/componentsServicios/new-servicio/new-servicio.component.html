@@ -6,7 +6,7 @@
             (selectedTabChange)="tabChanged($event)" dynamicHeight>
             <form [formGroup]="servicioForm">
                 <!-- Tab de Servicio -->
-                <mat-tab label="Servicio">
+                <mat-tab label="SERVICIO">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>SERVICIO Y ESTADO</h2>
@@ -16,8 +16,9 @@
                                     <mat-form-field>
                                         <mat-label>Tipo de Servicio</mat-label>
                                         <mat-select formControlName="tipo" placeholder="Seleccionar tipo">
-                                            <mat-option value="opcion1">Opción 1</mat-option>
-                                            <mat-option value="opcion2">Opción 2</mat-option>
+                                            <mat-option *ngFor="let tipo of tipoServiciosList" [value]="tipo">
+                                                <span>{{tipo.tipoServicio}}</span>
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -28,10 +29,9 @@
                                         <mat-label>Estado del Servicio</mat-label>
                                         <mat-select formControlName="estado"
                                             placeholder="Seleccionar estado del servicio">
-                                            <!-- Agregar opciones para el estado del servicio -->
-                                            <mat-option value="activo">Activo</mat-option>
-                                            <mat-option value="inactivo">Inactivo</mat-option>
-                                            <!-- Agregar más opciones según sea necesario -->
+                                            <mat-option *ngFor="let estado of estadoList" [value]="estado">
+                                                <span>{{estado.tipoEstado}}</span>
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -50,7 +50,7 @@
                 </mat-tab>
 
                 <!-- Tab de Prestación a la empresa -->
-                <mat-tab label="Prestación a la empresa">
+                <mat-tab label="PRESTACIÓN A LA EMPRESA">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>DETALLES DE LA ASIGNACIÓN DEL SERVICIO</h2>
@@ -60,10 +60,9 @@
                                     <mat-form-field>
                                         <mat-label>Responsable</mat-label>
                                         <mat-select formControlName="responsable" placeholder="Seleccionar responsable">
-                                            <!-- Agregar opciones para el responsable -->
-                                            <mat-option value="responsable1">Responsable 1</mat-option>
-                                            <mat-option value="responsable2">Responsable 2</mat-option>
-                                            <!-- Agregar más opciones según sea necesario -->
+                                            <mat-option *ngFor="let recurso of recursoList" [value]="recurso">
+                                                <span>{{ recurso.nombre + ' Dni: ' + recurso.dni }}</span>
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -73,10 +72,9 @@
                                     <mat-form-field>
                                         <mat-label>Empresa</mat-label>
                                         <mat-select formControlName="empresa" placeholder="Seleccionar empresa">
-                                            <!-- Agregar opciones para la empresa -->
-                                            <mat-option value="empresa1">Empresa 1</mat-option>
-                                            <mat-option value="empresa2">Empresa 2</mat-option>
-                                            <!-- Agregar más opciones según sea necesario -->
+                                            <mat-option *ngFor="let empresa of empresaList" [value]="empresa">
+                                                <span>{{empresa.cliente + ' Cuit: ' + empresa.cuit}}</span>
+                                            </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
@@ -110,7 +108,7 @@
                 </mat-tab>
 
                 <!-- Tab de Checklist -->
-                <mat-tab label="Checklist">
+                <mat-tab label="CHECKLIST">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>CREACIÓN DEL CHECKLIST</h2>
