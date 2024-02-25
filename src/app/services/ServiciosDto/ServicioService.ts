@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Servicios } from '../models/Servicios';
+import { Servicios } from '../../models/DomainModels/Servicios';
 import { HttpClient } from '@angular/common/http';
 import { HttpParams } from '@angular/common/http';
 import { Observable, catchError, tap, throwError } from 'rxjs';
-import { UrlBackend } from '../models/Url';
-import { PopupService } from './ServiceSupports/popup.service';
+import { UrlBackend } from '../../models/Url';
+import { PopupService } from '../SupportServices/popup.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +17,7 @@ export class ServicioService {
 
   constructor(private http: HttpClient, private _snackBar: PopupService) { }
 
+  // Método para obtener los servicios más recientes
   getTopServices(limit: number): Observable<Servicios[]> {
 
     const params = new HttpParams().set('limit', limit.toString());

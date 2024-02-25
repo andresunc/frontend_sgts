@@ -1,7 +1,6 @@
 body {
     margin: 0;
     padding: 0;
-
 }
 
 /* Estilos para el sidebar */
@@ -12,7 +11,7 @@ body {
     position: fixed;
     top: 0;
     left: 0.17rem;
-    background-color: #eaf3f3f1;
+    background-color: #DFEEEE;
     border-radius: 0.5rem;
     border: 0.15rem solid #46454575;
     padding-top: 0.75rem;

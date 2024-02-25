@@ -1,4 +1,4 @@
-import { ItemChecklistDto } from "./IItemChecklistDto";
+import { ItemChecklistDto } from "../ModelsDto/IItemChecklistDto";
 
 /**
  * Esta clase hace referencia al modelo de datos de ServiciosDTO

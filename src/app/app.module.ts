@@ -15,19 +15,15 @@ import { TitleBarModule } from './componentsShared/title-bar/title-bar.module';
 // Componentes pertenecientes a éste módulo
 import { SidebarComponent } from 'src/app/componentsShared/sidebar/sidebar.component';
 import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
-import { NewServicioComponent } from './componentsServicios/new-servicio/new-servicio.component';
 import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
 import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.component';
 import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
-
-
 
 @NgModule({
   declarations: [
     AppComponent,
     SidebarComponent,
     VerServiciosComponent,
-    NewServicioComponent,
     PrintServicioComponent,
     SpinnerComponent,
     LoginComponent,

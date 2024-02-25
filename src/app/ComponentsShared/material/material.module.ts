@@ -23,6 +23,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {CdkAccordionModule} from '@angular/cdk/accordion';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatTabsModule} from '@angular/material/tabs';
 
 /**
  * Todo componente material se debe importar y exportar
@@ -52,6 +53,7 @@ import {MatChipsModule} from '@angular/material/chips';
     CdkAccordionModule,
     MatSlideToggleModule,
     MatChipsModule,
+    MatTabsModule,
   ],
   exports: [
     CommonModule,
@@ -76,6 +78,7 @@ import {MatChipsModule} from '@angular/material/chips';
     CdkAccordionModule,
     MatSlideToggleModule,
     MatChipsModule,
+    MatTabsModule,
   ]
 })
 export class MaterialModule { }
