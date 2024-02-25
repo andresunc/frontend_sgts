@@ -27,9 +27,9 @@
                                     <h5>En que estado se declara el servicio</h5>
                                     <mat-form-field>
                                         <mat-label>Estado del Servicio</mat-label>
-                                        <mat-select formControlName="estado"
-                                            placeholder="Seleccionar estado del servicio">
-                                            <mat-option *ngFor="let estado of estadoList" [value]="estado">
+                                        <mat-select formControlName="estado" placeholder="Seleccionar estado">
+                                            <mat-option *ngFor="let estado of estadoList" [value]="estado"
+                                                [disabled]="isOptionDisabled(estado)">
                                                 <span>{{estado.tipoEstado}}</span>
                                             </mat-option>
                                         </mat-select>

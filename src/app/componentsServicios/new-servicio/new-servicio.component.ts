@@ -156,4 +156,11 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     this.selectedTabIndex = event.index;
   }
 
+  // Configurar los id de los estados que se permiten seleccionar
+  // Si el id no está en el arreglo, se deshabilita la opción
+  idPermitidos = [1, 2];
+  isOptionDisabled(estado: Estado): boolean {
+  return !this.idPermitidos.includes(estado.idEstado);
+  }
+
 }
