@@ -1,31 +1,29 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
-import { Estado } from 'src/app/models/DomainModels/Estado';
+import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { UrlBackend } from 'src/app/models/Url';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EstadosService {
+export class EmpresaDtoService {
 
   urlBackend = new UrlBackend().getUrlBackend();
-  getStatusNotDeletedUrl = this.urlBackend + '/estado/getAllNotDeleted';
+  private url = this.urlBackend + '/empresaDto/getEmpresas';
 
   constructor(private http: HttpClient) { }
 
-  // Método GET para obtener los estados de servicios no eliminados
-  getStatusNotDeleted(): Observable<Estado[]> {
-
-    return this.http.get<Estado[]>(this.getStatusNotDeletedUrl)
+  getEmpresas(): Observable<EmpresaDto[]> {
+    return this.http.get<EmpresaDto[]>(this.url)
       .pipe(
-        tap(() => {
+        tap((data) => {
+          return data;
         }),
         catchError((error) => {
-          console.error('Error en la solicitud cargarEstados', error);
+          console.error('Error en la solicitud getRecursos', error);
           return throwError(error);
         })
       );
   }
-
 }
