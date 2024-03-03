@@ -2,11 +2,13 @@
 <div class="moduleContainer">
     <app-title-bar [titulo]="title"></app-title-bar>
     <div class="childContainer">
-        <mat-tab-group animationDuration="1000ms" [(selectedIndex)]="selectedTabIndex"
+        <div class="row tabContainer">
+            <mat-tab-group animationDuration="1000ms" [(selectedIndex)]="selectedTabIndex"
             (selectedTabChange)="tabChanged($event)" dynamicHeight>
             <form [formGroup]="servicioForm">
+
                 <!-- Tab de Servicio -->
-                <mat-tab label="SERVICIO">
+                <mat-tab label="Un">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>SERVICIO Y ESTADO</h2>
@@ -15,7 +17,8 @@
                                     <h5>Tipo de servicio que se va a prestar</h5>
                                     <mat-form-field>
                                         <mat-label>Tipo de Servicio</mat-label>
-                                        <mat-select formControlName="tipo" placeholder="Seleccionar tipo">
+                                        <mat-select formControlName="tipo" placeholder="Seleccionar tipo"
+                                        [(ngModel)]="tipoServicioSelected">
                                             <mat-option *ngFor="let tipo of tipoServiciosList" [value]="tipo">
                                                 <span>{{tipo.tipoServicio}}</span>
                                             </mat-option>
@@ -27,30 +30,22 @@
                                     <h5>En que estado se declara el servicio</h5>
                                     <mat-form-field>
                                         <mat-label>Estado del Servicio</mat-label>
-                                        <mat-select formControlName="estado"
-                                            placeholder="Seleccionar estado del servicio">
-                                            <mat-option *ngFor="let estado of estadoList" [value]="estado">
+                                        <mat-select formControlName="estado" placeholder="Seleccionar estado"
+                                        [(ngModel)]="estadoSelected">
+                                            <mat-option *ngFor="let estado of estadoList" [value]="estado"
+                                                [disabled]="isOptionDisabled(estado)">
                                                 <span>{{estado.tipoEstado}}</span>
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
                                 </div>
                             </div>
-                            <mat-icon color="primary">
-                                radio_button_checked
-                            </mat-icon>
-                            <mat-icon color="primary" (click)="goToNextTab(1)">
-                                radio_button_unchecked
-                            </mat-icon>
-                            <mat-icon color="primary" (click)="goToNextTab(2)">
-                                radio_button_unchecked
-                            </mat-icon>
                         </div>
                     </div>
                 </mat-tab>
 
                 <!-- Tab de Prestación a la empresa -->
-                <mat-tab label="PRESTACIÓN A LA EMPRESA">
+                <mat-tab label="Dos">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>DETALLES DE LA ASIGNACIÓN DEL SERVICIO</h2>
@@ -59,7 +54,8 @@
                                     <h5>Personal que presta el servicio</h5>
                                     <mat-form-field>
                                         <mat-label>Responsable</mat-label>
-                                        <mat-select formControlName="responsable" placeholder="Seleccionar responsable">
+                                        <mat-select formControlName="responsable" placeholder="Seleccionar responsable"
+                                        [(ngModel)]="recursoSelected">
                                             <mat-option *ngFor="let recurso of recursoList" [value]="recurso">
                                                 <span>{{ recurso.nombre + ' Dni: ' + recurso.dni }}</span>
                                             </mat-option>
@@ -71,7 +67,8 @@
                                     <h5>Empresa a la que se le presta el servicio</h5>
                                     <mat-form-field>
                                         <mat-label>Empresa</mat-label>
-                                        <mat-select formControlName="empresa" placeholder="Seleccionar empresa">
+                                        <mat-select formControlName="empresa" placeholder="Seleccionar empresa"
+                                        [(ngModel)]="empresaSelected">
                                             <mat-option *ngFor="let empresa of empresaList" [value]="empresa">
                                                 <span>{{empresa.cliente + ' Cuit: ' + empresa.cuit}}</span>
                                             </mat-option>
@@ -84,31 +81,20 @@
                                     <mat-form-field>
                                         <mat-label>$ {{presupuesto | number:'1.2'}}</mat-label>
                                         <input matInput formControlName="monto" placeholder="Ej: 100.0" type="text"
-                                            inputmode="numeric" (value)="presupuesto"
-                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
+                                            inputmode="numeric" (value)="presupuesto" [(ngModel)]="presupuestoSelected"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '');" required>
                                         <mat-error *ngIf="servicioForm.get('monto')?.hasError('pattern')">
                                             Ejemplo .
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
-
-                            <mat-icon color="primary" (click)="goToNextTab(0)">
-                                radio_button_unchecked
-                            </mat-icon>
-                            <mat-icon color="primary">
-                                radio_button_checked
-                            </mat-icon>
-                            <mat-icon color="primary" (click)="goToNextTab(2)">
-                                radio_button_unchecked
-                            </mat-icon>
-
                         </div>
                     </div>
                 </mat-tab>
 
                 <!-- Tab de Checklist -->
-                <mat-tab label="CHECKLIST">
+                <mat-tab label="Tres">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>CREACIÓN DEL CHECKLIST</h2>
@@ -117,29 +103,65 @@
                                     <p> Lugar para insertar el Checklist </p>
                                 </div>
                             </div>
-                            <button class="p-2" mat-raised-button color="primary" [disabled]="!servicioForm.valid">
+                        </div>
+
+                    </div>
+                </mat-tab>
+
+                <!-- Tab del RESUMEN -->
+                <mat-tab label="Guardar">
+                    <div class="formContainer">
+                        <div class="formContent">
+                            <h2>RESUMEN</h2>
+                            <div class="row" style="min-height: 10rem; align-items: center; margin: 0 auto;">
+                                <div class="col-md-4">
+                                    <h5>Datos del cliente:</h5>
+                                    <mat-card class="cardResume">
+                                        <span [class]="getColor(empresaSelected)">{{ 'Empresa: ' + (empresaSelected ? empresaSelected.cliente + ' / Cuit: ' + empresaSelected.cuit : '*') }}</span>
+                                        <span [class]="getColor(empresaSelected)">{{ 'Rubro: ' + (empresaSelected ? empresaSelected.rubro + ' / Riesgo: ' + empresaSelected.riesgo : '*') }}</span>
+                                        <span [class]="getColor(empresaSelected)">{{ 'Ubicación: ' + (empresaSelected ? empresaSelected.direccion : '*') }}</span>
+                                    </mat-card>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>Resumen del servicio:</h5>
+                                    <mat-card class="cardResume">
+                                        <span [class]="getColor(tipoServicioSelected)">{{ 'Tipo de servicio: ' + (tipoServicioSelected ? tipoServicioSelected.tipoServicio : '*')}}</span>
+                                        <span [class]="getColor(estadoSelected)">{{ 'Estado actual: ' + (estadoSelected ? estadoSelected.tipoEstado : '*')}}</span>
+                                        <span [class]="getColor(presupuestoSelected)">Presupuesto: {{(presupuestoSelected ? '$'+(presupuestoSelected | number:'1.2') : '*')}}</span>
+                                    </mat-card>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>Datos del Responsable:</h5>
+                                    <mat-card class="cardResume">
+                                        <ng-container>
+                                            <span [class]="getColor(recursoSelected)">{{ 'Responsable: ' + (recursoSelected ? recursoSelected.nombre + ' ' +
+                                                recursoSelected.apellido : '*')}}</span>
+                                            <span [class]="getColor(recursoSelected)">{{ 'Rol: ' + (recursoSelected ? recursoSelected.rol : '*')}}</span>
+                                            <span [class]="getColor(recursoSelected)">{{ 'DNI: ' + (recursoSelected ? recursoSelected.dni : '*')}}</span>
+                                        </ng-container>
+                                    </mat-card>
+                                </div>
+                            </div>
+                            <button id="btnSave" mat-raised-button color="primary" [disabled]="!servicioForm.valid">
                                 {{ servicioForm.valid ? 'Guardar' : 'Completar campos'}}
                             </button>
                             <mat-error class="p-2" style="font-size: 0.9rem; margin-top: 0.5rem"
                                 *ngIf="!servicioForm.valid">
                                 <span>Hay campos requeridos* incompletos</span>
                             </mat-error>
-                            <div style="padding-top: 1rem;">
-                                <mat-icon (click)="goToNextTab(0)">
-                                    radio_button_unchecked
-                                </mat-icon>
-                                <mat-icon color="primary" (click)="goToNextTab(1)">
-                                    radio_button_unchecked
-                                </mat-icon>
-                                <mat-icon color="primary">
-                                    radio_button_checked
-                                </mat-icon>
-                            </div>
                         </div>
 
                     </div>
                 </mat-tab>
             </form>
-        </mat-tab-group>
+            </mat-tab-group>
+            <!-- Navegación entre pestañas -->
+            <div>
+                <button mat-button (click)="goToNextTab(0)" [disabled]="selectedTabIndex === 0">Tab 1</button>
+                <button mat-button (click)="goToNextTab(1)" [disabled]="selectedTabIndex === 1">Tab 2</button>
+                <button mat-button (click)="goToNextTab(2)" [disabled]="selectedTabIndex === 2">Tab 3</button>
+                <button mat-button (click)="goToNextTab(3)" [disabled]="selectedTabIndex === 3">Guardar</button>
+            </div>
+        </div>
     </div>
 </div>

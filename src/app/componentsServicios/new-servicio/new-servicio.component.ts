@@ -23,6 +23,12 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   recursoList: RecursoDto[] = [];
   empresaList: EmpresaDto[] = [];
 
+  tipoServicioSelected?: TipoServicio;
+  estadoSelected?: Estado;
+  recursoSelected?: RecursoDto;
+  empresaSelected?: EmpresaDto;
+  presupuestoSelected?: number;
+
   constructor(private fb: FormBuilder, private dataNewServ: NewServicioService) { }
 
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
@@ -154,6 +160,17 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   tabChanged(event: MatTabChangeEvent) {
     // Actualizar el índice del tab seleccionado
     this.selectedTabIndex = event.index;
+  }
+
+  getColor(entity: any): string {
+    return (entity === undefined) ? 'text-danger' : 'none';
+  }
+
+  // Configurar los id de los estados que se permiten seleccionar
+  // Si el id no está en el arreglo, se deshabilita la opción
+  idPermitidos = [1, 2];
+  isOptionDisabled(estado: Estado): boolean {
+  return !this.idPermitidos.includes(estado.idEstado);
   }
 
 }
