@@ -1,18 +1,37 @@
 <!-- 
 ** app-component es el componente madre que va a contener a los demás componentes para renderizarse.
 -->
+<mat-drawer-container class="app-cajon" autosize>
+
+    <mat-drawer #drawer mode="side">
+        <!-- Sidebar componente-->
+        <div class="cajon-sidebar">
+        <app-sidebar *ngIf="access"></app-sidebar>
+
+        <button class="btn-hide" mat-icon-button (click)="drawer.toggle()">
+            <span>&LeftAngleBracket;</span>
+        </button>
+        </div>
+        
+    </mat-drawer>
+
+    <mat-drawer-content>
+        <!-- Contenedor de componentes que serán rutas dinámicas-->
+        <div *ngIf="access" class="rutasContainer">
+            
+                <button class="btn-menu" mat-icon-button (click)="drawer.toggle()">
+                    <mat-icon>menu</mat-icon>
+                </button>
+             
+            <div class="rutaSubContainer">
+                <router-outlet></router-outlet>
+            </div>
+
+        </div>
+
+       
+    </mat-drawer-content>
+</mat-drawer-container>
 
 <!-- Login componente-->
 <app-login *ngIf="!access"></app-login>
-
-<!-- Sidebar componente-->
-<app-sidebar *ngIf="access"></app-sidebar>
-
-<!-- Contenedor de componentes que serán rutas dinámicas-->
-<div *ngIf="access" class="rutasContainer">
-
-    <div class="rutaSubContainer">
-        <router-outlet></router-outlet>
-    </div>
-
-</div>
