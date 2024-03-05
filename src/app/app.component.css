@@ -2,8 +2,8 @@
 .rutasContainer {
     background-color:#eaf3f3f1;
     height: 100vh;
-    width: 100%; /* Resta el ancho del sidebar al 99% del ancho total */
-    margin-right: auto; /* Establece el margen izquierdo como automático para que ocupe el espacio restante a la derecha */
+    width: 94%; /* Resta el ancho del sidebar al 99% del ancho total */
+    margin-left: auto; /* Establece el margen izquierdo como automático para que ocupe el espacio restante a la derecha */
     border-radius: 0.5rem;
     border: 0.15rem solid #46454575;
     padding-top: 0.5rem;
@@ -25,30 +25,91 @@
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5); /* Agrega una sombra con desplazamiento horizontal 0, desplazamiento vertical 0, desenfoque 0.5rem y opacidad 0.5 */
 }
 
-.btn-menu >*{
-    font-size:medium;
-}
-
-.btn-hide >*{
-    font-size:medium;
-}
 
 .btn-menu{
-    border-color: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color:#0b0b0bbb;
+    color: rgb#0b0b0b;
+    box-shadow: 0 0.2rem 0.5rem rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+    margin: 40%;
 }
 
-.btn-hide{
-    display: inline-flex;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-    align-self: flex-end;
-    vertical-align: middle;
-    
+
+
+.btn-nuevo{
+    background-color: #4DBDEB;
+}
+
+.btn-nuevo:hover{
+    background-color: #ffd740 !important;
+    color: #0b0b0b !important;
+}
+
+.btn-menu:hover {
+    color: #ffffff;
+    background-color: #5e079c;
+    box-shadow: 0px 0.5rem 0.8rem rgba(0, 0, 0, 0.3);
+    border: 2px solid #ffffff;
+    animation: zoom 1s linear infinite;
+}
+
+@keyframes  zoom {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 }
 
 .cajon-sidebar{
   display: inline-flex;
   height: 95%;
-  
+  overflow:hidden;
+  scrollbar-width: none;
+ 
+}
+
+.app-cajon {
+    width: 100%;
+    height: 100%;
+       
+  }
+
+
+.sidebar {
+    height: 100vh;
+    width: 5.5%;
+    margin-left: auto;
+    /* Anchura del sidebar */
+    position: fixed;
+    left: 0.17rem;
+    background-color:#eaf3f3f1;
+    border-radius: 0.5rem;
+    border: 0.15rem solid #eaf3f3f1;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    
+    
+
+}
+
+.sideContainer {
+    display: flex; /* Agrega un contenedor flexible */
+    justify-content: center; 
+    align-items: center; 
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    flex-direction: column;
+    
+}
+
+@media screen and (max-width: 768px) {
+    .btn-menu {
+        margin: 80%; /* Reducir margen para pantallas más pequeñas */
+        width: 30px; /* Reducir el tamaño del botón */
+        height: 30px; /* Reducir el tamaño del botón */
+    }
 }
