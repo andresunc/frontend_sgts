@@ -21,9 +21,11 @@ export class PrintServicioComponent {
   recurrencia: number;
   avance: number;
   contactoEmpresa: ContactoEmpesa[] = [];
+  seeChecklist: boolean = true;
 
   constructor(private dataShared: DataSharedService, public dialog: MatDialog,
-    private svManager: ManagerService,private printService: PrintService, private _snackBar: PopupService) {
+    private svManager: ManagerService, private printService: PrintService,
+    private _snackBar: PopupService) {
     this.servicioRecibido = this.dataShared.getSharedObject();
     this.title = this.title + this.servicioRecibido.cliente + ' | ' + this.servicioRecibido.tipo;
     this.avance = this.svManager.calcularAvance(this.servicioRecibido);
@@ -39,6 +41,10 @@ export class PrintServicioComponent {
 
   updateNotificado(item: any) {
     item.notificado = !item.notificado;
+  }
+
+  updateSeeChecklist() {
+    this.seeChecklist = !this.seeChecklist;
   }
 
   editable: boolean = false;
@@ -89,7 +95,6 @@ export class PrintServicioComponent {
 
   }
 
-
 }
 
 /**
@@ -102,7 +107,7 @@ export class PrintServicioComponent {
   imports: [MatDialogModule, MatButtonModule, CommonModule, MatTableModule]
 })
 export class DialogModal {
-  
+
   contacts: any;
   displayedColumns: string[] = ['nombre', 'apellido', 'telefono', 'email'];
   dataSource: any;

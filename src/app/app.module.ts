@@ -18,6 +18,7 @@ import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-s
 import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
 import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.component';
 import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
+import { AddItemComponent } from './componentsShared/add-item/add-item.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackb
     SpinnerComponent,
     LoginComponent,
     CustomSnackbarComponent,
+    AddItemComponent,
     
       ],
   imports: [

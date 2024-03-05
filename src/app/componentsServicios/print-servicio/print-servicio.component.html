@@ -130,7 +130,7 @@
 
           </div>
 
-          <!-- Sección para el pop up del checklist -->
+          <!-- Sección para el Pop up del checklist -->
           <div class="row">
 
             <div class="col-md-12 mb-3 p-0">
@@ -145,9 +145,10 @@
                     </h6>
                   </button>
 
-                  <!-- Modal del Checklist -->
-                  <div class="modal fade" id="checklistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                  <!-- Modal para mostrar el listado de Checklist -->
+                  <div *ngIf="seeChecklist" class="modal fade" id="checklistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
+
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -233,7 +234,7 @@
                           </div>
                         </div>
                         <div id="checklist-footer" class="modal-footer">
-                          <button id="btnAddNewItem" type="button" class="btn btn-success" data-dismiss="modal">
+                          <button (click)="updateSeeChecklist()" id="btnAddNewItem" type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#checklistModal">
                             <span>+ NUEVO ITEM</span>
                           </button>
                           <button id="btnSave" *ngIf="modified" type="button" class="btn">
@@ -242,7 +243,10 @@
                         </div>
                       </div>
                     </div>
+
                   </div>
+                  <!-- Modal para agregar nuevo item-->
+                  <app-add-item *ngIf="!seeChecklist"></app-add-item>
 
                 </div>
               </div>
