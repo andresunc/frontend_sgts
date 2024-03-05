@@ -1,12 +1,12 @@
 <!-- 
 ** app-component es el componente madre que va a contener a los demás componentes para renderizarse.
 -->
-<mat-drawer-container class="app-cajon" autosize [hasBackdrop]="true">
+<mat-drawer-container class="app-cajon" autosize [hasBackdrop]="true" *ngIf="access">
 
     <mat-drawer #drawer mode="over">
         <!-- Sidebar componente-->
         <div class="cajon-sidebar">
-        <app-sidebar *ngIf="access"></app-sidebar>
+        <app-sidebar></app-sidebar>
 
          </div>
         
@@ -20,7 +20,7 @@
                     <mat-icon>add</mat-icon>
                 </button> 
                 
-                <button class="btn-menu" mat-mini-fab color="warn" matTooltip="Filtros" (click)="drawer.toggle()">
+                <button class="btn-menu" mat-mini-fab color="warn" matTooltip="Filtros" routerLink="/home" (click)="drawer.toggle()">
                     <mat-icon>tune</mat-icon>
                 </button>
 
