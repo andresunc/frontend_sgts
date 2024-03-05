@@ -16,7 +16,7 @@
         <h2>Filtar Estados</h2>
         <mat-card class="scrollContainerStatus">
 
-          <div class="checkboxContainer" *ngFor=" let estado of listEstados; let i = index">
+          <div class="checkboxContainer" *ngFor=" let estado of listEstados;">
             <p>
               <mat-checkbox (change)="sendStatus(estado.tipoEstado)"></mat-checkbox>
              {{estado.tipoEstado}}
@@ -30,8 +30,8 @@
         <h2>Tipo de Servicio</h2>
         <mat-card class="scrollContainerTipoServicio">
 
-          <div class="checkboxContainer" *ngFor=" let tipo of tipoServicios; let i = index">
-            <p *ngIf="i < 3"> <!-- Para ver todos, eliminar: *ngIf="i < 3" & let i = index" -->
+          <div class="checkboxContainer" *ngFor=" let tipo of tipoServicios;">
+            <p>
               <mat-checkbox  (change)="sendTipoServicio(tipo.tipoServicio)"></mat-checkbox>
              {{ tipo.tipoServicio }}
             </p>
