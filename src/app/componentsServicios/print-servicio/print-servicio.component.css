@@ -183,7 +183,7 @@ span, p, .mat-icon {
     margin-bottom: 0.1rem; /* agrego un interlineado entre los párrafos */
   }
 }
-
+/* Clases del Modal del checklist */
 .modal-body {
   max-height: 23rem;
   overflow: auto;

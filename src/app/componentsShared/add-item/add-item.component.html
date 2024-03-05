@@ -1,0 +1,89 @@
+<!-- Modal del Checklist 2-->
+<div class="modal fade" id="checklistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div style="display: block;">
+                    <h6 class="modal-title font-weight-bold">NUEVO ITEM</h6>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <div aria-hidden="true">&times;</div>
+                </button>
+            </div>
+
+            <!-- Cuerpo del checklist -->
+            <div class="modal-body">
+
+                <!-- Form del para el nuevo item -->
+                <form [formGroup]="formulario" (ngSubmit)="submitForm()">
+                    <mat-card>
+                        <mat-card-content>
+
+                            <mat-form-field>
+                                <input matInput placeholder="Duración en Días" formControlName="duracionEnDias"
+                                    type="number">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput placeholder="Duración en Horas" formControlName="duracionEnHoras"
+                                    type="number">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput placeholder="Inicio con Desvío" formControlName="inicioConDesvio"
+                                    type="datetime-local">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput placeholder="Fin con Desvío" formControlName="finConDesvio"
+                                    type="datetime-local">
+                            </mat-form-field>
+
+                            <mat-checkbox formControlName="notificado">Notificado</mat-checkbox>
+
+                            <mat-form-field>
+                                <input matInput placeholder="Tasa Valor" formControlName="tasaValor" type="number">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput placeholder="Tasa Cantidad Hojas" formControlName="tasaCantidadHojas"
+                                    type="number">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <input matInput placeholder="URL Comprobante Tasa" formControlName="urlComprobanteTasa"
+                                    type="text">
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Recurso Gg ID Recurso Gg</mat-label>
+                                <mat-select formControlName="recursoGgIdRecursoGg">
+                                    <!-- Agrega opciones para el desplegable de recursoGgIdRecursoGg -->
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-form-field>
+                                <mat-label>Item ID Item</mat-label>
+                                <mat-select formControlName="itemIdItem">
+                                    <!-- Agrega opciones para el desplegable de itemIdItem -->
+                                </mat-select>
+                            </mat-form-field>
+
+                            <mat-checkbox formControlName="completo">Completo</mat-checkbox>
+
+                        </mat-card-content>
+
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" type="submit">Guardar</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
