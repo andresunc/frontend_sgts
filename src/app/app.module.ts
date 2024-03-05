@@ -8,6 +8,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 
+import {MatButtonModule} from '@angular/material/button';
+import {MatSelectModule} from '@angular/material/select';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatIconModule} from '@angular/material/icon';
+import {MatDividerModule} from '@angular/material/divider';
+
+
+
 // Módulos compartidos
 import { MaterialModule } from './componentsShared/material/material.module';
 import { TitleBarModule } from './componentsShared/title-bar/title-bar.module';
@@ -39,6 +48,12 @@ import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackb
     HttpClientModule, // Uso Módulo para peticiones HTTP
     FormsModule,
     ReactiveFormsModule,
+    MatSidenavModule, 
+    MatFormFieldModule, 
+    MatSelectModule, 
+    MatButtonModule,
+    MatDividerModule, 
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

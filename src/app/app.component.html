@@ -1,18 +1,54 @@
 <!-- 
 ** app-component es el componente madre que va a contener a los demás componentes para renderizarse.
 -->
+<mat-drawer-container class="app-cajon" autosize [hasBackdrop]="true">
+
+    <mat-drawer #drawer mode="over">
+        <!-- Sidebar componente-->
+        <div class="cajon-sidebar">
+        <app-sidebar *ngIf="access"></app-sidebar>
+
+         </div>
+        
+    </mat-drawer>
+
+    <mat-drawer-content>
+        <div class="sidebar"> 
+
+            <div class="sideContainer">
+                <button mat-mini-fab color="warn" routerLink="/nuevo" type="button" class="btn-menu btn-nuevo" matTooltip="Nuevo servicio">
+                    <mat-icon>add</mat-icon>
+                </button> 
+                
+                <button class="btn-menu" mat-mini-fab color="warn" matTooltip="Filtros" (click)="drawer.toggle()">
+                    <mat-icon>tune</mat-icon>
+                </button>
+
+                <button mat-mini-fab color="warn" matTooltip="Panel de informes" routerLink="/reportes" class="btn-menu">
+                    <mat-icon>timeline</mat-icon>
+                </button>
+
+                <button mat-mini-fab color="warn" matTooltip="BackOffice" routerLink="/administrador" class="btn-menu">
+                    <mat-icon>settings</mat-icon>
+                </button>
+
+            </div>
+          
+          </div>
+        <!-- Contenedor de componentes que serán rutas dinámicas-->
+        <div *ngIf="access" class="rutasContainer">
+            
+                
+             
+            <div class="rutaSubContainer">
+                <router-outlet></router-outlet>
+            </div>
+
+        </div>
+
+       
+    </mat-drawer-content>
+</mat-drawer-container>
 
 <!-- Login componente-->
 <app-login *ngIf="!access"></app-login>
-
-<!-- Sidebar componente-->
-<app-sidebar *ngIf="access"></app-sidebar>
-
-<!-- Contenedor de componentes que serán rutas dinámicas-->
-<div *ngIf="access" class="rutasContainer">
-
-    <div class="rutaSubContainer">
-        <router-outlet></router-outlet>
-    </div>
-
-</div>

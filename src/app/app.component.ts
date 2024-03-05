@@ -8,13 +8,14 @@ import { takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
+  styleUrls: ['./app.component.css'],
+ })
 export class AppComponent implements OnInit, OnDestroy {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
   access: boolean = true;
-
+  sidebarOpened: boolean = false; // Cambia a false para ocultar la barra lateral automáticamente
+  
   constructor(private authService: AuthService, 
     private dataShared: DataSharedService) { }
 
@@ -35,4 +36,4 @@ export class AppComponent implements OnInit, OnDestroy {
     this.access = this.authService.isLoggedInUser();
   }
 
- }
+}
