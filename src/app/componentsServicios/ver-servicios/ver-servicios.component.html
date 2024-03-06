@@ -51,6 +51,17 @@
                             <span class="contentTable">{{element.tipo.toUpperCase()}}</span>
                         </td>
                     </ng-container>
+                    
+                    <!-- ejemplo Column -->
+                    <ng-container matColumnDef="vigencia">
+                        <th mat-header-cell *matHeaderCellDef class="text-center">
+                         <span class="headTable">VIGENCIA</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-center">
+                            <span>{{element.ejemplo | number:'1.0-4'}}</span>
+                            <span>{{ calcularDiferenciaDias(element.fechaCreacion) }}</span>
+                        </td>
+                    </ng-container>
 
                     <!-- avance Column -->
                     <ng-container matColumnDef="avance">
@@ -93,8 +104,8 @@
                         </td>
                     </ng-container>
                 
-                    <tr mat-header-row *matHeaderRowDef="displayedColumns" style="background-color: #ffffff;"></tr>
-                    <tr mat-row *matRowDef="let row; columns: displayedColumns; let element;" class="estiloRow"></tr>
+                    <tr mat-header-row *matHeaderRowDef="['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']" style="background-color: #ffffff;"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']; let element;" class="estiloRow"></tr>
                 </table>
             </div>
       
