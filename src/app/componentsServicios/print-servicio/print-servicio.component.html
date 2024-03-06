@@ -138,7 +138,8 @@
                 <div class="card-body paddingBody">
 
                   <!-- Button trigger modal -->
-                  <button type="button" class="btn selectPrint contentChecklist" data-toggle="modal" data-target="#checklistModal">
+                  <button type="button" class="btn selectPrint contentChecklist" data-toggle="modal" 
+                  data-target="#checklistModal" data-backdrop="false">
                     <h6 class="card-title textCenter btnChecklist">
                       <mat-icon class="mat-icon">checklist</mat-icon>
                       ABRIR CHECKLIST
@@ -147,7 +148,7 @@
 
                   <!-- Modal para mostrar el listado de Checklist -->
                   <div *ngIf="seeChecklist" class="modal fade" id="checklistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                    aria-hidden="true">
+                  aria-hidden="true">
 
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -233,18 +234,23 @@
                             
                           </div>
                         </div>
+                        
+                        <!-- Botones del checklist -->
                         <div id="checklist-footer" class="modal-footer">
-                          <button (click)="updateSeeChecklist()" id="btnAddNewItem" type="button" class="btn btn-success" data-dismiss="modal" data-toggle="modal" data-target="#checklistModal">
+                          <button (click)="updateSeeChecklist()" id="btnAddNewItem" type="button" class="btn btn-success" data-dismiss="modal" 
+                           data-toggle="modal" data-target="#item-Modal" data-backdrop="false">
                             <span>+ NUEVO ITEM</span>
                           </button>
                           <button id="btnSave" *ngIf="modified" type="button" class="btn">
                             <mat-icon>save</mat-icon>
                           </button>
                         </div>
+                        
                       </div>
                     </div>
 
                   </div>
+                  
                   <!-- Modal para agregar nuevo item-->
                   <app-add-item *ngIf="!seeChecklist"></app-add-item>
 
@@ -253,6 +259,7 @@
             </div>
             
           </div>
+          
         </div>
       </div>
 

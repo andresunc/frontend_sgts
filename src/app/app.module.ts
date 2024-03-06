@@ -8,13 +8,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 
-import {MatButtonModule} from '@angular/material/button';
-import {MatSelectModule} from '@angular/material/select';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
-import {MatDividerModule} from '@angular/material/divider';
-
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 // Módulos compartidos
@@ -50,12 +45,9 @@ import { AddItemComponent } from './componentsShared/add-item/add-item.component
     HttpClientModule, // Uso Módulo para peticiones HTTP
     FormsModule,
     ReactiveFormsModule,
-    MatSidenavModule, 
-    MatFormFieldModule, 
-    MatSelectModule, 
-    MatButtonModule,
-    MatDividerModule, 
-    MatIconModule,
+
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

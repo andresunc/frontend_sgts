@@ -6,6 +6,7 @@ import { Estado } from 'src/app/models/DomainModels/Estado';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
+import { DataSharedService } from 'src/app/services/data-shared.service';
 import { NewServicioService } from 'src/app/services/new-servicio.service';
 
 @Component({
@@ -29,7 +30,8 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   empresaSelected?: EmpresaDto;
   presupuestoSelected?: number;
 
-  constructor(private fb: FormBuilder, private dataNewServ: NewServicioService) { }
+  constructor(private fb: FormBuilder, private dataNewServ: NewServicioService,
+    private dataShared: DataSharedService) { }
 
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
   private unsubscribe$ = new Subject<void>();
@@ -60,6 +62,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
      */
     const maxCount = 2; // Número máximo de reintentos
     const timeDelay = 2000; // Tiempo de espera entre reintentos
+    this.dataShared.mostrarSpinner(); // Mostrar el spinner de carga
     try {
       // 1 Obtener los tipos de servicios
       this.dataNewServ.getTipoServicesNotDeleted().pipe(
@@ -146,7 +149,10 @@ export class NewServicioComponent implements OnInit, OnDestroy {
 
     } catch (error) {
       console.error('Error general:', error);
+    } finally {
+      this.dataShared.ocultarSpinner();
     }
+    
     /**
      * Fin de la obtención de datos
      */
