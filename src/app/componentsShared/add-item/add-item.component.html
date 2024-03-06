@@ -1,9 +1,10 @@
 <!-- Modal del Checklist 2-->
-<div class="modal fade" id="checklistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="item-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
 
     <div class="modal-dialog" role="document">
         <div class="modal-content">
+
             <div class="modal-header">
                 <div style="display: block;">
                     <h6 class="modal-title font-weight-bold">NUEVO ITEM</h6>
@@ -17,67 +18,72 @@
             <div class="modal-body">
 
                 <!-- Form del para el nuevo item -->
-                <form [formGroup]="formulario" (ngSubmit)="submitForm()">
+                <form>
                     <mat-card>
                         <mat-card-content>
+                            <form class="row needs-validation" validate>
 
-                            <mat-form-field>
-                                <input matInput placeholder="Duración en Días" formControlName="duracionEnDias"
-                                    type="number">
-                            </mat-form-field>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Seleccione el item que desea agregar</h6>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <select class="form-select" id="validationCustom04" required>
+                                            <option selected disabled value="">Seleccionar...</option>
+                                            <option>...</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                            <mat-form-field>
-                                <input matInput placeholder="Duración en Horas" formControlName="duracionEnHoras"
-                                    type="number">
-                            </mat-form-field>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Establezca la fecha y hora a completarse</h6>
+                                        <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local" class="form-control"
+                                            (input)="validarCampo($event)" [min]="minDate" required>
+                                    </div>
+                                </div>
 
-                            <mat-form-field>
-                                <input matInput placeholder="Inicio con Desvío" formControlName="inicioConDesvio"
-                                    type="datetime-local">
-                            </mat-form-field>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Asignar al responsable de completar</h6>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <select class="form-select" id="validationCustom04" required>
+                                            <option selected disabled value="">Seleccionar...</option>
+                                            <option>...</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-                            <mat-form-field>
-                                <input matInput placeholder="Fin con Desvío" formControlName="finConDesvio"
-                                    type="datetime-local">
-                            </mat-form-field>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h6>Información de impuestos o tasa</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="validationCustom01" class="form-label">Monto de tasa</label>
+                                        <input type="text" class="form-control" id="validationCustom01" value=""
+                                            required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="validationCustom02" class="form-label">Cantidad de hojas</label>
+                                        <input type="text" class="form-control" id="validationCustom02" value=""
+                                            required>
+                                    </div>
+                                </div>
 
-                            <mat-checkbox formControlName="notificado">Notificado</mat-checkbox>
+                                <div class="row" style="width: 100%; align-items: center;">
+                                    <div class="col-md-6">
+                                        <mat-checkbox color="warn" class="checkNotif">Ha sido notificado?</mat-checkbox>
+                                    </div>
+                                    <div class="col-md-6" style="display: flex; justify-content: end;">
+                                        <mat-card-actions>
+                                            <button mat-raised-button color="primary" type="submit">Guardar</button>
+                                        </mat-card-actions>
+                                    </div>
+                                </div>
 
-                            <mat-form-field>
-                                <input matInput placeholder="Tasa Valor" formControlName="tasaValor" type="number">
-                            </mat-form-field>
-
-                            <mat-form-field>
-                                <input matInput placeholder="Tasa Cantidad Hojas" formControlName="tasaCantidadHojas"
-                                    type="number">
-                            </mat-form-field>
-
-                            <mat-form-field>
-                                <input matInput placeholder="URL Comprobante Tasa" formControlName="urlComprobanteTasa"
-                                    type="text">
-                            </mat-form-field>
-
-                            <mat-form-field>
-                                <mat-label>Recurso Gg ID Recurso Gg</mat-label>
-                                <mat-select formControlName="recursoGgIdRecursoGg">
-                                    <!-- Agrega opciones para el desplegable de recursoGgIdRecursoGg -->
-                                </mat-select>
-                            </mat-form-field>
-
-                            <mat-form-field>
-                                <mat-label>Item ID Item</mat-label>
-                                <mat-select formControlName="itemIdItem">
-                                    <!-- Agrega opciones para el desplegable de itemIdItem -->
-                                </mat-select>
-                            </mat-form-field>
-
-                            <mat-checkbox formControlName="completo">Completo</mat-checkbox>
-
+                            </form>
                         </mat-card-content>
-
-                        <mat-card-actions>
-                            <button mat-raised-button color="primary" type="submit">Guardar</button>
-                        </mat-card-actions>
                     </mat-card>
                 </form>
 

@@ -7,6 +7,7 @@ export class Servicios {
 
     idServicio: number;
     idTipoServicio: number;
+    fecha_alta: string;
     tipo: string;
     idCliente: number;
     cliente: string;
@@ -22,11 +23,12 @@ export class Servicios {
     comentario: string;
     itemChecklistDto: ItemChecklistDto[];
 
-    constructor(idServicio: number, idTipoServicio: number,tipo: string, idCliente: number,cliente: string, idEstado: number, estado: string,
+    constructor(idServicio: number, idTipoServicio: number, fecha_alta: string, tipo: string, idCliente: number,cliente: string, idEstado: number, estado: string,
         recurrencia: number, referencia: number, fecha_notificacion: string, idRubro: number,rubro: string,
         idServicioEmpresa: number,total_presupuestado: number, comentario: string, itemChecklistDto: ItemChecklistDto[]) {
         this.idServicio = idServicio;
         this.idTipoServicio = idTipoServicio;
+        this.fecha_alta = fecha_alta;
         this.tipo = tipo;
         this.idCliente = idCliente;
         this.cliente = cliente;

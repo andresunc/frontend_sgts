@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-item',
@@ -8,45 +7,41 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class AddItemComponent {
 
-  constructor(private fb: FormBuilder) { }
+  isChecked = true;
+  minDate: any;
+
+  constructor() { }
 
   ngOnInit(): void {
+    this.setDateTime();
   }
 
-  formulario!: FormGroup;
-  inicializarFormulario(): void {
-    this.formulario = this.fb.group({
-      duracionEnDias: [null, Validators.required],
-      duracionEnHoras: [null, Validators.required],
-      inicioConDesvio: [null, Validators.required],
-      finConDesvio: [null, Validators.required],
-      notificado: [false],
-      tasaValor: [0],
-      tasaCantidadHojas: [0],
-      urlComprobanteTasa: [''],
-      recursoGgIdRecursoGg: [null, Validators.required],
-      itemIdItem: [null, Validators.required],
-      completo: [false],
-    });
+  setDateTime() {
+    const fullDate = new Date();
+    var date = fullDate.getDate();
+    var nDate = (date < 10) ? '0' + date : date;
+    var month = fullDate.getMonth() + 1;
+    var nMonth = (month < 10) ? '0' + month : month;
+    var year = fullDate.getFullYear();
+    var hours = fullDate.getHours();
+    var nHours = (hours < 10) ? '0' + hours : hours;
+    var minutes = fullDate.getMinutes();
+    var nMinutes = (minutes < 10) ? '0' + minutes : minutes;
+    // Establecer la fecha mínima como la fecha actual
+    this.minDate = year + '-' + nMonth + '-' + nDate + 'T' + nHours + ':' + nMinutes;
   }
-  submitForm(): void {
-    if (this.formulario.valid) {
-      // Realiza la lógica de envío del formulario aquí
-      const formData = this.formulario.value;
-      console.log(formData); // Puedes enviar los datos a un servicio, por ejemplo.
-    } else {
-      // Marcar los campos inválidos y mostrar mensajes de error si es necesario
-      this.marcarCamposInvalidos(this.formulario);
+
+  resetDate: any;
+  onChange(value: any) {
+    var currenTime = new Date().getTime();
+    var selectedTime = new Date(value).getTime();
+    console.log(currenTime);
+    if (selectedTime < currenTime) {
+      this.resetDate = "";
     }
   }
-  marcarCamposInvalidos(formGroup: FormGroup): void {
-    Object.values(formGroup.controls).forEach(control => {
-      if (control instanceof FormGroup) {
-        this.marcarCamposInvalidos(control);
-      }
-
-      control.markAsTouched();
-    });
+  validarCampo(event: any) {
+    console.log(event)
   }
 
 }
