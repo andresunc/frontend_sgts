@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
 
 @Component({
   selector: 'app-add-item',
@@ -10,7 +11,7 @@ export class AddItemComponent {
   isChecked = true;
   minDate: any;
 
-  constructor() { }
+  constructor(private _snackBar: PopupService) { }
 
   ngOnInit(): void {
     this.setDateTime();
@@ -35,13 +36,11 @@ export class AddItemComponent {
   onChange(value: any) {
     var currenTime = new Date().getTime();
     var selectedTime = new Date(value).getTime();
-    console.log(currenTime);
+
     if (selectedTime < currenTime) {
+      this._snackBar.errorSnackBar("Tu selección es menor al momento actual");
       this.resetDate = "";
     }
-  }
-  validarCampo(event: any) {
-    console.log(event)
   }
 
 }

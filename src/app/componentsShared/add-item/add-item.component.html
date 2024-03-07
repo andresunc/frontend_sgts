@@ -39,7 +39,7 @@
                                     <div class="col-md-12">
                                         <h6>Establezca la fecha y hora a completarse</h6>
                                         <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local" class="form-control"
-                                            (input)="validarCampo($event)" [min]="minDate" required>
+                                           [(ngModel)]="resetDate" #input (change)="onChange(input.value)" [min]="minDate" required>
                                     </div>
                                 </div>
 
