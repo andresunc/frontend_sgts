@@ -52,15 +52,15 @@
                         </td>
                     </ng-container>
                     
-                    <!-- ejemplo Column -->
+                    <!-- vigencia Column -->
                     <ng-container matColumnDef="vigencia">
                         <th mat-header-cell *matHeaderCellDef class="text-center">
                          <span class="headTable">VIGENCIA</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center">
-                            <span>{{element.ejemplo | number:'1.0-4'}}</span>
-                            <span>{{ calcularDiferenciaDias(element.fechaCreacion) }}</span>
+                            <span>{{ element.fecha_alta ? calcularDiferenciaDias(element.fecha_alta) : "-" }}</span>
                         </td>
+                        
                     </ng-container>
 
                     <!-- avance Column -->

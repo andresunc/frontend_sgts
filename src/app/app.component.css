@@ -109,7 +109,7 @@
 @media screen and (max-width: 768px) {
     .btn-menu {
         margin: 80%; /* Reducir margen para pantallas más pequeñas */
-        width: 1.8rem; /* Reducir el tamaño del botón */
-        height: 1.8rem; /* Reducir el tamaño del botón */
+        width: 1.9rem; /* Reducir el tamaño del botón */
+        height: 1.9rem; /* Reducir el tamaño del botón */
     }
 }

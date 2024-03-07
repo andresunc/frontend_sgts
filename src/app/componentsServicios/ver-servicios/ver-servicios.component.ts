@@ -20,7 +20,7 @@ import { PopupService } from 'src/app/services/SupportServices/popup.service';
 export class VerServiciosComponent implements OnInit, OnDestroy {
 
   title: string = "Gestión De Servicios";
-  displayedColumns: string[] = ['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']; // cfg columns table
+  displayedColumns: string[] = ['cliente', 'tipo', 'avance', 'comentario', 'alertas']; // cfg columns table
   listServicios!: Servicios[];
   svService: ManagerService; // Trabaja para calcular algunos valores de los servicios
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
@@ -28,14 +28,6 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
     private servicioService: ServicioService, svManager: ManagerService, private _snackBar: PopupService) {
     this.svService = svManager;
-
-  }
-
-  calcularDiferenciaDias(fechaCreacion: Date): number {
-    const fechaActual = new Date();
-    const diffTiempo = Math.abs(fechaActual.getTime() - fechaCreacion.getTime());
-    const diffDias = Math.ceil(diffTiempo / (1000 * 60 * 60 * 24)); // Milisegundos en un día
-    return diffDias;
   }
 
   ngOnInit() {
@@ -63,6 +55,14 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
       ).add(() => this.dataShared.ocultarSpinner());
   }
 
+  calcularDiferenciaDias(fecha_alta: string): number {
+    const fechaActual = new Date();
+    const fechaAlta = new Date(fecha_alta);
+    const diffTiempo = Math.abs(fechaActual.getTime() - fechaAlta.getTime());
+    const diffDias = Math.ceil(diffTiempo / (1000 * 60 * 60 * 24)); // Milisegundos en un día
+    return diffDias;
+  }
+  
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
   private unsubscribe$ = new Subject<void>();
   ngOnDestroy() {
