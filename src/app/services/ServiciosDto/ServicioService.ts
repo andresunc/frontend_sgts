@@ -29,7 +29,7 @@ export class ServicioService {
           return data;
         }),
         catchError((error) => {
-          this._snackBar.warnSnackBar('Error en la conexión con el servidor. Intente más tarde.');
+          this._snackBar.warnSnackBar('Error en la conexión ', 'Intentar más tarde');
           console.error('Error en la solicitud getTopServices', error);
           return throwError(error);
         })
