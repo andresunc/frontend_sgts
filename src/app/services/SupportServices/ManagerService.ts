@@ -37,7 +37,11 @@ export default class ManagerService {
 
    // Método para enviar el objeto al componente print-servicio
    enviarObjeto(servicio: Servicios) {
+    // Si existe el objeto en localStorage, eliminarlo
+    if(localStorage.getItem('servicioRecibido')) localStorage.removeItem('servicioRecibido');
+    // Enviar el objeto al componente print-servicio
     this.dataShared.setSharedObject(servicio);
+    localStorage.setItem('servicioRecibido', JSON.stringify(servicio));
     this.router.navigate(['/home/servicio']);
   }
 

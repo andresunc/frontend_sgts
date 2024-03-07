@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
@@ -14,19 +14,36 @@ import { PrintService } from 'src/app/services/print.service';
   templateUrl: './print-servicio.component.html',
   styleUrls: ['./print-servicio.component.css']
 })
-export class PrintServicioComponent {
+export class PrintServicioComponent implements OnInit {
 
   servicioRecibido: any;
   title: string = 'Información del servicio: ';
-  recurrencia: number;
-  avance: number;
+  recurrencia: number = 0;
+  avance: number = 0;
   contactoEmpresa: ContactoEmpesa[] = [];
   seeChecklist: boolean = true;
 
-  constructor(private dataShared: DataSharedService, public dialog: MatDialog,
-    private svManager: ManagerService, private printService: PrintService,
-    private _snackBar: PopupService) {
-    this.servicioRecibido = this.dataShared.getSharedObject();
+  constructor(
+    private dataShared: DataSharedService, 
+    public dialog: MatDialog,
+    private svManager: ManagerService, 
+    private printService: PrintService,
+    private _snackBar: PopupService
+    ) { }
+
+  ngOnInit() {
+    this.loadServicioRecibido();
+  }
+
+  loadServicioRecibido() {
+    // Obtener el servicio recibido del localStorage
+    this.servicioRecibido = JSON.parse(localStorage.getItem('servicioRecibido') || '{}');
+    // Si no está en localStorage, obtenerlo de dataShared y guardarlo en localStorage
+    if (!this.servicioRecibido) {
+      this.servicioRecibido = this.dataShared.getSharedObject();
+      localStorage.setItem('servicioRecibido', JSON.stringify(this.servicioRecibido));
+    }
+
     this.title = this.title + this.servicioRecibido.cliente + ' | ' + this.servicioRecibido.tipo;
     this.avance = this.svManager.calcularAvance(this.servicioRecibido);
     this.recurrencia = this.servicioRecibido.recurrencia;
