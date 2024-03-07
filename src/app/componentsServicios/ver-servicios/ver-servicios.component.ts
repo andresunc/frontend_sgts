@@ -55,6 +55,14 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
       ).add(() => this.dataShared.ocultarSpinner());
   }
 
+  calcularDiferenciaDias(fecha_alta: string): number {
+    const fechaActual = new Date();
+    const fechaAlta = new Date(fecha_alta);
+    const diffTiempo = Math.abs(fechaActual.getTime() - fechaAlta.getTime());
+    const diffDias = Math.ceil(diffTiempo / (1000 * 60 * 60 * 24)); // Milisegundos en un día
+    return diffDias;
+  }
+  
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
   private unsubscribe$ = new Subject<void>();
   ngOnDestroy() {
