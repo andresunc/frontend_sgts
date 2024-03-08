@@ -19,7 +19,7 @@ import { TitleBarModule } from './componentsShared/title-bar/title-bar.module';
 // Componentes pertenecientes a éste módulo
 import { SidebarComponent } from 'src/app/componentsShared/sidebar/sidebar.component';
 import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
-import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
+import { ChecklistPopUp, PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
 import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.component';
 import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
 import { AddItemComponent } from './componentsShared/add-item/add-item.component';
@@ -34,7 +34,6 @@ import { AddItemComponent } from './componentsShared/add-item/add-item.component
     LoginComponent,
     CustomSnackbarComponent,
     AddItemComponent,
-    
       ],
   imports: [
     BrowserModule,
@@ -45,7 +44,6 @@ import { AddItemComponent } from './componentsShared/add-item/add-item.component
     HttpClientModule, // Uso Módulo para peticiones HTTP
     FormsModule,
     ReactiveFormsModule,
-
     MatDatepickerModule,
     MatNativeDateModule,
   ],
