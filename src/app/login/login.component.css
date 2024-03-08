@@ -6,8 +6,11 @@
     justify-content: center; /* Cambié space-between a space-around para un poco más de espacio */
     align-items:center;
     height: 100vh; /* Ajusté la altura al 100% del viewport para ocupar toda la altura */
-    background-color: #1abcfc2c;
-    
+    background-color: #1abcfc46;
+    background-image: url('src\assets\img\porcelana2.jpg');
+    background-size: cover; /* Ajusta el tamaño de la imagen para que cubra todo el contenedor */
+    background-position: center; /* Centra la imagen de fondo */
+    /* Otros estilos */
 
   }
 
@@ -24,7 +27,7 @@
     margin: 0 0.31rem;
     height: 95vh;
     max-width: 80%; /* Nuevo: establece un ancho máximo del 70% */
-    background-color: #9ea1a22c;
+    background-color: #7b7b7b40;
     
     }
 
@@ -73,9 +76,9 @@
     padding:3vw;/* Ajusta el padding en función del ancho de la pantalla */
     margin-right: 0.31rem;
     border-radius: 3%;
-    border: 0.32rem solid #888e901d;
+    border: 0.32rem solid #1abcfc36;
     height: 95vh;
-    background-color: #1abcfc34;
+    background-color: #1abcfc57;
     transition: padding 0.5s;
     overflow:auto;
     }
@@ -140,5 +143,6 @@
     margin-bottom: 0.2rem;
     align-items: center;
   }
+  
 
   
