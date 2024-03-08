@@ -133,15 +133,23 @@ las tres etiquetas que siguen de la tabla de servicios*/
 
 .mat-mdc-header-cell{
   font-family:'Quicksand', sans-serif;
- 
 } /*fuente para header de la tabla de servicios*/
 
 .mat-mdc-cell{
   font-family:'Quicksand', sans-serif;
- 
 } /*fuente para las filas de la tabla de servicios*/
 
 .mat-mdc-option{
   font-family:'Quicksand', sans-serif;
+} 
 
-} /*fuente para el interior del selector de la tabla de servicios*/
+/* Estilos para el modal del comentario */
+#comentario {
+  h6, h2 {
+    font-size: 1.2rem;
+  }
+  p {
+    font-size: 1rem;
+    padding-top: 0.5rem;
+  }
+}

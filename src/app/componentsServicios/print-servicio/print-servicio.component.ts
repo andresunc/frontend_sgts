@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsShared/add-item/add-item.component';
 import { MaterialModule } from 'src/app/componentsShared/material/material.module';
 import { ContactoEmpesa } from 'src/app/models/DomainModels/ContactoEmpresa';
+import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
@@ -17,11 +18,11 @@ import { PrintService } from 'src/app/services/print.service';
 })
 export class PrintServicioComponent implements OnInit {
 
-  servicioRecibido: any;
+  servicioRecibido!: Servicios;
   title: string = 'Información del servicio: ';
   recurrencia: number = 0;
   contactoEmpresa: ContactoEmpesa[] = [];
-  seeChecklist: boolean = true;
+  
 
   constructor(
     private dataShared: DataSharedService,
@@ -40,7 +41,7 @@ export class PrintServicioComponent implements OnInit {
   }
 
   loadServicioRecibido() {
-    // Obtener el servicio recibido del localStorage
+    // Intentará obtener el servicio desde localStorage
     this.servicioRecibido = JSON.parse(localStorage.getItem('servicioRecibido') || '{}');
     // Si no está en localStorage, obtenerlo de dataShared y guardarlo en localStorage
     if (!this.servicioRecibido) {
@@ -54,12 +55,11 @@ export class PrintServicioComponent implements OnInit {
     this.getContactoEmpresa();
   }
 
-  updateSeeChecklist() {
-    this.seeChecklist = !this.seeChecklist;
-  }
-
+  /**
+   * Función para activar la edición de los items 
+   * (Refactorizar segun permisos de usuario)
+   */
   editable: boolean = false;
-  // Función para activar la edición de los items
   editarServicio() {
     this.editable = !this.editable;
     var items = document.getElementsByClassName('editable');
