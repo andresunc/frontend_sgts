@@ -57,7 +57,8 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center" matTooltip="Antigüedad del servicio">
                          <span class="headTable">VIGENCIA</span>
                         </th>
-                        <td mat-cell *matCellDef="let element" class="text-center">
+                        <td mat-cell *matCellDef="let element" class="text-center"
+                        (click)="svService.enviarObjeto(element)">
                             <span>{{ element.fecha_alta ? calcularDiferenciaDias(element.fecha_alta) +' días' : "-" }}</span>
                         </td>
                         
@@ -80,7 +81,7 @@
                             <span class="headTable">COMENTARIO</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
-                            (click)="element.comentario !== '' ? openDialog(element) : svService.enviarObjeto(element)">
+                            (click)="element.comentario !== null ? openDialog(element) : svService.enviarObjeto(element)">
                             <span class="contentTable" *ngIf="element.comentario" class="coment">
                                 Ver comentario
                             </span>

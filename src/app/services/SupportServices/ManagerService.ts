@@ -26,7 +26,7 @@ export default class ManagerService {
     // 1 Si el total de items es mayor a 0 hacer, sino retornar 0
     // 2 Filtrar los completos? y contarlos
     // 3 Calcular y retornar el porcentaje de items completados (Completos/Total) * 100
-    return servicio.itemChecklistDto.filter(item => item.completo).length / totalItems * 100;
+    return servicio.itemChecklistDto.filter(item => item.completo).length / totalItems * 100 | 0;
   }
 
   // Establece la alerta de un servicio cuando esta en estado presentado.

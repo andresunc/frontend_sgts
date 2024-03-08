@@ -115,11 +115,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   // Función para mostrar el servicio por modal
   openDialog(element: Servicios) {
     this.dataShared.setSharedMessage(element);
-    const dialogRef = this.dialog.open(DialogModal);
-    dialogRef.afterClosed().subscribe(result => {
-      console.log(`Resultado del modal: ${result}`);
-    });
-
+    this.dialog.open(DialogModal);
   }
 
   // Configuración del limite de servicios a mostrar
@@ -138,6 +134,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 @Component({
   selector: 'dialog-content-example-dialog',
   templateUrl: 'showMessage.html',
+  styleUrls: ['./ver-servicios.component.css'],
   standalone: true,
   imports: [MatDialogModule, MatButtonModule, CommonModule]
 })
