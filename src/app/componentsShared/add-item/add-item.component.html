@@ -1,95 +1,82 @@
-<!-- Modal del Checklist 2-->
-<div class="modal fade" id="item-Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div>
 
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <div style="display: block;">
-                    <h6 class="modal-title font-weight-bold">NUEVO ITEM</h6>
-                </div>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <div aria-hidden="true">&times;</div>
-                </button>
-            </div>
-
-            <!-- Cuerpo del checklist -->
-            <div class="modal-body">
-
-                <!-- Form del para el nuevo item -->
-                <form>
-                    <mat-card>
-                        <mat-card-content>
-                            <form class="row needs-validation" validate>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h6>Seleccione el item que desea agregar</h6>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <select class="form-select" id="validationCustom04" required>
-                                            <option selected disabled value="">Seleccionar...</option>
-                                            <option>...</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h6>Establezca la fecha y hora a completarse</h6>
-                                        <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local" class="form-control"
-                                           [(ngModel)]="resetDate" #input (change)="onChange(input.value)" [min]="minDate" required>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h6>Asignar al responsable de completar</h6>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <select class="form-select" id="validationCustom04" required>
-                                            <option selected disabled value="">Seleccionar...</option>
-                                            <option>...</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <h6>Información de impuestos o tasa</h6>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="validationCustom01" class="form-label">Monto de tasa</label>
-                                        <input type="text" class="form-control" id="validationCustom01" value=""
-                                            required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="validationCustom02" class="form-label">Cantidad de hojas</label>
-                                        <input type="text" class="form-control" id="validationCustom02" value=""
-                                            required>
-                                    </div>
-                                </div>
-
-                                <div class="row" style="width: 100%; align-items: center;">
-                                    <div class="col-md-6">
-                                        <mat-checkbox color="warn" class="checkNotif">Ha sido notificado?</mat-checkbox>
-                                    </div>
-                                    <div class="col-md-6" style="display: flex; justify-content: end;">
-                                        <mat-card-actions>
-                                            <button mat-raised-button color="primary" type="submit">Guardar</button>
-                                        </mat-card-actions>
-                                    </div>
-                                </div>
-
-                            </form>
-                        </mat-card-content>
-                    </mat-card>
-                </form>
-
-            </div>
-
+    <div class="modal-header">
+        <div>
+            <h6 class="modal-title font-weight-bold">NUEVO ITEM</h6>
         </div>
+        <mat-icon style="font-size: 1.2rem; cursor: pointer;" [mat-dialog-close]="true">close</mat-icon>
     </div>
 
+    <div>
+        <form>
+            <mat-card>
+                <mat-card-content>
+                    
+                    <form>
+    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Seleccione el item que desea agregar</h6>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-select" id="validationCustom04" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Establezca la fecha y hora a completarse</h6>
+                                <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local"
+                                    class="form-control" [(ngModel)]="resetDate" #input (change)="onChange(input.value)"
+                                    [min]="minDate" required>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Asignar al responsable de completar</h6>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-select" id="validationCustom04" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Información de impuestos o tasa</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom01" class="form-label">Monto de tasa</label>
+                                <input type="text" class="form-control" id="validationCustom01" value="" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="validationCustom02" class="form-label">Cantidad de hojas</label>
+                                <input type="text" class="form-control" id="validationCustom02" value="" required>
+                            </div>
+                        </div>
+    
+                        <div class="row" style="width: 100%; align-items: center;">
+                            <div class="col-md-6">
+                                <mat-checkbox color="warn" class="checkNotif"></mat-checkbox>
+                                <span>Ha sido notificado?</span>
+                            </div>
+                            <div class="col-md-6" style="display: flex; justify-content: end;">
+                                <mat-card-actions>
+                                    <button mat-raised-button color="primary" type="submit">Guardar</button>
+                                </mat-card-actions>
+                            </div>
+                        </div>
+                    </form>
+
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </div>
+    
 </div>

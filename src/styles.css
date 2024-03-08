@@ -4,8 +4,7 @@ body {
     height: 100%;
     margin: 0;
     font-family: 'Quicksand', sans-serif;
-    font-size: 15px;
-    /* 1rem = 16px */
+    font-size: 15px; /* Unidades rem */
     font-weight: 300;
 }
 

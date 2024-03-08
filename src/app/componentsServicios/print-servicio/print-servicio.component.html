@@ -28,7 +28,7 @@
                 <div mat-button [matMenuTriggerFor]="menu" class="paddingBody selectPrint">
                   <h6 class="card-title textCenter btnChecklist">
                       SERVICIO N° {{ servicioRecibido.idServicio }}
-                      <mat-icon class="mat-icon">keyboard_arrow_down</mat-icon>
+                      <mat-icon style="margin-left: 0.5rem; font-size: 1rem;" color="primary" class="mat-icon">tune</mat-icon>
                   </h6>
                 </div>
                 <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
@@ -48,7 +48,7 @@
                   <h6 class="card-title">
                     <span class="mr-3">Cliente: {{ servicioRecibido.cliente }}</span>
                     <span class="mr-3">Rubro: {{ servicioRecibido.rubro }}</span>
-                    <span (click)="openDialog()" class="mr-3 link">Datos de contacto</span>
+                    <span (click)="openContactPopUp()" class="mr-3 link">Datos de contacto</span>
                   </h6>
                 </div>
               </div>
@@ -58,7 +58,7 @@
 
           <div class="row">
 
-            <div class="col-md-12 mb-3 p-0">
+            <div class="col-md-12 mb-3 p-0" *ngIf="this.getSvManager().calcularAvance(servicioRecibido) as avance">
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">{{avance === 0 ? 'Aún no se ha comenzado a trabajar' : avance === 100 ? 'Servicio finalizado':'Avance'}}</h6>
@@ -138,121 +138,12 @@
                 <div class="card-body paddingBody">
 
                   <!-- Button trigger modal -->
-                  <button type="button" class="btn selectPrint contentChecklist" data-toggle="modal" 
-                  data-target="#checklistModal" data-backdrop="false">
+                  <button (click)="openChecklistPopUp()" type="button" class="btn selectPrint contentChecklist">
                     <h6 class="card-title textCenter btnChecklist">
                       <mat-icon class="mat-icon">checklist</mat-icon>
                       ABRIR CHECKLIST
                     </h6>
                   </button>
-
-                  <!-- Modal para mostrar el listado de Checklist -->
-                  <div *ngIf="seeChecklist" class="modal fade" id="checklistModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                  aria-hidden="true">
-
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <div style="display: block;">
-                            <h6 class="modal-title font-weight-bold">CHECKLIST</h6>
-                            <p>Seleccioná un elemento para ver su descripción</p>
-                          </div>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <div aria-hidden="true">&times;</div>
-                          </button>
-                        </div>
-
-                        <!-- Cuerpo del checklist -->
-                        <div class="modal-body">
-
-                          <!-- Progress bar -->
-                          <span style="display: block; padding-bottom: 0.3rem;">
-                            <mat-progress-bar mode="determinate" [value]="avance"></mat-progress-bar>
-                          </span>
-
-                          <!-- Lista de items del checklist -->
-                          <div id="checkBox" class="list-group">
-
-                            <cdk-accordion *ngFor="let item of servicioRecibido.itemChecklistDto; let index = index">
-                              
-                                <cdk-accordion-item #accordionItem="cdkAccordionItem" role="button" tabindex="0" [attr.id]="'accordion-header-' + index"
-                                  [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + index">
-                                  <div (click)="accordionItem.toggle()">
-                                    <!-- Rotulo del item del checklist -->
-                                    <p class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
-                                      <span>
-                                        <mat-checkbox [checked]="item.completo" (change)="updateAvance(item); getChange(index)"
-                                          (click)="$event.stopPropagation()"></mat-checkbox>
-                                        <span>
-                                          {{item.nombreItem}} &nbsp;
-                                          <span style="font-style: oblique; color: #f44336;">
-                                            {{item.notificado ? '"Se considera notificado"' : ''}}
-                                          </span>
-                                        </span>
-                                      </span>
-                                      <span *ngIf="editable">
-                                        <mat-icon matTooltip="eliminar" class="btnAdmin delete-btn">delete</mat-icon>
-                                      </span>
-                                    </p>
-                                  </div>
-                                
-                                  <!-- Cuerpo o región del item del checklist -->
-                                  <div role="region" class="cdk-accordion-content-body" [style.display]="accordionItem.expanded ? '' : 'none'"
-                                    [attr.id]="'accordion-body-' + index" [attr.aria-labelledby]="'accordion-header-' + index">
-                                    <!-- Contenido del item del checklist-->
-                                    <span>
-                                      <p>
-                                        Se ha iniciado el: {{ item.inicioEstimado | date:'dd/MM/yyyy' }}
-                                      </p>
-                                      <p>Se pensó terminar el: {{ item.finEstimado | date:'dd/MM/yyyy' }}</p>
-                                      <!-- 
-                                      <p>Ejecución Real: {{ item.ejecucion_real | date:'dd/MM/yyyy' }}</p> 
-                                      La ejecución real será igual que la del inicio estimado
-                                      -->
-                                      <!-- El fin real será igual al momento en que el usuario seleccione completar -->
-                                      <p>Fin Real: {{ item.finReal | date:'dd/MM/yyyy' }}</p>
-                                      <!-- El valor de la tasa se mostrará siempre que sea mayor a cero -->
-                                      <span *ngIf="item.valorTasa > 0">
-                                        <p>Valor Tasa: {{ item.valorTasa }}</p>
-                                        <p>Hojas: {{ item.hojas }}</p>
-                                      </span>
-                                      <p>Responsable: {{ item.responsable }}</p>
-                                      <p>URL Comprobante: {{ item.urlComprobante }}</p>
-                                      <!-- Zona para marcar al item como notificado -->
-                                      <p>
-                                        <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
-                                          (click)="updateNotificado(item); getChange(index+1)">
-                                          <span>{{ item.notificado? 'Notificado' : 'Notificar'}}</span>
-                                        </mat-chip-option>
-                                      </p>
-                                    </span>
-                                  </div>
-                                </cdk-accordion-item>
-                              
-                            </cdk-accordion>
-
-                            
-                          </div>
-                        </div>
-                        
-                        <!-- Botones del checklist -->
-                        <div id="checklist-footer" class="modal-footer">
-                          <button (click)="updateSeeChecklist()" id="btnAddNewItem" type="button" class="btn btn-success" data-dismiss="modal" 
-                           data-toggle="modal" data-target="#item-Modal" data-backdrop="false">
-                            <span>+ NUEVO ITEM</span>
-                          </button>
-                          <button id="btnSave" *ngIf="modified" type="button" class="btn">
-                            <mat-icon>save</mat-icon>
-                          </button>
-                        </div>
-                        
-                      </div>
-                    </div>
-
-                  </div>
-                  
-                  <!-- Modal para agregar nuevo item-->
-                  <app-add-item *ngIf="!seeChecklist"></app-add-item>
 
                 </div>
               </div>
