@@ -16,7 +16,7 @@
     width: 99%;
     height: calc(97% - 2.8rem);
     /* Resta el alto de la barra de título */
-    background: linear-gradient(0deg, #f3e5f58c, #f3e5f5a2);
+    background: linear-gradient(0deg, #e4e9eabc, #f4f3f5);
     border-radius: 0.5rem;
     box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     justify-content: center;
