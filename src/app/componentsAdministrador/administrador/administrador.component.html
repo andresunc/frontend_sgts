@@ -3,12 +3,14 @@
     <app-title-bar [titulo]="title"></app-title-bar>
     <div class="childContainer">
         <section class="menu">
-            <h2>Administrar</h2>
+            <h2 matTooltip="">Administrar</h2>
                 <mat-divider></mat-divider>
             <mat-action-list class="action-list">
                 <button mat-list-item routerLink="clientes"><span>Clientes</span></button><mat-divider></mat-divider>
-                <button mat-list-item routerLink="servicios"><span>Servicios</span></button><mat-divider></mat-divider>
-                <button mat-list-item><span>Trámites</span></button><mat-divider></mat-divider>
+                <button mat-list-item><span>Rubros</span></button><mat-divider></mat-divider>
+                <button mat-list-item routerLink="servicios"><span>Tipos de Servicio</span></button><mat-divider></mat-divider>
+                <button mat-list-item><span>Items</span></button><mat-divider></mat-divider>
+                <button mat-list-item><span>Estados</span></button><mat-divider></mat-divider>
                 <button mat-list-item><span>Usuarios</span></button><mat-divider></mat-divider>
             </mat-action-list>
         </section>

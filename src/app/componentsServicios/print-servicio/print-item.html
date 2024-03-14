@@ -83,7 +83,7 @@
     <!-- Botones del checklist -->
     <div id="checklist-footer" class="modal-footer">
         <button id="btnAddNewItem" type="button" class="btn btn-success" (click)="openItemPopUp()">
-          <span>+ NUEVO ITEM</span>
+          <span matTooltip="Agregar Item">+ ITEM</span>
         </button>
         <button id="btnSave" *ngIf="modified" type="button" class="btn">
           <mat-icon>save</mat-icon>
