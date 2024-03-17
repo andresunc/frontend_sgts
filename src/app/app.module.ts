@@ -24,6 +24,7 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
 import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
 import { AddItemComponent } from './componentsShared/add-item/add-item.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,6 +35,7 @@ import { AddItemComponent } from './componentsShared/add-item/add-item.component
     LoginComponent,
     CustomSnackbarComponent,
     AddItemComponent,
+    
       ],
   imports: [
     BrowserModule,
