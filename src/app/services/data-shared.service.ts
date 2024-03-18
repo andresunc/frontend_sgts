@@ -12,11 +12,20 @@ export class DataSharedService {
   private sharedTipoServicio: any[] = [];
   private filterByCheckbox: EventEmitter<void> = new EventEmitter<void>();
   private ControlAccess: EventEmitter<void> = new EventEmitter<void>();
+  private listreports: EventEmitter<void> = new EventEmitter<void>();
   /* Atributos para el Spinner */
   private spinner = new BehaviorSubject<boolean>(false);
   goSpinner = this.spinner.asObservable();
 
   constructor() { }
+
+  triggerListreports() {
+    this.listreports.emit();
+  }
+
+  getListreports() {
+    return this.listreports;
+  }
 
   setSharedObject(data: any) {
     this.sharedObject = data;

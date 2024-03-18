@@ -1,0 +1,6 @@
+.modal-body {
+    max-height: 23rem;
+    overflow: auto;
+    scrollbar-width: auto;
+    scrollbar-color: #ddd #ffffff;
+  }
