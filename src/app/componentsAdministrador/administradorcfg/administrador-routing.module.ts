@@ -5,9 +5,16 @@ import { CfgClientesComponent } from '../bodyAdminComponents/cfg-clientes/cfg-cl
 import { CfgServiciosComponent } from '../bodyAdminComponents/cfg-servicios/cfg-servicios.component';
 
 const routes: Routes = [
-  { path: '', component: AdministradorComponent },
-  { path: 'clientes', component: CfgClientesComponent },
-  { path: 'servicios', component: CfgServiciosComponent },
+  { path: '', 
+  component: AdministradorComponent,
+  children:[ 
+
+    { path: 'clientes', component: CfgClientesComponent },
+    { path: 'servicios', component: CfgServiciosComponent },
+
+  ]
+},
+  
   
   // uso ** evitar error 400 (Éste objeto redirect siempre va al último)
   { path: '**', redirectTo: '', pathMatch: 'full'}
