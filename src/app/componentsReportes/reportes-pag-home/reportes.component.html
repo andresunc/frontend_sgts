@@ -1,0 +1,12 @@
+<div class="moduleContainer">
+  <app-title-bar [titulo]="title"></app-title-bar>
+  <div class="childContainer">
+
+    <router-outlet></router-outlet>
+    <!-- botón flotante -->
+    <div id="btnRptListContainer" matTooltip="Ver listado de reportes">
+      <mat-icon mat-button (click)="openRptList();">reorder</mat-icon>
+    </div>
+
+  </div>
+</div>

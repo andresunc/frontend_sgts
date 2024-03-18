@@ -29,6 +29,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatGridListModule} from '@angular/material/grid-list';
+
 
 /**
  * Todo componente material se debe importar y exportar
@@ -63,6 +65,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
+    MatGridListModule,
   ],
   exports: [
     CommonModule,
@@ -92,6 +95,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
+    MatGridListModule,
   ]
 })
 export class MaterialModule { }

@@ -9,14 +9,14 @@ import { takeUntil } from 'rxjs/operators';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
- })
+})
 export class AppComponent implements OnInit, OnDestroy {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
   access: boolean = true;
   sidebarOpened: boolean = false; // Cambia a false para ocultar la barra lateral automáticamente
-  
-  constructor(private authService: AuthService, 
+
+  constructor(private authService: AuthService,
     private dataShared: DataSharedService) { }
 
   ngOnInit() {
@@ -25,15 +25,15 @@ export class AppComponent implements OnInit, OnDestroy {
     });
   }
 
+  controlAccess() {
+    this.access = this.authService.isLoggedInUser();
+  }
+
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
   private unsubscribe$ = new Subject<void>();
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
-
-  controlAccess() {
-    this.access = this.authService.isLoggedInUser();
   }
 
 }
