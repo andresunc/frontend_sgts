@@ -1,0 +1,17 @@
+.rpt0Container {
+    position: absolute;
+    display: flex;
+    background: red;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    overflow: hidden;
+}
+
+mat-table {
+    font-size: 0.8rem;
+}
