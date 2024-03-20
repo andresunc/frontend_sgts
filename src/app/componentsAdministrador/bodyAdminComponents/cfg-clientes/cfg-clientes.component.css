@@ -14,14 +14,47 @@
 }
 
 .mat-mdc-form-field {
-  display:inline-block;
+  display:inline-flex;
   flex-wrap: wrap;
   width: calc(50% - 16px); /* 50% del ancho del contenedor menos el margen */
   margin: 8px; /* Margen entre los campos */
   margin-top: 16px;
 }
 
+.btn-contacto {
+ display:inline-block;
+ padding-left: 5%;
+ align-items: center;
+ justify-content:center; 
+ cursor: pointer;
+ font-weight: bold; 
+ border-radius: 50%;
+ 
+}
 
+.btn-contacto>*{
+ display: flex;
+ text-align: center;
+ background-color: #5f5e5e;
+ box-shadow: 2px 0.2rem 0.2rem rgba(111, 110, 110, 0.468);
+ border-width:2px;
+ border-color: aliceblue;
+ color: rgb(250, 250, 250);
+}
+
+.btn-contacto>*:hover{ 
+    background-color:#673ab7;
+    border-style: solid;
+    color: #fefefe;
+    transform: scale(1.05);
+}
+
+.btn-next{
+  display: flex;
+  justify-content: center;
+  padding-top: 5%;
+
+}
 
 
 @media screen and (max-width: 800px) {

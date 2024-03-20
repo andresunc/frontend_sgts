@@ -32,7 +32,7 @@
                   <mat-option value="two">Second option</mat-option>
                 </mat-select>
               </mat-form-field>   
-                  <div>
+                  <div class="btn-next">
                 <button mat-button matStepperNext>Siguiente</button>
               </div>
             </form>
@@ -65,24 +65,44 @@
                   El e-mail es <strong>necesario</strong>
                 </mat-error>
               </mat-form-field>
-              <div>
+              <div class="btn-contacto">
+              <button  mat-mini-fab tabindex="-1" (click)="agregarContacto()">
+                <mat-icon>add</mat-icon>
+                </button>
+              </div>
+              <div class="btn-next">
                 <button mat-button matStepperPrevious>Atrás</button>
                 <button mat-button matStepperNext>Siguiente</button>
               </div>
             </form>
           </mat-step>
-          <mat-step>
+          <mat-step class="resumen">
             <ng-template matStepLabel>Resumen</ng-template>
-            <p>Razon Social: {{ firstFormGroup.get('RazonSocial')?.value }}</p>
-            <p>CUIT: {{ firstFormGroup.get('CUIT')?.value }}</p>
-            <p>Rubro: {{ firstFormGroup.get('Rubro')?.value }}</p>
-            <p>Riesgo: {{ firstFormGroup.get('Riesgo')?.value }}</p>
-            <p>Nombre: {{ secondFormGroup.get('Nombre')?.value }}</p>
-            <p>Apellido: {{ secondFormGroup.get('Apellido')?.value }}</p>
-            <p>Dirección: {{ secondFormGroup.get('Direccion')?.value }}</p>
-            <p>Teléfono: {{ secondFormGroup.get('Telefono')?.value }}</p>
-            <p>Email: {{ secondFormGroup.get('Email')?.value }}</p>
-            <div>
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Empresa</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>Razon Social: {{ firstFormGroup.get('RazonSocial')?.value }}</p>
+                    <p>CUIT: {{ firstFormGroup.get('CUIT')?.value }}</p>
+                    <p>Rubro: {{ firstFormGroup.get('Rubro')?.value }}</p>
+                    <p>Riesgo: {{ firstFormGroup.get('Riesgo')?.value }}</p>
+                </mat-card-content>
+            </mat-card>
+            
+            <mat-card *ngFor="let contacto of contactos">
+                <mat-card-header>
+                    <mat-card-title>Contacto {{ contacto.id }}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>Nombre: {{ contacto.nombre }}</p>
+                    <p>Apellido: {{ contacto.apellido }}</p>
+                    <p>Dirección: {{ contacto.direccion }}</p>
+                    <p>Teléfono: {{ contacto.telefono }}</p>
+                    <p>Email: {{ contacto.email }}</p>
+                </mat-card-content>
+            </mat-card>
+            <div class="btn-next">
               <button mat-button matStepperPrevious>Atrás</button>
               <button mat-button>Crear</button>
             </div>

@@ -53,4 +53,17 @@ export class CfgClientesComponent implements OnInit {
     // Agregar el campo de correo electrónico a secondFormGroup
     this.secondFormGroup.addControl('email', this._formBuilder.control('', [Validators.required, Validators.email]));
   } 
+
+  contactos: any[] = [];
+
+  agregarContacto() {
+    this.contactos.push({
+      id: this.contactos.length + 1,
+      nombre: '',
+      apellido: '',
+      direccion: '',
+      telefono: '',
+      email: ''
+  })
+  }
 }
