@@ -1,1 +1,33 @@
-<p>servicios-en-curso works!</p>
+<body>
+    <div class="col-md-8 container rpt0Container">
+        <div class="scrollable-table mat-elevation-z3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Empresa</th>
+                        <th>Rubro</th>
+                        <th>Tipo de servicio</th>
+                        <th>Dependencia</th>
+                        <th>Estado</th>
+                        <th>Avance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let element of serviciosEnCurso">
+                        <td>{{ element.idServicio }}</td>
+                        <td>{{ element.empresa }}</td>
+                        <td>{{ element.rubro }}</td>
+                        <td>{{ element.tipoServicio }}</td>
+                        <td>{{ element.dependenciaInvolucrada }}</td>
+                        <td>{{ element.estado }}</td>
+                        <td>{{ element.porcentajeAvance+'%'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            asd
+        </div>
+    </div>
+</body>

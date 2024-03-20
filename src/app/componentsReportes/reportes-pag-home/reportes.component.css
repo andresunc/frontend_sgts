@@ -5,6 +5,7 @@
 }
 
 .childContainer {
+    position: relative;
     display: flex;
     margin: auto;
     margin-top: 0.45rem;
@@ -20,8 +21,8 @@
 
 #btnRptListContainer {
     position: absolute;
-    bottom: 2rem;
-    right: 3rem;
+    bottom: 1rem;
+    right: 1.5rem;
 }
 
 mat-icon {
