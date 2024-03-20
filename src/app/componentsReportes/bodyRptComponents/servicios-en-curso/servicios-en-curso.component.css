@@ -1,17 +1,34 @@
 .rpt0Container {
     position: absolute;
     display: flex;
-    background: red;
+    background: rgb(255, 255, 255);
     left: 0;
     top: 0;
     height: 100%;
     width: 100%;
-}
-
-.container {
     overflow: hidden;
 }
 
-mat-table {
+table {
+    border-collapse: collapse;
     font-size: 0.8rem;
+}
+
+th,
+td {
+    padding: 0.3rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word; /* Permite que las palabras se rompan */
+    overflow-wrap: break-word; /* Alternativa para navegadores más nuevos */
+}
+
+.scrollable-table {
+    margin: 0.8rem;
+    max-height: auto; /* ajusta la altura máxima según tu necesidad */
+    overflow-y: auto;
+    border: 1px solid #ddd;
 }

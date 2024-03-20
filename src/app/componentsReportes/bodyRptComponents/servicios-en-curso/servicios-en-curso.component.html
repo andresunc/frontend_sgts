@@ -1,54 +1,30 @@
 <body>
-    <div class="container rpt0Container">
-        <div class="container">
-            <div class="matTable">
-                <mat-table [dataSource]="dataSource" class="mat-elevation-z0">
-                    <!-- Position Column -->
-                    <ng-container matColumnDef="idServicio">
-                        <mat-header-cell *matHeaderCellDef> ID. </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
-                    </ng-container>
-
-                    <!-- Name Column -->
-                    <ng-container matColumnDef="empresa">
-                        <mat-header-cell *matHeaderCellDef> Empresa </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-                    </ng-container>
-
-                    <!-- Weight Column -->
-                    <ng-container matColumnDef="rubro">
-                        <mat-header-cell *matHeaderCellDef> Rubro </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="tipoServicio">
-                        <mat-header-cell *matHeaderCellDef> Tipo de servicio </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="dependenciaInvolucrada">
-                        <mat-header-cell *matHeaderCellDef> Dependencia </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="estado">
-                        <mat-header-cell *matHeaderCellDef> Estado </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-                    </ng-container>
-
-                    <!-- Symbol Column -->
-                    <ng-container matColumnDef="porcentajeAvance">
-                        <mat-header-cell *matHeaderCellDef> Avance </mat-header-cell>
-                        <mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>
-                    </ng-container>
-
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                </mat-table>
-            </div>
+    <div class="col-md-8 container rpt0Container">
+        <div class="scrollable-table mat-elevation-z3">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Empresa</th>
+                        <th>Rubro</th>
+                        <th>Tipo de servicio</th>
+                        <th>Dependencia</th>
+                        <th>Estado</th>
+                        <th>Avance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let element of serviciosEnCurso">
+                        <td>{{ element.idServicio }}</td>
+                        <td>{{ element.empresa }}</td>
+                        <td>{{ element.rubro }}</td>
+                        <td>{{ element.tipoServicio }}</td>
+                        <td>{{ element.dependenciaInvolucrada }}</td>
+                        <td>{{ element.estado }}</td>
+                        <td>{{ element.porcentajeAvance+'%'}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div>
             asd
