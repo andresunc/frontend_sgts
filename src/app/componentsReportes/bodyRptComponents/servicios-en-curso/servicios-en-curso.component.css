@@ -4,14 +4,19 @@
     background: rgb(255, 255, 255);
     left: 0;
     top: 0;
-    height: 100%;
-    width: 100%;
     overflow: hidden;
+    font-size: 0.8rem;
+}
+
+.container {
+    display: flex;
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
 }
 
 table {
     border-collapse: collapse;
-    font-size: 0.8rem;
 }
 
 th,
@@ -27,7 +32,6 @@ td {
 }
 
 .scrollable-table {
-    margin: 0.8rem;
     max-height: auto; /* ajusta la altura máxima según tu necesidad */
     overflow-y: auto;
     border: 1px solid #ddd;

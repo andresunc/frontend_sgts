@@ -1,8 +1,8 @@
-<body>
-    <div class="col-md-8 container rpt0Container">
+<body class="rpt0Container">
+    <div class="container">
         <div class="scrollable-table mat-elevation-z3">
             <table>
-                <thead>
+                <thead style="position: sticky; top 0">
                     <tr>
                         <th>ID</th>
                         <th>Empresa</th>
@@ -26,8 +26,14 @@
                 </tbody>
             </table>
         </div>
-        <div>
-            asd
-        </div>
     </div>
+
+    <div class="chart-wrapper" style="padding: 1rem;">
+        <div>
+            <h1 style="text-align: center;">Servicios en curso</h1>
+        </div>
+        <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="pie" [data]="lineChartData">
+        </canvas>
+    </div>
+    
 </body>
