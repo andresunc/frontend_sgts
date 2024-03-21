@@ -34,11 +34,11 @@ export class CfgClientesComponent implements OnInit {
 
     // Inicializar secondFormGroup en el constructor
     this.secondFormGroup = this._formBuilder.group({
-    Nombre: ['', Validators.required],
-    Apellido: [''],
-    Direccion: ['', Validators.required],
-    Telefono: ['', Validators.required],
-    Email: ['', [Validators.required, Validators.email]]
+      Nombre: ['', Validators.required],
+      Apellido: [''],
+      Direccion: ['', Validators.required],
+      Telefono: ['', Validators.required],
+      Email: ['', [Validators.required, Validators.email]]
     });
   }
 
@@ -57,13 +57,25 @@ export class CfgClientesComponent implements OnInit {
   contactos: any[] = [];
 
   agregarContacto() {
+    // Capturar los valores de los campos del formulario secondFormGroup
+    const nombre = this.secondFormGroup.get('Nombre')?.value;
+    const apellido = this.secondFormGroup.get('Apellido')?.value;
+    const direccion = this.secondFormGroup.get('Direccion')?.value;
+    const telefono = this.secondFormGroup.get('Telefono')?.value;
+    const email = this.secondFormGroup.get('Email')?.value;
+    
+    // Agregar los datos a la lista de contactos
     this.contactos.push({
       id: this.contactos.length + 1,
-      nombre: '',
-      apellido: '',
-      direccion: '',
-      telefono: '',
-      email: ''
-  })
+      nombre: nombre,
+      apellido: apellido,
+      direccion: direccion,
+      telefono: telefono,
+      email: email
+    });
+
+    this.secondFormGroup.reset();
   }
+
+  
 }

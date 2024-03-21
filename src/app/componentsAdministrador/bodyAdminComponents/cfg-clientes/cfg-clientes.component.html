@@ -1,4 +1,5 @@
 
+<ng-container *ngIf="secondFormGroup">
 <ng-container *ngIf="(stepperOrientation | async) as orientation">
     <ng-container [ngSwitch]="orientation">
       <ng-container *ngSwitchCase="'horizontal'">
@@ -66,7 +67,7 @@
                 </mat-error>
               </mat-form-field>
               <div class="btn-contacto">
-              <button  mat-mini-fab tabindex="-1" (click)="agregarContacto()">
+              <button  mat-mini-fab tabindex="-1" (click)="agregarContacto()" [disabled]="!secondFormGroup.get('Nombre')?.value || !secondFormGroup.get('Direccion')?.value || !secondFormGroup.get('Telefono')?.value || !secondFormGroup.get('Email')?.value">
                 <mat-icon>add</mat-icon>
                 </button>
               </div>
@@ -76,8 +77,9 @@
               </div>
             </form>
           </mat-step>
-          <mat-step class="resumen">
+          <mat-step>
             <ng-template matStepLabel>Resumen</ng-template>
+            <section class="tarjetas">
             <mat-card>
                 <mat-card-header>
                     <mat-card-title>Empresa</mat-card-title>
@@ -101,11 +103,14 @@
                     <p>Teléfono: {{ contacto.telefono }}</p>
                     <p>Email: {{ contacto.email }}</p>
                 </mat-card-content>
-            </mat-card>
-            <div class="btn-next">
-              <button mat-button matStepperPrevious>Atrás</button>
-              <button mat-button>Crear</button>
-            </div>
+            </mat-card>  
+        </section>
+        <div class="btn-next">
+            <button mat-button matStepperPrevious>Atrás</button>
+            <button mat-button >Crear</button>
+          </div>
           </mat-step>
+        
     </mat-stepper>
   </ng-container>
+</ng-container>
