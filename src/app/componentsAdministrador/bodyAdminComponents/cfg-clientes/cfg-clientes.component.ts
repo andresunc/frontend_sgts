@@ -15,10 +15,10 @@ export class CfgClientesComponent implements OnInit {
   title: string = "Configuración de Clientes";
   
   firstFormGroup = this._formBuilder.group({
-      RazonSocial: ['', Validators.required],
-      CUIT: ['', Validators.required],
-      Rubro: ['', Validators.required],
-      Riesgo: ['', Validators.required]
+      RazonSocial: ['', [Validators.required]],
+      CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
+      Rubro: ['', [Validators.required]],
+      Riesgo: ['', [Validators.required]]
   });
   secondFormGroup: FormGroup; // Declaración del FormGroup
   
@@ -34,11 +34,11 @@ export class CfgClientesComponent implements OnInit {
 
     // Inicializar secondFormGroup en el constructor
     this.secondFormGroup = this._formBuilder.group({
-      Nombre: ['', Validators.required],
+      Nombre: ['', [Validators.required]],
       Apellido: [''],
-      Direccion: ['', Validators.required],
-      Telefono: ['', Validators.required],
-      Email: ['', [Validators.required, Validators.email]]
+      Direccion: ['', [Validators.required]],
+      Telefono: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
+      Email: ['', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]]
     });
   }
 
@@ -58,11 +58,13 @@ export class CfgClientesComponent implements OnInit {
 
   agregarContacto() {
     // Capturar los valores de los campos del formulario secondFormGroup
-    const nombre = this.secondFormGroup.get('Nombre')?.value;
-    const apellido = this.secondFormGroup.get('Apellido')?.value;
-    const direccion = this.secondFormGroup.get('Direccion')?.value;
-    const telefono = this.secondFormGroup.get('Telefono')?.value;
-    const email = this.secondFormGroup.get('Email')?.value;
+    if (this.secondFormGroup.valid) {
+      const nombre = this.secondFormGroup.get('Nombre')?.value;
+      const apellido = this.secondFormGroup.get('Apellido')?.value;
+      const direccion = this.secondFormGroup.get('Direccion')?.value;
+      const telefono = this.secondFormGroup.get('Telefono')?.value;
+      const email = this.secondFormGroup.get('Email')?.value;
+    
     
     // Agregar los datos a la lista de contactos
     this.contactos.push({
@@ -77,5 +79,12 @@ export class CfgClientesComponent implements OnInit {
     this.secondFormGroup.reset();
   }
 
-  
+} 
+
+
+paso1EsValido(): boolean {
+  return this.firstFormGroup.valid;
+}
+
+
 }

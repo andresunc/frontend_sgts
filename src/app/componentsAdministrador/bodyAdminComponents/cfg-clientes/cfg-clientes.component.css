@@ -59,24 +59,23 @@
 
 .tarjetas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Tres columnas con ancho mínimo de 300px */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
   gap: 10px; /* Espacio entre las tarjetas */
-    
+  word-wrap: break-word;
 }
 
 .mat-card {
   width: 100px; /* Ancho fijo para las tarjetas */
-  height: 200px; /* Alto fijo para las tarjetas */
-  overflow: auto; /* Barra de desplazamiento horizontal */
-  word-wrap: break-word; /* Envolver palabras para evitar estiramiento */
-
+  height: 200px; /* Alto fijo para las tarjetas (ver, seguir probando) */ 
+  word-wrap: break-word;
+  
 }
 
 .tarjetas>* {
-    background-color:#ffffff64;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    
-    border-width: 2px;
+    background-color:#ffffff8e;
+    box-shadow: 0 4px 4px rgba(190, 189, 189, 0.618);
+    border-width: 3px;
+    margin-top: 0; 
 }
 
 @media screen and (max-width: 800px) {
@@ -89,6 +88,17 @@
   .mat-mdc-form-field {
     display:inline;
     margin: 0px;
+  }
+
+  .tarjetas {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+    left: 0;
+    word-wrap: break-word;    
+  }
+
+  .mat-card {
+    width: 80px; /* Ancho fijo para las tarjetas */
+    height: 200px; /* ver */
   }
 
   }

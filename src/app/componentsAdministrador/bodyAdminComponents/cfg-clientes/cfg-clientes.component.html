@@ -8,16 +8,22 @@
       </ng-container>
     </ng-container>
   
-    <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()">
-        <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente">
+    <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()" linear>
+        <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente" [optional]="false" >
             <form [formGroup]="firstFormGroup">
               <mat-form-field>
                 <mat-label>Razon Social</mat-label>
                 <input matInput placeholder="" formControlName="RazonSocial" required>
-              </mat-form-field>
+                <mat-error *ngIf="firstFormGroup.get('RazonSocial')?.invalid && (firstFormGroup.get('RazonSocial')?.dirty || firstFormGroup.get('RazonSocial')?.touched)">
+                    Dato obligatorio.
+                </mat-error>
+                </mat-form-field>
               <mat-form-field>
-                <mat-label>CUIT</mat-label>
-                <input matInput placeholder="xx-xxxxxxxx-x" formControlName="CUIT" required>
+                <mat-label>CUIT / DNI / CUIL</mat-label>
+                <input matInput placeholder="Ingrese solo números" formControlName="CUIT" required>
+                <mat-error *ngIf="firstFormGroup.get('CUIT')?.invalid && (firstFormGroup.get('CUIT')?.dirty || firstFormGroup.get('CUIT')?.touched)">
+                    Dato obligatorio.
+                </mat-error>
               </mat-form-field> 
               <mat-form-field>
                 <mat-label>Rubro</mat-label>
@@ -34,15 +40,18 @@
                 </mat-select>
               </mat-form-field>   
                   <div class="btn-next">
-                <button mat-button matStepperNext>Siguiente</button>
+                    <button mat-button matStepperNext [disabled]="!paso1EsValido()">Siguiente</button>
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="secondFormGroup" label="Crear Agenda">
+          <mat-step [stepControl]="secondFormGroup" label="Crear Agenda" [optional]="true" >
             <form [formGroup]="secondFormGroup">
               <mat-form-field>
                 <mat-label>Nombre</mat-label>
                 <input matInput placeholder="" formControlName="Nombre" required>
+                <mat-error *ngIf="secondFormGroup.get('Nombre')?.invalid && (secondFormGroup.get('Nombre')?.dirty || secondFormGroup.get('Nombre')?.touched)">
+                    Dato obligatorio.
+                </mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Apellido</mat-label>
@@ -51,10 +60,16 @@
               <mat-form-field>
                 <mat-label>Dirección</mat-label>
                 <input matInput formControlName="Direccion" placeholder="Calle, número, ciudad" required>
+                <mat-error *ngIf="secondFormGroup.get('Direccion')?.invalid && (secondFormGroup.get('Direccion')?.dirty || secondFormGroup.get('Direccion')?.touched)">
+                    Dato obligatorio.
+                  </mat-error>
               </mat-form-field>      
               <mat-form-field>
                 <mat-label>Teléfono</mat-label>
                 <input matInput formControlName="Telefono" placeholder="+54 351 xxxxxxxxx" required>
+                <mat-error *ngIf="firstFormGroup.get('Telefono')?.invalid && (firstFormGroup.get('Telefono')?.dirty || firstFormGroup.get('Telefono')?.touched)">
+                    Dato obligatorio.
+                </mat-error>
               </mat-form-field>
               <mat-form-field>
                 <mat-label>E-mail</mat-label>
@@ -107,7 +122,7 @@
         </section>
         <div class="btn-next">
             <button mat-button matStepperPrevious>Atrás</button>
-            <button mat-button >Crear</button>
+            <button mat-button>Crear</button>
           </div>
           </mat-step>
         
