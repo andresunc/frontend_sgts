@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgChartsModule } from 'ng2-charts';
 
 import { ReportesRoutingModule } from './reportes-routing.module';
 import { ReportesComponent } from '../reportes-pag-home/reportes.component';
@@ -20,6 +21,7 @@ import { ActionListComponent } from '../action-list/action-list.component';
     ReportesRoutingModule,
     TitleBarModule, // Uso el módulo de titlebar compartido.
     MaterialModule, // Uso el módulo de material compartido.
+    NgChartsModule,
   ]
 })
 export class ReportesModule { }

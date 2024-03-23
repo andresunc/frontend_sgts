@@ -1,12 +1,15 @@
 export class ServicioEmpresa {
-    idServicioEmpresa: number;
-    costoServicio: number;
-    alta: Date;
-    servicioIdServicio: number;
-    empresaIdEmpresa: number;
-    recursoGgIdRecursoGg: number;
-    eliminado: boolean;
+    idServicioEmpresa?: number;
+    costoServicio?: number;
+    alta?: Date;
+    servicioIdServicio?: number;
+    empresaIdEmpresa?: number;
+    recursoGgIdRecursoGg?: number;
+    eliminado?: boolean;
 
+    constructor() {}
+
+    /**
     constructor(idServicioEmpresa: number, costoServicio: number, servicioIdServicio: number, empresaIdEmpresa: number, recursoGgIdRecursoGg: number) {
         this.idServicioEmpresa = idServicioEmpresa;
         this.costoServicio = costoServicio;
@@ -16,4 +19,5 @@ export class ServicioEmpresa {
         this.recursoGgIdRecursoGg = recursoGgIdRecursoGg;
         this.eliminado = false;
     }
+    */
 }

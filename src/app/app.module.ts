@@ -35,7 +35,6 @@ import { AddItemComponent } from './componentsShared/add-item/add-item.component
     LoginComponent,
     CustomSnackbarComponent,
     AddItemComponent,
-    
       ],
   imports: [
     BrowserModule,
