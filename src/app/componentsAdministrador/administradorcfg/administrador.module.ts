@@ -9,6 +9,10 @@ import { CfgServiciosComponent } from '../bodyAdminComponents/cfg-servicios/cfg-
 import { CfgClientesComponent } from '../bodyAdminComponents/cfg-clientes/cfg-clientes.component';
 import { ConfigMenuComponent } from 'src/app/componentsShared/config-menu/config-menu.component';
 
+import { MatStepperModule } from '@angular/material/stepper';
+import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @NgModule({
   declarations: [
@@ -22,6 +26,11 @@ import { ConfigMenuComponent } from 'src/app/componentsShared/config-menu/config
     AdministradorRoutingModule,
     TitleBarModule, // Uso el módulo de titlebar compartido.
     MaterialModule, // Uso el módulo de material compartido.
+    MatStepperModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule
     
   ]
 })

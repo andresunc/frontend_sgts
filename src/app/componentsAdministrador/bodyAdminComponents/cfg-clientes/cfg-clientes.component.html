@@ -1,1 +1,161 @@
-<p>xxx</p>
+
+<ng-container *ngIf="secondFormGroup">
+<ng-container *ngIf="(stepperOrientation | async) as orientation">
+    <ng-container [ngSwitch]="orientation">
+      <ng-container *ngSwitchCase="'horizontal'">
+      </ng-container>
+      <ng-container *ngSwitchCase="'vertical'">
+      </ng-container>
+    </ng-container>
+  
+    <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()">
+        <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente" linear>
+            <form [formGroup]="firstFormGroup">
+              <mat-form-field>
+                <mat-label>Buscar Cliente</mat-label>
+                <mat-select formControlName="BuscarCliente" required>
+                  <mat-option value="one">First option</mat-option>
+                  <mat-option value="two">Second option</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-mini-fab class="btn-buscar">
+                <mat-icon>search</mat-icon>
+              </button>
+              <mat-form-field>
+                <mat-label>Razon Social</mat-label>
+                <input matInput placeholder="" formControlName="RazonSocial" required>
+                <mat-error *ngIf="firstFormGroup.get('RazonSocial')?.invalid && (firstFormGroup.get('RazonSocial')?.dirty || firstFormGroup.get('RazonSocial')?.touched)">
+                    Dato obligatorio.
+                </mat-error>
+                </mat-form-field>
+              <mat-form-field>
+                <mat-label>CUIT / DNI / CUIL</mat-label>
+                <input matInput placeholder="Ingrese solo números" formControlName="CUIT" required>
+                <mat-error *ngIf="firstFormGroup.get('CUIT')?.invalid && (firstFormGroup.get('CUIT')?.dirty || firstFormGroup.get('CUIT')?.touched)">
+                    Dato obligatorio.
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Dirección</mat-label>
+                <input matInput formControlName="Direccion" placeholder="Calle, número, ciudad" required>
+                <mat-error *ngIf="firstFormGroup.get('Direccion')?.invalid && (firstFormGroup.get('Direccion')?.dirty || firstFormGroup.get('Direccion')?.touched)">
+                    Dato obligatorio.
+                  </mat-error>
+              </mat-form-field> 
+              <mat-form-field>
+                <mat-label>Rubro</mat-label>
+                <mat-select formControlName="Rubro" required>
+                  <mat-option value="one">First option</mat-option>
+                  <mat-option value="two">Second option</mat-option>
+                </mat-select>
+              </mat-form-field>     
+              <mat-form-field>
+                <mat-label>Riesgo</mat-label>
+                <mat-select formControlName="Riesgo" required>
+                  <mat-option value="one">First option</mat-option>
+                  <mat-option value="two">Second option</mat-option>
+                </mat-select>
+              </mat-form-field>   
+                  <div class="btn-next">
+                    <button mat-button matStepperNext [disabled]="firstFormGroup.invalid">Siguiente</button>
+              </div>
+            </form>
+          </mat-step>
+          <mat-step [stepControl]="secondFormGroup" label="Crear Agenda">
+            <div class="step-content"> 
+            <div class="step-form">
+              <form [formGroup]="secondFormGroup" class="contact-form">
+                <div class="contact-inputs">
+                  <mat-form-field>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput placeholder="" formControlName="Nombre" required>
+                    <mat-error *ngIf="secondFormGroup.get('Nombre')?.invalid && (secondFormGroup.get('Nombre')?.dirty || secondFormGroup.get('Nombre')?.touched)">
+                      Dato obligatorio.
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Apellido</mat-label>
+                    <input matInput placeholder="" formControlName="Apellido">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Teléfono</mat-label>
+                    <input matInput formControlName="Telefono" placeholder="+54 351 xxxxxxxxx" required>
+                    <mat-error *ngIf="secondFormGroup.get('Telefono')?.invalid && (secondFormGroup.get('Telefono')?.dirty || secondFormGroup.get('Telefono')?.touched)">
+                      Dato obligatorio.
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="Email" placeholder="ejemplo@gmail.com">
+                    <mat-error *ngIf="secondFormGroup?.get('email')?.hasError('email') && !secondFormGroup.get('email')?.hasError('required')">
+                      Por favor ingrese un e-mail válido.
+                    </mat-error>
+                    <mat-error *ngIf="secondFormGroup?.get('email')?.hasError('required')">
+                      El e-mail es <strong>necesario</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <div class="btn-contacto">
+                    <button mat-mini-fab tabindex="-1" (click)="agregarContacto()">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="contact-cards">
+              <mat-card *ngFor="let contacto of contactos">
+                <mat-card-header>
+                  <mat-card-title>Contacto {{ contacto.id }}</mat-card-title>
+                  <mat-card-actions>
+                    <button mat-mini-fab (click)="editarContacto(contacto)" class="btn-editar">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </mat-card-actions>
+                </mat-card-header>
+                <mat-card-content>
+                  <p>Nombre: {{ contacto.nombre }}</p>
+                  <p>Apellido: {{ contacto.apellido }}</p>
+                  <p>Teléfono: {{ contacto.telefono }}</p>
+                  <p>Email: {{ contacto.email }}</p>
+                </mat-card-content>
+                </mat-card>
+            </div>
+            </div>
+            <div class="btn-next">
+              <button mat-button matStepperPrevious>Atrás</button>
+              <button mat-button matStepperNext>Siguiente</button>
+            </div>
+          </mat-step>
+          <mat-step>
+            <ng-template matStepLabel>Resumen</ng-template>
+            <ng-container>
+              <div class="resumen-container">
+              <div *ngIf="resumenDatos" class="datos-cliente">
+                <h6>Datos del Cliente:</h6>
+                <p *ngIf="resumenDatos.datosCliente">Razon social: {{ resumenDatos.datosCliente.RazonSocial }}</p>
+                <p *ngIf="resumenDatos.datosCliente">CUIT: {{ resumenDatos.datosCliente.CUIT }}</p>
+                <p *ngIf="resumenDatos.datosCliente">Dirección: {{ resumenDatos.datosCliente.Direccion }}</p>
+                <p *ngIf="resumenDatos.datosCliente">Riesgo: {{ resumenDatos.datosCliente.Riesgo }}</p>
+                <p *ngIf="resumenDatos.datosCliente">Rubro: {{ resumenDatos.datosCliente.Rubro }}</p>
+              </div>
+          
+              <div *ngIf="resumenDatos.contactos && resumenDatos.contactos.length > 0" class="contactos-container">
+                <div *ngFor="let contacto of resumenDatos.contactos; let i = index" class="contacto-card">
+                  <h6>Contacto {{ i + 1 }}:</h6>
+                  <div>
+                    <div *ngFor="let key of ['Nombre', 'Apellido', 'Telefono', 'Email']">
+                      <p>{{ key }}: {{ contacto[key.toLowerCase()] }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </ng-container>
+            <div class="btn-next">
+              <button mat-button matStepperPrevious>Atrás</button>
+              <button mat-button>Crear</button>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </ng-container>
+    </ng-container>

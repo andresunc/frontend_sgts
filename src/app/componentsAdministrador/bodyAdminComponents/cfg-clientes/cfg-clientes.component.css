@@ -1,21 +1,3 @@
-.moduleContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 0.5rem;
-}
-
-.childContainer {
-  display: flex;
-  margin: auto;
-  margin-top: 0.5rem;
-  width: 99%;
-  height: calc(97% - 2.8rem);
-  /* Resta el alto de la barra de título */
-  border-radius: 0.5rem;
-  justify-content: space-between;
-  align-items: center;
-  
-}
 
 /* Descomentar para eliminar el efecto display:flex 
 .childContainer > * {
@@ -23,25 +5,288 @@
 }
 */
 
-.rendermenu {
+.example-stepper {
   
-    width: 21%;
-    padding-left: 1.25rem;
-    height: 100%;
-    background-color: #DFEEEE;
-    border-radius: 0.5rem;
-    box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
-    margin-right: auto;
-  }
-
-.menuContent {
-  width: 78%;
-  height: 100%;
-  background-color: #DFEEEE;
-  border-radius: 0.5rem;
-  box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  max-width: 100%; /* Establece el ancho máximo del stepper al 100% del contenedor padre */
+  max-height: 95%; /* Establece la altura máxima del stepper al 100% del contenedor padre */
+  background-color: transparent;
+ 
 }
 
+
+.mat-mdc-form-field{
+
+  width: calc(50% - 16px); /* 50% del ancho del contenedor menos el margen */
+  margin: 8px; /* Margen entre los campos */
+  margin-top: 5px;
+  margin-bottom: 0px; 
+
+}
+
+
+.btn-contacto {
+
+ padding-left: 5%;
+ align-items: center;
+ justify-content:center; 
+ cursor: pointer;
+ font-weight: bold; 
+ border-radius: 50%;
+ margin-bottom: 1rem;
+ margin-left: 43%;
+ 
+}
+
+.btn-contacto>*{
+
+ background-color: #5f5e5e;
+ box-shadow: 2px 0.2rem 0.2rem rgba(111, 110, 110, 0.468);
+ border-width:2px;
+ border-color: aliceblue;
+ color: rgb(250, 250, 250);
+}
+
+.btn-buscar, .btn-editar{
+  cursor: pointer;
+  background-color: #5f5e5e;
+  box-shadow: 2px 0.2rem 0.2rem rgba(111, 110, 110, 0.468);
+  border-width:2px;
+  border-color: aliceblue;
+  color: rgb(250, 250, 250);
+  margin-left: 3%;
+  margin-bottom: 1rem;
+}
+
+.btn-buscar:hover{ 
+  background-color:#673ab7;
+  border-style: solid;
+  color: #fefefe;
+  transform: scale(1.05);
+}
+
+.btn-editar{
+  position: absolute;
+  top: 5px; /* Ajusta según sea necesario para la distancia desde la parte superior */
+  right: 5px; /* Ajusta según sea necesario para la distancia desde el lado derecho */
+  z-index: 1;
+  height: 24px; /* Altura */
+  width: 24px;
+  bottom: 0px;
+}
+
+.btn-editar mat-icon{
+  line-height: 22px;
+  font-size:small;
+}
+
+.btn-editar:hover{ 
+  background-color:#673ab7;
+  border-style: solid;
+  color: #fefefe;
+  transform: scale(1.05);
+}
+
+.btn-contacto>*:hover{ 
+    background-color:#673ab7;
+    border-style: solid;
+    color: #fefefe;
+    transform: scale(1.05);
+}
+
+.btn-next{
+  display: flex;
+  justify-content: center;
+  border-color: transparent;
+ 
+}
+
+.tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  gap: 10px; /* Espacio entre las tarjetas */
+  word-wrap: break-word;
+}
+
+
+.tarjetas>* {
+  background-color:#ffffff8e;
+  box-shadow: 0 4px 4px rgba(190, 189, 189, 0.618);
+  border-width: 3px;
+  margin-top: 0; 
+}
+
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+  justify-items: center;
+  width: 100%;
+
+}
+
+.step-form{
+  width: 50%;
+}
+
+.contact-inputs mat-form-field{
+  width: 95%;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 10px;/* Ajusta según sea necesario */
+  margin-top: 5px;
+  margin-bottom: 0px;
+  padding-right: 0%;
+}
+
+.contact-cards {
+  display: flex; /* Utilizamos flexbox para que las tarjetas se apilen verticalmente */
+  flex-direction: column;
+  width: 48%;
+  margin-top: 0.3rem;
+  
+}
+
+.mat-mdc-card{
+  background-color:#ffffff8e;
+  box-shadow: 0 4px 4px rgba(190, 189, 189, 0.618);
+  border-width: 3px;
+  margin-top: 0; 
+  margin-bottom: 1%;
+  word-wrap: break-word;
+
+}
+
+.mat-mdc-card>*{
+  padding-top: 0.5%;
+  padding-bottom: 0.3%;
+  
+}
+
+.mdc-card__actions{
+  min-height: fit-content;
+
+}
+
+.mat-card {
+  width: 50%;
+  margin-bottom: 10px; /* Espacio entre tarjetas*/
+  height: auto;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  
+}
+
+.contact-cards p {
+  font-size: 13px; 
+}
+
+
+mat-card-title{
+  font-size: 13px; 
+  font-weight: bold;
+  
+}
+
+
+.step-content {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  width: 100%; 
+}
+
+.resumen-container {
+  width: 100%;
+  background-color:#ffffffa9;
+  box-shadow: 0 4px 4px rgba(190, 189, 189, 0.618);
+  border-width: 3px;
+  border-style: solid;
+  border-color: aliceblue;
+  margin-top: 0; 
+  margin-bottom: 1%;
+}
+
+.datos-cliente {
+  margin-left: 1%;
+  width: 100%;
+}
+
+.contactos-container{
+  display: inline-flex;
+  width: 100%;
+
+}
+
+.contacto-card {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 1%;
+}
+
+
+@media screen and (max-width: 800px) {
+  .example-stepper {
+    width: 90%; 
+    height: 90%;
+  }
+
+  .mat-mdc-form-field {
+    display:inline;
+    margin: 0px;
+  }
+
+  .tarjetas {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+    left: 0;
+    word-wrap: break-word;    
+  }
+
+  .mat-card {
+    width: 80px; /* Ancho fijo para las tarjetas */
+    height: 200px; /* ver */
+  }
+
+  .contact-inputs mat-form-field{
+  
+   margin-right: 0%; /*elimina el espacio del margen izquierdo cuando se achica la pantalla*/
+   margin-left:0%;
+  }
+
+  .btn-contacto, .btn-buscar{
+
+    margin-left:43%;
+    
+   }
+
+   .step-content {
+    display: inline; /* Utilizamos flexbox para colocar los elementos uno al lado del otro */
+    width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+   
+  }
+
+  .step-form, .contact-cards{
+    width: 100%;
+    left: 0px;
+  }
+
+  .btn-next{
+    margin-top: 1.5rem;
+  }
+
+  .resumen-container {
+    
+    margin: 0px;
+    width: 100%;
+  }
+  
+  .contactos-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px;
+  }
+
+}
+
+ 
