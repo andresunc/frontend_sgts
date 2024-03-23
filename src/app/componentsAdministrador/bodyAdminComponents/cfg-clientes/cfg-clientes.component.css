@@ -46,7 +46,7 @@
  color: rgb(250, 250, 250);
 }
 
-.btn-buscar{
+.btn-buscar, .btn-editar{
   cursor: pointer;
   background-color: #5f5e5e;
   box-shadow: 2px 0.2rem 0.2rem rgba(111, 110, 110, 0.468);
@@ -58,6 +58,28 @@
 }
 
 .btn-buscar:hover{ 
+  background-color:#673ab7;
+  border-style: solid;
+  color: #fefefe;
+  transform: scale(1.05);
+}
+
+.btn-editar{
+  position: absolute;
+  top: 5px; /* Ajusta según sea necesario para la distancia desde la parte superior */
+  right: 5px; /* Ajusta según sea necesario para la distancia desde el lado derecho */
+  z-index: 1;
+  height: 24px; /* Altura */
+  width: 24px;
+  bottom: 0px;
+}
+
+.btn-editar mat-icon{
+  line-height: 22px;
+  font-size:small;
+}
+
+.btn-editar:hover{ 
   background-color:#673ab7;
   border-style: solid;
   color: #fefefe;
@@ -138,8 +160,12 @@
 .mat-mdc-card>*{
   padding-top: 0.5%;
   padding-bottom: 0.3%;
-  padding-right: 0.5%;
   
+}
+
+.mdc-card__actions{
+  min-height: fit-content;
+
 }
 
 .mat-card {
@@ -164,19 +190,45 @@ mat-card-title{
 
 
 .step-content {
-  display: flex; /* Utilizamos flexbox para colocar los elementos uno al lado del otro */
-  justify-content: space-between; /* Distribuye el espacio disponible entre los elementos */
-  align-items: flex-start; /* Alinea los elementos en la parte superior */
-  width: 100%; /* Asegura que el contenedor ocupe todo el ancho disponible */
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  width: 100%; 
 }
 
+.resumen-container {
+  width: 100%;
+  background-color:#ffffffa9;
+  box-shadow: 0 4px 4px rgba(190, 189, 189, 0.618);
+  border-width: 3px;
+  border-style: solid;
+  border-color: aliceblue;
+  margin-top: 0; 
+  margin-bottom: 1%;
+}
+
+.datos-cliente {
+  margin-left: 1%;
+  width: 100%;
+}
+
+.contactos-container{
+  display: inline-flex;
+  width: 100%;
+
+}
+
+.contacto-card {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 1%;
+}
 
 
 @media screen and (max-width: 800px) {
   .example-stepper {
-    width: 90%; /* Reducir el ancho del stepper en pantallas más pequeñas */
-    height: 90%; /* Reducir la altura del stepper en pantallas más pequeñas */
-  
+    width: 90%; 
+    height: 90%;
   }
 
   .mat-mdc-form-field {
@@ -221,6 +273,20 @@ mat-card-title{
   .btn-next{
     margin-top: 1.5rem;
   }
+
+  .resumen-container {
+    
+    margin: 0px;
+    width: 100%;
+  }
+  
+  .contactos-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px;
+  }
+
 }
 
  

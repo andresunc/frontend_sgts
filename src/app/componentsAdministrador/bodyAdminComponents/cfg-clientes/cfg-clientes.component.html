@@ -13,7 +13,7 @@
             <form [formGroup]="firstFormGroup">
               <mat-form-field>
                 <mat-label>Buscar Cliente</mat-label>
-                <mat-select formControlName="BucarCliente" required>
+                <mat-select formControlName="BuscarCliente" required>
                   <mat-option value="one">First option</mat-option>
                   <mat-option value="two">Second option</mat-option>
                 </mat-select>
@@ -106,6 +106,11 @@
               <mat-card *ngFor="let contacto of contactos">
                 <mat-card-header>
                   <mat-card-title>Contacto {{ contacto.id }}</mat-card-title>
+                  <mat-card-actions>
+                    <button mat-mini-fab (click)="editarContacto(contacto)" class="btn-editar">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </mat-card-actions>
                 </mat-card-header>
                 <mat-card-content>
                   <p>Nombre: {{ contacto.nombre }}</p>
@@ -113,7 +118,7 @@
                   <p>Teléfono: {{ contacto.telefono }}</p>
                   <p>Email: {{ contacto.email }}</p>
                 </mat-card-content>
-              </mat-card>
+                </mat-card>
             </div>
             </div>
             <div class="btn-next">
@@ -123,25 +128,34 @@
           </mat-step>
           <mat-step>
             <ng-template matStepLabel>Resumen</ng-template>
-            <section class="tarjetas">
-            <mat-card>
-                <mat-card-header>
-                    <mat-card-title>Empresa</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>Razon Social: {{ firstFormGroup.get('RazonSocial')?.value }}</p>
-                    <p>CUIT: {{ firstFormGroup.get('CUIT')?.value }}</p>
-                    <p>Rubro: {{ firstFormGroup.get('Rubro')?.value }}</p>
-                    <p>Riesgo: {{ firstFormGroup.get('Riesgo')?.value }}</p>
-                </mat-card-content>
-            </mat-card>
-        </section>
-        <div class="btn-next">
-            <button mat-button matStepperPrevious>Atrás</button>
-            <button mat-button>Crear</button>
-          </div>
+            <ng-container>
+              <div class="resumen-container">
+              <div *ngIf="resumenDatos" class="datos-cliente">
+                <h6>Datos del Cliente:</h6>
+                <p *ngIf="resumenDatos.datosCliente">Razon social: {{ resumenDatos.datosCliente.RazonSocial }}</p>
+                <p *ngIf="resumenDatos.datosCliente">CUIT: {{ resumenDatos.datosCliente.CUIT }}</p>
+                <p *ngIf="resumenDatos.datosCliente">Dirección: {{ resumenDatos.datosCliente.Direccion }}</p>
+                <p *ngIf="resumenDatos.datosCliente">Riesgo: {{ resumenDatos.datosCliente.Riesgo }}</p>
+                <p *ngIf="resumenDatos.datosCliente">Rubro: {{ resumenDatos.datosCliente.Rubro }}</p>
+              </div>
+          
+              <div *ngIf="resumenDatos.contactos && resumenDatos.contactos.length > 0" class="contactos-container">
+                <div *ngFor="let contacto of resumenDatos.contactos; let i = index" class="contacto-card">
+                  <h6>Contacto {{ i + 1 }}:</h6>
+                  <div>
+                    <div *ngFor="let key of ['Nombre', 'Apellido', 'Telefono', 'Email']">
+                      <p>{{ key }}: {{ contacto[key.toLowerCase()] }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </ng-container>
+            <div class="btn-next">
+              <button mat-button matStepperPrevious>Atrás</button>
+              <button mat-button>Crear</button>
+            </div>
           </mat-step>
-        
-    </mat-stepper>
-  </ng-container>
-</ng-container>
+        </mat-stepper>
+      </ng-container>
+    </ng-container>

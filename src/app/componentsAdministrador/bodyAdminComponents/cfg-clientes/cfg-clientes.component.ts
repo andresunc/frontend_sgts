@@ -52,6 +52,10 @@ export class CfgClientesComponent implements OnInit {
   ngOnInit() {
     // Agregar el campo de correo electrónico a secondFormGroup
     this.secondFormGroup.addControl('Email', this._formBuilder.control('', [Validators.required, Validators.email]));
+
+    // Inicializar resumenDatos
+    this.resumenDatos = {}; // Se agregó esta línea para inicializar resumenDatos
+
   } 
 
   contactos: any[] = [];
@@ -75,14 +79,42 @@ export class CfgClientesComponent implements OnInit {
     });
 
     this.secondFormGroup.reset();
+
+    this.actualizarResumen();
   }
 
   } 
+
+  editarContacto(contacto: any) {
+    // Autocompletar los campos del formulario con los datos del contacto
+    this.secondFormGroup.patchValue({
+      Nombre: contacto.nombre,
+      Apellido: contacto.apellido,
+      Telefono: contacto.telefono,
+      Email: contacto.email
+    });
+  
+    // Eliminar el contacto de la lista
+    const index = this.contactos.indexOf(contacto);
+    if (index !== -1) {
+      this.contactos.splice(index, 1);
+    }
+
+    this.actualizarResumen();
+  }
 
 
 paso1EsValido(): boolean {
   return this.firstFormGroup.valid;
   }
+
+resumenDatos: any = {}; // Objeto para almacenar los datos del resumen
+
+// Función para actualizar el objeto del resumen
+ actualizarResumen() {
+  this.resumenDatos.datosCliente = this.firstFormGroup.value; // Datos del paso 1
+  this.resumenDatos.contactos = this.contactos; // Datos de los contactos del paso 2
+}
 
 
 }
