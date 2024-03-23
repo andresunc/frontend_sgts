@@ -3,15 +3,18 @@
  */
 
 export class Servicio {
-    idServicio: number;
-    fechaVencExpediente: Date;
-    fechaHoraAlertaVenc: Date;
-    recurrencia: number;
-    referenciaIdServicio: number;
-    tipoServicioIdTipoServicio: number;
-    comentario: string;
-    expediente: string;
+    idServicio?: number;
+    fechaVencExpediente?: Date;
+    fechaHoraAlertaVenc?: Date;
+    recurrencia?: number;
+    referenciaIdServicio?: number;
+    tipoServicioIdTipoServicio?: number;
+    comentario?: string;
+    expediente?: string;
 
+    constructor(){}
+
+    /*
     constructor(idServicio: number, fechaVencExpediente: Date, fechaHoraAlertaVenc: Date, recurrencia: number, referenciaIdServicio: number, tipoServicioIdTipoServicio: number, comentario: string, expediente: string) {
         this.idServicio = idServicio;
         this.fechaVencExpediente = fechaVencExpediente;
@@ -21,5 +24,6 @@ export class Servicio {
         this.tipoServicioIdTipoServicio = tipoServicioIdTipoServicio;
         this.comentario = comentario;
         this.expediente = expediente;
-    }
+    } 
+    */
 }

@@ -17,8 +17,7 @@
                                     <h5>Tipo de servicio que se va a prestar</h5>
                                     <mat-form-field>
                                         <mat-label>Tipo de Servicio</mat-label>
-                                        <mat-select formControlName="tipo" placeholder="Seleccionar tipo"
-                                        [(ngModel)]="tipoServicioSelected">
+                                        <mat-select formControlName="tipo" placeholder="Seleccionar tipo">
                                             <mat-option *ngFor="let tipo of tipoServiciosList" [value]="tipo">
                                                 <span>{{tipo.tipoServicio}}</span>
                                             </mat-option>
@@ -30,8 +29,7 @@
                                     <h5>En que estado se declara el servicio</h5>
                                     <mat-form-field>
                                         <mat-label>Estado del Servicio</mat-label>
-                                        <mat-select formControlName="estado" placeholder="Seleccionar estado"
-                                        [(ngModel)]="estadoSelected">
+                                        <mat-select formControlName="estado" placeholder="Seleccionar estado">
                                             <mat-option *ngFor="let estado of estadoList" [value]="estado"
                                                 [disabled]="isOptionDisabled(estado)">
                                                 <span>{{estado.tipoEstado}}</span>
@@ -54,8 +52,7 @@
                                     <h5>Personal que presta el servicio</h5>
                                     <mat-form-field>
                                         <mat-label>Responsable</mat-label>
-                                        <mat-select formControlName="responsable" placeholder="Seleccionar responsable"
-                                        [(ngModel)]="recursoSelected">
+                                        <mat-select formControlName="responsable" placeholder="Seleccionar responsable">
                                             <mat-option *ngFor="let recurso of recursoList" [value]="recurso">
                                                 <span>{{ recurso.nombre + ' Dni: ' + recurso.dni }}</span>
                                             </mat-option>
@@ -67,8 +64,7 @@
                                     <h5>Empresa a la que se le presta el servicio</h5>
                                     <mat-form-field>
                                         <mat-label>Empresa</mat-label>
-                                        <mat-select formControlName="empresa" placeholder="Seleccionar empresa"
-                                        [(ngModel)]="empresaSelected">
+                                        <mat-select formControlName="empresa" placeholder="Seleccionar empresa">
                                             <mat-option *ngFor="let empresa of empresaList" [value]="empresa">
                                                 <span>{{empresa.cliente + ' Cuit: ' + empresa.cuit}}</span>
                                             </mat-option>
@@ -81,7 +77,7 @@
                                     <mat-form-field>
                                         <mat-label>$ {{presupuesto | number:'1.2'}}</mat-label>
                                         <input matInput formControlName="monto" placeholder="Ej: 100.0" type="text"
-                                            inputmode="numeric" (value)="presupuesto" [(ngModel)]="presupuestoSelected"
+                                            inputmode="numeric" (value)="presupuesto"
                                             oninput="this.value = this.value.replace(/[^0-9.]/g, '');" required>
                                         <mat-error *ngIf="servicioForm.get('monto')?.hasError('pattern')">
                                             Ejemplo .
@@ -117,40 +113,35 @@
                                 <div class="col-md-4">
                                     <h5>Datos del cliente:</h5>
                                     <mat-card class="cardResume">
-                                        <span [class]="getColor(empresaSelected)">{{ 'Empresa: ' + (empresaSelected ? empresaSelected.cliente + ' / Cuit: ' + empresaSelected.cuit : '*') }}</span>
-                                        <span [class]="getColor(empresaSelected)">{{ 'Rubro: ' + (empresaSelected ? empresaSelected.rubro + ' / Riesgo: ' + empresaSelected.riesgo : '*') }}</span>
-                                        <span [class]="getColor(empresaSelected)">{{ 'Ubicación: ' + (empresaSelected ? empresaSelected.direccion : '*') }}</span>
+                                        <span>{{ 'Empresa: ' + (servicioForm.get('empresa')?.value ? servicioForm.get('empresa')?.value.cliente + ' / Cuit: ' + servicioForm.get('empresa')?.value.cuit : '*') }}</span>
+                                        <span>{{ 'Rubro: ' + (servicioForm.get('empresa')?.value ? servicioForm.get('empresa')?.value.rubro + ' / Riesgo: ' + servicioForm.get('empresa')?.value.riesgo : '*') }}</span>
+                                        <span>{{ 'Ubicación: ' + (servicioForm.get('empresa')?.value ? servicioForm.get('empresa')?.value.direccion : '*') }}</span>
                                     </mat-card>
                                 </div>
                                 <div class="col-md-4">
                                     <h5>Resumen del servicio:</h5>
                                     <mat-card class="cardResume">
-                                        <span [class]="getColor(tipoServicioSelected)">{{ 'Tipo de servicio: ' + (tipoServicioSelected ? tipoServicioSelected.tipoServicio : '*')}}</span>
-                                        <span [class]="getColor(estadoSelected)">{{ 'Estado actual: ' + (estadoSelected ? estadoSelected.tipoEstado : '*')}}</span>
-                                        <span [class]="getColor(presupuestoSelected)">Presupuesto: {{(presupuestoSelected ? '$'+(presupuestoSelected | number:'1.2') : '*')}}</span>
+                                        <span>{{ 'Tipo de servicio: ' + (servicioForm.get('tipo')?.value ? servicioForm.get('tipo')?.value.tipoServicio : '*') }}</span>
+                                        <span>{{ 'Estado actual: ' + (servicioForm.get('estado')?.value ? servicioForm.get('estado')?.value.tipoEstado : '*') }}</span>
+                                        <span>{{ 'Presupuesto: ' + (servicioForm.get('monto')?.value ? '$' + (servicioForm.get('monto')?.value | number:'1.2') : '*') }}</span>
                                     </mat-card>
                                 </div>
                                 <div class="col-md-4">
                                     <h5>Datos del Responsable:</h5>
                                     <mat-card class="cardResume">
-                                        <ng-container>
-                                            <span [class]="getColor(recursoSelected)">{{ 'Responsable: ' + (recursoSelected ? recursoSelected.nombre + ' ' +
-                                                recursoSelected.apellido : '*')}}</span>
-                                            <span [class]="getColor(recursoSelected)">{{ 'Rol: ' + (recursoSelected ? recursoSelected.rol : '*')}}</span>
-                                            <span [class]="getColor(recursoSelected)">{{ 'DNI: ' + (recursoSelected ? recursoSelected.dni : '*')}}</span>
-                                        </ng-container>
+                                        <span>{{ 'Responsable: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.nombre + ' ' + servicioForm.get('responsable')?.value.apellido : '*') }}</span>
+                                        <span>{{ 'Rol: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.rol : '*') }}</span>
+                                        <span>{{ 'DNI: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.dni : '*') }}</span>
                                     </mat-card>
                                 </div>
                             </div>
-                            <button id="btnSave" mat-raised-button color="primary" [disabled]="!servicioForm.valid">
+                            <button (click)="sendNewServicio()" id="btnSave" mat-raised-button color="primary" [disabled]="!servicioForm.valid || sending">
                                 {{ servicioForm.valid ? 'Guardar' : 'Completar campos'}}
                             </button>
-                            <mat-error class="p-2" style="font-size: 0.9rem; margin-top: 0.5rem"
-                                *ngIf="!servicioForm.valid">
+                            <mat-error class="p-2" style="font-size: 0.9rem; margin-top: 0.5rem" *ngIf="!servicioForm.valid">
                                 <span>Hay campos requeridos* incompletos</span>
                             </mat-error>
-                        </div>
-
+                        </div>                        
                     </div>
                 </mat-tab>
             </form>

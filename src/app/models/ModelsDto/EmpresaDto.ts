@@ -1,13 +1,15 @@
 export class EmpresaDto {
 
-    idRubro: number;
-    rubro: string;
-    idRiesgo: number;
-    riesgo: string;
-    cliente: string;
-    cuit: string;
-    direccion: string;
+    idEmpresa?: number;
+    idRubro?: number;
+    rubro?: string;
+    idRiesgo?: number;
+    riesgo?: string;
+    cliente?: string;
+    cuit?: string;
+    direccion?: string;
 
+    /**
     constructor(idRubro: number, rubro: string, idRiesgo: number, riesgo: string, cliente: string, cuit: string, direccion: string) {
         this.idRubro = idRubro;
         this.rubro = rubro;
@@ -17,4 +19,5 @@ export class EmpresaDto {
         this.cuit = cuit;
         this.direccion = direccion;
     }
+    */
 }

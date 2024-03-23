@@ -3,17 +3,25 @@ import { TipoServicioService } from './DomainServices/tipo-servicio.service';
 import { EstadosService } from './DomainServices/estados.service';
 import { RecursoDtoService } from './ServiciosDto/recurso-dto.service';
 import { EmpresaDtoService } from './ServiciosDto/empresa-dto.service';
+import { UrlBackend } from '../models/Url';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { NuevoServicioDto } from '../models/ModelsDto/NuevoServicioDto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewServicioService {
 
+  private urlBackend = new UrlBackend().getUrlBackend();
+  private urlNewServicio = this.urlBackend + '/nuevo/crearServicio';
+
   constructor(
     private estado: EstadosService, 
     private tipo: TipoServicioService,
     private recurso: RecursoDtoService,
-    private empresa: EmpresaDtoService
+    private empresa: EmpresaDtoService,
+    private http: HttpClient,
     ) { }
 
   /** Este Servicio requiere de los siguientes datos:
@@ -43,4 +51,8 @@ export class NewServicioService {
     return this.empresa.getEmpresas();
   }
 
+  // Método para crear un nuevo servicio
+  addServicio(addServicio: NuevoServicioDto): Observable<NuevoServicioDto> {
+    return this.http.post<NuevoServicioDto>(this.urlNewServicio, addServicio);
+  }
 }

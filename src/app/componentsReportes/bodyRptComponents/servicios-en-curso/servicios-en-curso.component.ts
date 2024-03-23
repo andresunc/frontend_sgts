@@ -16,8 +16,7 @@ export class ServiciosEnCursoComponent implements OnDestroy, OnInit {
   pieChartData: ChartData<"pie", number[], string> = {
     labels: [],
     datasets: [{
-      data: [],
-      backgroundColor: [] // Puedes definir colores aquí si lo deseas
+      data: []
     }]
   };
 

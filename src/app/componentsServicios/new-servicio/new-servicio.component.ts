@@ -3,9 +3,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Subject, delay, retryWhen, scan, takeUntil } from 'rxjs';
 import { Estado } from 'src/app/models/DomainModels/Estado';
+import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
+import { Servicio } from 'src/app/models/DomainModels/Servicio';
+import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
+import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { NewServicioService } from 'src/app/services/new-servicio.service';
 
@@ -31,7 +36,45 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   presupuestoSelected?: number;
 
   constructor(private fb: FormBuilder, private dataNewServ: NewServicioService,
-    private dataShared: DataSharedService) { }
+    private dataShared: DataSharedService, private newServicio: NewServicioService,
+    private _snackBar: PopupService) {
+
+  }
+
+  sending: boolean = false;
+  sendNewServicio() {
+    // desactivar botón y activar spinner
+    this.sending = true;
+
+    const nuevoServicioDto: NuevoServicioDto = new NuevoServicioDto();
+    nuevoServicioDto.servicio = new Servicio();
+    nuevoServicioDto.historicoEstado = new HistoricoEstado();
+    nuevoServicioDto.servicioEmpresa = new ServicioEmpresa();
+
+    nuevoServicioDto.servicio!.tipoServicioIdTipoServicio = this.servicioForm.get('tipo')?.value;
+    nuevoServicioDto.historicoEstado!.estadoIdEstado = this.servicioForm.get('estado')?.value;
+    nuevoServicioDto.servicioEmpresa!.costoServicio = this.servicioForm.get('monto')?.value;
+    nuevoServicioDto.servicioEmpresa!.empresaIdEmpresa = this.servicioForm.get('empresa')?.value;
+    nuevoServicioDto.servicioEmpresa!.recursoGgIdRecursoGg = this.servicioForm.get('responsable')?.value;
+    
+    // usar método Post para crear un nuevo servicio
+    this.dataShared.mostrarSpinner();
+    this.newServicio.addServicio(nuevoServicioDto).subscribe(
+      (response) => {
+        console.log('Servicio creado exitosamente:', response);
+        this.sending = false;
+        this.dataShared.ocultarSpinner();
+        this._snackBar.okSnackBar('Servicio creado exitosamente');
+      },
+      (error) => {
+        console.error('Error al crear servicio:', error);
+        this.sending = false;
+        this.dataShared.ocultarSpinner();
+        this._snackBar.errorSnackBar('Error al crear servicio');
+      }
+    );
+
+  }
 
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
   private unsubscribe$ = new Subject<void>();
@@ -73,7 +116,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
               if (retryCount >= maxCount) {
                 throw error;
               }
-              console.log(`Error al obtener los tipos de servicio, reintentando...${retryCount+1}/${maxCount}`);
+              console.log(`Error al obtener los tipos de servicio, reintentando...${retryCount + 1}/${maxCount}`);
               return retryCount + 1;
             }, 0),
             takeUntil(this.unsubscribe$)
@@ -94,7 +137,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
               if (retryCount >= maxCount) {
                 throw error;
               }
-              console.log(`Error al obtener los estados, reintentando...${retryCount+1}/${maxCount}`);
+              console.log(`Error al obtener los estados, reintentando...${retryCount + 1}/${maxCount}`);
               return retryCount + 1;
             }, 0),
             takeUntil(this.unsubscribe$)
@@ -115,7 +158,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
               if (retryCount >= maxCount) {
                 throw error;
               }
-              console.log(`Error al obtener los recursos gg, reintentando...${retryCount+1}/${maxCount}`);
+              console.log(`Error al obtener los recursos gg, reintentando...${retryCount + 1}/${maxCount}`);
               return retryCount + 1;
             }, 0),
             takeUntil(this.unsubscribe$)
@@ -136,7 +179,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
               if (retryCount >= maxCount) {
                 throw error;
               }
-              console.log(`Error al obtener las empresas, reintentando...${retryCount+1}/${maxCount}`);
+              console.log(`Error al obtener las empresas, reintentando...${retryCount + 1}/${maxCount}`);
               return retryCount + 1;
             }, 0),
             takeUntil(this.unsubscribe$)
@@ -152,7 +195,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     } finally {
       this.dataShared.ocultarSpinner();
     }
-    
+
     /**
      * Fin de la obtención de datos
      */
@@ -176,7 +219,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   // Si el id no está en el arreglo, se deshabilita la opción
   idPermitidos = [1, 2];
   isOptionDisabled(estado: Estado): boolean {
-  return !this.idPermitidos.includes(estado.idEstado);
+    return !this.idPermitidos.includes(estado.idEstado);
   }
 
 }
