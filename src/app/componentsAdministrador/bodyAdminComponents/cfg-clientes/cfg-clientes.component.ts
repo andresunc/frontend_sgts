@@ -17,6 +17,7 @@ export class CfgClientesComponent implements OnInit {
   firstFormGroup = this._formBuilder.group({
       RazonSocial: ['', [Validators.required]],
       CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
+      Direccion: ['', [Validators.required]],
       Rubro: ['', [Validators.required]],
       Riesgo: ['', [Validators.required]]
   });
@@ -36,7 +37,6 @@ export class CfgClientesComponent implements OnInit {
     this.secondFormGroup = this._formBuilder.group({
       Nombre: ['', [Validators.required]],
       Apellido: [''],
-      Direccion: ['', [Validators.required]],
       Telefono: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
       Email: ['', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]]
     });
@@ -51,7 +51,7 @@ export class CfgClientesComponent implements OnInit {
 
   ngOnInit() {
     // Agregar el campo de correo electrónico a secondFormGroup
-    this.secondFormGroup.addControl('email', this._formBuilder.control('', [Validators.required, Validators.email]));
+    this.secondFormGroup.addControl('Email', this._formBuilder.control('', [Validators.required, Validators.email]));
   } 
 
   contactos: any[] = [];
@@ -61,7 +61,6 @@ export class CfgClientesComponent implements OnInit {
     if (this.secondFormGroup.valid) {
       const nombre = this.secondFormGroup.get('Nombre')?.value;
       const apellido = this.secondFormGroup.get('Apellido')?.value;
-      const direccion = this.secondFormGroup.get('Direccion')?.value;
       const telefono = this.secondFormGroup.get('Telefono')?.value;
       const email = this.secondFormGroup.get('Email')?.value;
     
@@ -71,7 +70,6 @@ export class CfgClientesComponent implements OnInit {
       id: this.contactos.length + 1,
       nombre: nombre,
       apellido: apellido,
-      direccion: direccion,
       telefono: telefono,
       email: email
     });
@@ -79,12 +77,12 @@ export class CfgClientesComponent implements OnInit {
     this.secondFormGroup.reset();
   }
 
-} 
+  } 
 
 
 paso1EsValido(): boolean {
   return this.firstFormGroup.valid;
-}
+  }
 
 
 }

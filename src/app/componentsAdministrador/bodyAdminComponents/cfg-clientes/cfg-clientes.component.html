@@ -8,9 +8,19 @@
       </ng-container>
     </ng-container>
   
-    <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()" linear>
-        <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente" [optional]="false" >
+    <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()">
+        <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente" linear>
             <form [formGroup]="firstFormGroup">
+              <mat-form-field>
+                <mat-label>Buscar Cliente</mat-label>
+                <mat-select formControlName="BucarCliente" required>
+                  <mat-option value="one">First option</mat-option>
+                  <mat-option value="two">Second option</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <button mat-mini-fab class="btn-buscar">
+                <mat-icon>search</mat-icon>
+              </button>
               <mat-form-field>
                 <mat-label>Razon Social</mat-label>
                 <input matInput placeholder="" formControlName="RazonSocial" required>
@@ -24,6 +34,13 @@
                 <mat-error *ngIf="firstFormGroup.get('CUIT')?.invalid && (firstFormGroup.get('CUIT')?.dirty || firstFormGroup.get('CUIT')?.touched)">
                     Dato obligatorio.
                 </mat-error>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Dirección</mat-label>
+                <input matInput formControlName="Direccion" placeholder="Calle, número, ciudad" required>
+                <mat-error *ngIf="firstFormGroup.get('Direccion')?.invalid && (firstFormGroup.get('Direccion')?.dirty || firstFormGroup.get('Direccion')?.touched)">
+                    Dato obligatorio.
+                  </mat-error>
               </mat-form-field> 
               <mat-form-field>
                 <mat-label>Rubro</mat-label>
@@ -40,57 +57,69 @@
                 </mat-select>
               </mat-form-field>   
                   <div class="btn-next">
-                    <button mat-button matStepperNext [disabled]="!paso1EsValido()">Siguiente</button>
+                    <button mat-button matStepperNext [disabled]="firstFormGroup.invalid">Siguiente</button>
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="secondFormGroup" label="Crear Agenda" [optional]="true" >
-            <form [formGroup]="secondFormGroup">
-              <mat-form-field>
-                <mat-label>Nombre</mat-label>
-                <input matInput placeholder="" formControlName="Nombre" required>
-                <mat-error *ngIf="secondFormGroup.get('Nombre')?.invalid && (secondFormGroup.get('Nombre')?.dirty || secondFormGroup.get('Nombre')?.touched)">
-                    Dato obligatorio.
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Apellido</mat-label>
-                <input matInput placeholder="" formControlName="Apellido">
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Dirección</mat-label>
-                <input matInput formControlName="Direccion" placeholder="Calle, número, ciudad" required>
-                <mat-error *ngIf="secondFormGroup.get('Direccion')?.invalid && (secondFormGroup.get('Direccion')?.dirty || secondFormGroup.get('Direccion')?.touched)">
-                    Dato obligatorio.
-                  </mat-error>
-              </mat-form-field>      
-              <mat-form-field>
-                <mat-label>Teléfono</mat-label>
-                <input matInput formControlName="Telefono" placeholder="+54 351 xxxxxxxxx" required>
-                <mat-error *ngIf="firstFormGroup.get('Telefono')?.invalid && (firstFormGroup.get('Telefono')?.dirty || firstFormGroup.get('Telefono')?.touched)">
-                    Dato obligatorio.
-                </mat-error>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>E-mail</mat-label>
-                <input matInput type="email" formControlName="Email" placeholder="ejemplo@gmail.com">
-                <mat-error *ngIf="secondFormGroup?.get('email')?.hasError('email') && !secondFormGroup.get('email')?.hasError('required')">
-                  Por favor ingrese un e-mail válido.
-                </mat-error>
-                <mat-error *ngIf="secondFormGroup?.get('email')?.hasError('required')">
-                  El e-mail es <strong>necesario</strong>
-                </mat-error>
-              </mat-form-field>
-              <div class="btn-contacto">
-              <button  mat-mini-fab tabindex="-1" (click)="agregarContacto()" [disabled]="!secondFormGroup.get('Nombre')?.value || !secondFormGroup.get('Direccion')?.value || !secondFormGroup.get('Telefono')?.value || !secondFormGroup.get('Email')?.value">
-                <mat-icon>add</mat-icon>
-                </button>
-              </div>
-              <div class="btn-next">
-                <button mat-button matStepperPrevious>Atrás</button>
-                <button mat-button matStepperNext>Siguiente</button>
-              </div>
-            </form>
+          <mat-step [stepControl]="secondFormGroup" label="Crear Agenda">
+            <div class="step-content"> 
+            <div class="step-form">
+              <form [formGroup]="secondFormGroup" class="contact-form">
+                <div class="contact-inputs">
+                  <mat-form-field>
+                    <mat-label>Nombre</mat-label>
+                    <input matInput placeholder="" formControlName="Nombre" required>
+                    <mat-error *ngIf="secondFormGroup.get('Nombre')?.invalid && (secondFormGroup.get('Nombre')?.dirty || secondFormGroup.get('Nombre')?.touched)">
+                      Dato obligatorio.
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Apellido</mat-label>
+                    <input matInput placeholder="" formControlName="Apellido">
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Teléfono</mat-label>
+                    <input matInput formControlName="Telefono" placeholder="+54 351 xxxxxxxxx" required>
+                    <mat-error *ngIf="secondFormGroup.get('Telefono')?.invalid && (secondFormGroup.get('Telefono')?.dirty || secondFormGroup.get('Telefono')?.touched)">
+                      Dato obligatorio.
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput type="email" formControlName="Email" placeholder="ejemplo@gmail.com">
+                    <mat-error *ngIf="secondFormGroup?.get('email')?.hasError('email') && !secondFormGroup.get('email')?.hasError('required')">
+                      Por favor ingrese un e-mail válido.
+                    </mat-error>
+                    <mat-error *ngIf="secondFormGroup?.get('email')?.hasError('required')">
+                      El e-mail es <strong>necesario</strong>
+                    </mat-error>
+                  </mat-form-field>
+                  <div class="btn-contacto">
+                    <button mat-mini-fab tabindex="-1" (click)="agregarContacto()">
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="contact-cards">
+              <mat-card *ngFor="let contacto of contactos">
+                <mat-card-header>
+                  <mat-card-title>Contacto {{ contacto.id }}</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p>Nombre: {{ contacto.nombre }}</p>
+                  <p>Apellido: {{ contacto.apellido }}</p>
+                  <p>Teléfono: {{ contacto.telefono }}</p>
+                  <p>Email: {{ contacto.email }}</p>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            </div>
+            <div class="btn-next">
+              <button mat-button matStepperPrevious>Atrás</button>
+              <button mat-button matStepperNext>Siguiente</button>
+            </div>
           </mat-step>
           <mat-step>
             <ng-template matStepLabel>Resumen</ng-template>
@@ -106,19 +135,6 @@
                     <p>Riesgo: {{ firstFormGroup.get('Riesgo')?.value }}</p>
                 </mat-card-content>
             </mat-card>
-            
-            <mat-card *ngFor="let contacto of contactos">
-                <mat-card-header>
-                    <mat-card-title>Contacto {{ contacto.id }}</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <p>Nombre: {{ contacto.nombre }}</p>
-                    <p>Apellido: {{ contacto.apellido }}</p>
-                    <p>Dirección: {{ contacto.direccion }}</p>
-                    <p>Teléfono: {{ contacto.telefono }}</p>
-                    <p>Email: {{ contacto.email }}</p>
-                </mat-card-content>
-            </mat-card>  
         </section>
         <div class="btn-next">
             <button mat-button matStepperPrevious>Atrás</button>
