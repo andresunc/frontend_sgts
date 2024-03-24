@@ -58,6 +58,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     nuevoServicioDto.servicioEmpresa!.recursoGgIdRecursoGg = this.servicioForm.get('responsable')?.value;
     
     // usar método Post para crear un nuevo servicio
+    console.log(nuevoServicioDto)
     this.dataShared.mostrarSpinner();
     this.newServicio.addServicio(nuevoServicioDto).subscribe(
       (response) => {
@@ -66,8 +67,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
         this.dataShared.ocultarSpinner();
         this._snackBar.okSnackBar('Servicio creado exitosamente');
       },
-      (error) => {
-        console.error('Error al crear servicio:', error);
+      () => {
         this.sending = false;
         this.dataShared.ocultarSpinner();
         this._snackBar.errorSnackBar('Error al crear servicio');

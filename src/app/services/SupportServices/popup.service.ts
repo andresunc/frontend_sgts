@@ -30,7 +30,8 @@ export class PopupService {
         icon: 'error',
         snackBar: this._snackBar,
         color: 'text-danger'
-      }
+      },
+      duration: 5000
     });
   }
 
