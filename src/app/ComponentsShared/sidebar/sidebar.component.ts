@@ -64,7 +64,7 @@ export class SidebarComponent implements OnInit {
 
   // Función para agregar o quitar TipoServicio[] a filtrar.
   selectedTipoServicioToFilter: string[] = [];
-  sendTipoServicio(tipoServicio: string) {
+  sendTipoServicio(tipoServicio: any) {
 
     const index = this.selectedTipoServicioToFilter.indexOf(tipoServicio);
 

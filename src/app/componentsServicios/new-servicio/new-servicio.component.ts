@@ -3,9 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Subject, delay, retryWhen, scan, takeUntil } from 'rxjs';
 import { Estado } from 'src/app/models/DomainModels/Estado';
-import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
-import { Servicio } from 'src/app/models/DomainModels/Servicio';
-import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
@@ -43,21 +40,23 @@ export class NewServicioComponent implements OnInit, OnDestroy {
 
   sending: boolean = false;
   sendNewServicio() {
-    // desactivar botón y activar spinner
+    
     this.sending = true;
 
     const nuevoServicioDto: NuevoServicioDto = new NuevoServicioDto();
-    nuevoServicioDto.servicio = new Servicio();
-    nuevoServicioDto.historicoEstado = new HistoricoEstado();
-    nuevoServicioDto.servicioEmpresa = new ServicioEmpresa();
-
-    nuevoServicioDto.servicio!.tipoServicioIdTipoServicio = this.servicioForm.get('tipo')?.value;
-    nuevoServicioDto.historicoEstado!.estadoIdEstado = this.servicioForm.get('estado')?.value;
-    nuevoServicioDto.servicioEmpresa!.costoServicio = this.servicioForm.get('monto')?.value;
-    nuevoServicioDto.servicioEmpresa!.empresaIdEmpresa = this.servicioForm.get('empresa')?.value;
-    nuevoServicioDto.servicioEmpresa!.recursoGgIdRecursoGg = this.servicioForm.get('responsable')?.value;
     
-    // usar método Post para crear un nuevo servicio
+    let tipoServicio: TipoServicio = this.servicioForm.get('tipo')?.value;
+    let estado: Estado = this.servicioForm.get('estado')?.value;
+    let recurso: RecursoDto = this.servicioForm.get('responsable')?.value;
+    let empresa: EmpresaDto = this.servicioForm.get('empresa')?.value;
+
+    nuevoServicioDto.servicio.tipoServicioIdTipoServicio = tipoServicio.idTipoServicio;
+    nuevoServicioDto.historicoEstado.estadoIdEstado = estado.idEstado;
+    nuevoServicioDto.servicioEmpresa.recursoGgIdRecursoGg = recurso.idRecurso;
+    nuevoServicioDto.servicioEmpresa.empresaIdEmpresa = empresa.idEmpresa;
+    nuevoServicioDto.servicioEmpresa.costoServicio = this.servicioForm.get('monto')?.value;
+    nuevoServicioDto.itemChecklist = null;
+
     console.log(nuevoServicioDto)
     this.dataShared.mostrarSpinner();
     this.newServicio.addServicio(nuevoServicioDto).subscribe(
@@ -66,6 +65,8 @@ export class NewServicioComponent implements OnInit, OnDestroy {
         this.sending = false;
         this.dataShared.ocultarSpinner();
         this._snackBar.okSnackBar('Servicio creado exitosamente');
+        this.servicioForm.reset();
+        this.goToNextTab(0);
       },
       () => {
         this.sending = false;
