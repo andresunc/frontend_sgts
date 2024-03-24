@@ -12,14 +12,4 @@ export class NuevoServicioDto {
 
     constructor() {}
 
-    /**
-    constructor(servicio: Servicio, historicoEstado: HistoricoEstado,
-        servicioEmpresa: ServicioEmpresa,itemChecklist: ItemChecklist) {
-        this.servicio = servicio;
-        this.historicoEstado = historicoEstado;
-        this.servicioEmpresa = servicioEmpresa;
-        this.itemChecklist = itemChecklist;
-    }
-    */
-
 }

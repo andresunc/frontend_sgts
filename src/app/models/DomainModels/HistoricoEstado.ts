@@ -10,12 +10,4 @@ export class HistoricoEstado {
 
     constructor() {}
 
-    /**
-    constructor(idHistoricoEstado: number, servicioIdServicio: number, estadoIdEstado: number) {
-        this.idHistoricoEstado = idHistoricoEstado;
-        this.fecha = new Date(); // Fecha y hora actual automatica
-        this.servicioIdServicio = servicioIdServicio;
-        this.estadoIdEstado = estadoIdEstado;
-    }
-     */
 }
