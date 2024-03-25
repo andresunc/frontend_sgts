@@ -25,6 +25,8 @@ export class CfgClientesComponent implements OnInit {
   
   stepperOrientation: Observable<StepperOrientation>;
 
+  modificarEliminarHabilitado: boolean = false;
+
   constructor(
     private _formBuilder: FormBuilder,
     private breakpointObserver: BreakpointObserver
@@ -53,36 +55,48 @@ export class CfgClientesComponent implements OnInit {
     // Agregar el campo de correo electrónico a secondFormGroup
     this.secondFormGroup.addControl('Email', this._formBuilder.control('', [Validators.required, Validators.email]));
 
-    // Inicializar resumenDatos
-    this.resumenDatos = {}; // Se agregó esta línea para inicializar resumenDatos
-
+    this.actualizarResumen();
   } 
+
+  resumenDatos: any = {}; // Objeto para almacenar los datos del resumen
+
+// Función para actualizar el objeto del resumen
+ actualizarResumen() {
+  this.resumenDatos.datosCliente = {
+    RazonSocial: this.firstFormGroup.get('RazonSocial')?.value,
+    CUIT: this.firstFormGroup.get('CUIT')?.value,
+    Direccion: this.firstFormGroup.get('Direccion')?.value,
+    Rubro: this.firstFormGroup.get('Rubro')?.value,
+    Riesgo: this.firstFormGroup.get('Riesgo')?.value
+  };
+
+  this.resumenDatos.contactos = this.contactos;
+  
+}
 
   contactos: any[] = [];
 
   agregarContacto() {
-    // Capturar los valores de los campos del formulario secondFormGroup
     if (this.secondFormGroup.valid) {
       const nombre = this.secondFormGroup.get('Nombre')?.value;
       const apellido = this.secondFormGroup.get('Apellido')?.value;
       const telefono = this.secondFormGroup.get('Telefono')?.value;
       const email = this.secondFormGroup.get('Email')?.value;
     
-    
-    // Agregar los datos a la lista de contactos
-    this.contactos.push({
-      id: this.contactos.length + 1,
-      nombre: nombre,
-      apellido: apellido,
-      telefono: telefono,
-      email: email
-    });
-
-    this.secondFormGroup.reset();
-
-    this.actualizarResumen();
-  }
-
+      // Agregar los datos a la lista de contactos
+      this.contactos.push({
+        id: this.contactos.length + 1,
+        nombre: nombre,
+        apellido: apellido,
+        telefono: telefono,
+        email: email
+      });
+  
+      this.secondFormGroup.reset();
+  
+      // Actualizar el resumen después de agregar el contacto
+      this.actualizarResumen();
+    }
   } 
 
   editarContacto(contacto: any) {
@@ -108,13 +122,57 @@ paso1EsValido(): boolean {
   return this.firstFormGroup.valid;
   }
 
-resumenDatos: any = {}; // Objeto para almacenar los datos del resumen
+ // Función para cargar los datos del cliente seleccionado
+cargarDatosClienteSeleccionado(clienteSeleccionado: any) {
+  // Cargar los datos del cliente en los campos del primer paso del formulario
+  this.firstFormGroup.patchValue({
+    RazonSocial: clienteSeleccionado.razonSocial,
+    CUIT: clienteSeleccionado.cuit,
+    // Otras propiedades del cliente
+  });
 
-// Función para actualizar el objeto del resumen
- actualizarResumen() {
-  this.resumenDatos.datosCliente = this.firstFormGroup.value; // Datos del paso 1
-  this.resumenDatos.contactos = this.contactos; // Datos de los contactos del paso 2
+  // Cargar los contactos del cliente en el paso 2 del formulario
+  this.contactos = clienteSeleccionado.contactos;
+}
+
+crearCliente() {
+  // Lógica para crear el cliente en la base de datos
+}
+
+modificarCliente() {
+  // Lógica para modificar el cliente en la base de datos
 }
 
 
+eliminarCliente() {
+  // Lógica para eliminar el cliente de la base de datos
+} 
+
+buscarCliente() {
+  // Lógica para buscar el cliente y cargar los datos
+
+ // Verificar si se ha seleccionado un cliente
+ const clienteSeleccionado = this.firstFormGroup.get('BuscarCliente')?.value;
+
+ // Si se ha seleccionado un cliente, habilitar los botones Modificar y Eliminar
+ if (clienteSeleccionado) {
+   this.modificarEliminarHabilitado = true;
+ } else {
+   // Si no se ha seleccionado un cliente, deshabilitar los botones Modificar y Eliminar
+   this.modificarEliminarHabilitado = false;
+ }
+}
+
+
+
+onInputChange() {
+  // Verificar si se han ingresado datos manualmente
+  if (this.firstFormGroup.dirty || this.modificarEliminarHabilitado) {
+    // Habilitar el botón Modificar y Eliminar
+    this.modificarEliminarHabilitado = true;
+  } else {
+    // Deshabilitar el botón Modificar y Eliminar
+    this.modificarEliminarHabilitado = false;
+  }
+}
 }

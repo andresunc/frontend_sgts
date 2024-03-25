@@ -8,12 +8,12 @@
       </ng-container>
     </ng-container>
   
-    <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()">
-        <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente" linear>
+    <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()" linear>
+        <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente" >
             <form [formGroup]="firstFormGroup">
               <mat-form-field>
                 <mat-label>Buscar Cliente</mat-label>
-                <mat-select formControlName="BuscarCliente" required>
+                <mat-select formControlName="BuscarCliente">
                   <mat-option value="one">First option</mat-option>
                   <mat-option value="two">Second option</mat-option>
                 </mat-select>
@@ -57,11 +57,11 @@
                 </mat-select>
               </mat-form-field>   
                   <div class="btn-next">
-                    <button mat-button matStepperNext [disabled]="firstFormGroup.invalid">Siguiente</button>
+                    <button mat-button matStepperNext (click)="actualizarResumen()" [disabled]="firstFormGroup.invalid">Siguiente</button>
               </div>
             </form>
           </mat-step>
-          <mat-step [stepControl]="secondFormGroup" label="Crear Agenda">
+          <mat-step [stepControl]="secondFormGroup" label="Crear Agenda" [optional]="true">
             <div class="step-content"> 
             <div class="step-form">
               <form [formGroup]="secondFormGroup" class="contact-form">
@@ -153,7 +153,9 @@
             </ng-container>
             <div class="btn-next">
               <button mat-button matStepperPrevious>Atrás</button>
-              <button mat-button>Crear</button>
+              <button mat-button (click)="crearCliente()" [disabled]="modificarEliminarHabilitado">Crear</button>
+              <button mat-button (click)="modificarCliente()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
+              <button mat-button (click)="eliminarCliente()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
             </div>
           </mat-step>
         </mat-stepper>
