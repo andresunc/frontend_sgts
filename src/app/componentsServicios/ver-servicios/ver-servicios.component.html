@@ -27,14 +27,15 @@
             </section>
 
             <!-- Tabla de servicios -->
-        
+
             <div class="mat-elevation-z0 dataTable">
                 <table mat-table [dataSource]="dataSource">
 
                     <!-- cliente Column -->
                     <ng-container matColumnDef="cliente">
                         <th mat-header-cell *matHeaderCellDef class="text-center">
-                            <span class="headTable">CLIENTES</span></th>
+                            <span class="headTable">CLIENTES</span>
+                        </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
                             (click)="svService.enviarObjeto(element)">
                             <span class="contentTable">{{element.cliente.toUpperCase()}}</span>
@@ -51,17 +52,16 @@
                             <span class="contentTable">{{element.tipo.toUpperCase()}}</span>
                         </td>
                     </ng-container>
-                    
+
                     <!-- vigencia Column -->
                     <ng-container matColumnDef="vigencia">
                         <th mat-header-cell *matHeaderCellDef class="text-center" matTooltip="Antigüedad del servicio">
-                         <span class="headTable">VIGENCIA</span>
+                            <span class="headTable">VIGENCIA</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
-                        (click)="svService.enviarObjeto(element)">
-                            <span>{{ element.fecha_alta ? calcularDiferenciaDias(element.fecha_alta) +' días' : "-" }}</span>
+                            (click)="svService.enviarObjeto(element)">
+                            <span>{{ element.fecha_alta ? calcularDiferencia(element.fecha_alta) : ''}}</span>
                         </td>
-                        
                     </ng-container>
 
                     <!-- avance Column -->
@@ -94,31 +94,39 @@
                             <span class="headTable">ALERTAS</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center">
-                        
-                            <mat-icon *ngIf="!svService.checkPresentado(element)" (click)="svService.enviarObjeto(element)">-</mat-icon>
-                            <mat-icon matTooltip="Presentado" *ngIf="svService.checkPresentado(element)" style="color: #ffd740"
-                                (click)="svService.enviarObjeto(element)">adjust</mat-icon>
-                        
-                            <mat-icon *ngIf="!svService.checkNotificaciones(element)" (click)="svService.enviarObjeto(element)">-</mat-icon>
-                            <mat-icon color="warn" matTooltip="Notificado" *ngIf="svService.checkNotificaciones(element)"
+
+                            <mat-icon *ngIf="!svService.checkPresentado(element)"
+                                (click)="svService.enviarObjeto(element)">-</mat-icon>
+                            <mat-icon matTooltip="Presentado" *ngIf="svService.checkPresentado(element)"
+                                style="color: #ffd740" (click)="svService.enviarObjeto(element)">adjust</mat-icon>
+
+                            <mat-icon *ngIf="!svService.checkNotificaciones(element)"
+                                (click)="svService.enviarObjeto(element)">-</mat-icon>
+                            <mat-icon color="warn" matTooltip="Notificado"
+                                *ngIf="svService.checkNotificaciones(element)"
                                 (click)="svService.enviarObjeto(element)">adjust</mat-icon>
                         </td>
                     </ng-container>
-                
-                    <tr mat-header-row *matHeaderRowDef="['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']" style="background-color: #ffffff;"></tr>
-                    <tr mat-row *matRowDef="let row; columns: ['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']; let element;" class="estiloRow"></tr>
+
+                    <!-- Configuración de filas y columnas -->
+                    <tr mat-header-row
+                        *matHeaderRowDef="['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']"
+                        style="background-color: #ffffff;"></tr>
+                    <tr mat-row
+                        *matRowDef="let row; columns: ['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']; let element;"
+                        class="estiloRow"></tr>
                 </table>
             </div>
-      
+
             <!-- divider -->
             <mat-divider style="margin-top: 1rem;"></mat-divider>
-       
+
             <!-- Paginador -->
             <mat-paginator [pageSizeOptions]="[30]" showFirstLastButtons aria-label="Seleccionar página">
             </mat-paginator>
-        
+
         </div>
-    
+
     </div>
 
 </div>

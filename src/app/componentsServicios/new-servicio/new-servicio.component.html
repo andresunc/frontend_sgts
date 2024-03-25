@@ -8,7 +8,7 @@
             <form [formGroup]="servicioForm">
 
                 <!-- Tab de Servicio -->
-                <mat-tab label="Un">
+                <mat-tab label="ESTABLECER">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>SERVICIO Y ESTADO</h2>
@@ -43,7 +43,7 @@
                 </mat-tab>
 
                 <!-- Tab de Prestación a la empresa -->
-                <mat-tab label="Dos">
+                <mat-tab label="ASIGNAR">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>DETALLES DE LA ASIGNACIÓN DEL SERVICIO</h2>
@@ -86,21 +86,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </mat-tab>
-
-                <!-- Tab de Checklist -->
-                <mat-tab label="Tres">
-                    <div class="formContainer">
-                        <div class="formContent">
-                            <h2>CREACIÓN DEL CHECKLIST</h2>
-                            <div class="row p-5">
-                                <div class="col-md-12">
-                                    <p> Lugar para insertar el Checklist </p>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </mat-tab>
 
@@ -150,8 +135,7 @@
             <div>
                 <button mat-button (click)="goToNextTab(0)" [disabled]="selectedTabIndex === 0">Tab 1</button>
                 <button mat-button (click)="goToNextTab(1)" [disabled]="selectedTabIndex === 1">Tab 2</button>
-                <button mat-button (click)="goToNextTab(2)" [disabled]="selectedTabIndex === 2">Tab 3</button>
-                <button mat-button (click)="goToNextTab(3)" [disabled]="selectedTabIndex === 3">Guardar</button>
+                <button mat-button (click)="goToNextTab(2)" [disabled]="selectedTabIndex === 2">Guardar</button>
             </div>
         </div>
     </div>
