@@ -7,6 +7,7 @@ import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
+import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { NewServicioService } from 'src/app/services/new-servicio.service';
@@ -34,17 +35,17 @@ export class NewServicioComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private dataNewServ: NewServicioService,
     private dataShared: DataSharedService, private newServicio: NewServicioService,
-    private _snackBar: PopupService) {
-
+    private _snackBar: PopupService,
+    private svManager: ManagerService) {
   }
 
   sending: boolean = false;
   sendNewServicio() {
-    
+
     this.sending = true;
 
     const nuevoServicioDto: NuevoServicioDto = new NuevoServicioDto();
-    
+
     let tipoServicio: TipoServicio = this.servicioForm.get('tipo')?.value;
     let estado: Estado = this.servicioForm.get('estado')?.value;
     let recurso: RecursoDto = this.servicioForm.get('responsable')?.value;
@@ -57,23 +58,30 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     nuevoServicioDto.servicioEmpresa.costoServicio = this.servicioForm.get('monto')?.value;
     nuevoServicioDto.itemChecklist = null;
 
-    console.log(nuevoServicioDto)
+    console.log('Se solicita crear el servicio: ' + nuevoServicioDto)
+
     this.dataShared.mostrarSpinner();
-    this.newServicio.addServicio(nuevoServicioDto).subscribe(
-      (response) => {
-        console.log('Servicio creado exitosamente:', response);
-        this.sending = false;
-        this.dataShared.ocultarSpinner();
-        this._snackBar.okSnackBar('Servicio creado exitosamente');
-        this.servicioForm.reset();
-        this.goToNextTab(0);
-      },
-      () => {
-        this.sending = false;
-        this.dataShared.ocultarSpinner();
-        this._snackBar.errorSnackBar('Error al crear servicio');
-      }
-    );
+    this.newServicio.addServicio(nuevoServicioDto)
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      ) // este pipe es para agregaer la desuscripción
+      .subscribe(
+        (response) => {
+          this.svManager.castNewServicio(response);
+          console.log('Servicio creado exitosamente:', response);
+
+          this._snackBar.okSnackBar('Servicio creado exitosamente');
+          this.servicioForm.reset();
+          this.goToNextTab(0);
+          this.sending = false;
+          this.dataShared.ocultarSpinner();
+        },
+        () => {
+          this.sending = false;
+          this.dataShared.ocultarSpinner();
+          this._snackBar.errorSnackBar('Error al crear servicio');
+        }
+      );
 
   }
 

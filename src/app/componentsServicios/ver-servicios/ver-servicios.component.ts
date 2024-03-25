@@ -20,7 +20,6 @@ import { PopupService } from 'src/app/services/SupportServices/popup.service';
 export class VerServiciosComponent implements OnInit, OnDestroy {
 
   title: string = "Gestión De Servicios";
-  displayedColumns: string[] = ['cliente', 'tipo', 'avance', 'comentario', 'alertas']; // cfg columns table
   listServicios!: Servicios[];
   svService: ManagerService; // Trabaja para calcular algunos valores de los servicios
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
@@ -55,13 +54,36 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
       ).add(() => this.dataShared.ocultarSpinner());
   }
 
-  calcularDiferenciaDias(fecha_alta: string): number {
+  calcularDiferencia(fecha_alta: string): string {
     const fechaActual = new Date();
     const fechaAlta = new Date(fecha_alta);
     const diffTiempo = Math.abs(fechaActual.getTime() - fechaAlta.getTime());
-    const diffDias = Math.ceil(diffTiempo / (1000 * 60 * 60 * 24)); // Milisegundos en un día
-    return diffDias;
+    const diffSegundos = Math.floor(diffTiempo / 1000);
+    const diffMinutos = Math.floor(diffSegundos / 60);
+    const diffHoras = Math.floor(diffMinutos / 60);
+    const diffDias = Math.floor(diffHoras / 24);
+  
+    if (diffDias === 0 && diffHoras === 0 && diffMinutos < 1) {
+      return 'hace unos segundos';
+    } else if (diffDias === 0 && diffHoras === 0) {
+      return `hace ${diffMinutos} minuto${diffMinutos !== 1 ? 's' : ''}`;
+    } else if (diffDias === 0) {
+      return `hace ${diffHoras} hora${diffHoras !== 1 ? 's' : ''}`;
+    } else if (diffDias === 1) {
+      return 'hace 1 día';
+    } else if (diffDias < 30) {
+      return `hace ${diffDias} día${diffDias !== 1 ? 's' : ''}`;
+    } else {
+      const diffMeses = Math.floor(diffDias / 30);
+      const diasAdicionales = diffDias % 30;
+      if (diasAdicionales === 0) {
+        return `hace ${diffMeses} mes${diffMeses !== 1 ? 'es' : ''}`;
+      } else {
+        return `hace ${diffMeses} mes${diffMeses !== 1 ? 'es' : ''} y ${diasAdicionales} día${diasAdicionales !== 1 ? 's' : ''}`;
+      }
+    }
   }
+  
   
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
   private unsubscribe$ = new Subject<void>();
