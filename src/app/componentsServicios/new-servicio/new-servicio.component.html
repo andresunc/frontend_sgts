@@ -104,7 +104,7 @@
                                     </mat-card>
                                 </div>
                                 <div class="col-md-4">
-                                    <h5>Resumen del servicio:</h5>
+                                    <h5>Datos del servicio:</h5>
                                     <mat-card class="cardResume">
                                         <span>{{ 'Tipo de servicio: ' + (servicioForm.get('tipo')?.value ? servicioForm.get('tipo')?.value.tipoServicio : '*') }}</span>
                                         <span>{{ 'Estado actual: ' + (servicioForm.get('estado')?.value ? servicioForm.get('estado')?.value.tipoEstado : '*') }}</span>
@@ -112,7 +112,7 @@
                                     </mat-card>
                                 </div>
                                 <div class="col-md-4">
-                                    <h5>Datos del Responsable:</h5>
+                                    <h5>Datos del Responsable general:</h5>
                                     <mat-card class="cardResume">
                                         <span>{{ 'Responsable: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.nombre + ' ' + servicioForm.get('responsable')?.value.apellido : '*') }}</span>
                                         <span>{{ 'Rol: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.rol : '*') }}</span>
