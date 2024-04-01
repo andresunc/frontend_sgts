@@ -1,0 +1,80 @@
+<div>
+
+    <div class="modal-header">
+        <div>
+            <h6 class="modal-title font-weight-bold">Editar servicio ID: {{ servicioRecibido.idServicio }} </h6>
+        </div>
+        <mat-icon style="font-size: 1.2rem; cursor: pointer;" [mat-dialog-close]="true">close</mat-icon>
+    </div>
+
+    <div>
+        <form>
+            <mat-card>
+                <mat-card-content>
+                    
+                    <form>
+    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Establecer un nuevo estado</h6>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-select" id="validationCustom04">
+                                    <option selected disabled value="">{{ servicioRecibido.estado }}</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Indique hora y fecha para el recordatorio</h6>
+                                <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local"
+                                    class="form-control" [(ngModel)]="resetDate" #input (change)="onChange(input.value)"
+                                    [min]="minDate" required>
+                            </div>
+                        </div>
+    
+                        <!--
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Asignar al responsable de completar</h6>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-select" id="validationCustom04" required>
+                                    <option selected disabled value="">Seleccionar...</option>
+                                    <option>...</option>
+                                </select>
+                            </div>
+                        </div>
+                        -->
+    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="validationCustom01" class="form-label">Se ha presupuestado</label>
+                                <input type="text" class="form-control" id="validationCustom01" value="" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="validationCustom01" class="form-label">Comentario</label>
+                                <input type="text" class="form-control" id="validationCustom01" value="" required>
+                            </div>
+                        </div>
+    
+                        <div class="row" style="width: 100%; align-items: center;">
+                            <div class="col-md-12" style="display: flex; justify-content: end;">
+                                <mat-card-actions>
+                                    <button mat-raised-button color="primary" type="submit">Guardar</button>
+                                </mat-card-actions>
+                            </div>
+                        </div>
+                    </form>
+
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </div>
+    
+</div>

@@ -43,7 +43,7 @@
           <div class="row">
 
             <div class="col-md-12 mb-3 p-0">
-              <div class="card editable">
+              <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">
                     <span class="mr-3">Cliente: {{ servicioRecibido.cliente }}</span>
@@ -76,7 +76,7 @@
           <div class="row">
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card editable">
+              <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Tipo de servicio</h6>
                   <p class="card-text">{{ servicioRecibido.tipo }}</p>
@@ -85,7 +85,7 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card editable">
+              <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Estado</h6>
                   <p class="card-text" style="color: #673ab7;">{{ servicioRecibido.estado }}</p>
@@ -94,11 +94,11 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card editable">
+              <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Recordatorio</h6>
                   <span style="display: flex;">
-                    <p class="card-text">{{ servicioRecibido.fecha_notificacion | date:'dd/MM/yyyy'}}</p>
+                    <p class="card-text">{{ servicioRecibido.fecha_notificacion ? (servicioRecibido.fecha_notificacion | date:'dd/MM/yyyy') : 'Sin establecer'}}</p>
                     <p class="card-text" style="margin-left: .5rem;">{{ servicioRecibido.fecha_notificacion |
                       date:'HH:mm'}}</p>
                   </span>
@@ -107,7 +107,7 @@
             </div>
 
             <div class="col-md-3 mb-3 p-0">
-              <div class="card editable">
+              <div class="card">
                 <div class="card-body paddingBody textCenter">
                   <h6 class="card-title">Se ha presupuestado</h6>
                   <p class="card-text">{{"$ "+servicioRecibido.total_presupuestado}}</p>
@@ -120,7 +120,7 @@
           <div class="row" >
 
             <div class="col-md-12 mb-3 p-0">
-              <div class="card custom-background editable">
+              <div class="card custom-background">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">Comentario</h6>
                   <p style="font-style: oblique;" class="card-text">{{servicioRecibido.comentario}}</p>
