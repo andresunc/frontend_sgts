@@ -64,7 +64,7 @@ export class PrintServicioComponent implements OnInit {
   editarServicio() {
     this.editable = !this.editable;
     
-    if (this.editable) this._snackBar.warnSnackBar('Modo edición activado', 'Ok', 'edit');
+    if (this.editable) console.log('Ahora es posible editar las características de ésta página');
 
     this.dialog.open(EditorComponent, {
       data: { servicioRecibido: this.servicioRecibido } //

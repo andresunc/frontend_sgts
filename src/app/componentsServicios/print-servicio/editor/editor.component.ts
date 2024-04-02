@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Servicios } from 'src/app/models/DomainModels/Servicios';
+import { Estado } from 'src/app/models/DomainModels/Estado';
+import { EstadosService } from 'src/app/services/DomainServices/estados.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 
 @Component({
@@ -10,23 +11,34 @@ import { PopupService } from 'src/app/services/SupportServices/popup.service';
 })
 export class EditorComponent implements OnInit {
 
-  minDate: any;
-  servicioRecibido!: Servicios;
+  estadosList!: Estado[];
+  selectedEstado: Estado;
 
   // inyecto el servicio recibido desde print
   constructor(
     private _snackBar: PopupService,
+    private estadoService: EstadosService,
     public dialogRef: MatDialogRef<EditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-    ) {
-      this.servicioRecibido = data.servicioRecibido;
-    }
-
-  ngOnInit(): void {
-    this.setDateTime()
-    console.log(this.servicioRecibido)
+  ) {
+    this.selectedEstado = this.data.servicioRecibido.estado;
   }
 
+  ngOnInit(): void {
+    this.setDateTime();
+    this.estadoService.getStatusNotDeleted().subscribe(
+      (data) => {
+        this.estadosList = data;
+        console.log(data)
+      })
+
+  }
+
+  onEstadoChange() {
+    this.data.servicioRecibido.estado = this.selectedEstado;
+  }
+
+  minDate: any;
   setDateTime() {
     const fullDate = new Date();
     var date = fullDate.getDate();
@@ -42,15 +54,15 @@ export class EditorComponent implements OnInit {
     this.minDate = year + '-' + nMonth + '-' + nDate + 'T' + nHours + ':' + nMinutes;
   }
 
-  resetDate: any;
   onChange(value: any) {
     var currenTime = new Date().getTime();
     var selectedTime = new Date(value).getTime();
 
     if (selectedTime < currenTime) {
       this._snackBar.errorSnackBar("Tu selección es menor al momento actual");
-      this.resetDate = "";
+      this.data.servicioRecibido.fecha_notificacion = "";
     }
   }
 
 }
+
