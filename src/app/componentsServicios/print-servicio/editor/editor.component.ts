@@ -64,5 +64,12 @@ export class EditorComponent implements OnInit {
     }
   }
 
+  loadChanges() {
+    console.log('Estado seleccionado:', this.selectedEstado);
+    console.log('Fecha y hora de notificación:', this.data.servicioRecibido.fecha_notificacion);
+    console.log('Presupuesto:', this.data.servicioRecibido.total_presupuestado);
+    console.log('Comentario:', this.data.servicioRecibido.comentario);
+  }
+
 }
 
