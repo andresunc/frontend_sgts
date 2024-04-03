@@ -1,0 +1,69 @@
+<div>
+
+    <div class="modal-header">
+        <div>
+            <h6 class="modal-title font-weight-bold">Editar servicio ID: {{ data.servicioRecibido.idServicio }} </h6>
+        </div>
+        <mat-icon style="font-size: 1.2rem; cursor: pointer;" [mat-dialog-close]="true">close</mat-icon>
+    </div>
+
+    <div>
+        <form>
+            <mat-card>
+                <mat-card-content>
+
+                    <form>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Establecer un nuevo estado</h6>
+                            </div>
+                            <div class="col-md-12">
+                                <select class="form-select" id="tipoEstado" [(ngModel)]="selectedEstado"
+                                    name="selectedEstado" (ngModelChange)="onEstadoChange()" >
+                                    <option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">{{
+                                        estado.tipoEstado }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h6>Indique hora y fecha para el recordatorio</h6>
+                                <input id="fechaHoraNotificacion" name="fechaHoraNotificacion" type="datetime-local"
+                                    class="form-control" [(ngModel)]="data.servicioRecibido.fecha_notificacion" #input
+                                    (change)="onChange(input.value)" [min]="minDate">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="presupuesto" name="presupuesto" class="form-label">Se ha
+                                    presupuestado</label>
+                                <input type="number" class="form-control" id="presupuesto" name="presupuesto"
+                                    [(ngModel)]="data.servicioRecibido.total_presupuestado" #input>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="comentario" class="form-label">Comentario</label>
+                                <textarea type="text" class="form-control" id="comentario" name="comentario"
+                                    [(ngModel)]="data.servicioRecibido.comentario"></textarea>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; justify-content: end;">
+                            <mat-card-actions>
+                                <button mat-raised-button color="primary" type="submit"
+                                (click)="loadChanges()">Guardar</button>
+                            </mat-card-actions>
+                        </div>
+                    </form>
+
+                </mat-card-content>
+            </mat-card>
+        </form>
+    </div>
+
+</div>

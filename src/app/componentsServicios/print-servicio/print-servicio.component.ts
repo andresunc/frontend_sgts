@@ -10,6 +10,7 @@ import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PrintService } from 'src/app/services/print.service';
+import { EditorComponent } from './editor/editor.component';
 
 @Component({
   selector: 'app-print-servicio',
@@ -62,15 +63,12 @@ export class PrintServicioComponent implements OnInit {
   editable: boolean = false;
   editarServicio() {
     this.editable = !this.editable;
-    var items = document.getElementsByClassName('editable');
-    for (let element of Array.from(items)) {
-      if (element.classList.contains("selectStyle")) {
-        element.classList.remove("selectStyle");
-      } else {
-        element.classList.add("selectStyle");
-      }
-    }
-    if (this.editable) this._snackBar.warnSnackBar('Modo edición activado', 'Ok', 'edit');
+    
+    if (this.editable) console.log('Ahora es posible editar las características de ésta página');
+
+    this.dialog.open(EditorComponent, {
+      data: { servicioRecibido: this.servicioRecibido } //
+    });
   }
 
   private getContactoEmpresa() {

@@ -115,15 +115,6 @@ span, p, .mat-icon {
   margin: 0 auto;
 }
 
-.selectStyle {
-  background-color: #7f45e40a !important;
-  cursor: pointer;
-}
-
-.selectStyle:hover {
-  border-color: darkblue;
-}
-
 .rowChecklist:hover {
   background-color: #7f45e40a;
   cursor: pointer;

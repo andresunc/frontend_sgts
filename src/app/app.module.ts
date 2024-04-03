@@ -23,6 +23,7 @@ import { PrintServicioComponent } from './componentsServicios/print-servicio/pri
 import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.component';
 import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
 import { AddItemComponent } from './componentsShared/add-item/add-item.component';
+import { EditorComponent } from './componentsServicios/print-servicio/editor/editor.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { AddItemComponent } from './componentsShared/add-item/add-item.component
     LoginComponent,
     CustomSnackbarComponent,
     AddItemComponent,
+    EditorComponent,
       ],
   imports: [
     BrowserModule,
