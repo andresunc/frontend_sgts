@@ -19,8 +19,8 @@
                                 <h6>Establecer un nuevo estado</h6>
                             </div>
                             <div class="col-md-12">
-                                <select class="form-select" id="validationCustom04" [(ngModel)]="selectedEstado"
-                                    (ngModelChange)="onEstadoChange()" name="selectedEstado">
+                                <select class="form-select" id="tipoEstado" [(ngModel)]="selectedEstado"
+                                    name="selectedEstado" (ngModelChange)="onEstadoChange()" >
                                     <option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">{{
                                         estado.tipoEstado }}</option>
                                 </select>
