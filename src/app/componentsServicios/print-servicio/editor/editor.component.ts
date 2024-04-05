@@ -1,7 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Estado } from 'src/app/models/DomainModels/Estado';
+import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
+import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
+import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
+import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 
 @Component({
@@ -12,12 +16,14 @@ import { PopupService } from 'src/app/services/SupportServices/popup.service';
 export class EditorComponent implements OnInit {
 
   estadosList!: Estado[];
-  selectedEstado: Estado;
+  selectedEstado!: string;
 
   // inyecto el servicio recibido desde print
   constructor(
     private _snackBar: PopupService,
     private estadoService: EstadosService,
+    private historicoEstado: HistoricoEstadoService,
+    private servicioEmpresa: ServicioEmpresaService,
     public dialogRef: MatDialogRef<EditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -65,11 +71,33 @@ export class EditorComponent implements OnInit {
   }
 
   loadChanges() {
-    console.log('Estado seleccionado:', this.selectedEstado);
+
+    // Busco el obj Estado que coincida con el estado seleccionado
+    let estadoEncontrado = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
+
+    let historicoEstado = new HistoricoEstado();
+    historicoEstado.estadoIdEstado = estadoEncontrado?.idEstado;
+    historicoEstado.servicioIdServicio = this.data.servicioRecibido.idServicio;
+
+    let servicioEmpresa = new ServicioEmpresa();
+    servicioEmpresa.costoServicio = this.data.servicioRecibido.total_presupuestado;
+
+    // Suscripción al servicio Historico Estado para agregar el último estado a la bd
+    this.historicoEstado.addHistoricoEstado(historicoEstado)
+    .subscribe(
+      (response) => console.log('HistoricoEstado agregado con éxito:', response),
+      (error) => console.error('Error al agregar HistoricoEstado:', error)
+    );
+    // Suscripción a Servicio Empresa para agregar el último estado a la bd
+    this.servicioEmpresa.update(this.data.servicioRecibido.idServicio, servicioEmpresa)
+    .subscribe(
+      (response) => console.log('ServicioEmpresa actualizado con éxito:', response),
+      (error) => console.error('Error al actualizar ServicioEmpresa:', error)
+    );
+
+    // Me queda actualizar esto
     console.log('Fecha y hora de notificación:', this.data.servicioRecibido.fecha_notificacion);
-    console.log('Presupuesto:', this.data.servicioRecibido.total_presupuestado);
     console.log('Comentario:', this.data.servicioRecibido.comentario);
   }
 
 }
-

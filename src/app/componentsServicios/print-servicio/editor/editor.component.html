@@ -55,7 +55,7 @@
 
                         <div style="display: flex; justify-content: end;">
                             <mat-card-actions>
-                                <button mat-raised-button color="primary" type="submit"
+                                <button [mat-dialog-close]="true" mat-raised-button color="primary" type="submit"
                                 (click)="loadChanges()">Guardar</button>
                             </mat-card-actions>
                         </div>
