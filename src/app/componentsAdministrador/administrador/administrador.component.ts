@@ -18,9 +18,7 @@ export class AdministradorComponent implements OnInit {
     private dataShared: DataSharedService) { }
 
   ngOnInit(): void {
-    this.dataShared.getListreports().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.openRptList();
-    });
+    
   }
 
   openRptList() {
