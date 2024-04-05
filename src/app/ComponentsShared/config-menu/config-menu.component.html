@@ -1,13 +1,14 @@
-
-    <h2 id="menuTitle">Administrar</h2>
-    <h2 class="mobile-title">ABM</h2>
+<div class="modal-body">
+    <div class="menu-Confg">
+        <mat-label id="menuTitle">Administrar</mat-label>
         <mat-divider class="mat-divider-custom"></mat-divider>
-    <mat-action-list class="action-list">
-        <button mat-list-item routerLink="clientes"><span>Clientes</span></button><mat-divider></mat-divider>
-        <button mat-list-item><span>Rubros</span></button><mat-divider></mat-divider>
-        <button mat-list-item routerLink="servicios"><span>Tipos de Servicio</span></button><mat-divider></mat-divider>
-        <button mat-list-item><span>Items</span></button><mat-divider></mat-divider>
-        <button mat-list-item><span>Estados</span></button><mat-divider></mat-divider>
-        <button mat-list-item><span>Usuarios</span></button><mat-divider></mat-divider>
-    </mat-action-list>
-
+        <mat-action-list class="action-list">
+            <button mat-list-item routerLink="administrador/clientes" mat-dialog-close>Clientes</button><mat-divider></mat-divider>
+            <button mat-list-item mat-dialog-close>Rubros</button><mat-divider></mat-divider>
+            <button mat-list-item routerLink="administrador/servicios" mat-dialog-close>Tipos de Servicio</button><mat-divider></mat-divider>
+            <button mat-list-item mat-dialog-close>Items</button><mat-divider></mat-divider>
+            <button mat-list-item mat-dialog-close>Estados</button><mat-divider></mat-divider>
+            <button mat-list-item mat-dialog-close>Usuarios</button><mat-divider></mat-divider>
+        </mat-action-list>
+    </div>
+</div>  

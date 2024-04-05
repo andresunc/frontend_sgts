@@ -1,12 +1,14 @@
-<!-- Contenedor de la sección ver servicios -->
+
 <div class="moduleContainer">
-    <app-title-bar [titulo]="title"></app-title-bar>
-    <div class="childContainer">
-        <section class="rendermenu">
-            <app-config-menu></app-config-menu>
-            </section>
-        <section class="menuContent">
-           <router-outlet></router-outlet> 
-        </section>
+  <app-title-bar [titulo]="title"></app-title-bar>
+  <div class="childContainer">
+        
+    <router-outlet></router-outlet> 
+
+    <!-- botón flotante -->
+    <div id="btnRptListContainer" matTooltip="Menu Administrador">
+        <mat-icon class="btn-menu" mat-button (click)="openRptList();">reorder</mat-icon>
+      </div>
+       
     </div>
 </div>

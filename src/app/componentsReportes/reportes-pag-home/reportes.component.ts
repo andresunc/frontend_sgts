@@ -17,9 +17,7 @@ export class ReportesComponent implements OnInit {
     private dataShared: DataSharedService) { }
 
   ngOnInit(): void {
-    this.dataShared.getListreports().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-      this.openRptList();
-    });
+    
   }
 
   openRptList() {
