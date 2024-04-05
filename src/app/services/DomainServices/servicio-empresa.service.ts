@@ -11,11 +11,17 @@ export class ServicioEmpresaService {
 
   urlBackend = new UrlBackend().getUrlBackend();
   upDateServicioEmpresaUrl = this.urlBackend + '/servicioEmpresa/update/';
+  deleteServicioEmpresaUrl = this.urlBackend + '/servicioEmpresa/delete/';
 
   constructor(private http: HttpClient) { }
 
   // UpDate Servicio Empresa por Servicio ID
   public update(id: number, servicioEmpresa: ServicioEmpresa): Observable<ServicioEmpresa> {
-    return this.http.put<any>(this.upDateServicioEmpresaUrl + id, servicioEmpresa);
+    return this.http.put<ServicioEmpresa>(this.upDateServicioEmpresaUrl + id, servicioEmpresa);
+  }
+
+  // UpDate Servicio Empresa por Servicio ID
+  public deleteLogico(id: number): Observable<ServicioEmpresa> {
+    return this.http.put<ServicioEmpresa>(this.deleteServicioEmpresaUrl + id, null);
   }
 }
