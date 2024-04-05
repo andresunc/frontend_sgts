@@ -52,8 +52,7 @@
               <mat-form-field>
                 <mat-label>Riesgo</mat-label>
                 <mat-select formControlName="Riesgo" required>
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
+                  <mat-option *ngFor="let riesgo of riesgo" [value]="riesgo.idRiesgo">{{ riesgo.riesgo }}</mat-option>
                 </mat-select>
               </mat-form-field>   
                   <div class="btn-next">

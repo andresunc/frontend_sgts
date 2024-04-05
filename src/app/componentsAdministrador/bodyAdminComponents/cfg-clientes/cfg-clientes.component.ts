@@ -4,6 +4,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RiesgoService } from 'src/app/services/DomainServices/riesgo.service';
+import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
 
 @Component({
   selector: 'app-cfg-clientes',
@@ -14,22 +16,12 @@ export class CfgClientesComponent implements OnInit {
 
   title: string = "Configuración de Clientes";
   
-  firstFormGroup = this._formBuilder.group({
-      RazonSocial: ['', [Validators.required]],
-      CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
-      Direccion: ['', [Validators.required]],
-      Rubro: ['', [Validators.required]],
-      Riesgo: ['', [Validators.required]]
-  });
-  secondFormGroup: FormGroup; // Declaración del FormGroup
+  riesgo: Riesgo[] = [];
   
-  stepperOrientation: Observable<StepperOrientation>;
-
-  modificarEliminarHabilitado: boolean = false;
-
   constructor(
     private _formBuilder: FormBuilder,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private riesgoService: RiesgoService
   ) {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
@@ -44,6 +36,20 @@ export class CfgClientesComponent implements OnInit {
     });
   }
 
+  firstFormGroup = this._formBuilder.group({
+    RazonSocial: ['', [Validators.required]],
+    CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
+    Direccion: ['', [Validators.required]],
+    Rubro: ['', [Validators.required]],
+    Riesgo: ['', [Validators.required]]
+});
+secondFormGroup: FormGroup; // Declaración del FormGroup
+
+stepperOrientation: Observable<StepperOrientation>;
+
+modificarEliminarHabilitado: boolean = false;
+
+
   getStepperStyles() {
     return {
       'width.%': this.stepperOrientation.pipe(map(orientation => orientation === 'horizontal' ? 100 : 80)),
@@ -56,7 +62,16 @@ export class CfgClientesComponent implements OnInit {
     this.secondFormGroup.addControl('Email', this._formBuilder.control('', [Validators.required, Validators.email]));
 
     this.actualizarResumen();
+
+    this.obtenerRiesgo();
   } 
+  
+  obtenerRiesgo() {
+    // Llamar al método del servicio para obtener los riesgos
+    this.riesgoService.getRiesgoNotDeleted().subscribe((data: Riesgo[]) => {
+      this.riesgo = data;
+    });
+  }
 
   resumenDatos: any = {}; // Objeto para almacenar los datos del resumen
 
