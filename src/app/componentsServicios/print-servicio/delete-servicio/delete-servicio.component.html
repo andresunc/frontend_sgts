@@ -1,0 +1,9 @@
+<h2 mat-dialog-title class="text-danger">Borrar Servicio?</h2>
+<mat-dialog-content>
+  Seguro que quieres borrar el servicio ID: {{data.servicioRecibido.idServicio}}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>No</button>
+  <button mat-button mat-dialog-close 
+  cdkFocusInitial class="text-danger" (click)="deleteOk()">Sí, Eliminar</button>
+</mat-dialog-actions>

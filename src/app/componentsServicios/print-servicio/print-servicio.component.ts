@@ -11,6 +11,7 @@ import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PrintService } from 'src/app/services/print.service';
 import { EditorComponent } from './editor/editor.component';
+import { DeleteServicioComponent } from './delete-servicio/delete-servicio.component';
 
 @Component({
   selector: 'app-print-servicio',
@@ -67,6 +68,12 @@ export class PrintServicioComponent implements OnInit {
     if (this.editable) console.log('Ahora es posible editar las características de ésta página');
 
     this.dialog.open(EditorComponent, {
+      data: { servicioRecibido: this.servicioRecibido } //
+    });
+  }
+
+  eliminarServicio() {
+    this.dialog.open(DeleteServicioComponent, {
       data: { servicioRecibido: this.servicioRecibido } //
     });
   }

@@ -24,6 +24,7 @@ import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.com
 import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
 import { AddItemComponent } from './componentsShared/add-item/add-item.component';
 import { EditorComponent } from './componentsServicios/print-servicio/editor/editor.component';
+import { DeleteServicioComponent } from './componentsServicios/print-servicio/delete-servicio/delete-servicio.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { EditorComponent } from './componentsServicios/print-servicio/editor/edi
     CustomSnackbarComponent,
     AddItemComponent,
     EditorComponent,
+    DeleteServicioComponent,
       ],
   imports: [
     BrowserModule,

@@ -34,7 +34,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   presupuestoSelected?: number;
 
   constructor(private fb: FormBuilder, private dataNewServ: NewServicioService,
-    private dataShared: DataSharedService, private newServicio: NewServicioService,
+    private dataShared: DataSharedService,
     private _snackBar: PopupService,
     private svManager: ManagerService) {
   }
@@ -61,7 +61,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     console.log('Se solicita crear el servicio: ' + nuevoServicioDto)
 
     this.dataShared.mostrarSpinner();
-    this.newServicio.addServicio(nuevoServicioDto)
+    this.dataNewServ.addServicio(nuevoServicioDto)
       .pipe(
         takeUntil(this.unsubscribe$)
       ) // este pipe es para agregaer la desuscripción
