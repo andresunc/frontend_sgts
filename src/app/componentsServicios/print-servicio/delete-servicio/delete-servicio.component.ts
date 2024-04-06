@@ -21,13 +21,13 @@ export class DeleteServicioComponent {
   ) { }
 
   deleteOk() {
-    // Suscripción a Servicio Empresa para agregar el último estado a la bd
+    // Suscripción a Servicio Empresa para eliminar de manera lógica de la bd
     this.servicioEmpresa.deleteLogico(this.data.servicioRecibido.idServicio)
       .subscribe(
         (response) => {
           console.log('ServicioEmpresa Eliminado con éxito:', response),
-          this._snackBar.errorSnackBar(`Servicio eliminado ID: ${response.servicioIdServicio}`),
-          this.router.navigate(['/home']);
+            this._snackBar.errorSnackBar(`Servicio eliminado ID: ${response.servicioIdServicio}`),
+            this.router.navigate(['/home']);
         },
         (error) => console.error('Error al eliminar el ServicioEmpresa:', error)
       );
