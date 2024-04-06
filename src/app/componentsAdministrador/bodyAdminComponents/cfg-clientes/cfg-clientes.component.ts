@@ -37,6 +37,7 @@ export class CfgClientesComponent implements OnInit {
   }
 
   firstFormGroup = this._formBuilder.group({
+    BuscarCliente: [''],
     RazonSocial: ['', [Validators.required]],
     CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
     Direccion: ['', [Validators.required]],
