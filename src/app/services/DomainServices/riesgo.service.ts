@@ -10,13 +10,13 @@ import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
 export class RiesgoService {
 
   urlBackend = new UrlBackend().getUrlBackend();
-  getRiesgoNotDeletedUrl = this.urlBackend + '/riesgo/getAllNotDeleted';
+  getAllRiesgoUrl = this.urlBackend + '/riesgo/getAll';
 
   constructor(private http: HttpClient) { }
 
   // Método GET para obtener los estados de servicios no eliminados
-  getRiesgoNotDeleted(): Observable<Riesgo[]> {
-    return this.http.get<Riesgo[]>(this.getRiesgoNotDeletedUrl)
+  getAllRiesgo(): Observable<Riesgo[]> {
+    return this.http.get<Riesgo[]>(this.getAllRiesgoUrl)
   }
 
 }

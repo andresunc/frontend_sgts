@@ -16,7 +16,7 @@ export class CfgClientesComponent implements OnInit {
 
   title: string = "Configuración de Clientes";
   
-  riesgo: Riesgo[] = [];
+  riesgos: Riesgo[] = [];
   
   constructor(
     private _formBuilder: FormBuilder,
@@ -69,8 +69,8 @@ modificarEliminarHabilitado: boolean = false;
   
   obtenerRiesgo() {
     // Llamar al método del servicio para obtener los riesgos
-    this.riesgoService.getRiesgoNotDeleted().subscribe((data: Riesgo[]) => {
-      this.riesgo = data;
+    this.riesgoService.getAllRiesgo().subscribe((data: Riesgo[]) => {
+      this.riesgos = data;
     });
   }
 
