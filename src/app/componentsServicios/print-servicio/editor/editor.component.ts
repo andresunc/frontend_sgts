@@ -2,10 +2,13 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
+import { Servicio } from 'src/app/models/DomainModels/Servicio';
 import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
 import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
 import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
+import { ServicioEntityService } from 'src/app/services/DomainServices/servicio-entity.service';
+import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 
 @Component({
@@ -18,6 +21,8 @@ export class EditorComponent implements OnInit {
   estadosList!: Estado[];
   selectedEstado!: string;
   presupuestOriginal!: number;
+  recordatoriOriginal!: any;
+  comentariOriginal!: string;
 
   // inyecto el servicio recibido desde print
   constructor(
@@ -25,11 +30,14 @@ export class EditorComponent implements OnInit {
     private estadoService: EstadosService,
     private historicoEstado: HistoricoEstadoService,
     private servicioEmpresa: ServicioEmpresaService,
+    private servicioService: ServicioEntityService,
     public dialogRef: MatDialogRef<EditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.selectedEstado = this.data.servicioRecibido.estado;
     this.presupuestOriginal = this.data.servicioRecibido.total_presupuestado;
+    this.recordatoriOriginal = this.data.servicioRecibido.fecha_notificacion;
+    this.comentariOriginal = this.data.servicioRecibido.comentario;
   }
 
   ngOnInit(): void {
@@ -120,9 +128,24 @@ export class EditorComponent implements OnInit {
       console.log('No hay cambios en el presupuesto')
     }
 
-    // Me queda actualizar esto
-    console.log('Fecha y hora de notificación:', this.data.servicioRecibido.fecha_notificacion);
-    console.log('Comentario:', this.data.servicioRecibido.comentario);
+    // Verificar si hay cambios en el servicio y ejecutar (Recordatorio, comentario)
+    if (this.recordatoriOriginal != this.data.servicioRecibido.fecha_notificacion ||
+      this.comentariOriginal != this.data.servicioRecibido.comentario) {
+
+      let servicio: Servicio = new Servicio();
+      servicio.fechaHoraAlertaVenc = this.data.servicioRecibido.fecha_notificacion;
+      servicio.comentario = this.data.servicioRecibido.comentario;
+      //servicio.tipoServicioIdTipoServicio = this.data.servicioRecibido.idTipoServicio;
+
+      this.servicioService.update(this.data.servicioRecibido.idServicio, servicio).subscribe(
+        (response) => console.log('Servicio actualizado con éxito:', response),
+        (error) => console.error('Error al actualizar el Servicio:', error)
+      );
+
+    } else {
+      console.log('No hay cambios en el recordatorio o el comentario')
+    }
+
   }
 
 }
