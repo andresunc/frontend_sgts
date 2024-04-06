@@ -17,6 +17,7 @@ export class EditorComponent implements OnInit {
 
   estadosList!: Estado[];
   selectedEstado!: string;
+  presupuestOriginal!: number;
 
   // inyecto el servicio recibido desde print
   constructor(
@@ -28,6 +29,7 @@ export class EditorComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.selectedEstado = this.data.servicioRecibido.estado;
+    this.presupuestOriginal = this.data.servicioRecibido.total_presupuestado;
   }
 
   ngOnInit(): void {
@@ -60,6 +62,13 @@ export class EditorComponent implements OnInit {
     this.minDate = year + '-' + nMonth + '-' + nDate + 'T' + nHours + ':' + nMinutes;
   }
 
+  handleChange(event: any) {
+    const value = event.target.value;
+    if (value != null) {
+      this.onChange(value);
+    }
+  }
+
   onChange(value: any) {
     var currenTime = new Date().getTime();
     var selectedTime = new Date(value).getTime();
@@ -75,25 +84,41 @@ export class EditorComponent implements OnInit {
     // Busco el obj Estado que coincida con el estado seleccionado
     let estadoEncontrado = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
 
-    let historicoEstado = new HistoricoEstado();
-    historicoEstado.estadoIdEstado = estadoEncontrado?.idEstado;
-    historicoEstado.servicioIdServicio = this.data.servicioRecibido.idServicio;
+    // Verificar si hay cambios en el estado y ejecutar
+    if (estadoEncontrado?.idEstado != this.data.servicioRecibido.idEstado) {
 
-    let servicioEmpresa = new ServicioEmpresa();
-    servicioEmpresa.costoServicio = this.data.servicioRecibido.total_presupuestado;
+      // Armo el objeto historico de estado
+      let historicoEstado = new HistoricoEstado();
+      historicoEstado.estadoIdEstado = estadoEncontrado?.idEstado;
+      historicoEstado.servicioIdServicio = this.data.servicioRecibido.idServicio;
 
-    // Suscripción al servicio Historico Estado para agregar el último estado a la bd
-    this.historicoEstado.addHistoricoEstado(historicoEstado)
-    .subscribe(
-      (response) => console.log('HistoricoEstado agregado con éxito:', response),
-      (error) => console.error('Error al agregar HistoricoEstado:', error)
-    );
-    // Suscripción a Servicio Empresa para agregar el último estado a la bd
-    this.servicioEmpresa.update(this.data.servicioRecibido.idServicio, servicioEmpresa)
-    .subscribe(
-      (response) => console.log('ServicioEmpresa actualizado con éxito:', response),
-      (error) => console.error('Error al actualizar ServicioEmpresa:', error)
-    );
+      // Suscripción al servicio Historico Estado para agregar el último estado a la bd
+      this.historicoEstado.addHistoricoEstado(historicoEstado)
+        .subscribe(
+          (response) => console.log('HistoricoEstado agregado con éxito:', response),
+          (error) => console.error('Error al agregar HistoricoEstado:', error)
+        );
+
+    } else {
+      console.log('No hay cambios en el estado de servicio')
+    }
+
+    // Verificar si hay cambios en el presupuesto y ejecutar
+    if (this.presupuestOriginal != this.data.servicioRecibido.total_presupuestado) {
+
+      let servicioEmpresa = new ServicioEmpresa();
+      servicioEmpresa.costoServicio = this.data.servicioRecibido.total_presupuestado;
+
+      // Suscripción a Servicio Empresa para agregar el último estado a la bd
+      this.servicioEmpresa.update(this.data.servicioRecibido.idServicio, servicioEmpresa)
+        .subscribe(
+          (response) => console.log('ServicioEmpresa actualizado con éxito:', response),
+          (error) => console.error('Error al actualizar ServicioEmpresa:', error)
+        );
+
+    } else {
+      console.log('No hay cambios en el presupuesto')
+    }
 
     // Me queda actualizar esto
     console.log('Fecha y hora de notificación:', this.data.servicioRecibido.fecha_notificacion);
