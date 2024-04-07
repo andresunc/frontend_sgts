@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RiesgoService } from 'src/app/services/DomainServices/riesgo.service';
 import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
+import { RubroService } from 'src/app/services/DomainServices/rubro.service';
+import { Rubro } from 'src/app/models/DomainModels/Rubro';
+
 
 @Component({
   selector: 'app-cfg-clientes',
@@ -17,12 +20,14 @@ export class CfgClientesComponent implements OnInit {
   title: string = "Configuración de Clientes";
   
   riesgos: Riesgo[] = [];
+  rubros: Rubro[] = [];
   
   constructor(
     private _formBuilder: FormBuilder,
     private breakpointObserver: BreakpointObserver,
-    private riesgoService: RiesgoService
-  ) {
+    private riesgoService: RiesgoService,
+    private rubroService: RubroService
+    ) {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical' as StepperOrientation)));
@@ -65,12 +70,21 @@ modificarEliminarHabilitado: boolean = false;
     this.actualizarResumen();
 
     this.obtenerRiesgo();
+
+    this.obtenerRubro();
   } 
   
   obtenerRiesgo() {
-    // Llamar al método del servicio para obtener los riesgos
+    
     this.riesgoService.getAllRiesgo().subscribe((data: Riesgo[]) => {
       this.riesgos = data;
+    });
+  }
+
+  obtenerRubro() {
+    
+    this.rubroService.getAllRubro().subscribe((data: Rubro[]) => {
+      this.rubros = data;
     });
   }
 

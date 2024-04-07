@@ -2,20 +2,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UrlBackend } from 'src/app/models/Url';
-import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
+import { Rubro } from 'src/app/models/DomainModels/Rubro';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RiesgoService {
+export class RubroService {
 
   urlBackend = new UrlBackend().getUrlBackend();
-  getAllRiesgoUrl = this.urlBackend + '/riesgo/getAll';
+  getAllRubroUrl = this.urlBackend + '/rubro/getAll';
 
   constructor(private http: HttpClient) { }
 
-  getAllRiesgo(): Observable<Riesgo[]> {
-    return this.http.get<Riesgo[]>(this.getAllRiesgoUrl)
+  getAllRubro(): Observable<Rubro[]> {
+    return this.http.get<Rubro[]>(this.getAllRubroUrl)
   }
-
 }
