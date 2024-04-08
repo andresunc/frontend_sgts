@@ -14,8 +14,7 @@
               <mat-form-field>
                 <mat-label>Buscar Cliente</mat-label>
                 <mat-select formControlName="BuscarCliente">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
+                  <mat-option *ngFor="let empresa of empresas" [value]="empresa.cliente">{{ empresa.cliente }}</mat-option>
                 </mat-select>
               </mat-form-field>
               <button mat-mini-fab class="btn-buscar">
@@ -45,15 +44,13 @@
               <mat-form-field>
                 <mat-label>Rubro</mat-label>
                 <mat-select formControlName="Rubro" required>
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
+                  <mat-option *ngFor="let rubro of rubros" [value]="rubro.idRubro">{{ rubro.rubro }}</mat-option>
                 </mat-select>
               </mat-form-field>     
               <mat-form-field>
                 <mat-label>Riesgo</mat-label>
                 <mat-select formControlName="Riesgo" required>
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
+                  <mat-option *ngFor="let riesgo of riesgos" [value]="riesgo.idRiesgo">{{ riesgo.riesgo }}</mat-option>
                 </mat-select>
               </mat-form-field>   
                   <div class="btn-next">

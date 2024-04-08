@@ -4,6 +4,13 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RiesgoService } from 'src/app/services/DomainServices/riesgo.service';
+import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
+import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
+import { EmpresaDtoService } from 'src/app/services/ServiciosDto/empresa-dto.service';
+import { RubroService } from 'src/app/services/DomainServices/rubro.service';
+import { Rubro } from 'src/app/models/DomainModels/Rubro';
+
 
 @Component({
   selector: 'app-cfg-clientes',
@@ -14,23 +21,18 @@ export class CfgClientesComponent implements OnInit {
 
   title: string = "Configuración de Clientes";
   
-  firstFormGroup = this._formBuilder.group({
-      RazonSocial: ['', [Validators.required]],
-      CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
-      Direccion: ['', [Validators.required]],
-      Rubro: ['', [Validators.required]],
-      Riesgo: ['', [Validators.required]]
-  });
-  secondFormGroup: FormGroup; // Declaración del FormGroup
+  riesgos: Riesgo[] = [];
+  rubros: Rubro[] = [];
+  empresas: EmpresaDto[] = [];
+
   
-  stepperOrientation: Observable<StepperOrientation>;
-
-  modificarEliminarHabilitado: boolean = false;
-
   constructor(
     private _formBuilder: FormBuilder,
-    private breakpointObserver: BreakpointObserver
-  ) {
+    private breakpointObserver: BreakpointObserver,
+    private riesgoService: RiesgoService,
+    private rubroService: RubroService,
+    private empresaDtoService: EmpresaDtoService
+    ) {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical' as StepperOrientation)));
@@ -44,6 +46,21 @@ export class CfgClientesComponent implements OnInit {
     });
   }
 
+  firstFormGroup = this._formBuilder.group({
+    BuscarCliente: [''],
+    RazonSocial: ['', [Validators.required]],
+    CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
+    Direccion: ['', [Validators.required]],
+    Rubro: ['', [Validators.required]],
+    Riesgo: ['', [Validators.required]]
+});
+secondFormGroup: FormGroup; // Declaración del FormGroup
+
+stepperOrientation: Observable<StepperOrientation>;
+
+modificarEliminarHabilitado: boolean = false;
+
+
   getStepperStyles() {
     return {
       'width.%': this.stepperOrientation.pipe(map(orientation => orientation === 'horizontal' ? 100 : 80)),
@@ -56,7 +73,33 @@ export class CfgClientesComponent implements OnInit {
     this.secondFormGroup.addControl('Email', this._formBuilder.control('', [Validators.required, Validators.email]));
 
     this.actualizarResumen();
+
+    this.obtenerRiesgo();
+
+    this.obtenerRubro();
+
+    this.obtenerEmpresa();
   } 
+  
+  obtenerRiesgo() {
+    
+    this.riesgoService.getAllRiesgo().subscribe((data: Riesgo[]) => {
+      this.riesgos = data;
+    });
+  }
+
+  obtenerRubro() {
+    
+    this.rubroService.getAllRubro().subscribe((data: Rubro[]) => {
+      this.rubros = data;
+    });
+  }
+
+  obtenerEmpresa() {
+    this.empresaDtoService.getEmpresas().subscribe((data: EmpresaDto[]) => {
+      this.empresas = data;
+    });
+  }
 
   resumenDatos: any = {}; // Objeto para almacenar los datos del resumen
 
@@ -122,7 +165,7 @@ paso1EsValido(): boolean {
   return this.firstFormGroup.valid;
   }
 
- // Función para cargar los datos del cliente seleccionado
+
 cargarDatosClienteSeleccionado(clienteSeleccionado: any) {
   // Cargar los datos del cliente en los campos del primer paso del formulario
   this.firstFormGroup.patchValue({
@@ -148,6 +191,7 @@ eliminarCliente() {
   // Lógica para eliminar el cliente de la base de datos
 } 
 
+
 buscarCliente() {
   // Lógica para buscar el cliente y cargar los datos
 
@@ -161,9 +205,10 @@ buscarCliente() {
    // Si no se ha seleccionado un cliente, deshabilitar los botones Modificar y Eliminar
    this.modificarEliminarHabilitado = false;
  }
+
+
+
 }
-
-
 
 onInputChange() {
   // Verificar si se han ingresado datos manualmente
