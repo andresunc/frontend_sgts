@@ -4,19 +4,31 @@
     background: rgb(255, 255, 255);
     left: 0;
     top: 0;
-    overflow: hidden;
+    overflow: auto;
+    overflow-y: auto; 
     font-size: 0.8rem;
+    width: 100%;
 }
 
 .container {
     display: flex;
-    padding: 1rem;
+    flex-wrap: wrap;
+    padding: 0.5rem;
     width: 100%;
     height: 100%;
+    overflow: auto;
+    max-width: fit-content;
+    min-width: fit-content;
 }
 
 table {
-    border-collapse: collapse;
+    border-collapse:collapse;
+    
+}
+
+.chart-wrapper{
+   width: fit-content;
+   
 }
 
 th,
@@ -25,10 +37,10 @@ td {
     text-align: left;
     border-bottom: 1px solid #ddd;
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
     word-wrap: break-word; /* Permite que las palabras se rompan */
     overflow-wrap: break-word; /* Alternativa para navegadores más nuevos */
+  
 }
 
 .scrollable-table {
@@ -36,3 +48,40 @@ td {
     overflow-y: auto;
     border: 1px solid #ddd;
 }
+
+.rpt0Container::-webkit-scrollbar{
+    height: 3px;  
+    width: 3px;
+}
+
+.rpt0Container::-webkit-scrollbar-thumb {
+    background: #6d6d6dbf; /* Color de la barra deslizante */
+    border-radius: 5px; /* Radio de borde para suavizar los bordes */
+  }
+
+.scrollable-table::-webkit-scrollbar{
+    height: 3px;  
+}
+
+.scrollable-table::-webkit-scrollbar-thumb {
+    background: #6d6d6d; /* Color de la barra deslizante */
+    border-radius: 5px; /* Radio de borde para suavizar los bordes */
+  }
+
+  @media (max-width: 600px) {
+    .rpt0Container {
+      display: inline-block;
+      overflow: hidden;
+      overflow-y: auto;
+    }
+
+   .scrollable-table {
+      max-width: 67%;
+      
+    }
+
+    .chart-wrapper{
+        margin-left: 13%;
+    }
+
+  }

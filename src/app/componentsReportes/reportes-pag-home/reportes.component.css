@@ -6,9 +6,9 @@
 
 .childContainer {
     position: relative;
-    display: flex;
-    margin: auto;
-    margin-top: 0.45rem;
+    display: inline-flex;
+    top: 1.5%;
+    left: 0.5%;
     width: 99%;
     height: calc(97% - 2.8rem);
     /* Resta el alto de la barra de título */
@@ -17,6 +17,7 @@
     box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     justify-content: center;
     align-items: center;
+  
 }
 
 #btnRptListContainer {
@@ -48,3 +49,28 @@ mat-icon:hover {
     background-color: #ffd740;
     box-shadow: 0px 0.2rem 0.5rem rgba(0, 0, 0, 0.3);
 }
+
+@keyframes spinAndScale {
+    0% {
+      transform: rotate(0deg) scale(0.5);
+    }
+    100% {
+      transform: rotate(360deg) scale(1.15);
+    }
+  }
+  
+  .btn-menu {
+    animation: spinAndScale 3s alternate-reverse;
+    animation-iteration-count: 6;
+
+  }
+
+  @media (max-width: 600px) {
+    .btn-menu {
+        width: 1.7rem;
+        height: 1.7rem;
+        font-size: small;
+    }
+
+   
+  }

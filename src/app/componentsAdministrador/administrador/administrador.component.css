@@ -6,9 +6,10 @@
 
 .childContainer {
     position: relative;
-    display: flex;
-    margin: auto;
-    margin-top: 0.45rem;
+    display: inline-flex;
+    flex-wrap: wrap;
+    left: 0.5%;
+    margin-top: 0.4rem;
     width: 99%;
     height: calc(97% - 2.8rem);
     /* Resta el alto de la barra de título */
@@ -17,12 +18,14 @@
     box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     justify-content: center;
     align-items: center;
-}
+    overflow-y: auto;
+   }
 
 #btnRptListContainer {
     position: absolute;
     bottom: 1rem;
     right: 1.5rem;
+    
 }
 
 mat-icon {
@@ -50,6 +53,7 @@ mat-icon:hover {
 }
 
 
+
 @keyframes spinAndScale {
     0% {
       transform: rotate(0deg) scale(0.5);
@@ -64,3 +68,20 @@ mat-icon:hover {
     animation-iteration-count: 6;
 
   }
+
+  @media (max-width: 600px) {
+    .btn-menu {
+        width: 1.7rem;
+        height: 1.7rem;
+        font-size: small;
+    }
+  }
+
+.childContainer::-webkit-scrollbar {
+    width: 3px; /* Cambia el ancho del scrollbar vertical */
+}
+
+.childContainer::-webkit-scrollbar-thumb {
+    background: #6d6d6d; /* Cambia el color de la barra deslizante vertical */
+    border-radius: 5px; /* Radio de borde para suavizar los bordes */
+}
