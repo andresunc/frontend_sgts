@@ -6,8 +6,8 @@
 
 .childContainer {
     position: relative;
-    display: inline-flex;
-    flex-wrap: wrap;
+    display: flex;
+    flex-wrap: wrap-reverse;
     left: 0.5%;
     margin-top: 0.4rem;
     width: 99%;
@@ -19,6 +19,7 @@
     justify-content: center;
     align-items: center;
     overflow-y: auto;
+    overflow-x: auto;
    }
 
 #btnRptListContainer {
@@ -79,9 +80,11 @@ mat-icon:hover {
 
 .childContainer::-webkit-scrollbar {
     width: 3px; /* Cambia el ancho del scrollbar vertical */
+    height: 3px;
+  
 }
 
 .childContainer::-webkit-scrollbar-thumb {
-    background: #6d6d6d; /* Cambia el color de la barra deslizante vertical */
-    border-radius: 5px; /* Radio de borde para suavizar los bordes */
+    background: #6d6d6d; 
+    border-radius: 5px; 
 }
