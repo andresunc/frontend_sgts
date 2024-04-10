@@ -8,8 +8,9 @@
     border: 0.15rem solid #46454575;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    padding-right:0.5rem;
+    padding-right:0.1rem;
     display: flex; /* Agrega un contenedor flexible */
+    flex-wrap: wrap-reverse;
     justify-content: center; /* Centra los elementos horizontalmente */
     align-items: center; /* Centra los elementos verticalmente */
     overflow: hidden; /* Esto evitará que los componentes hijos se defasen */

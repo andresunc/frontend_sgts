@@ -13,6 +13,18 @@
   overflow: auto; /* Agrega desplazamiento vertical si es necesario */
 }
 
+.childContainer::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+
+}
+
+.childContainer::-webkit-scrollbar-thumb {
+  background: #b3b3b3; 
+  border-radius: 5px; 
+}
+
+
 /* Zona de estilos para las distintas fuentes */
 span {
   font-size: 0.8rem; /* Tamaño de la fuente de las labels de los filtros */
@@ -51,20 +63,23 @@ span {
 .mat-paginator {
   margin-top: 1rem; /* Agregar un espacio superior */
   margin-bottom: 1rem; /* Agregar un espacio inferior */
-}
+  }
 
 /* Establece el espaciado vertical entre las filas */
 table {
   border-collapse: separate;
-  border-spacing: 0 0.5rem;
+  border-spacing: 0 0.1rem;
   background-color: #4DBDEB;
   width: 90%;
   max-width: 90%; /* Establece el ancho máximo */
+  padding-top:0px;
 }
+
 
 /* Estilos de las celdas cabeceras */
 th {
   border: 0.05rem solid #ddd;
+  border-top: 0.3rem solid #ffffff;
   padding: 0.5rem;
   top: 0;
   background-color: #ffffff;
@@ -76,12 +91,26 @@ th {
 /* Estilos de las filas */
 .dataTable {
   position: relative;
-  overflow: auto;
-  /* Añade una barra de desplazamiento cuando el contenido excede el tamaño del contenedor */
-  scrollbar-width: auto;
-  scrollbar-color: #ddd #4DBDEB;
   max-height: 55vh;
+  overflow-y: auto;
+  overflow-x: auto;
 }
+
+.dataTable::-webkit-scrollbar{
+  width: 4px;
+  height: 4px;
+}
+
+.dataTable::-webkit-scrollbar-thumb {
+  
+  background: #b3b3b3; 
+  border-radius: 50px; 
+}
+
+.dataTable::-webkit-scrollbar-track {
+  background: #fefefe; /* Color de fondo de la pista de la barra de desplazamiento */
+}
+
 
 .estiloRow {
   background: #DFEEEE;
@@ -153,3 +182,4 @@ las tres etiquetas que siguen de la tabla de servicios*/
     padding-top: 0.5rem;
   }
 }
+
