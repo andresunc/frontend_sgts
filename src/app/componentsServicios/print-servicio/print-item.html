@@ -60,7 +60,7 @@
                             <!-- El fin real será igual al momento en que el usuario seleccione completar -->
                             <p>Fin Real: {{ item.finReal | date:'dd/MM/yyyy' }}</p>
                             <!-- El valor de la tasa se mostrará siempre que sea mayor a cero -->
-                            <span *ngIf="item.valorTasa > 0">
+                            <span *ngIf="item.valorTasa">
                                 <p>Valor Tasa: {{ item.valorTasa }}</p>
                                 <p>Hojas: {{ item.hojas }}</p>
                             </span>
