@@ -10,6 +10,7 @@ import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio
 import { ServicioEntityService } from 'src/app/services/DomainServices/servicio-entity.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { DataSharedService } from 'src/app/services/data-shared.service';
 
 @Component({
   selector: 'app-editor',
@@ -31,6 +32,7 @@ export class EditorComponent implements OnInit {
     private historicoEstado: HistoricoEstadoService,
     private servicioEmpresa: ServicioEmpresaService,
     private servicioService: ServicioEntityService,
+    private dataShared: DataSharedService,
     public dialogRef: MatDialogRef<EditorComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -89,6 +91,8 @@ export class EditorComponent implements OnInit {
 
   loadChanges() {
 
+    this.dataShared.mostrarSpinner();
+
     // Busco el obj Estado que coincida con el estado seleccionado
     let estadoEncontrado = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
 
@@ -145,6 +149,8 @@ export class EditorComponent implements OnInit {
     } else {
       console.log('No hay cambios en el recordatorio o el comentario')
     }
+
+    this.dataShared.ocultarSpinner();
 
   }
 
