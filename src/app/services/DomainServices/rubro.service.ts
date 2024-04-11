@@ -10,11 +10,11 @@ import { Rubro } from 'src/app/models/DomainModels/Rubro';
 export class RubroService {
 
   urlBackend = new UrlBackend().getUrlBackend();
-  getAllRubroUrl = this.urlBackend + '/rubro/getAll';
+  getAllNotDeletedUrl = this.urlBackend + '/rubro/getAllNotDeleted';
 
   constructor(private http: HttpClient) { }
 
   getAllRubro(): Observable<Rubro[]> {
-    return this.http.get<Rubro[]>(this.getAllRubroUrl)
+    return this.http.get<Rubro[]>(this.getAllNotDeletedUrl)
   }
 }

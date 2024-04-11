@@ -13,7 +13,7 @@
             <form [formGroup]="firstFormGroup">
               <mat-form-field>
                 <mat-label>Buscar Cliente</mat-label>
-                <mat-select formControlName="BuscarCliente">
+                <mat-select formControlName="Buscar Cliente">
                   <mat-option *ngFor="let empresa of empresas" [value]="empresa.cliente">{{ empresa.cliente }}</mat-option>
                 </mat-select>
               </mat-form-field>
