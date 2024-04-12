@@ -20,8 +20,8 @@ export class ServicioEmpresaService {
     return this.http.put<ServicioEmpresa>(this.upDateServicioEmpresaUrl + id, servicioEmpresa);
   }
 
-  // UpDate Servicio Empresa por Servicio ID
-  public deleteLogico(id: number): Observable<ServicioEmpresa> {
-    return this.http.put<ServicioEmpresa>(this.deleteServicioEmpresaUrl + id, null);
+  // deleteLogico Servicio Empresa por Servicio ID
+  public deleteLogico(id: number): Observable<void> {
+    return this.http.delete<void>(this.deleteServicioEmpresaUrl + id);
   }
 }
