@@ -10,6 +10,11 @@ import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { EmpresaDtoService } from 'src/app/services/ServiciosDto/empresa-dto.service';
 import { RubroService } from 'src/app/services/DomainServices/rubro.service';
 import { Rubro } from 'src/app/models/DomainModels/Rubro';
+import { EmpresaService } from 'src/app/services/DomainServices/empresa.service';
+import { Empresa } from 'src/app/models/DomainModels/Empresa';
+import { ContactoEmpesa } from 'src/app/models/DomainModels/ContactoEmpresa';
+import { DataSharedService } from 'src/app/services/data-shared.service';
+
 
 
 @Component({
@@ -31,7 +36,9 @@ export class CfgClientesComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private riesgoService: RiesgoService,
     private rubroService: RubroService,
-    private empresaDtoService: EmpresaDtoService
+    private empresaDtoService: EmpresaDtoService,
+    private empresaService: EmpresaService,
+    private dataShared: DataSharedService
     ) {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
@@ -117,7 +124,7 @@ modificarEliminarHabilitado: boolean = false;
   
 }
 
-  contactos: any[] = [];
+  contactos: ContactoEmpesa[] = [];
 
   agregarContacto() {
     if (this.secondFormGroup.valid) {
@@ -128,7 +135,7 @@ modificarEliminarHabilitado: boolean = false;
     
       // Agregar los datos a la lista de contactos
       this.contactos.push({
-        id: this.contactos.length + 1,
+       
         nombre: nombre,
         apellido: apellido,
         telefono: telefono,
@@ -179,7 +186,31 @@ cargarDatosClienteSeleccionado(clienteSeleccionado: any) {
 }
 
 crearCliente() {
-  // Lógica para crear el cliente en la base de datos
+  this.dataShared.mostrarSpinner();
+    
+  const razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
+  const cuit = this.firstFormGroup.get('CUIT')?.value;
+  const direccion = this.firstFormGroup.get('Direccion')?.value;
+  const rubro = this.firstFormGroup.get('Rubro')?.value;
+  const riesgo = this.firstFormGroup.get('Riesgo')?.value;  
+
+  const empresa: Empresa = new Empresa(); 
+  empresa.cuit = cuit;
+  empresa.direccion = direccion;
+  empresa.rubroIdRubro = Number(rubro);
+  empresa.riesgoIdRiesgo = Number(riesgo);  
+  empresa.razonSocial = razonSocial;
+
+
+  this.empresaService.addEmpresa(empresa).subscribe( 
+    (response: Empresa)=>{
+     let idEmpresa: any = response.idEmpresa
+    this.contactos.forEach(contacto=>contacto.empresaIdEmpresa = idEmpresa)}
+  )
+  
+  
+  this.dataShared.ocultarSpinner();//debe ser la ultima linea
+  //hacer que vuelva al step 1 reset todo el formulario
 }
 
 modificarCliente() {
