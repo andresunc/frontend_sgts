@@ -24,9 +24,9 @@ export class DeleteServicioComponent {
     // Suscripción a Servicio Empresa para eliminar de manera lógica de la bd
     this.servicioEmpresa.deleteLogico(this.data.servicioRecibido.idServicio)
       .subscribe(
-        (response) => {
-          console.log('ServicioEmpresa Eliminado con éxito:', response),
-            this._snackBar.errorSnackBar(`Servicio eliminado ID: ${response.servicioIdServicio}`),
+        () => {
+          console.log('ServicioEmpresa Eliminado con éxito:'),
+            this._snackBar.errorSnackBar(`Servicio eliminado ID: ${this.data.servicioRecibido.idServicio}`),
             this.router.navigate(['/home']);
         },
         (error) => console.error('Error al eliminar el ServicioEmpresa:', error)
