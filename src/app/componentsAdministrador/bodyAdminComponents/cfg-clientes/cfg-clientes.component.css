@@ -144,7 +144,7 @@
   flex-direction: column;
   width: 48%;
   margin-top: 0.3rem;
-  
+  word-wrap: break-word;
 }
 
 .mat-mdc-card{

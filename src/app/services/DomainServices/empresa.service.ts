@@ -1,20 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Empresa } from 'src/app/models/DomainModels/Empresa';
 import { UrlBackend } from 'src/app/models/Url';
-import { Rubro } from 'src/app/models/DomainModels/Rubro';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RubroService {
+export class EmpresaService {
 
   urlBackend = new UrlBackend().getUrlBackend();
-  getAllNotDeletedUrl = this.urlBackend + '/rubro/getAllNotDeleted';
+  newEmpresaUrl = this.urlBackend + '/empresa/create';
 
   constructor(private http: HttpClient) { }
 
-  getAllRubro(): Observable<Rubro[]> {
-    return this.http.get<Rubro[]>(this.getAllNotDeletedUrl)
+  // Método para crear un nuevo servicio
+  addEmpresa(addEmpresa: Empresa): Observable<Empresa> {
+    return this.http.post<Empresa>(this.newEmpresaUrl, addEmpresa);
   }
+
 }

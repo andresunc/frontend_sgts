@@ -13,7 +13,7 @@
             <form [formGroup]="firstFormGroup">
               <mat-form-field>
                 <mat-label>Buscar Cliente</mat-label>
-                <mat-select formControlName="BuscarCliente">
+                <mat-select formControlName="Buscar Cliente">
                   <mat-option *ngFor="let empresa of empresas" [value]="empresa.cliente">{{ empresa.cliente }}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -102,7 +102,7 @@
             <div class="contact-cards">
               <mat-card *ngFor="let contacto of contactos">
                 <mat-card-header>
-                  <mat-card-title>Contacto {{ contacto.id }}</mat-card-title>
+                  <mat-card-title>Contacto: {{ contacto.nombre+' '+contacto.apellido }}</mat-card-title>
                   <mat-card-actions>
                     <button mat-mini-fab (click)="editarContacto(contacto)" class="btn-editar">
                       <mat-icon>edit</mat-icon>
@@ -110,8 +110,7 @@
                   </mat-card-actions>
                 </mat-card-header>
                 <mat-card-content>
-                  <p>Nombre: {{ contacto.nombre }}</p>
-                  <p>Apellido: {{ contacto.apellido }}</p>
+
                   <p>Teléfono: {{ contacto.telefono }}</p>
                   <p>Email: {{ contacto.email }}</p>
                 </mat-card-content>
