@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
@@ -91,28 +91,26 @@ export class CfgClientesComponent implements OnInit {
 
     this.obtenerEmpresa();
 
-
-    // Configurar el filtro para el campo de búsqueda:
+    
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value))
+      map(value => {
+        return value ? this._filter(value) : this.empresas.slice();
+      })
     );
-
-    this.myControl.valueChanges.subscribe(() => {
-      if (!this.myControl.value) {
-        this.myControl.setValue('');
-      }
-    });
-
-
+    
     this.filteredRubros = this.rubroControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterRubros(value))
+      map(value => {
+        return value ? this._filterRubros(value) : this.rubros.slice();
+      })
     );
-
+    
     this.filteredRiesgos = this.riesgoControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filterRiesgos(value))
+      map(value => {
+        return value ? this._filterRiesgos(value) : this.riesgos.slice();
+      })
     );
 
     this.firstFormGroup.get('CUIT')?.valueChanges.subscribe((value: string | null) => {
