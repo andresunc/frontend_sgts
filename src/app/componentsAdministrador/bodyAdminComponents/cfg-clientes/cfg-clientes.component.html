@@ -11,11 +11,18 @@
     <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()" linear>
         <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente" >
             <form [formGroup]="firstFormGroup">
-              <mat-form-field>
-                <mat-label>Buscar Cliente</mat-label>
-                <mat-select formControlName="Buscar Cliente">
-                  <mat-option *ngFor="let empresa of empresas" [value]="empresa.cliente">{{ empresa.cliente }}</mat-option>
-                </mat-select>
+              <mat-form-field class="example-full-width">
+                <input type="text"
+                       placeholder="Buscar Cliente"
+                       aria-label="Buscar Cliente"
+                       matInput
+                       [formControl]="myControl"
+                       [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let empresa of filteredOptions | async" [value]="empresa.cliente">
+                    {{ empresa.cliente }}
+                  </mat-option>
+                </mat-autocomplete>
               </mat-form-field>
               <button mat-mini-fab class="btn-buscar">
                 <mat-icon>search</mat-icon>
@@ -43,16 +50,28 @@
               </mat-form-field> 
               <mat-form-field>
                 <mat-label>Rubro</mat-label>
-                <mat-select formControlName="Rubro" required>
-                  <mat-option *ngFor="let rubro of rubros" [value]="rubro.idRubro">{{ rubro.rubro }}</mat-option>
-                </mat-select>
-              </mat-form-field>     
+                <input type="text"
+                       placeholder="Seleccionar Rubro"
+                       aria-label="Rubro"
+                       matInput
+                       [formControl]="rubroControl"
+                       [matAutocomplete]="rubroAuto">
+                <mat-autocomplete #rubroAuto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let rubro of filteredRubros | async" [value]="rubro.rubro">{{ rubro.rubro }}</mat-option>
+                </mat-autocomplete>
+              </mat-form-field>  
               <mat-form-field>
                 <mat-label>Riesgo</mat-label>
-                <mat-select formControlName="Riesgo" required>
-                  <mat-option *ngFor="let riesgo of riesgos" [value]="riesgo.idRiesgo">{{ riesgo.riesgo }}</mat-option>
-                </mat-select>
-              </mat-form-field>   
+                <input type="text"
+                       placeholder="Seleccionar Riesgo"
+                       aria-label="Riesgo"
+                       matInput
+                       [formControl]="riesgoControl"
+                       [matAutocomplete]="riesgoAuto">
+                <mat-autocomplete #riesgoAuto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let riesgo of filteredRiesgos | async" [value]="riesgo.riesgo">{{ riesgo.riesgo }}</mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
                   <div class="btn-next">
                     <button mat-button matStepperNext (click)="actualizarResumen()" [disabled]="firstFormGroup.invalid">Siguiente</button>
               </div>

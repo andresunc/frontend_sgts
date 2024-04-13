@@ -1,9 +1,9 @@
 import { Component, OnInit} from '@angular/core';
-import { FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { RiesgoService } from 'src/app/services/DomainServices/riesgo.service';
 import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
@@ -25,11 +25,21 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 export class CfgClientesComponent implements OnInit {
 
   title: string = "Configuración de Clientes";
-  
   riesgos: Riesgo[] = [];
   rubros: Rubro[] = [];
+  myControl = new FormControl();
   empresas: EmpresaDto[] = [];
-
+  filteredOptions?: Observable<EmpresaDto[]>;
+  displayFn!: ((value: any) => string)|null;
+  rubroControl = new FormControl();
+  filteredRubros?: Observable<Rubro[]>;
+  riesgoControl = new FormControl();
+  filteredRiesgos?: Observable<Riesgo[]>;
+  secondFormGroup: FormGroup; 
+  stepperOrientation: Observable<StepperOrientation>;
+  modificarEliminarHabilitado: boolean = false;
+  resumenDatos: any = {}; 
+  contactos: ContactoEmpesa[] = [];
   
   constructor(
     private _formBuilder: FormBuilder,
@@ -58,14 +68,8 @@ export class CfgClientesComponent implements OnInit {
     RazonSocial: ['', [Validators.required]],
     CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
     Direccion: ['', [Validators.required]],
-    Rubro: ['', [Validators.required]],
-    Riesgo: ['', [Validators.required]]
+   
 });
-secondFormGroup: FormGroup; // Declaración del FormGroup
-
-stepperOrientation: Observable<StepperOrientation>;
-
-modificarEliminarHabilitado: boolean = false;
 
 
   getStepperStyles() {
@@ -86,6 +90,23 @@ modificarEliminarHabilitado: boolean = false;
     this.obtenerRubro();
 
     this.obtenerEmpresa();
+
+    // Configurar el filtro para el campos de búsqueda:
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value))
+    );
+
+    this.filteredRubros = this.rubroControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterRubros(value))
+    );
+
+    this.filteredRiesgos = this.riesgoControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filterRiesgos(value))
+    );
+
   } 
   
   obtenerRiesgo() {
@@ -102,13 +123,14 @@ modificarEliminarHabilitado: boolean = false;
     });
   }
 
+
   obtenerEmpresa() {
     this.empresaDtoService.getEmpresas().subscribe((data: EmpresaDto[]) => {
       this.empresas = data;
     });
-  }
 
-  resumenDatos: any = {}; // Objeto para almacenar los datos del resumen
+
+  }
 
 // Función para actualizar el objeto del resumen
  actualizarResumen() {
@@ -123,8 +145,6 @@ modificarEliminarHabilitado: boolean = false;
   this.resumenDatos.contactos = this.contactos;
   
 }
-
-  contactos: ContactoEmpesa[] = [];
 
   agregarContacto() {
     if (this.secondFormGroup.valid) {
@@ -237,8 +257,6 @@ buscarCliente() {
    this.modificarEliminarHabilitado = false;
  }
 
-
-
 }
 
 onInputChange() {
@@ -251,4 +269,21 @@ onInputChange() {
     this.modificarEliminarHabilitado = false;
   }
 }
+
+private _filter(value: string): EmpresaDto[] {
+  const filterValue = value.toLowerCase();
+  return this.empresas.filter(empresa => empresa.cliente?.toLowerCase().includes(filterValue));
 }
+
+private _filterRubros(value: string): Rubro[] {
+  const filterValue = value.toLowerCase();
+  return this.rubros.filter(rubro => rubro.rubro?.toLowerCase().includes(filterValue));
+}
+
+private _filterRiesgos(value: string): Riesgo[] {
+  const filterValue = value.toLowerCase();
+  return this.riesgos.filter(riesgo => riesgo.riesgo?.toLowerCase().includes(filterValue));
+}
+
+}
+
