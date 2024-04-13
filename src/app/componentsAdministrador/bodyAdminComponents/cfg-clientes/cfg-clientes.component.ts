@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
@@ -30,17 +30,17 @@ export class CfgClientesComponent implements OnInit {
   myControl = new FormControl();
   empresas: EmpresaDto[] = [];
   filteredOptions?: Observable<EmpresaDto[]>;
-  displayFn!: ((value: any) => string)|null;
+  displayFn!: ((value: any) => string);
   rubroControl = new FormControl();
   filteredRubros?: Observable<Rubro[]>;
   riesgoControl = new FormControl();
   filteredRiesgos?: Observable<Riesgo[]>;
-  secondFormGroup: FormGroup; 
+  secondFormGroup: FormGroup;
   stepperOrientation: Observable<StepperOrientation>;
   modificarEliminarHabilitado: boolean = false;
-  resumenDatos: any = {}; 
+  resumenDatos: any = {};
   contactos: ContactoEmpesa[] = [];
-  
+
   constructor(
     private _formBuilder: FormBuilder,
     private breakpointObserver: BreakpointObserver,
@@ -49,7 +49,7 @@ export class CfgClientesComponent implements OnInit {
     private empresaDtoService: EmpresaDtoService,
     private empresaService: EmpresaService,
     private dataShared: DataSharedService
-    ) {
+  ) {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({ matches }) => (matches ? 'horizontal' : 'vertical' as StepperOrientation)));
@@ -66,10 +66,10 @@ export class CfgClientesComponent implements OnInit {
   firstFormGroup = this._formBuilder.group({
     BuscarCliente: [''],
     RazonSocial: ['', [Validators.required]],
-    CUIT: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
+    CUIT: ['', [Validators.required, Validators.pattern(/^\d{2}-\d{8}-\d$/)]],
     Direccion: ['', [Validators.required]],
-   
-});
+
+  });
 
 
   getStepperStyles() {
@@ -91,11 +91,19 @@ export class CfgClientesComponent implements OnInit {
 
     this.obtenerEmpresa();
 
-    // Configurar el filtro para el campos de búsqueda:
+
+    // Configurar el filtro para el campo de búsqueda:
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
+
+    this.myControl.valueChanges.subscribe(() => {
+      if (!this.myControl.value) {
+        this.myControl.setValue('');
+      }
+    });
+
 
     this.filteredRubros = this.rubroControl.valueChanges.pipe(
       startWith(''),
@@ -107,19 +115,29 @@ export class CfgClientesComponent implements OnInit {
       map(value => this._filterRiesgos(value))
     );
 
-  } 
-  
+    this.firstFormGroup.get('CUIT')?.valueChanges.subscribe((value: string | null) => {
+      // Verificar si el valor tiene 2, 10 y 11 caracteres respectivamente
+      if (value !== null && (value.length === 2 || value.length === 11)) {
+        // Agregar guiones en las posiciones adecuadas
+        this.firstFormGroup.get('CUIT')?.patchValue(value + '-', { emitEvent: false });
+      }
+    });
+
+  }
+
   obtenerRiesgo() {
-    
+
     this.riesgoService.getAllRiesgo().subscribe((data: Riesgo[]) => {
       this.riesgos = data;
+      console.log("Riesgos obtenidos:", this.riesgos);
     });
   }
 
   obtenerRubro() {
-    
+
     this.rubroService.getAllRubro().subscribe((data: Rubro[]) => {
       this.rubros = data;
+      console.log("Rubros obtenidos:", this.rubros);
     });
   }
 
@@ -132,19 +150,19 @@ export class CfgClientesComponent implements OnInit {
 
   }
 
-// Función para actualizar el objeto del resumen
- actualizarResumen() {
-  this.resumenDatos.datosCliente = {
-    RazonSocial: this.firstFormGroup.get('RazonSocial')?.value,
-    CUIT: this.firstFormGroup.get('CUIT')?.value,
-    Direccion: this.firstFormGroup.get('Direccion')?.value,
-    Rubro: this.firstFormGroup.get('Rubro')?.value,
-    Riesgo: this.firstFormGroup.get('Riesgo')?.value
-  };
+  // Función para actualizar el objeto del resumen
+  actualizarResumen() {
+    this.resumenDatos.datosCliente = {
+      RazonSocial: this.firstFormGroup.get('RazonSocial')?.value,
+      CUIT: this.firstFormGroup.get('CUIT')?.value,
+      Direccion: this.firstFormGroup.get('Direccion')?.value,
+      Rubro: this.firstFormGroup.get('Rubro')?.value,
+      Riesgo: this.firstFormGroup.get('Riesgo')?.value
+    };
 
-  this.resumenDatos.contactos = this.contactos;
-  
-}
+    this.resumenDatos.contactos = this.contactos;
+
+  }
 
   agregarContacto() {
     if (this.secondFormGroup.valid) {
@@ -152,22 +170,22 @@ export class CfgClientesComponent implements OnInit {
       const apellido = this.secondFormGroup.get('Apellido')?.value;
       const telefono = this.secondFormGroup.get('Telefono')?.value;
       const email = this.secondFormGroup.get('Email')?.value;
-    
+
       // Agregar los datos a la lista de contactos
       this.contactos.push({
-       
+
         nombre: nombre,
         apellido: apellido,
         telefono: telefono,
         email: email
       });
-  
+
       this.secondFormGroup.reset();
-  
+
       // Actualizar el resumen después de agregar el contacto
       this.actualizarResumen();
     }
-  } 
+  }
 
   editarContacto(contacto: any) {
     // Autocompletar los campos del formulario con los datos del contacto
@@ -177,7 +195,7 @@ export class CfgClientesComponent implements OnInit {
       Telefono: contacto.telefono,
       Email: contacto.email
     });
-  
+
     // Eliminar el contacto de la lista
     const index = this.contactos.indexOf(contacto);
     if (index !== -1) {
@@ -188,102 +206,110 @@ export class CfgClientesComponent implements OnInit {
   }
 
 
-paso1EsValido(): boolean {
-  return this.firstFormGroup.valid;
+  paso1EsValido(): boolean {
+    const rubroSeleccionado = this.rubros.find(rubro => rubro.rubro === this.rubroControl.value);
+    const riesgoSeleccionado = this.riesgos.find(riesgo => riesgo.riesgo === this.riesgoControl.value);
+
+    return (
+      this.firstFormGroup.valid &&
+      rubroSeleccionado !== undefined &&
+      riesgoSeleccionado !== undefined
+    );
   }
 
 
-cargarDatosClienteSeleccionado(clienteSeleccionado: any) {
-  // Cargar los datos del cliente en los campos del primer paso del formulario
-  this.firstFormGroup.patchValue({
-    RazonSocial: clienteSeleccionado.razonSocial,
-    CUIT: clienteSeleccionado.cuit,
-    // Otras propiedades del cliente
-  });
+  cargarDatosClienteSeleccionado(clienteSeleccionado: any) {
+    // Cargar los datos del cliente en los campos del primer paso del formulario
+    this.firstFormGroup.patchValue({
+      RazonSocial: clienteSeleccionado.razonSocial,
+      CUIT: clienteSeleccionado.cuit,
+      // Otras propiedades del cliente
+    });
 
-  // Cargar los contactos del cliente en el paso 2 del formulario
-  this.contactos = clienteSeleccionado.contactos;
-}
-
-crearCliente() {
-  this.dataShared.mostrarSpinner();
-    
-  const razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
-  const cuit = this.firstFormGroup.get('CUIT')?.value;
-  const direccion = this.firstFormGroup.get('Direccion')?.value;
-  const rubro = this.firstFormGroup.get('Rubro')?.value;
-  const riesgo = this.firstFormGroup.get('Riesgo')?.value;  
-
-  const empresa: Empresa = new Empresa(); 
-  empresa.cuit = cuit;
-  empresa.direccion = direccion;
-  empresa.rubroIdRubro = Number(rubro);
-  empresa.riesgoIdRiesgo = Number(riesgo);  
-  empresa.razonSocial = razonSocial;
-
-
-  this.empresaService.addEmpresa(empresa).subscribe( 
-    (response: Empresa)=>{
-     let idEmpresa: any = response.idEmpresa
-    this.contactos.forEach(contacto=>contacto.empresaIdEmpresa = idEmpresa)}
-  )
-  
-  
-  this.dataShared.ocultarSpinner();//debe ser la ultima linea
-  //hacer que vuelva al step 1 reset todo el formulario
-}
-
-modificarCliente() {
-  // Lógica para modificar el cliente en la base de datos
-}
-
-
-eliminarCliente() {
-  // Lógica para eliminar el cliente de la base de datos
-} 
-
-
-buscarCliente() {
-  // Lógica para buscar el cliente y cargar los datos
-
- // Verificar si se ha seleccionado un cliente
- const clienteSeleccionado = this.firstFormGroup.get('BuscarCliente')?.value;
-
- // Si se ha seleccionado un cliente, habilitar los botones Modificar y Eliminar
- if (clienteSeleccionado) {
-   this.modificarEliminarHabilitado = true;
- } else {
-   // Si no se ha seleccionado un cliente, deshabilitar los botones Modificar y Eliminar
-   this.modificarEliminarHabilitado = false;
- }
-
-}
-
-onInputChange() {
-  // Verificar si se han ingresado datos manualmente
-  if (this.firstFormGroup.dirty || this.modificarEliminarHabilitado) {
-    // Habilitar el botón Modificar y Eliminar
-    this.modificarEliminarHabilitado = true;
-  } else {
-    // Deshabilitar el botón Modificar y Eliminar
-    this.modificarEliminarHabilitado = false;
+    // Cargar los contactos del cliente en el paso 2 del formulario
+    this.contactos = clienteSeleccionado.contactos;
   }
-}
 
-private _filter(value: string): EmpresaDto[] {
-  const filterValue = value.toLowerCase();
-  return this.empresas.filter(empresa => empresa.cliente?.toLowerCase().includes(filterValue));
-}
+  crearCliente() {
+    this.dataShared.mostrarSpinner();
 
-private _filterRubros(value: string): Rubro[] {
-  const filterValue = value.toLowerCase();
-  return this.rubros.filter(rubro => rubro.rubro?.toLowerCase().includes(filterValue));
-}
+    const razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
+    const cuit = this.firstFormGroup.get('CUIT')?.value;
+    const direccion = this.firstFormGroup.get('Direccion')?.value;
+    const rubro = this.firstFormGroup.get('Rubro')?.value;
+    const riesgo = this.firstFormGroup.get('Riesgo')?.value;
 
-private _filterRiesgos(value: string): Riesgo[] {
-  const filterValue = value.toLowerCase();
-  return this.riesgos.filter(riesgo => riesgo.riesgo?.toLowerCase().includes(filterValue));
-}
+    const empresa: Empresa = new Empresa();
+    empresa.cuit = cuit;
+    empresa.direccion = direccion;
+    empresa.rubroIdRubro = Number(rubro);
+    empresa.riesgoIdRiesgo = Number(riesgo);
+    empresa.razonSocial = razonSocial;
+
+
+    this.empresaService.addEmpresa(empresa).subscribe(
+      (response: Empresa) => {
+        let idEmpresa: any = response.idEmpresa
+        this.contactos.forEach(contacto => contacto.empresaIdEmpresa = idEmpresa)
+      }
+    )
+
+
+    this.dataShared.ocultarSpinner();//debe ser la ultima linea
+    //hacer que vuelva al step 1 reset todo el formulario
+  }
+
+  modificarCliente() {
+    // Lógica para modificar el cliente en la base de datos
+  }
+
+
+  eliminarCliente() {
+    // Lógica para eliminar el cliente de la base de datos
+  }
+
+
+  buscarCliente() {
+    // Lógica para buscar el cliente y cargar los datos
+
+    // Verificar si se ha seleccionado un cliente
+    const clienteSeleccionado = this.firstFormGroup.get('BuscarCliente')?.value;
+
+    // Si se ha seleccionado un cliente, habilitar los botones Modificar y Eliminar
+    if (clienteSeleccionado) {
+      this.modificarEliminarHabilitado = true;
+    } else {
+      // Si no se ha seleccionado un cliente, deshabilitar los botones Modificar y Eliminar
+      this.modificarEliminarHabilitado = false;
+    }
+
+  }
+
+  onInputChange() {
+    // Verificar si se han ingresado datos manualmente
+    if (this.firstFormGroup.dirty || this.modificarEliminarHabilitado) {
+      // Habilitar el botón Modificar y Eliminar
+      this.modificarEliminarHabilitado = true;
+    } else {
+      // Deshabilitar el botón Modificar y Eliminar
+      this.modificarEliminarHabilitado = false;
+    }
+  }
+
+  private _filter(value: string): EmpresaDto[] {
+    const filterValue = value.toLowerCase();
+    return this.empresas.filter(empresa => empresa.cliente?.toLowerCase().startsWith(filterValue));
+  }
+
+  private _filterRubros(value: string): Rubro[] {
+    const filterValue = value.toLowerCase();
+    return this.rubros.filter(rubro => rubro.rubro?.toLowerCase().startsWith(filterValue));
+  }
+
+  private _filterRiesgos(value: string): Riesgo[] {
+    const filterValue = value.toLowerCase();
+    return this.riesgos.filter(riesgo => riesgo.riesgo?.toLowerCase().startsWith(filterValue));
+  }
 
 }
 

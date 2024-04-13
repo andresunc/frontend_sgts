@@ -73,7 +73,7 @@
                 </mat-autocomplete>
               </mat-form-field>
                   <div class="btn-next">
-                    <button mat-button matStepperNext (click)="actualizarResumen()" [disabled]="firstFormGroup.invalid">Siguiente</button>
+                    <button mat-button matStepperNext (click)="actualizarResumen()" [disabled]="!paso1EsValido()">Siguiente</button>
               </div>
             </form>
           </mat-step>
