@@ -13,6 +13,8 @@ import { MatStepperModule } from '@angular/material/stepper';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {AsyncPipe} from '@angular/common';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -30,6 +32,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatAutocompleteModule,
+    AsyncPipe,
+
     MatFormFieldModule
     
   ]
