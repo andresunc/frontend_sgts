@@ -12,6 +12,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PrintService } from 'src/app/services/print.service';
 import { EditorComponent } from './editor/editor.component';
 import { DeleteServicioComponent } from './delete-servicio/delete-servicio.component';
+import { ChecklistComponent } from './checklist/checklist.component';
 
 @Component({
   selector: 'app-print-servicio',
@@ -31,7 +32,6 @@ export class PrintServicioComponent implements OnInit {
     public dialog: MatDialog,
     private svManager: ManagerService,
     private printService: PrintService,
-    private _snackBar: PopupService
   ) { }
 
   getSvManager() {
@@ -98,7 +98,7 @@ export class PrintServicioComponent implements OnInit {
 
   openChecklistPopUp() {
     this.dataShared.setSharedObject(this.servicioRecibido);
-    this.dialog.open(ChecklistPopUp);
+    this.dialog.open(ChecklistComponent);
   }
 
 }
@@ -120,52 +120,4 @@ export class ContactPopUp {
     this.contacts = this.dataShared.getSharedMessage();
     this.dataSource = this.contacts;
   }
-}
-
-// Modal para mostrar el checklist del servicio
-@Component({
-  selector: 'dialog-content-example-dialog',
-  templateUrl: 'print-item.html',
-  styleUrls: ['./print-servicio.component.css'],
-  standalone: true,
-  imports: [MaterialModule, CommonModule]
-})
-export class ChecklistPopUp {
-
-  dataSource: ItemChecklistDto[];
-  avance: number = 0;
-  editable: boolean = false;
-
-  constructor(
-    private dataShared: DataSharedService,
-    private svManager: ManagerService,
-    public dialog: MatDialog,) {
-    this.dataSource = this.dataShared.getSharedObject().itemChecklistDto;
-    this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject());
-  }
-
-  updateAvance(item: any) {
-    item.completo = !item.completo;
-    this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject());
-  }
-
-  // Función para detectar cambios en el listado de items
-  modified: boolean = false;
-  indicesCambiados: number[] = [];
-  getChange(index: number) {
-    // Verifica si el índice ya está en el array
-    const indexEncontrado = this.indicesCambiados.indexOf(index);
-    indexEncontrado === -1 ? this.indicesCambiados.push(index) : this.indicesCambiados.splice(indexEncontrado, 1);
-    // Verificar si hay cambios finalmente
-    this.modified = this.indicesCambiados.length > 0;
-  }
-
-  updateNotificado(item: any) {
-    item.notificado = !item.notificado;
-  }
-
-  openItemPopUp() {
-    this.dialog.open(AddItemComponent);
-  }
-
 }

@@ -18,7 +18,7 @@
         <!-- Lista de items del checklist -->
         <div id="checkBox" class="list-group">
 
-            <cdk-accordion *ngFor="let item of dataSource; let index = index">
+            <cdk-accordion *ngFor="let item of dataSourceItems; let index = index">
 
                 <cdk-accordion-item #accordionItem="cdkAccordionItem" role="button" tabindex="0"
                     [attr.id]="'accordion-header-' + index" [attr.aria-expanded]="accordionItem.expanded"
@@ -82,8 +82,8 @@
 
     <!-- Botones del checklist -->
     <div id="checklist-footer" class="modal-footer">
-        <button id="btnAddNewItem" type="button" class="btn btn-success" (click)="openItemPopUp()">
-          <span matTooltip="Agregar Item">+ ITEM</span>
+        <button id="btnAddNewItem" type="button" class="btn btn-success" (click)="openAddItemComponent()">
+          <span matTooltip="Agregar Item">+ Nuevo Ítem</span>
         </button>
         <button id="btnSave" *ngIf="modified" type="button" class="btn">
           <mat-icon>save</mat-icon>

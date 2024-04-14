@@ -1,82 +1,160 @@
 <div>
-
     <div class="modal-header">
         <div>
-            <h6 class="modal-title font-weight-bold">Configurar Item</h6>
+            <h6 class="modal-title font-weight-bold">Agregar un nuevo Item para el checklist</h6>
         </div>
         <mat-icon style="font-size: 1.2rem; cursor: pointer;" [mat-dialog-close]="true">close</mat-icon>
     </div>
 
     <div>
-        <form>
+        <form (ngSubmit)="guardarDatos()" #form="ngForm">
             <mat-card>
                 <mat-card-content>
-                    
-                    <form>
-    
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h6>Seleccione el item que desea agregar</h6>
-                            </div>
-                            <div class="col-md-12">
-                                <select class="form-select" id="validationCustom04" required>
-                                    <option selected disabled value="">Seleccionar...</option>
-                                    <option>...</option>
-                                </select>
-                            </div>
-                        </div>
-    
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h6>Establezca la fecha y hora a completarse</h6>
-                                <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local"
-                                    class="form-control" [(ngModel)]="resetDate" #input (change)="onChange(input.value)"
-                                    [min]="minDate" required>
-                            </div>
-                        </div>
-    
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h6>Asignar al responsable de completar</h6>
-                            </div>
-                            <div class="col-md-12">
-                                <select class="form-select" id="validationCustom04" required>
-                                    <option selected disabled value="">Seleccionar...</option>
-                                    <option>...</option>
-                                </select>
-                            </div>
-                        </div>
-    
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h6>Información de impuestos o tasa</h6>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="validationCustom01" class="form-label">Monto de tasa</label>
-                                <input type="text" class="form-control" id="validationCustom01" value="" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="validationCustom02" class="form-label">Cantidad de hojas</label>
-                                <input type="text" class="form-control" id="validationCustom02" value="" required>
-                            </div>
-                        </div>
-    
-                        <div class="row" style="width: 100%; align-items: center;">
-                            <div class="col-md-6">
-                                <mat-checkbox color="warn" class="checkNotif"></mat-checkbox>
-                                <span>Ha sido notificado?</span>
-                            </div>
-                            <div class="col-md-6" style="display: flex; justify-content: end;">
-                                <mat-card-actions>
-                                    <button mat-raised-button color="primary" type="submit">Guardar</button>
-                                </mat-card-actions>
-                            </div>
-                        </div>
-                    </form>
+                    <div id="formContent">
 
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="tipoServicioSelector">Filtrado por servicio</label><br>
+                                    <select disabled class="form-select" id="tipoServicioSelector"
+                                        name="tipoServicioSelector" [(ngModel)]="selectedTipoServicio"
+                                        (ngModelChange)="filterItems()">
+                                        <option *ngFor="let tipoServicio of uniqueTipoServicios" [value]="tipoServicio">
+                                            {{
+                                            tipoServicio }}</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="dependenciaSelector">Filtrar por dependencia</label><br>
+                                    <select class="form-select" id="dependenciaSelector" name="dependenciaSelector"
+                                        [(ngModel)]="selectedDependencia" (ngModelChange)="filterItems()">
+                                        <option [ngValue]="null" selected>- - -</option>
+                                        <option *ngFor="let dependencia of uniqueDependencias" [value]="dependencia">{{
+                                            dependencia }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="tipoItemSelector">Filtrar por tipo de Ítem</label><br>
+                                    <select class="form-select" id="tipoItemSelector" name="tipoItemSelector"
+                                        [(ngModel)]="selectedTipoItem" (ngModelChange)="filterItems()">
+                                        <option [ngValue]="null" selected>- - -</option>
+                                        <option *ngFor="let tipoItem of uniqueTipoItems" [value]="tipoItem">{{ tipoItem
+                                            }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="rubroSelector">Filtrar por rubro</label><br>
+                                    <select class="form-select" id="rubroSelector" name="rubroSelector"
+                                        [(ngModel)]="selectedRubro" (ngModelChange)="filterItems()">
+                                        <option [ngValue]="null" selected>- - -</option>
+                                        <option *ngFor="let rubro of uniqueRubros" [value]="rubro">{{ rubro }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="selectItem">Establezca el el requisito del ítem</label><br>
+                                    <select class="form-select" id="selectItem" name="selectItem"
+                                        [(ngModel)]="selectItem" required
+                                        (ngModelChange)="recomendarFechaHoraRealizacion(selectItem!)">
+                                        <option [ngValue]="null" selected>- - -</option>
+                                        <option *ngFor="let item of filteredItems" [value]="item.idItem">
+                                            {{ item.descripcion }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="fechaHoraRealizacion" *ngIf="selectItem">
+                                        Fecha sugerida según tiempo estándar para cumplir el requisito: {{ requisito }}
+                                    </label>
+                                    <label for="fechaHoraRealizacion" *ngIf="!selectItem">
+                                        Establecer una fecha máxima para cumplir con ésta tarea
+                                    </label>
+                                    <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local"
+                                        class="form-control" [(ngModel)]="fechaHoraRealizacion" [min]="minDate" required
+                                        [disabled]="!selectItem" style="color: #dc3545;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="responsable">
+                                        Asignar al responsable de completar la tarea
+                                    </label>
+                                    <select class="form-select" id="responsable" name="responsable"
+                                        [(ngModel)]="idResponsable" required>
+                                        <option selected disabled value="">- - -</option>
+                                        <option *ngFor="let recurso of recursoList" [value]="recurso.idRecurso">
+                                            {{ recurso.nombre + ' ' + recurso.apellido + ' - Rol: ' + recurso.rol}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <mat-checkbox color="warn" class="checkNotif" id="incluyeTasa"
+                                        [(ngModel)]="incluyeTasa" name="incluyeTasa"></mat-checkbox>
+                                    <label for="incluyeTasa" class="form-label">¿Incluye tasa o impuesto?</label>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="montoTasa" class="form-label">Monto de tasa</label>
+                                    <input type="number" class="form-control" id="montoTasa" name="montoTasa"
+                                        [(ngModel)]="montoTasa" [disabled]="!incluyeTasa" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="cantidadHojas" class="form-label">Cantidad de hojas</label>
+                                    <input type="number" class="form-control" id="cantidadHojas" name="cantidadHojas"
+                                        [(ngModel)]="cantidadHojas" [disabled]="!incluyeTasa" required>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="urlComprobante" class="form-label">Url de los comprobantes</label>
+                                    <input type="text" class="form-control" id="urlComprobante" name="urlComprobante"
+                                        [(ngModel)]="urlComprobante" [disabled]="!incluyeTasa" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <mat-divider></mat-divider>
+                    <div class="row" style="width: 100%; align-items: center;">
+                        <div class="col-md-6">
+                            <mat-checkbox color="warn" class="checkNotif" [(ngModel)]="haSidoNotificado"
+                                name="haSidoNotificado"></mat-checkbox>
+                            <span>¿Ha sido notificado?</span>
+                        </div>
+                        <div class="col-md-6" style="display: flex; justify-content: end;">
+                            <mat-card-actions>
+                                <button mat-raised-button color="primary" type="submit"
+                                    [disabled]="!form.valid">Guardar</button>
+                            </mat-card-actions>
+                        </div>
+                    </div>
                 </mat-card-content>
             </mat-card>
         </form>
     </div>
-    
 </div>

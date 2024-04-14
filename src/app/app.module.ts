@@ -25,6 +25,7 @@ import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackb
 import { AddItemComponent } from './componentsShared/add-item/add-item.component';
 import { EditorComponent } from './componentsServicios/print-servicio/editor/editor.component';
 import { DeleteServicioComponent } from './componentsServicios/print-servicio/delete-servicio/delete-servicio.component';
+import { ChecklistComponent } from './componentsServicios/print-servicio/checklist/checklist.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { DeleteServicioComponent } from './componentsServicios/print-servicio/de
     AddItemComponent,
     EditorComponent,
     DeleteServicioComponent,
+    ChecklistComponent,
       ],
   imports: [
     BrowserModule,

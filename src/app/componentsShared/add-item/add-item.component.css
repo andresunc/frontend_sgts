@@ -7,3 +7,31 @@
 .checkNotif {
     margin: 0 0.5rem;
 }
+
+#formContent {
+    max-height: 25rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.form-select {
+    width: 100%;
+}
+
+.card {
+    margin-bottom: 1rem;
+    padding: 1rem 0;
+    border-color: #ddd;
+}
+
+label {
+    font-size: 0.9rem;
+}
+
+option {
+    font-size: 0.9rem;
+}
+
+select {
+    color: #dc3545;
+}
