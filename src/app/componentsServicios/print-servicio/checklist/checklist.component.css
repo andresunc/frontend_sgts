@@ -1,0 +1,217 @@
+span, p, .mat-icon {
+    font-size: 0.8rem;
+  }
+  
+  .moduleContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  
+  .childContainer {
+    position: absolute;
+    margin-top: 0.45rem;
+    width: 100%;
+    max-height: 90%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    scrollbar-width: auto;
+    scrollbar-color: #ddd #ffffff;
+  }
+  
+  #seccionInfoServicio {  
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    overflow:auto;
+    scrollbar-width: auto;
+    scrollbar-color: #ddd #ffffff;
+  }
+  
+  .container{
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    height: 98%;
+    overflow:auto;
+    scrollbar-width: auto;
+    scrollbar-color: #ddd #ffffff;
+  }
+  
+  .cardContainer {
+    display: flex;
+    margin: 0.5rem auto;
+    padding: 0.5rem;
+    background: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
+    width: 95%;
+    height: 90%;
+  }
+  
+  .paddingBody {
+    padding: 0.6rem;
+  }
+  
+  .card-title {
+    font-size: 0.8rem;
+    margin: 0 auto;
+  }
+  
+  /* Estilos para el contenedor del ID Servicio */
+  .selectPrint {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    background: #DFEEEE;
+    transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
+  }
+  .selectPrint:hover {
+    color: #673ab7;
+    background: #ffd740;
+    box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
+  }
+  .mat-icon {
+    height: auto;
+  }
+  #matMenu > * {
+    font-size: 0.8rem;
+  }
+  
+  .link {
+    color: #8ab4f8;
+    font-weight: bold;
+  }
+  
+  .link:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  
+  .progress {
+    background-color:#7f45e40a; 
+  }
+  
+  .progress-bar {
+    background-color: #7f45e4;
+  }
+  
+  .textCenter {
+    text-align: center;
+  }
+  
+  .checkboxContainer {
+    padding: 0;
+    margin: 0;
+  }
+  
+  #checkBox {
+    display: flex;
+    margin: 0 auto;
+  }
+  
+  .rowChecklist:hover {
+    background-color: #7f45e40a;
+    cursor: pointer;
+  }
+  
+  .custom-background{
+    background-color: #7f45e40a;
+  }
+  
+  .custom-background:hover .card-text {
+    font-weight: bold;
+  }
+  
+  .card.selectStyle:hover{
+    background-color: #7f45e40a; 
+  }
+  
+  .list-group-item.selectStyle:hover {
+    background-color: #7f45e40a; 
+  }
+  
+  .spacer {
+    flex: 1 1 auto;
+  }
+  
+  .btnChecklist {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .contentChecklist {
+    box-shadow: 0px 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
+    color: #464545;
+    transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
+  }
+  
+  .btn-primary {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    background-color: #DFEEEE;
+    background: #DFEEEE;
+    border-color: #DFEEEE;
+    transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
+  }
+  .btn-primary:hover {
+    color: #673ab7;
+    background: #ffd740;
+    border-color: #ffd740;
+  }
+  
+  .cdk-accordion-content-body {
+    background-color: #7f45e40a;
+    padding: 0.5rem;
+    p {
+      margin-bottom: 0.1rem; /* agrego un interlineado entre los párrafos */
+    }
+  }
+  /* Clases del Modal del checklist */
+  .modal-body {
+    max-height: 23rem;
+    overflow: auto;
+    scrollbar-width: auto;
+    scrollbar-color: #ddd #ffffff;
+  }
+  
+  #checklist-footer > * {
+    display: flex;
+    mat-icon {
+      font-size: 1.2rem;
+    }
+  }
+  
+  #btnSave {
+    background-color: #DFEEEE;
+    background: #DFEEEE;
+    transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
+  }
+  #btnSave:hover {
+    color: #673ab7;
+    background: #ffd740;
+    box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
+  }
+  
+  .rowDetail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .checklistpopup {
+    min-width: 32rem;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .checklistpopup {
+      min-width: auto;
+    }
+  }

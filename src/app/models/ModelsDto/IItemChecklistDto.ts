@@ -1,4 +1,5 @@
 export class ItemChecklistDto {
+    
     idItemChecklist?: number;
     nombreItem?: string;
     inicioEstimado?: string;
