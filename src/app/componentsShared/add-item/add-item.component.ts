@@ -18,7 +18,7 @@ export class AddItemComponent implements OnInit {
   minDate: any;
   servicioRecibido!: Servicios;
 
-  selectItems: SelectItemDto[] = [];
+  selectItemList: SelectItemDto[] = [];
   filteredItems: SelectItemDto[] = [];
 
   uniqueTipoServicios: string[] = [];
@@ -46,28 +46,22 @@ export class AddItemComponent implements OnInit {
     this.setParameters();
   }
 
-  setParameters() {
-    this.servicioRecibido = this.dataShared.getSharedObject();
-    this.selectedTipoServicio = this.servicioRecibido.tipo;
-    this.selectedRubro = this.servicioRecibido.rubro;
-  }
-
   getParameters() {
 
     this.dataShared.mostrarSpinner();
 
     this.selectItemService.getSelectItemDto().subscribe(
       (data: SelectItemDto[]) => {
-        this.selectItems = data;
+        this.selectItemList = data;
 
         // Obtener valores únicos para tipoServicio, dependencia, rubro y tipoItem
         this.uniqueTipoServicios = this.getUniqueValues('tipoServicio');
         this.uniqueDependencias = this.getUniqueValues('dependencia');
-        this.uniqueRubros = this.getUniqueValues('rubro');
+        this.getUniqueRubro(); // this.uniqueRubros = this.getUniqueValues('rubro');
         this.uniqueTipoItems = this.getUniqueValues('tipoItem');
 
         // Filtrar los elementos al recibirlos por primera vez
-        this.filterItems();        
+        this.filterItems();
       },
       error => {
         console.error(error); // Manejo de errores
@@ -80,21 +74,38 @@ export class AddItemComponent implements OnInit {
       }
     )
 
+    this.servicioRecibido = this.dataShared.getSharedObject();
+
     this.dataShared.ocultarSpinner();
 
   }
 
+  setParameters() {
+    // Establezco la seleccion del tipo de servicio para el filtrado por defecto
+    this.selectedTipoServicio = this.servicioRecibido.tipo;
+  }
+
   getUniqueValues(propertyName: keyof SelectItemDto): string[] {
-    const values = this.selectItems.map(item => item[propertyName]);
+    const values = this.selectItemList.map(item => item[propertyName]);
     // Filtrar valores undefined y convertir a string
     const uniqueValues = values.filter(value => typeof value === 'string') as string[];
     // Filtrar duplicados usando Set y convertir de nuevo a array
     return [...new Set(uniqueValues)];
   }
 
+  getUniqueRubro() {
+    // Verificar si al menos un elemento en selectItemList tiene el mismo rubro que this.servicioRecibido.rubro
+    // voy a configurar por defecto el la lista de rubro a seleccionar
+    if (this.selectItemList.some(item => item.rubro === this.servicioRecibido.rubro)) {
+      this.uniqueRubros = [this.servicioRecibido.rubro];
+    } else {
+      this.uniqueRubros = this.getUniqueValues('rubro');
+    }
+  }
+
   filterItems() {
     // Aplicar filtro
-    this.filteredItems = this.selectItems.filter(item => {
+    this.filteredItems = this.selectItemList.filter(item => {
       // Verificar si la propiedad ha sido seleccionada y es diferente de null
       const tipoServicioMatch = !this.selectedTipoServicio || item.tipoServicio === this.selectedTipoServicio;
       const dependenciaMatch = !this.selectedDependencia || item.dependencia === this.selectedDependencia;
@@ -168,10 +179,10 @@ export class AddItemComponent implements OnInit {
 
   requisito: string | undefined = '';
   recomendarFechaHoraRealizacion(selectItem: string) {
-    // Buscar el item seleccionado dentro del array de selectItems
-    let objetoFiltrado: SelectItemDto | undefined = this.selectItems.find(item => item.idItem === parseInt(selectItem));
+    // Buscar el objeto SelectItemDto dentro del array de selectItems en función del ID del requisito
+    let objetoFiltrado: SelectItemDto | undefined = this.selectItemList.find(item => item.idItem === parseInt(selectItem));
 
-    // Verificar si se encontró el objeto
+    // Verificar si se encontró el objeto y obtener la fecha recomendada en función del tiempo estándar
     if (objetoFiltrado && objetoFiltrado.fechaHoraRealizacionRecomendada) {
 
       this.requisito = objetoFiltrado.descripcion;
