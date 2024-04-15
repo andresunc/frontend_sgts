@@ -38,7 +38,8 @@
                         <div class="col-md-12">
                             <label for="presupuesto">Se ha presupuestado</label>
                             <input type="number" class="form-control" id="presupuesto" name="presupuesto"
-                                [(ngModel)]="data.servicioRecibido.total_presupuestado" min="0">
+                                [(ngModel)]="data.servicioRecibido.total_presupuestado" min="0"
+                                (blur)="validarPresupuesto()" #presupuestoInput>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
@@ -85,6 +85,16 @@ export class EditorComponent implements OnInit {
     if (selectedTime < currenTime) {
       this._snackBar.errorSnackBar("Tu selección es menor al momento actual");
       this.data.servicioRecibido.fecha_notificacion = "";
+    }
+  }
+
+  // Assuming 'presupuestoInput' is the correct identifier in the template
+  @ViewChild('presupuestoInput', { static: false }) presupuestoInput!: ElementRef<HTMLInputElement>;
+  validarPresupuesto() {
+    const presupuesto = parseFloat(this.presupuestoInput.nativeElement.value);
+
+    if (presupuesto < 0) {
+      this.presupuestoInput.nativeElement.value = '0';
     }
   }
 
