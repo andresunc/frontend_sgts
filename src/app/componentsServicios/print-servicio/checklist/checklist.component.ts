@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsShared/add-item/add-item.component';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
+import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -10,7 +11,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
   templateUrl: './checklist.component.html',
   styleUrls: ['./checklist.component.css']
 })
-export class ChecklistComponent {
+export class ChecklistComponent implements OnInit {
 
   dataSourceItems: ItemChecklistDto[];
   avance: number = 0;
@@ -19,9 +20,26 @@ export class ChecklistComponent {
   constructor(
     private dataShared: DataSharedService,
     private svManager: ManagerService,
-    public dialog: MatDialog,) {
+    private servicioService: ServicioService,
+    public dialog: MatDialog) {
     this.dataSourceItems = this.dataShared.getSharedObject().itemChecklistDto;
     this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject());
+  }
+
+  ngOnInit(): void {
+    // Escucha los eventos de actualización
+    this.dataShared.updateChecklist$.subscribe(() => {
+      this.updateItemsCheckList();
+    });
+  }
+
+  updateItemsCheckList(): void {
+    this.servicioService.getItemsChecklist(this.dataShared.getSharedObject().idServicio)
+      .subscribe(
+        (data) => {
+          this.dataSourceItems = data;
+        }
+      )
   }
 
   updateAvance(item: any) {
