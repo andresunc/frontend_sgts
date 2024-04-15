@@ -84,18 +84,18 @@
                 <div class="contact-inputs">
                   <mat-form-field>
                     <mat-label>Nombre</mat-label>
-                    <input matInput placeholder="" formControlName="Nombre" required>
+                    <input matInput placeholder="" formControlName="Nombre" maxlength="45" required>
                     <mat-error *ngIf="secondFormGroup.get('Nombre')?.invalid && (secondFormGroup.get('Nombre')?.dirty || secondFormGroup.get('Nombre')?.touched)">
                       Dato obligatorio.
                     </mat-error>
                   </mat-form-field>
                   <mat-form-field>
                     <mat-label>Apellido</mat-label>
-                    <input matInput placeholder="" formControlName="Apellido">
+                    <input matInput placeholder="" formControlName="Apellido" maxlength="45">
                   </mat-form-field>
                   <mat-form-field>
                     <mat-label>Teléfono</mat-label>
-                    <input matInput formControlName="Telefono" placeholder="+54 351 xxxxxxxxx" required>
+                    <input matInput formControlName="Telefono" placeholder="+54 351 xxxxxxxxx" maxlength="45" required>
                     <mat-error *ngIf="secondFormGroup.get('Telefono')?.invalid && (secondFormGroup.get('Telefono')?.dirty || secondFormGroup.get('Telefono')?.touched)">
                       Dato obligatorio.
                     </mat-error>
