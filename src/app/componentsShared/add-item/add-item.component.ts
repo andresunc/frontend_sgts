@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { SelectItemDto } from 'src/app/models/ModelsDto/SelectitemsDto';
@@ -152,31 +152,6 @@ export class AddItemComponent implements OnInit {
     }
   }
 
-  selectItem: string | null = null;
-  fechaHoraRealizacion: string | undefined = '';
-  idResponsable: string = '';
-  montoTasa: number = 0;
-  cantidadHojas: number = 0;
-  urlComprobante: string = '';
-  haSidoNotificado: boolean = false;
-  incluyeTasa: boolean = false;
-  // Función para guardar los datos del formulario
-  guardarDatos() {
-
-    this.dataShared.mostrarSpinner();
-
-    // Aquí puedes acceder a los valores de las variables y hacer lo que necesites con ellos
-    console.log('Item seleccionado:', this.selectItem);
-    console.log('Fecha y hora de realización:', this.fechaHoraRealizacion);
-    console.log('Responsable:', this.idResponsable);
-    console.log('Monto de tasa:', this.montoTasa);
-    console.log('Cantidad de hojas:', this.cantidadHojas);
-    console.log('URL de comprobante:', this.urlComprobante);
-    console.log('Ha sido notificado:', this.haSidoNotificado);
-
-    this.dataShared.ocultarSpinner();
-  }
-
   requisito: string | undefined = '';
   recomendarFechaHoraRealizacion(selectItem: string) {
     // Buscar el objeto SelectItemDto dentro del array de selectItems en función del ID del requisito
@@ -195,6 +170,40 @@ export class AddItemComponent implements OnInit {
     } else {
       console.error("El objeto seleccionado no se encontró en la lista de selectItems o no tiene una fecha recomendada definida.");
     }
+  }
+
+  @ViewChild('montoTasaInput', { static: false }) montoTasaInput!: ElementRef<HTMLInputElement>;
+  validarMontoTasa() {
+    const montoTasa = parseFloat(this.montoTasaInput.nativeElement.value);
+
+    if (montoTasa < 0) {
+      this.montoTasaInput.nativeElement.value = '0';
+    }
+  }
+
+  selectItem: string | null = null;
+  fechaHoraRealizacion: string | undefined = '';
+  idResponsable: string = '';
+  montoTasa: number = 0;
+  cantidadHojas: number = 0;
+  urlComprobante: string = '';
+  haSidoNotificado: boolean = false;
+  incluyeTasa: boolean = false;
+  // Función para guardar los datos del formulario
+  saveData() {
+
+    this.dataShared.mostrarSpinner();
+
+    // Aquí puedes acceder a los valores de las variables y hacer lo que necesites con ellos
+    console.log('Item seleccionado:', this.selectItem);
+    console.log('Fecha y hora de realización:', this.fechaHoraRealizacion);
+    console.log('Responsable:', this.idResponsable);
+    console.log('Monto de tasa:', this.montoTasa);
+    console.log('Cantidad de hojas:', this.cantidadHojas);
+    console.log('URL de comprobante:', this.urlComprobante);
+    console.log('Ha sido notificado:', this.haSidoNotificado);
+
+    this.dataShared.ocultarSpinner();
   }
 
 }

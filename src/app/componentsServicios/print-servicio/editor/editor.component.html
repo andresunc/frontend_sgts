@@ -8,49 +8,58 @@
 
     <form (submit)="loadChanges()">
         <mat-card>
-            <mat-card-content>
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="tipoEstado" style="margin-right: 1rem;">Establecer nuevo estado</label>
-                        <select class="form-select" id="tipoEstado" [(ngModel)]="selectedEstado" name="selectedEstado"
-                            (ngModelChange)="onEstadoChange()">
-                            <option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">{{ estado.tipoEstado
-                                }}</option>
-                        </select>
+            <mat-card-content id="cardContent">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="tipoEstado" style="margin-right: 1rem;">Establecer nuevo estado</label><br>
+                            <select class="form-select" id="tipoEstado" [(ngModel)]="selectedEstado" name="selectedEstado"
+                                (ngModelChange)="onEstadoChange()">
+                                <option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">{{ estado.tipoEstado
+                                    }}</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <h6>Indique hora y fecha para el recordatorio</h6>
-                        <input name="fechaHoraNotificacion" type="datetime-local" class="form-control"
-                            [(ngModel)]="data.servicioRecibido.fecha_notificacion" (change)="handleChange($event)"
-                            [min]="minDate">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="fechaHoraNotificacion">Indique hora y fecha para el recordatorio</label>
+                            <input name="fechaHoraNotificacion" type="datetime-local" class="form-control"
+                                [(ngModel)]="data.servicioRecibido.fecha_notificacion" (change)="handleChange($event)"
+                                [min]="minDate">
+                        </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="presupuesto">Se ha presupuestado</label>
-                        <input type="number" class="form-control" id="presupuesto" name="presupuesto"
-                            [(ngModel)]="data.servicioRecibido.total_presupuestado">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="presupuesto">Se ha presupuestado</label>
+                            <input type="number" class="form-control" id="presupuesto" name="presupuesto"
+                                [(ngModel)]="data.servicioRecibido.total_presupuestado" min="0">
+                        </div>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="comentario">Comentario</label>
-                        <textarea type="text" class="form-control" id="comentario" name="comentario"
-                            [(ngModel)]="data.servicioRecibido.comentario"></textarea>
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="comentario">Comentario</label>
+                            <textarea type="text" class="form-control" id="comentario" name="comentario"
+                                [(ngModel)]="data.servicioRecibido.comentario"></textarea>
+                        </div>
                     </div>
-                </div>
-
-                <div style="display: flex; justify-content: end;">
-                    <mat-card-actions>
-                        <button mat-dialog-close mat-raised-button color="primary" type="submit">Guardar</button>
-                    </mat-card-actions>
                 </div>
             </mat-card-content>
+
+            <div style="display: flex; justify-content: end;">
+                <mat-card-actions>
+                    <button mat-dialog-close mat-raised-button color="primary" type="submit">Guardar</button>
+                </mat-card-actions>
+            </div>
+
         </mat-card>
     </form>
 </div>

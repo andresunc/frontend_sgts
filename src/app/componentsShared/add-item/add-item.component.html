@@ -7,7 +7,7 @@
     </div>
 
     <div>
-        <form (ngSubmit)="guardarDatos()" #form="ngForm">
+        <form (ngSubmit)="saveData()" #form="ngForm">
             <mat-card>
                 <mat-card-content>
                     <div id="formContent">
@@ -80,7 +80,7 @@
                                         Fecha sugerida según tiempo estándar para cumplir el requisito: {{ requisito }}
                                     </label>
                                     <label for="fechaHoraRealizacion" *ngIf="!selectItem">
-                                        Establecer una fecha máxima para cumplir con ésta tarea
+                                        Establecer una fecha máxima para terminar con esta tarea
                                     </label>
                                     <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local"
                                         class="form-control" [(ngModel)]="fechaHoraRealizacion" [min]="minDate" required
@@ -119,13 +119,15 @@
                                 <div class="col-md-6">
                                     <label for="montoTasa" class="form-label">Monto de tasa</label>
                                     <input type="number" class="form-control" id="montoTasa" name="montoTasa"
-                                        [(ngModel)]="montoTasa" [disabled]="!incluyeTasa" required>
+                                        [(ngModel)]="montoTasa" [disabled]="!incluyeTasa" required min="0"
+                                        (blur)="validarMontoTasa()" #montoTasaInput>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="cantidadHojas" class="form-label">Cantidad de hojas</label>
                                     <input type="number" class="form-control" id="cantidadHojas" name="cantidadHojas"
-                                        [(ngModel)]="cantidadHojas" [disabled]="!incluyeTasa" required>
+                                        [(ngModel)]="cantidadHojas" [disabled]="!incluyeTasa" required min="0" 
+                                        max="1000" step="1" oninput="this.value = Math.abs(Math.floor(this.value))">
                                 </div>
                             </div>
 
