@@ -1,7 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ChecklistComponent } from 'src/app/componentsServicios/print-servicio/checklist/checklist.component';
+import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { SelectItemDto } from 'src/app/models/ModelsDto/SelectitemsDto';
+import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
 import { SelectItemService } from 'src/app/services/ServiciosDto/select-item.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
@@ -37,7 +41,9 @@ export class AddItemComponent implements OnInit {
     private _snackBar: PopupService,
     private dataShared: DataSharedService,
     private selectItemService: SelectItemService,
-    private recursoDtoService: RecursoDtoService
+    private recursoDtoService: RecursoDtoService,
+    private itemChecklistService: ItemChecklistService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -194,16 +200,34 @@ export class AddItemComponent implements OnInit {
 
     this.dataShared.mostrarSpinner();
 
-    // Aquí puedes acceder a los valores de las variables y hacer lo que necesites con ellos
-    console.log('Item seleccionado:', this.selectItem);
-    console.log('Fecha y hora de realización:', this.fechaHoraRealizacion);
-    console.log('Responsable:', this.idResponsable);
-    console.log('Monto de tasa:', this.montoTasa);
-    console.log('Cantidad de hojas:', this.cantidadHojas);
-    console.log('URL de comprobante:', this.urlComprobante);
-    console.log('Ha sido notificado:', this.haSidoNotificado);
+    // Crear el Item del CheckList
+    let addItemCheckList = new ItemChecklist();
+    addItemCheckList.servicioIdServicio = this.servicioRecibido.idServicio;
+    addItemCheckList.itemIdItem = parseInt(this.selectItem!);
+    addItemCheckList.finEstandar = (this.fechaHoraRealizacion) ? new Date(this.fechaHoraRealizacion) : undefined;
+    addItemCheckList.recursoGgIdRecursoGg = parseInt(this.idResponsable);
+    addItemCheckList.tasaValor = this.montoTasa;
+    addItemCheckList.tasaCantidadHojas = this.cantidadHojas;
+    addItemCheckList.urlComprobanteTasa = this.urlComprobante;
+    addItemCheckList.notificado = this.haSidoNotificado;
+
+    // Persistir item del checklist
+    this.itemChecklistService.addItemCheckList(addItemCheckList).subscribe(
+      (data: ItemChecklist) => {
+        addItemCheckList = data;
+        console.log('ItemChecklist persistido: ', addItemCheckList);
+      }
+    )
+
+    // Actualizar Lista de Items en el CheckList del componente ChecklistComponent
+    this.updateChecklist();
 
     this.dataShared.ocultarSpinner();
+
+  }
+
+  updateChecklist() {
+    this.dataShared.triggerUpdateChecklist();
   }
 
 }
