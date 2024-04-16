@@ -13,7 +13,7 @@ import { takeUntil } from 'rxjs/operators';
 export class AppComponent implements OnInit, OnDestroy {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
-  access: boolean = true;
+  access: boolean = false;
   sidebarOpened: boolean = false; // Cambia a false para ocultar la barra lateral automáticamente
 
   constructor(private authService: AuthService,

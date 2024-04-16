@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
-import { ContactoEmpesa } from 'src/app/models/DomainModels/ContactoEmpresa';
+import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { UrlBackend } from 'src/app/models/Url';
 
 @Injectable({
@@ -15,8 +15,8 @@ export class ContactoEmpresaService {
   constructor(private http: HttpClient) { }
 
   // Método GET para obtener los contactos de una empresa
-  getContactoEmpresa(idEmpresa: number): Observable<ContactoEmpesa[]> {
-    return this.http.get<ContactoEmpesa[]>( this.urlGetContactoEmpresa + idEmpresa)
+  getContactoEmpresa(idEmpresa: number): Observable<ContactoEmpresa[]> {
+    return this.http.get<ContactoEmpresa[]>( this.urlGetContactoEmpresa + idEmpresa)
     .pipe(
       tap((data) => {
         return data;

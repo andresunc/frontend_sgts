@@ -12,7 +12,7 @@ import { RubroService } from 'src/app/services/DomainServices/rubro.service';
 import { Rubro } from 'src/app/models/DomainModels/Rubro';
 import { EmpresaService } from 'src/app/services/DomainServices/empresa.service';
 import { Empresa } from 'src/app/models/DomainModels/Empresa';
-import { ContactoEmpesa } from 'src/app/models/DomainModels/ContactoEmpresa';
+import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
 
@@ -39,7 +39,7 @@ export class CfgClientesComponent implements OnInit {
   stepperOrientation: Observable<StepperOrientation>;
   modificarEliminarHabilitado: boolean = false;
   resumenDatos: any = {};
-  contactos: ContactoEmpesa[] = [];
+  contactos: ContactoEmpresa[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,

@@ -9,6 +9,7 @@ export class ItemChecklistDto {
     notificado?: boolean;
     valorTasa?: number;
     hojas?: number;
+    idRecurso?: number;
     responsable?: string;
     urlComprobante?: string;
     completo?: boolean;
