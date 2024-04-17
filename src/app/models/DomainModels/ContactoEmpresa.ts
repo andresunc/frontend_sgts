@@ -1,4 +1,4 @@
-export class ContactoEmpesa {
+export class ContactoEmpresa {
     idContactoEmpresa?: number;
     nombre?: string;
     apellido?: string;
