@@ -23,22 +23,25 @@ export class LoginComponent {
     private dataShared: DataSharedService,
     private _snackBar: PopupService) { }
 
+  saving: boolean = false;
   login() {
-
-    this.dataShared.mostrarSpinner();
 
     const loginData: LoginData = new LoginData();
     loginData.username = this.username;
     loginData.password = this.password;
 
     if (loginData.username == "" || loginData.password == "") return;
-    // Llama al método login de AuthService
+
+    // Deshabilitar el boton del login Llama al método AuthService.login()
+    this.saving = true;
     this.authService.login(loginData).subscribe(
       (authUser: AuthUser) => {
         console.log('Datos del login: ', authUser)
         this.dataShared.triggerControlAccess();
+        this.saving = false;
       },
       (error) => {
+        this.saving = false;
         if (error.status === 403) {
           console.error('Credenciales incorrectas o inexistentes:', error);
           this.handleLoginError('Credenciales incorrectas o inexistentes');
@@ -49,7 +52,6 @@ export class LoginComponent {
       }
     );
 
-    this.dataShared.ocultarSpinner();
   }
 
   private handleLoginError(message: string) {

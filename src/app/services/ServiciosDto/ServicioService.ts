@@ -25,11 +25,8 @@ export class ServicioService {
 
   // Método para obtener los servicios más recientes
   getTopServices(limit: number): Observable<Servicios[]> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authService.getCurrentToken()}`
-    });
-
+    
+    const headers: HttpHeaders = this.authService.getHeader();
     const params = { limit: limit.toString() };
 
     return this.http.get<Servicios[]>(this.getTopServicesUrl, { headers, params })

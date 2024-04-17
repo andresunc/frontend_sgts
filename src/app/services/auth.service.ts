@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
@@ -36,12 +36,14 @@ export class AuthService implements OnInit {
       );
   }
 
+  // deslogearse
   logout(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('currentUser'); // Eliminar del localStorage al cerrar sesión
     this.router.navigate(['']);
   }
 
+  // Verificar si esta logeado
   isLoggedInUser(): boolean {
     const currentUserString: string | null = localStorage.getItem('currentUser');
     if (currentUserString !== null && currentUserString !== undefined) {
@@ -52,6 +54,7 @@ export class AuthService implements OnInit {
     }
   }
 
+  // tomar el token del local storage
   getCurrentToken(): string | null {
     const currentUserString: string | null = localStorage.getItem('currentUser');
     if (currentUserString !== null && currentUserString !== undefined) {
@@ -60,6 +63,15 @@ export class AuthService implements OnInit {
     } else {
       return null;
     }
+  }
+
+  // Armar el header
+  getHeader(): HttpHeaders {
+
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getCurrentToken()}`
+    });
   }
 
 

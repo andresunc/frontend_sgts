@@ -18,10 +18,8 @@ export class SelectItemService {
     private authService: AuthService) { }
 
   getSelectItemDto(): Observable<SelectItemDto[]> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authService.getCurrentToken()}`
-    });
+    
+    const headers: HttpHeaders = this.authService.getHeader();
 
     return this.http.get<SelectItemDto[]>(this.getSelectItemUrl, { headers })
       .pipe(
