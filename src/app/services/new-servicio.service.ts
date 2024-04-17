@@ -7,20 +7,19 @@ import { UrlBackend } from '../models/Url';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { NuevoServicioDto } from '../models/ModelsDto/NuevoServicioDto';
+import { ServicioService } from './ServiciosDto/ServicioService';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewServicioService {
 
-  private urlBackend = new UrlBackend().getUrlBackend();
-  private urlNewServicio = this.urlBackend + '/nuevo/crearServicio';
-
   constructor(
     private estado: EstadosService, 
     private tipo: TipoServicioService,
     private recurso: RecursoDtoService,
     private empresa: EmpresaDtoService,
+    private servicioService: ServicioService,
     private http: HttpClient,
     ) { }
 
@@ -52,7 +51,7 @@ export class NewServicioService {
   }
 
   // Método para crear un nuevo servicio
-  addServicio(addServicio: NuevoServicioDto): Observable<NuevoServicioDto> {
-    return this.http.post<NuevoServicioDto>(this.urlNewServicio, addServicio);
+  addServicio(addServicio: NuevoServicioDto) {
+    return this.servicioService.addServicio(addServicio);
   }
 }

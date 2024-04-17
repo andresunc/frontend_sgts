@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { DataSharedService } from '../services/data-shared.service';
+import { LoginData } from '../models/SupportModels/LoginData';
+import { AuthUser } from '../models/SupportModels/AuthUser';
+import { PopupService } from '../services/SupportServices/popup.service';
 
 @Component({
   selector: 'app-login',
@@ -16,34 +19,46 @@ export class LoginComponent {
 
   errorMessage: string = '';
 
-  constructor(private authService: AuthService, private dataShared: DataSharedService) {}
+  constructor(private authService: AuthService,
+    private dataShared: DataSharedService,
+    private _snackBar: PopupService) { }
 
+  saving: boolean = false;
   login() {
-    console.log(this.username);
-    console.log(this.password);
-    if (this.username === '' || this.password === '') return;
-    // Llama al método login de AuthService
-    this.authService.login(this.username, this.password).subscribe(
-      (loginSuccessful) => {
-        if (loginSuccessful) {
-          this.dataShared.triggerControlAccess();
-        } else {
-          this.handleLoginError('Credenciales incorrectas o inexistentes');
-          console.log('Inicio de sesión fallido');
-        }
+
+    const loginData: LoginData = new LoginData();
+    loginData.username = this.username;
+    loginData.password = this.password;
+
+    if (loginData.username == "" || loginData.password == "") return;
+
+    // Deshabilitar el boton del login Llama al método AuthService.login()
+    this.saving = true;
+    this.authService.login(loginData).subscribe(
+      (authUser: AuthUser) => {
+        console.log('Datos del login: ', authUser)
+        this.dataShared.triggerControlAccess();
+        this.saving = false;
       },
       (error) => {
-        console.error('Error en el inicio de sesión:', error);
-        this.handleLoginError('Hubo un error durante el inicio de sesión. Por favor, intenta de nuevo más tarde');
+        this.saving = false;
+        if (error.status === 403) {
+          console.error('Credenciales incorrectas o inexistentes:', error);
+          this.handleLoginError('Credenciales incorrectas o inexistentes');
+        } else {
+          console.error('Error en el inicio de sesión:', error);
+          this._snackBar.warnSnackBar('Error en la conexión', 'Aceptar');
+        }
       }
     );
+
   }
 
   private handleLoginError(message: string) {
     this.errorMessage = message;
-     setTimeout(() => {
-        this.errorMessage = '';
-        }, 3000);
+    setTimeout(() => {
+      this.errorMessage = '';
+    }, 3000);
   }
 
   getErrorMessage() {
@@ -54,7 +69,5 @@ export class LoginComponent {
     return this.email.hasError('email') ? 'No es un usuario valido' : '';
   }
 
-  
-  
 }
 

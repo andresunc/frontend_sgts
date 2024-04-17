@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { TipoItem } from 'src/app/models/DomainModels/TipoItem';
 import { UrlBackend } from 'src/app/models/Url';
+import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,21 @@ export class TipoItemService {
   urlBackend = new UrlBackend().getUrlBackend();
   getTipoItemsUrl = this.urlBackend + '/tipoItem/getAll';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   getTipoItems(): Observable<TipoItem[]> {
-    return this.http.get<TipoItem[]>(this.getTipoItemsUrl);
+
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.get<TipoItem[]>(this.getTipoItemsUrl, {headers})
+    .pipe(
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+          this.authService.logout();
+        }
+        console.error('Error en la solicitud cargar tipos de ítems', error);
+        return throwError(error);
+      })
+    );
   }
   
 }

@@ -83,9 +83,6 @@ export class PrintServicioComponent implements OnInit {
       (data) => {
         this.contactoEmpresa = data;
         console.log('Contactos de la empresa: ', data);
-      },
-      (error) => {
-        console.error('Error al consultar los contactos de la empresa', error);
       }
     );
   }
