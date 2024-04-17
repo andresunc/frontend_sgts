@@ -21,7 +21,7 @@ export class LoginComponent {
 
   constructor(private authService: AuthService,
     private dataShared: DataSharedService,
-    private _snackBar: PopupService) {}
+    private _snackBar: PopupService) { }
 
   login() {
 
@@ -31,17 +31,12 @@ export class LoginComponent {
     loginData.username = this.username;
     loginData.password = this.password;
 
-    if (!loginData) return;
+    if (loginData.username == "" || loginData.password == "") return;
     // Llama al método login de AuthService
     this.authService.login(loginData).subscribe(
       (authUser: AuthUser) => {
-        if (authUser.status) {
-          console.log('Datos del login: ', authUser)
-          this.dataShared.triggerControlAccess();
-        } else {
-          this.handleLoginError('Credenciales incorrectas o inexistentes');
-          console.log('Inicio de sesión fallido');
-        }
+        console.log('Datos del login: ', authUser)
+        this.dataShared.triggerControlAccess();
       },
       (error) => {
         if (error.status === 403) {
@@ -59,9 +54,9 @@ export class LoginComponent {
 
   private handleLoginError(message: string) {
     this.errorMessage = message;
-     setTimeout(() => {
-        this.errorMessage = '';
-        }, 3000);
+    setTimeout(() => {
+      this.errorMessage = '';
+    }, 3000);
   }
 
   getErrorMessage() {
@@ -71,6 +66,6 @@ export class LoginComponent {
 
     return this.email.hasError('email') ? 'No es un usuario valido' : '';
   }
-  
+
 }
 

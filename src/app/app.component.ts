@@ -3,6 +3,7 @@ import { AuthService } from './services/auth.service';
 import { DataSharedService } from './services/data-shared.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AuthUser } from './models/SupportModels/AuthUser';
 
 
 @Component({
@@ -17,7 +18,9 @@ export class AppComponent implements OnInit, OnDestroy {
   sidebarOpened: boolean = false; // Cambia a false para ocultar la barra lateral automáticamente
 
   constructor(private authService: AuthService,
-    private dataShared: DataSharedService) { }
+    private dataShared: DataSharedService) {
+      this.access = this.authService.isLoggedInUser();
+  }
 
   ngOnInit() {
     this.dataShared.getControlAccess().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {

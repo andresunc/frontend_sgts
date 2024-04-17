@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, tap } from 'rxjs';
 import { UrlBackend } from '../models/Url';
@@ -9,21 +9,26 @@ import { AuthUser } from '../models/SupportModels/AuthUser';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class AuthService implements OnInit {
 
   urlBackend = new UrlBackend().getUrlBackend();
   private loginUrl = this.urlBackend + '/auth/login';
 
-  private isLoggedIn = false;
+  private isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient) { }
+  constructor(private router: Router, private http: HttpClient) {
+    this.isLoggedIn = this.isLoggedInUser();
+  }
+
+  ngOnInit(): void {
+    this.isLoggedInUser();
+  }
 
   login(loginData: LoginData): Observable<AuthUser> {
     return this.http.post<AuthUser>(this.loginUrl, loginData)
       .pipe(
         tap((authUser: AuthUser) => {
           if (authUser && authUser.status) {
-            this.isLoggedIn = true;
             localStorage.setItem('currentUser', JSON.stringify(authUser)); // Guardar en localStorage
             this.router.navigate(['/home']);
           }
@@ -38,7 +43,13 @@ export class AuthService {
   }
 
   isLoggedInUser(): boolean {
-    return this.isLoggedIn;
+    const currentUserString: string | null = localStorage.getItem('currentUser');
+    if (currentUserString !== null && currentUserString !== undefined) {
+      const currentUser: AuthUser = JSON.parse(currentUserString);
+      return currentUser.status!;
+    } else {
+      return false;
+    }
   }
 
   getCurrentToken(): string | null {
