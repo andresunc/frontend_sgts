@@ -5,7 +5,6 @@ import { catchError } from 'rxjs/operators';
 import { SelectItemDto } from 'src/app/models/ModelsDto/SelectitemsDto';
 import { UrlBackend } from 'src/app/models/Url';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +15,7 @@ export class SelectItemService {
   getSelectItemUrl = this.urlBackend + '/selectItemDto/getItems';
 
   constructor(private http: HttpClient, 
-    private authService: AuthService,
-    private router: Router) { }
+    private authService: AuthService) { }
 
   getSelectItemDto(): Observable<SelectItemDto[]> {
     const headers = new HttpHeaders({
@@ -29,7 +27,7 @@ export class SelectItemService {
       .pipe(
         catchError((error) => {
           if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.router.navigate(['/login']);
+            this.authService.logout();
           }
           console.error('Error en la solicitud getSelectItemDto', error);
           return throwError(error);

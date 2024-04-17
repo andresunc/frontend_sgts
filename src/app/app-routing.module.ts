@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
 import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
 
-
 const routes: Routes = [
   { path: 'home', component: VerServiciosComponent },
   { path: 'home/servicio', component: PrintServicioComponent },

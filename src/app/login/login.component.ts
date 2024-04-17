@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { DataSharedService } from '../services/data-shared.service';
-import { LoginData } from '../services/SupportServices/LoginData';
-import { AuthUser } from '../services/SupportServices/AuthUser';
+import { LoginData } from '../models/SupportModels/LoginData';
+import { AuthUser } from '../models/SupportModels/AuthUser';
 import { PopupService } from '../services/SupportServices/popup.service';
 
 @Component({

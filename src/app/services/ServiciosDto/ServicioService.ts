@@ -7,7 +7,6 @@ import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { PopupService } from '../SupportServices/popup.service';
 import { UrlBackend } from '../../models/Url';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -22,8 +21,7 @@ export class ServicioService {
 
   constructor(private http: HttpClient, 
     private _snackBar: PopupService, 
-    private authService: AuthService,
-    private router: Router) { }
+    private authService: AuthService) { }
 
   // Método para obtener los servicios más recientes
   getTopServices(limit: number): Observable<Servicios[]> {
@@ -42,7 +40,7 @@ export class ServicioService {
         }),
         catchError((error) => {
           if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.router.navigate(['/login']);
+            this.authService.logout();
           }
           this._snackBar.warnSnackBar('Error en la conexión', 'Aceptar');
           console.error('Error en la solicitud getTopServices', error);
@@ -64,7 +62,7 @@ export class ServicioService {
       .pipe(
         catchError((error) => {
           if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.router.navigate(['/login']);
+            this.authService.logout();
           }
           console.error('Error en la solicitud getItemsChecklist', error);
           return throwError(error);
