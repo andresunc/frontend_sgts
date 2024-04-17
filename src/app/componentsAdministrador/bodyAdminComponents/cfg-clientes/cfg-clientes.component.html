@@ -50,28 +50,16 @@
               </mat-form-field> 
               <mat-form-field>
                 <mat-label>Rubro</mat-label>
-                <input type="text"
-                       placeholder="Seleccionar Rubro"
-                       aria-label="Rubro"
-                       matInput
-                       [formControl]="rubroControl"
-                       [matAutocomplete]="rubroAuto">
-                <mat-autocomplete #rubroAuto="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let rubro of filteredRubros | async" [value]="rubro.rubro">{{ rubro.rubro }}</mat-option>
-                </mat-autocomplete>
-              </mat-form-field>  
-              <mat-form-field>
-                <mat-label>Riesgo</mat-label>
-                <input type="text"
-                       placeholder="Seleccionar Riesgo"
-                       aria-label="Riesgo"
-                       matInput
-                       [formControl]="riesgoControl"
-                       [matAutocomplete]="riesgoAuto">
-                <mat-autocomplete #riesgoAuto="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let riesgo of filteredRiesgos | async" [value]="riesgo.riesgo">{{ riesgo.riesgo }}</mat-option>
-                </mat-autocomplete>
+                <mat-select formControlName="Rubro" required>
+                  <mat-option *ngFor="let rubro of rubros" [value]="rubro">{{ rubro.rubro }}</mat-option>
+                </mat-select>
               </mat-form-field>
+              <mat-form-field>
+  <mat-label>Riesgo</mat-label>
+  <mat-select formControlName="Riesgo" required>
+    <mat-option *ngFor="let riesgo of riesgos" [value]="riesgo">{{ riesgo.riesgo }}</mat-option>
+  </mat-select>
+</mat-form-field>
                   <div class="btn-next">
                     <button mat-button matStepperNext (click)="actualizarResumen()" [disabled]="!paso1EsValido()">Siguiente</button>
               </div>
@@ -150,8 +138,8 @@
                 <p *ngIf="resumenDatos.datosCliente">Razon social: {{ resumenDatos.datosCliente.RazonSocial }}</p>
                 <p *ngIf="resumenDatos.datosCliente">CUIT: {{ resumenDatos.datosCliente.CUIT }}</p>
                 <p *ngIf="resumenDatos.datosCliente">Dirección: {{ resumenDatos.datosCliente.Direccion }}</p>
-                <p *ngIf="resumenDatos.datosCliente">Riesgo: {{ resumenDatos.datosCliente.Riesgo }}</p>
-                <p *ngIf="resumenDatos.datosCliente">Rubro: {{ resumenDatos.datosCliente.Rubro }}</p>
+                <p *ngIf="resumenDatos.datosCliente">Riesgo: {{ resumenDatos.datosCliente.Riesgo.riesgo }}</p>
+                <p *ngIf="resumenDatos.datosCliente">Rubro: {{ resumenDatos.datosCliente.Rubro.rubro }}</p>
               </div>
           
               <div *ngIf="resumenDatos.contactos && resumenDatos.contactos.length > 0" class="contactos-container">

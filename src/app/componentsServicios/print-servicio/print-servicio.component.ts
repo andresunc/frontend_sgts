@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsShared/add-item/add-item.component';
 import { MaterialModule } from 'src/app/componentsShared/material/material.module';
-import { ContactoEmpesa } from 'src/app/models/DomainModels/ContactoEmpresa';
+import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
@@ -24,7 +24,7 @@ export class PrintServicioComponent implements OnInit {
   servicioRecibido!: Servicios;
   title: string = 'Información del servicio: ';
   recurrencia: number = 0;
-  contactoEmpresa: ContactoEmpesa[] = [];
+  contactoEmpresa: ContactoEmpresa[] = [];
   
 
   constructor(

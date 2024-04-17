@@ -12,10 +12,9 @@ import { RubroService } from 'src/app/services/DomainServices/rubro.service';
 import { Rubro } from 'src/app/models/DomainModels/Rubro';
 import { EmpresaService } from 'src/app/services/DomainServices/empresa.service';
 import { Empresa } from 'src/app/models/DomainModels/Empresa';
-import { ContactoEmpesa } from 'src/app/models/DomainModels/ContactoEmpresa';
+import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { DataSharedService } from 'src/app/services/data-shared.service';
-
-
+import { ContactoEmpresaService } from 'src/app/services/DomainServices/contacto-empresa.service';
 
 @Component({
   selector: 'app-cfg-clientes',
@@ -31,15 +30,11 @@ export class CfgClientesComponent implements OnInit {
   empresas: EmpresaDto[] = [];
   filteredOptions?: Observable<EmpresaDto[]>;
   displayFn!: ((value: any) => string);
-  rubroControl = new FormControl();
-  filteredRubros?: Observable<Rubro[]>;
-  riesgoControl = new FormControl();
-  filteredRiesgos?: Observable<Riesgo[]>;
   secondFormGroup: FormGroup;
   stepperOrientation: Observable<StepperOrientation>;
   modificarEliminarHabilitado: boolean = false;
   resumenDatos: any = {};
-  contactos: ContactoEmpesa[] = [];
+  contactos: ContactoEmpresa[] = [];
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -48,7 +43,8 @@ export class CfgClientesComponent implements OnInit {
     private rubroService: RubroService,
     private empresaDtoService: EmpresaDtoService,
     private empresaService: EmpresaService,
-    private dataShared: DataSharedService
+    private dataShared: DataSharedService,
+    private contactoEmpresaService: ContactoEmpresaService
   ) {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
@@ -62,15 +58,14 @@ export class CfgClientesComponent implements OnInit {
       Email: ['', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]]
     });
   }
-
-  firstFormGroup = this._formBuilder.group({
-    BuscarCliente: [''],
-    RazonSocial: ['', [Validators.required]],
-    CUIT: ['', [Validators.required, Validators.pattern(/^\d{2}-\d{8}-\d$/)]],
-    Direccion: ['', [Validators.required]],
-
+  firstFormGroup = new FormGroup({
+    BuscarCliente: new FormControl<string>(''),
+    RazonSocial: new FormControl<string>('', Validators.required),
+    CUIT: new FormControl<string>('', [Validators.required, Validators.pattern(/^\d{2}-\d{8}-\d$/)]),
+    Direccion: new FormControl<string>(''),
+    Rubro: new FormControl<Rubro>(new Rubro, Validators.required),
+    Riesgo: new FormControl<Riesgo>(new Riesgo, Validators.required),
   });
-
 
   getStepperStyles() {
     return {
@@ -98,20 +93,8 @@ export class CfgClientesComponent implements OnInit {
         return value ? this._filter(value) : this.empresas.slice();
       })
     );
-    
-    this.filteredRubros = this.rubroControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        return value ? this._filterRubros(value) : this.rubros.slice();
-      })
-    );
-    
-    this.filteredRiesgos = this.riesgoControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        return value ? this._filterRiesgos(value) : this.riesgos.slice();
-      })
-    );
+
+
 
     this.firstFormGroup.get('CUIT')?.valueChanges.subscribe((value: string | null) => {
       // Verificar si el valor tiene 2, 10 y 11 caracteres respectivamente
@@ -205,13 +188,8 @@ export class CfgClientesComponent implements OnInit {
 
 
   paso1EsValido(): boolean {
-    const rubroSeleccionado = this.rubros.find(rubro => rubro.rubro === this.rubroControl.value);
-    const riesgoSeleccionado = this.riesgos.find(riesgo => riesgo.riesgo === this.riesgoControl.value);
-
     return (
-      this.firstFormGroup.valid &&
-      rubroSeleccionado !== undefined &&
-      riesgoSeleccionado !== undefined
+      this.firstFormGroup.valid
     );
   }
 
@@ -234,24 +212,28 @@ export class CfgClientesComponent implements OnInit {
     const razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
     const cuit = this.firstFormGroup.get('CUIT')?.value;
     const direccion = this.firstFormGroup.get('Direccion')?.value;
-    const rubro = this.firstFormGroup.get('Rubro')?.value;
-    const riesgo = this.firstFormGroup.get('Riesgo')?.value;
+    const rubro = this.firstFormGroup.controls.Rubro;
+    const riesgo = this.firstFormGroup.controls.Riesgo;
 
     const empresa: Empresa = new Empresa();
     empresa.cuit = cuit;
     empresa.direccion = direccion;
-    empresa.rubroIdRubro = Number(rubro);
-    empresa.riesgoIdRiesgo = Number(riesgo);
+    empresa.rubroIdRubro = rubro.value?.idRubro;
+    empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
     empresa.razonSocial = razonSocial;
-
 
     this.empresaService.addEmpresa(empresa).subscribe(
       (response: Empresa) => {
-        let idEmpresa: any = response.idEmpresa
+        const idEmpresa: any = response.idEmpresa
         this.contactos.forEach(contacto => contacto.empresaIdEmpresa = idEmpresa)
       }
     )
 
+    this.contactoEmpresaService.postContactoEmpresa(this.contactos).subscribe(
+      (data)=>{
+        console.log(data);
+      }
+    )
 
     this.dataShared.ocultarSpinner();//debe ser la ultima linea
     //hacer que vuelva al step 1 reset todo el formulario
@@ -297,16 +279,6 @@ export class CfgClientesComponent implements OnInit {
   private _filter(value: string): EmpresaDto[] {
     const filterValue = value.toLowerCase();
     return this.empresas.filter(empresa => empresa.cliente?.toLowerCase().startsWith(filterValue));
-  }
-
-  private _filterRubros(value: string): Rubro[] {
-    const filterValue = value.toLowerCase();
-    return this.rubros.filter(rubro => rubro.rubro?.toLowerCase().startsWith(filterValue));
-  }
-
-  private _filterRiesgos(value: string): Riesgo[] {
-    const filterValue = value.toLowerCase();
-    return this.riesgos.filter(riesgo => riesgo.riesgo?.toLowerCase().startsWith(filterValue));
   }
 
 }
