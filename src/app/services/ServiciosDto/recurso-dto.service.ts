@@ -20,9 +20,6 @@ export class RecursoDtoService {
     const headers: HttpHeaders = this.authService.getHeader();
     return this.http.get<RecursoDto[]>(this.url, {headers})
       .pipe(
-        tap((data) => {
-          return data;
-        }),
         catchError((error) => {
           if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
             this.authService.logout();
