@@ -40,7 +40,7 @@ export class AuthService implements OnInit {
   logout(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('currentUser'); // Eliminar del localStorage al cerrar sesión
-    window.location.reload();
+    this.router.navigate(['']);
   }
 
   // Verificar si esta logeado

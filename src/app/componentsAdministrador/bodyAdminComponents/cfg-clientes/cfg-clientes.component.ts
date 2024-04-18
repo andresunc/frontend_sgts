@@ -15,6 +15,7 @@ import { Empresa } from 'src/app/models/DomainModels/Empresa';
 import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { ContactoEmpresaService } from 'src/app/services/DomainServices/contacto-empresa.service';
+import { EmpresaWithContacts } from 'src/app/models/ModelsDto/EmpresaWithContacts';
 
 @Component({
   selector: 'app-cfg-clientes',
@@ -222,16 +223,14 @@ export class CfgClientesComponent implements OnInit {
     empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
     empresa.razonSocial = razonSocial;
 
-    this.empresaService.addEmpresa(empresa).subscribe(
-      (response: Empresa) => {
-        const idEmpresa: any = response.idEmpresa
-        this.contactos.forEach(contacto => contacto.empresaIdEmpresa = idEmpresa)
-      }
-    )
+    const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
+    empresaWithContacts.empresa = empresa;
+    empresaWithContacts.contactos = this.contactos;
 
-    this.contactoEmpresaService.postContactoEmpresa(this.contactos).subscribe(
-      (data)=>{
-        console.log(data);
+    this.empresaService.addEmpresaWithContacts(empresaWithContacts)
+    .subscribe(
+      (data) => {
+        console.log('Empresa creada: ', data)
       }
     )
 
