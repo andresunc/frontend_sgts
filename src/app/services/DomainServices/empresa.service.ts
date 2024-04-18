@@ -13,6 +13,7 @@ export class EmpresaService {
 
   urlBackend = new UrlBackend().getUrlBackend();
   newEmpresaWithContactsUrl = this.urlBackend + '/empresaDto/create-empresa-with-contacts';
+  deleteEmpresaAndContactsUrl = this.urlBackend + '/empresa/delete/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -27,6 +28,21 @@ export class EmpresaService {
             this.authService.logout();
           }
           console.error('Error en la solicitud addEmpresaWithContacts', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  // deleteLogico Servicio Empresa por Servicio ID
+  public deleteLogico(idEmpresa: number): Observable<void> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.delete<void>(this.deleteEmpresaAndContactsUrl + idEmpresa, { headers })
+      .pipe(
+        catchError((error) => {
+          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+            this.authService.logout();
+          }
+          console.error('Error al eliminar la empresa', error);
           return throwError(error);
         })
       );
