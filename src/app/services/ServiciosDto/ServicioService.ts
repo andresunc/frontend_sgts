@@ -40,6 +40,7 @@ export class ServicioService {
         catchError((error) => {
           if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
             this.authService.logout();
+            window.location.reload();
           }
           this._snackBar.warnSnackBar('Error en la conexión', 'Aceptar');
           console.error('Error en la solicitud getTopServices', error);

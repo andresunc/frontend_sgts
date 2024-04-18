@@ -1,0 +1,8 @@
+<h2 mat-dialog-title class="text-danger">Borrar Servicio?</h2>
+<mat-dialog-content>
+  {{ message }}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close (click)="checkDelete(false)">No</button>
+  <button mat-button mat-dialog-close cdkFocusInitial class="text-danger" (click)="checkDelete(true)">Sí, Eliminar</button>
+</mat-dialog-actions>

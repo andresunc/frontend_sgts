@@ -1,9 +1,9 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, window } from 'rxjs/operators';
 import { RiesgoService } from 'src/app/services/DomainServices/riesgo.service';
 import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
@@ -15,6 +15,11 @@ import { Empresa } from 'src/app/models/DomainModels/Empresa';
 import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { ContactoEmpresaService } from 'src/app/services/DomainServices/contacto-empresa.service';
+import { EmpresaWithContacts } from 'src/app/models/ModelsDto/EmpresaWithContacts';
+import { MatDialog } from '@angular/material/dialog';
+import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cfg-clientes',
@@ -44,7 +49,10 @@ export class CfgClientesComponent implements OnInit {
     private empresaDtoService: EmpresaDtoService,
     private empresaService: EmpresaService,
     private dataShared: DataSharedService,
-    private contactoEmpresaService: ContactoEmpresaService
+    private contactoEmpresaService: ContactoEmpresaService,
+    private dialog: MatDialog,
+    private router: Router,
+    private _snackBar: PopupService
   ) {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
@@ -84,9 +92,9 @@ export class CfgClientesComponent implements OnInit {
 
     this.obtenerRubro();
 
-    this.obtenerEmpresa();
+    this.obtenerEmpresas();
 
-    
+
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -123,12 +131,48 @@ export class CfgClientesComponent implements OnInit {
   }
 
 
-  obtenerEmpresa() {
+  obtenerEmpresas() {
     this.empresaDtoService.getEmpresas().subscribe((data: EmpresaDto[]) => {
       this.empresas = data;
     });
+  }
 
+  obtenerContactosEmpresa(idEmpresa: number) {
+    this.contactoEmpresaService.getContactoEmpresa(idEmpresa)
+      .subscribe(
+        (data) => {
+          this.contactos = data;
+          console.log('Contactos de la empresa: ', this.contactos)
+        }
+      )
+  }
 
+  empresaSeleccionada: EmpresaDto | undefined;
+  seleccionarEmpresa(idEmpresa: number) {
+
+    // Buscar contactos de la empresa y la empresa seleccionada
+    this.obtenerContactosEmpresa(idEmpresa);
+    this.empresaSeleccionada = this.empresas.find(empresa => empresa.idEmpresa === idEmpresa);
+
+    // Verificar si se encontró la empresa seleccionada
+    if (this.empresaSeleccionada) {
+      // habilitar la opcion de eliminar
+      this.modificarEliminarHabilitado = true;
+      // Completar los campos del formulario con los datos de la empresa seleccionada
+      this.firstFormGroup.patchValue({
+        RazonSocial: this.empresaSeleccionada.cliente,
+        CUIT: this.empresaSeleccionada.cuit,
+        Direccion: this.empresaSeleccionada.direccion,
+        // Selección, selecciona automáticamente los valores correspondientes
+        Rubro: this.rubros.find(rubro => rubro.idRubro === this.empresaSeleccionada!.idRubro),
+        Riesgo: this.riesgos.find(riesgo => riesgo.idRiesgo === this.empresaSeleccionada!.idRiesgo)
+      });
+
+      // Actualizar resumen
+      this.actualizarResumen();
+    } else {
+      console.error('No se encontró la empresa con el ID:', idEmpresa);
+    }
   }
 
   // Función para actualizar el objeto del resumen
@@ -222,47 +266,57 @@ export class CfgClientesComponent implements OnInit {
     empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
     empresa.razonSocial = razonSocial;
 
-    this.empresaService.addEmpresa(empresa).subscribe(
-      (response: Empresa) => {
-        const idEmpresa: any = response.idEmpresa
-        this.contactos.forEach(contacto => contacto.empresaIdEmpresa = idEmpresa)
-      }
-    )
+    const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
+    empresaWithContacts.empresa = empresa;
+    empresaWithContacts.contactos = this.contactos;
 
-    this.contactoEmpresaService.postContactoEmpresa(this.contactos).subscribe(
-      (data)=>{
-        console.log(data);
-      }
-    )
-
-    this.dataShared.ocultarSpinner();//debe ser la ultima linea
-    //hacer que vuelva al step 1 reset todo el formulario
+    this.empresaService.addEmpresaWithContacts(empresaWithContacts)
+      .subscribe(
+        (data) => {
+          console.log('Empresa creada: ', data);
+        },
+        (error) => {
+          console.error('Error al crear la empresa:', error);
+        }
+      )
+      .add(() => {
+        this.dataShared.ocultarSpinner();
+      });
   }
 
   modificarCliente() {
     // Lógica para modificar el cliente en la base de datos
+    console.log('agregar lógica para modificar');
+  }
+
+  checkDelete(): void {
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      data: { message: `¿Eliminar cliente ${this.empresaSeleccionada?.cliente}?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.eliminarCliente();
+      } else {
+        console.log('Se canceló la eliminación o cerró el diálogo.');
+      }
+    });
   }
 
 
   eliminarCliente() {
-    // Lógica para eliminar el cliente de la base de datos
-  }
-
-
-  buscarCliente() {
-    // Lógica para buscar el cliente y cargar los datos
-
-    // Verificar si se ha seleccionado un cliente
-    const clienteSeleccionado = this.firstFormGroup.get('BuscarCliente')?.value;
-
-    // Si se ha seleccionado un cliente, habilitar los botones Modificar y Eliminar
-    if (clienteSeleccionado) {
-      this.modificarEliminarHabilitado = true;
-    } else {
-      // Si no se ha seleccionado un cliente, deshabilitar los botones Modificar y Eliminar
-      this.modificarEliminarHabilitado = false;
-    }
-
+    this.empresaService.deleteLogico(this.empresaSeleccionada?.idEmpresa!)
+      .subscribe(
+        () => {
+          this._snackBar.okSnackBar('La empresa se eliminó correctamente');
+          console.log('La empresa se eliminó correctamente.');
+          // Recargar el componente navegando a la misma ruta
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['administrador/clientes']);
+          });
+        },
+        () => this._snackBar.warnSnackBar('Error al eliminar la empresa', 'OK')
+      );
   }
 
   onInputChange() {

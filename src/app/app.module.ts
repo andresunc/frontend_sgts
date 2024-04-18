@@ -26,6 +26,7 @@ import { AddItemComponent } from './componentsShared/add-item/add-item.component
 import { EditorComponent } from './componentsServicios/print-servicio/editor/editor.component';
 import { DeleteServicioComponent } from './componentsServicios/print-servicio/delete-servicio/delete-servicio.component';
 import { ChecklistComponent } from './componentsServicios/print-servicio/checklist/checklist.component';
+import { DeletePopupComponent } from './componentsShared/delete-popup/delete-popup.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { ChecklistComponent } from './componentsServicios/print-servicio/checkli
     EditorComponent,
     DeleteServicioComponent,
     ChecklistComponent,
+    DeletePopupComponent,
       ],
   imports: [
     BrowserModule,

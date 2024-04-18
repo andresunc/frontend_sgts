@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { UrlBackend } from 'src/app/models/Url';
+import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,26 +14,25 @@ export class ContactoEmpresaService {
   urlGetContactoEmpresa = this.urlBackend + '/contactoEmpresa/getByIdEmpresa/';
   urlPostContactoEmpresa = this.urlBackend + '/contactoEmpresa/create-multiple';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   // Método GET para obtener los contactos de una empresa
   getContactoEmpresa(idEmpresa: number): Observable<ContactoEmpresa[]> {
-    return this.http.get<ContactoEmpresa[]>( this.urlGetContactoEmpresa + idEmpresa)
-    .pipe(
-      tap((data) => {
-        return data;
-      }),
-      catchError((error) => {
-        console.error('Error en la solicitud getContactoEmpresa', error);
-        return throwError(error);
-      })
-    );
-  }
+    const headers: HttpHeaders = this.authService.getHeader();
 
-  //Metodo Post para agregar contactos multiples
-  postContactoEmpresa(contactos:ContactoEmpresa[]): Observable<ContactoEmpresa[]> {
-    return this.http.post<ContactoEmpresa[]>(this.urlPostContactoEmpresa, contactos);
-
+    return this.http.get<ContactoEmpresa[]>(this.urlGetContactoEmpresa + idEmpresa, { headers })
+      .pipe(
+        tap((data) => {
+          return data;
+        }),
+        catchError((error) => {
+          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+            this.authService.logout();
+          }
+          console.error('Error en la solicitud getContactoEmpresa', error);
+          return throwError(error);
+        })
+      );
   }
 
 }
