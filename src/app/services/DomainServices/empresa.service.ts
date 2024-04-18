@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Empresa } from 'src/app/models/DomainModels/Empresa';
 import { EmpresaWithContacts } from 'src/app/models/ModelsDto/EmpresaWithContacts';
 import { UrlBackend } from 'src/app/models/Url';
 import { AuthService } from '../auth.service';
@@ -13,6 +12,7 @@ export class EmpresaService {
 
   urlBackend = new UrlBackend().getUrlBackend();
   newEmpresaWithContactsUrl = this.urlBackend + '/empresaDto/create-empresa-with-contacts';
+  upDateEmpresaWithContactsUrl = this.urlBackend + '/empresaDto/update-empresa-with-contacts';
   deleteEmpresaAndContactsUrl = this.urlBackend + '/empresa/delete/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
@@ -32,6 +32,23 @@ export class EmpresaService {
         })
       );
   }
+
+  // Método para actualizar una empresa con contactos
+updateEmpresaWithContacts(empresaAndContacts: EmpresaWithContacts): Observable<EmpresaWithContacts> {
+  const headers: HttpHeaders = this.authService.getHeader();
+
+  return this.http.put<EmpresaWithContacts>(this.upDateEmpresaWithContactsUrl, empresaAndContacts, { headers })
+    .pipe(
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+          this.authService.logout();
+        }
+        console.error('Error en la solicitud updateEmpresaWithContacts', error);
+        return throwError(error);
+      })
+    );
+}
+
 
   // deleteLogico Servicio Empresa por Servicio ID
   public deleteLogico(idEmpresa: number): Observable<void> {
