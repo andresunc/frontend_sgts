@@ -252,6 +252,7 @@ export class CfgClientesComponent implements OnInit {
 
   crearCliente() {
     this.dataShared.mostrarSpinner();
+    this.modificarEliminarHabilitado = true;
 
     const razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
     const cuit = this.firstFormGroup.get('CUIT')?.value;
@@ -274,19 +275,75 @@ export class CfgClientesComponent implements OnInit {
       .subscribe(
         (data) => {
           console.log('Empresa creada: ', data);
+
+          this._snackBar.okSnackBar('La empresa se creó correctamente');
+          console.log('La empresa se creó correctamente.');
+          // Recargar el componente navegando a la misma ruta
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['administrador/clientes']);
+          });
+
         },
         (error) => {
+          this._snackBar.warnSnackBar('Error al crear la empresa');
           console.error('Error al crear la empresa:', error);
         }
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
+        this.modificarEliminarHabilitado = false;
       });
   }
 
   modificarCliente() {
-    // Lógica para modificar el cliente en la base de datos
-    console.log('agregar lógica para modificar');
+
+    this.dataShared.mostrarSpinner();
+    this.modificarEliminarHabilitado = true;
+
+    const razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
+    const cuit = this.firstFormGroup.get('CUIT')?.value;
+    const direccion = this.firstFormGroup.get('Direccion')?.value;
+    const rubro = this.firstFormGroup.controls.Rubro;
+    const riesgo = this.firstFormGroup.controls.Riesgo;
+
+    const empresa: Empresa = new Empresa();
+    empresa.idEmpresa = this.empresaSeleccionada?.idEmpresa;
+    empresa.cuit = cuit;
+    empresa.direccion = direccion;
+    empresa.rubroIdRubro = rubro.value?.idRubro;
+    empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
+    empresa.razonSocial = razonSocial;
+
+    const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
+    empresaWithContacts.empresa = empresa;
+    this.contactos.forEach(contact => contact.empresaIdEmpresa = this.empresaSeleccionada?.idEmpresa)
+    empresaWithContacts.contactos = this.contactos;
+
+    this.empresaService.updateEmpresaWithContacts(empresaWithContacts)
+      .subscribe(
+        (data) => {
+          console.log('Empresa actualizada:', data);
+          // Lógica adicional después de la actualización exitosa, por ejemplo:
+          this.dataShared.ocultarSpinner();
+          
+          this._snackBar.okSnackBar('La empresa se modificó correctamente');
+          console.log('La empresa se modificó correctamente.');
+          // Recargar el componente navegando a la misma ruta
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['administrador/clientes']);
+          });
+
+          this.modificarEliminarHabilitado = false;
+        },
+        (error) => {
+          this._snackBar.warnSnackBar('Error al actualizar la empresa');
+          console.error('Error al actualizar la empresa:', error);
+          // Lógica para manejar errores, si es necesario
+          this.dataShared.ocultarSpinner();
+          this.modificarEliminarHabilitado = false;
+        }
+      );
+
   }
 
   checkDelete(): void {
@@ -298,7 +355,7 @@ export class CfgClientesComponent implements OnInit {
       if (result) {
         this.eliminarCliente();
       } else {
-        console.log('Se canceló la eliminación o cerró el diálogo.');
+        console.log('Se canceló la eliminación');
       }
     });
   }
