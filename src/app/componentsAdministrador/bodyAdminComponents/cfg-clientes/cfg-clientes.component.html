@@ -11,8 +11,12 @@
       <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente">
         <form [formGroup]="firstFormGroup">
           <mat-form-field class="example-full-width">
-            <input type="text" placeholder="Buscar Cliente" aria-label="Buscar Cliente" matInput
-              [formControl]="myControl" [matAutocomplete]="auto">
+            <input
+             type="text" 
+             placeholder="Buscar Cliente" 
+             aria-label="Buscar Cliente" 
+             matInput
+            [formControl]="myControl" [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
               <mat-option *ngFor="let empresa of filteredOptions | async" [value]="empresa.cliente"
                 (onSelectionChange)="seleccionarEmpresa(empresa.idEmpresa!)">
@@ -48,14 +52,14 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <mat-label>Rubro</mat-label>
-            <mat-select formControlName="Rubro" required>
+            <mat-label for="Rubro">Rubro</mat-label>
+            <mat-select name="Rubro" formControlName="Rubro" required>
               <mat-option *ngFor="let rubro of rubros" [value]="rubro">{{ rubro.rubro }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <mat-label>Riesgo</mat-label>
-            <mat-select formControlName="Riesgo" required>
+            <mat-label  for="Riesgo">Riesgo</mat-label>
+            <mat-select name="Riesgo" formControlName="Riesgo" required>
               <mat-option *ngFor="let riesgo of riesgos" [value]="riesgo">{{ riesgo.riesgo }}</mat-option>
             </mat-select>
           </mat-form-field>
