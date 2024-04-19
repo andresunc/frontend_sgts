@@ -16,10 +16,12 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
   access: boolean = false;
   sidebarOpened: boolean = false; // Cambia a false para ocultar la barra lateral automáticamente
+  authObj: AuthService;
 
   constructor(private authService: AuthService,
     private dataShared: DataSharedService) {
-      this.access = this.authService.isLoggedInUser();
+    this.access = this.authService.isLoggedInUser();
+    this.authObj = this.authService;
   }
 
   ngOnInit() {

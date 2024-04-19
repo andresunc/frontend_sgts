@@ -74,5 +74,22 @@ export class AuthService implements OnInit {
     });
   }
 
+  canAddService(): boolean {
+    const currentUserString: string | null = localStorage.getItem('currentUser');
+    if (currentUserString !== null && currentUserString !== undefined) {
+      const currentUser: AuthUser = JSON.parse(currentUserString);
+      if (currentUser.roles) {
+        // Verifica si el usuario tiene el rol ADMIN y RRHH
+        const isAdmin: boolean = currentUser.roles.some(role => role.rol === 'ADMIN');
+        const isRRHH: boolean = currentUser.roles.some(role => role.rol === 'RRHH');
+        return isAdmin && isRRHH;
+      } else {
+        return false; // Si no hay roles, devuelve false
+      }
+    } else {
+      return false; // Si no hay usuario actual, devuelve false
+    }
+  }
+
 
 }
