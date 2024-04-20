@@ -209,7 +209,7 @@ span, p, .mat-icon {
   .checklistpopup {
     min-width: 32rem;
   }
-  
+
   @media screen and (max-width: 768px) {
     .checklistpopup {
       min-width: auto;

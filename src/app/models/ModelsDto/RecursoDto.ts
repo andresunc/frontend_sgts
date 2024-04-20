@@ -5,7 +5,6 @@ export class RecursoDto {
     apellido?: string;
     dni?: string;
     idRol?: number;
-    rol?: string;
 
     constructor(){}
         

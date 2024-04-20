@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsShared/add-item/add-item.component';
+import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
@@ -16,12 +17,14 @@ export class ChecklistComponent implements OnInit {
   dataSourceItems: ItemChecklistDto[];
   avance: number = 0;
   editable: boolean = false;
+  servicio: Servicios | null = null;
 
   constructor(
     private dataShared: DataSharedService,
     private svManager: ManagerService,
     private servicioService: ServicioService,
     public dialog: MatDialog) {
+    this.servicio = this.dataShared.getSharedObject();
     this.dataSourceItems = this.dataShared.getSharedObject().itemChecklistDto;
     this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject());
   }
@@ -42,10 +45,23 @@ export class ChecklistComponent implements OnInit {
       )
   }
 
-  updateAvance(item: any) {
-    item.completo = !item.completo;
-    this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject());
+  updateAvance(item: ItemChecklistDto) {
+    // Encuentra el índice del elemento en la lista
+    const index = this.servicio!.itemChecklistDto.findIndex((element) => element.idItemChecklist === item.idItemChecklist);
+
+    // Si se encuentra el elemento y no es undefined
+    if (index !== -1 && this.servicio?.itemChecklistDto[index] !== undefined) {
+      // Actualiza la propiedad completo del elemento encontrado
+      this.servicio.itemChecklistDto[index].completo = !this.servicio?.itemChecklistDto[index].completo;
+
+      // Calcula el nuevo avance
+      this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject());
+    } else {
+      // Maneja el caso en que el elemento no se encuentre o sea undefined
+      console.error('No se encontró el elemento con ID:', item.idItemChecklist);
+    }
   }
+
 
   // Función para detectar cambios en el listado de items
   modified: boolean = false;
