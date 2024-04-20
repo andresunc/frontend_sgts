@@ -109,12 +109,17 @@
                     </ng-container>
 
                     <!-- Configuración de filas y columnas -->
-                    <tr mat-header-row
-                        *matHeaderRowDef="['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']"
-                        style="background-color: #ffffff;"></tr>
-                    <tr mat-row
-                        *matRowDef="let row; columns: ['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']; let element;"
-                        class="estiloRow"></tr>
+                    <ng-container>
+                        <tr mat-header-row
+                            *matHeaderRowDef="['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']"
+                            style="background-color: #ffffff;">
+                        </tr>
+                        <tr mat-row
+                            *matRowDef="let row; columns: ['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']; 
+                            let element"
+                            class="estiloRow" [ngClass]="{'filaDeshabilitada': !enableRow(element)}">
+                        </tr>
+                    </ng-container>
                 </table>
             </div>
 

@@ -5,6 +5,7 @@ import { Observable, tap } from 'rxjs';
 import { UrlBackend } from '../models/Url';
 import { LoginData } from '../models/SupportModels/LoginData';
 import { AuthUser } from '../models/SupportModels/AuthUser';
+import { Servicios } from '../models/DomainModels/Servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +89,22 @@ export class AuthService implements OnInit {
       }
     } else {
       return false; // Si no hay usuario actual, devuelve false
+    }
+  }
+
+  // tomar el idRecurso del usuario conectado
+  canManage(serv: Servicios): boolean {
+    const currentUserString: string | null = localStorage.getItem('currentUser');
+    if (currentUserString !== null && currentUserString !== undefined) {
+      const currentUser: AuthUser = JSON.parse(currentUserString);
+      let isAdmin: boolean = false;
+      let matchIdRol = serv.itemChecklistDto.some(item => item.idRecurso === currentUser.id_recurso);
+      if (currentUser.roles) {
+        isAdmin = currentUser.roles.some(role => role.rol === 'ADMIN');
+      }
+      return matchIdRol || isAdmin
+    } else {
+      return false;
     }
   }
 

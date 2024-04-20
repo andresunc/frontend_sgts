@@ -11,6 +11,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-ver-servicios',
@@ -25,7 +26,8 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
-    private servicioService: ServicioService, svManager: ManagerService, private _snackBar: PopupService) {
+    private servicioService: ServicioService, svManager: ManagerService,
+    private _snackBar: PopupService, private authService: AuthService) {
     this.svService = svManager;
   }
 
@@ -35,6 +37,10 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
       this.applyFilterByCheckbox();
     });
     this.loadServicios(this.defaultSelected); // Cargar los servicios con limite de cantidad
+  }
+
+  enableRow(serv: Servicios): boolean {
+    return this.authService.canManage(serv);
   }
 
   // Método para cargar los servicios con limite de cantidad
@@ -47,9 +53,9 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
           this.listServicios = data; // Asigno los servicios a la lista
           this.dataSource.data = this.listServicios; // Asigno los servicios a la tabla
           this.applyFilterByCheckbox(); // Aplico el filtro de estados y tipos de servicios
-          limit === 0 ? this._snackBar.okSnackBar(`Todos los servicios cargados correctamente`) 
-          : limit > 30 ? this._snackBar.okSnackBar(`Últimos ${limit} servicios cargados`)
-          : undefined;
+          limit === 0 ? this._snackBar.okSnackBar(`Todos los servicios cargados correctamente`)
+            : limit > 30 ? this._snackBar.okSnackBar(`Últimos ${limit} servicios cargados`)
+              : undefined;
         }
       ).add(() => this.dataShared.ocultarSpinner());
   }
@@ -62,7 +68,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     const diffMinutos = Math.floor(diffSegundos / 60);
     const diffHoras = Math.floor(diffMinutos / 60);
     const diffDias = Math.floor(diffHoras / 24);
-  
+
     if (diffDias === 0 && diffHoras === 0 && diffMinutos < 1) {
       return 'hace unos segundos';
     } else if (diffDias === 0 && diffHoras === 0) {
@@ -83,8 +89,8 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
       }
     }
   }
-  
-  
+
+
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
   private unsubscribe$ = new Subject<void>();
   ngOnDestroy() {

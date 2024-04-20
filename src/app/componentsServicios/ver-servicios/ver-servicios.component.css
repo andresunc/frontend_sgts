@@ -183,3 +183,8 @@ las tres etiquetas que siguen de la tabla de servicios*/
   }
 }
 
+.filaDeshabilitada {
+  opacity: 0.5; /* Ejemplo de estilo para deshabilitar la fila */
+  pointer-events: none; /* Impide eventos de ratón y teclado en la fila */
+}
+
