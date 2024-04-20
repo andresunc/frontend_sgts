@@ -16,7 +16,8 @@
         <div class="sidebar"> 
 
             <div class="sideContainer">
-                <button mat-mini-fab color="warn" routerLink="/nuevo" type="button" class="btn-menu btn-nuevo" matTooltip="Nuevo servicio">
+                <button mat-mini-fab color="warn" routerLink="/nuevo" type="button" 
+                class="btn-menu btn-nuevo" matTooltip="Nuevo servicio" [disabled]="!authObj.canAddService()">
                     <mat-icon>add</mat-icon>
                 </button> 
                 
