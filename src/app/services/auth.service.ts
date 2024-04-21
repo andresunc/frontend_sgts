@@ -66,6 +66,17 @@ export class AuthService implements OnInit {
     }
   }
 
+  // tomar el token del local storage
+  getCurrentName(): string | null {
+    const currentUserString: string | null = localStorage.getItem('currentUser');
+    if (currentUserString !== null && currentUserString !== undefined) {
+      const currentUser: AuthUser = JSON.parse(currentUserString);
+      return currentUser.username!;
+    } else {
+      return null;
+    }
+  }
+
   // Armar el header
   getHeader(): HttpHeaders {
 
