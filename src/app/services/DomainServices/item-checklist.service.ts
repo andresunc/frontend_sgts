@@ -16,18 +16,19 @@ export class ItemChecklistService {
   constructor(private http: HttpClient, private authService: AuthService) { }
 
   // Método para crear un nuevo ItemChecklist
-addItemCheckList(newItemCheckList: ItemChecklist): Observable<ItemChecklist> {
-  const headers: HttpHeaders = this.authService.getHeader();
-  return this.http.post<ItemChecklist>(this.addNewItemCheckListUrl, newItemCheckList, { headers })
-    .pipe(
-      catchError((error) => {
-        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-          this.authService.logout();
-        }
-        console.error('Error al agregar un nuevo ItemChecklist', error);
-        return throwError(error);
-      })
-    );
-}
+  addItemCheckList(newItemCheckList: ItemChecklist): Observable<ItemChecklist> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.post<ItemChecklist>(this.addNewItemCheckListUrl, newItemCheckList, { headers })
+      .pipe(
+        catchError((error) => {
+          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+            console.error('Permisos insificientes', error);
+            return throwError(error);
+          }
+          console.error('Error al agregar un nuevo ItemChecklist', error);
+          return throwError(error);
+        })
+      );
+  }
 
 }

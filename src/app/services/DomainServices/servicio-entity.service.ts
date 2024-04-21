@@ -23,7 +23,8 @@ export class ServicioEntityService {
     .pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-          this.authService.logout();
+          console.error('Permisos insificientes', error);
+          return throwError(error);
         }
         console.error('Error al actualizar el servicio', error);
         return throwError(error);
