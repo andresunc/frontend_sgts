@@ -31,7 +31,7 @@ export class EmpresaService {
   }
 
   // Método para actualizar una empresa con contactos
-updateEmpresaWithContacts(empresaAndContacts: EmpresaWithContacts): Observable<EmpresaWithContacts> {
+  updateEmpresaWithContacts(empresaAndContacts: EmpresaWithContacts): Observable<EmpresaWithContacts> {
   const headers: HttpHeaders = this.authService.getHeader();
 
   return this.http.put<EmpresaWithContacts>(this.upDateEmpresaWithContactsUrl, empresaAndContacts, { headers })

@@ -12,6 +12,9 @@ export class RubroService {
 
   urlBackend = new UrlBackend().getUrlBackend();
   getAllRubrosNotDeletedUrl = this.urlBackend + '/rubro/getAllNotDeleted';
+  createRubroUrl = this.urlBackend + '/rubro/create';
+  upDateRubroUrl = this.urlBackend + '/rubro/update';
+  deleteRubroUrl = this.urlBackend + '/rubro/delete';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -26,4 +29,50 @@ export class RubroService {
         })
       );
   }
+
+  // Método para crear un nuevo Rubro
+  createRubro(newRubro: Rubro): Observable<Rubro> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.post<Rubro>(this.createRubroUrl, newRubro, { headers })
+      .pipe(
+        catchError((error) => {
+          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+            this.authService.logout();
+          }
+          console.error('Error al agregar un nuevo Rubro', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  // Método para modificar un Rubro
+  public updateRubro(idRubro: number, rubro: RubroService): Observable<RubroService> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.put<RubroService>(this.upDateRubroUrl + idRubro, { headers })
+      .pipe(
+        catchError((error) => {
+          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+            this.authService.logout();
+          }
+          console.error('Error al actualizar el Rubro', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  // deleteLogico Rubro por Rubro ID
+  public deleteLogico(idRubro: number): Observable<void> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.delete<void>(this.deleteRubroUrl + idRubro, { headers })
+      .pipe(
+        catchError((error) => {
+          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+            this.authService.logout();
+          }
+          console.error('Error al eliminar el Rubro', error);
+          return throwError(error);
+        })
+      );
+  }
+
 }
