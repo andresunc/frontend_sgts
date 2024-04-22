@@ -39,8 +39,7 @@ export class ServicioService {
         }),
         catchError((error) => {
           if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-            window.location.reload();
+            this._snackBar.warnSnackBar('Permisos insuficientes', '');
           }
           this._snackBar.warnSnackBar('Error en la conexión', 'Aceptar');
           console.error('Error en la solicitud getTopServices', error);
@@ -58,9 +57,6 @@ export class ServicioService {
     return this.http.get<ItemChecklistDto[]>(this.getItemsChecklistUrl, { headers, params })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
           console.error('Error en la solicitud getItemsChecklist', error);
           return throwError(error);
         })
@@ -73,9 +69,6 @@ export class ServicioService {
     return this.http.post<NuevoServicioDto>(this.urlNewServicio, addServicio, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
           console.error('Error en la solicitud addServicio', error);
           return throwError(error);
         })

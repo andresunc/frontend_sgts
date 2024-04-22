@@ -22,6 +22,7 @@ export class EditorComponent implements OnInit {
   selectedEstado!: string;
   presupuestOriginal!: number;
   recordatoriOriginal!: any;
+  idEstadOriginal!: string;
   comentariOriginal!: string;
 
   // inyecto el servicio recibido desde print
@@ -39,6 +40,7 @@ export class EditorComponent implements OnInit {
     this.presupuestOriginal = this.data.servicioRecibido.total_presupuestado;
     this.recordatoriOriginal = this.data.servicioRecibido.fecha_notificacion;
     this.comentariOriginal = this.data.servicioRecibido.comentario;
+    this.idEstadOriginal = this.data.servicioRecibido.estado;
   }
 
   ngOnInit(): void {
@@ -117,9 +119,10 @@ export class EditorComponent implements OnInit {
       this.historicoEstado.addHistoricoEstado(historicoEstado)
         .subscribe(
           (response) => console.log('HistoricoEstado agregado con éxito:', response),
-          (error) => console.error('Error al agregar HistoricoEstado:', error)
+          (error) => {
+            console.error('Error al agregar HistoricoEstado:', error)
+          }
         );
-
     } else {
       console.log('No hay cambios en el estado de servicio')
     }

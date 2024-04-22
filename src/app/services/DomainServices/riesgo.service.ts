@@ -21,9 +21,6 @@ export class RiesgoService {
     return this.http.get<Riesgo[]>(this.getAllRiesgoUrl, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
           console.error('Error en la solicitud getAllRiesgo', error);
           return throwError(error);
         })

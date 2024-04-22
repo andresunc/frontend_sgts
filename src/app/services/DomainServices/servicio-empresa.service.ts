@@ -22,9 +22,6 @@ export class ServicioEmpresaService {
     return this.http.put<ServicioEmpresa>(this.upDateServicioEmpresaUrl + id, servicioEmpresa, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
           console.error('Error al actualizar el servicio de la empresa', error);
           return throwError(error);
         })
@@ -37,9 +34,6 @@ export class ServicioEmpresaService {
     return this.http.delete<void>(this.deleteServicioEmpresaUrl + id, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
           console.error('Error al eliminar el servicio', error);
           return throwError(error);
         })
