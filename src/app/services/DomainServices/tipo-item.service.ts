@@ -21,9 +21,6 @@ export class TipoItemService {
     return this.http.get<TipoItem[]>(this.getTipoItemsUrl, {headers})
     .pipe(
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-          this.authService.logout();
-        }
         console.error('Error en la solicitud cargar tipos de ítems', error);
         return throwError(error);
       })

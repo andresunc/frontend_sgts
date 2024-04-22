@@ -10,8 +10,12 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 export class TitleBarComponent {
 
   @Input() titulo: string = '';
+  userName: string | null;
 
-  constructor(private dataShared: DataSharedService, private authService: AuthService) {} 
+  constructor(private dataShared: DataSharedService, 
+    private authService: AuthService) {
+      this.userName = this.authService.getCurrentName();
+    } 
   
   handleLogout() {
     this.authService.logout();

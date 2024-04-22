@@ -24,9 +24,6 @@ export class ServiciosEnCursoService {
         return data;
       }),
       catchError((error) => {
-        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-          this.authService.logout();
-        }
         console.error('Error en la solicitud getRecursos', error);
         return throwError(error);
       })

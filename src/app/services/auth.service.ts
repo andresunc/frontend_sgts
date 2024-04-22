@@ -66,6 +66,17 @@ export class AuthService implements OnInit {
     }
   }
 
+  // tomar el token del local storage
+  getCurrentName(): string | null {
+    const currentUserString: string | null = localStorage.getItem('currentUser');
+    if (currentUserString !== null && currentUserString !== undefined) {
+      const currentUser: AuthUser = JSON.parse(currentUserString);
+      return currentUser.username!;
+    } else {
+      return null;
+    }
+  }
+
   // Armar el header
   getHeader(): HttpHeaders {
 
@@ -82,8 +93,7 @@ export class AuthService implements OnInit {
       if (currentUser.roles) {
         // Verifica si el usuario tiene el rol ADMIN y RRHH
         const isAdmin: boolean = currentUser.roles.some(role => role.rol === 'ADMIN');
-        const isRRHH: boolean = currentUser.roles.some(role => role.rol === 'RRHH');
-        return isAdmin && isRRHH;
+        return isAdmin;
       } else {
         return false; // Si no hay roles, devuelve false
       }

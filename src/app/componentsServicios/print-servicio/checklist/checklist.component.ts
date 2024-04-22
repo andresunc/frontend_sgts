@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsShared/add-item/add-item.component';
+import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
+import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { DataSharedService } from 'src/app/services/data-shared.service';
@@ -23,6 +25,7 @@ export class ChecklistComponent implements OnInit {
     private dataShared: DataSharedService,
     private svManager: ManagerService,
     private servicioService: ServicioService,
+    private itemChecklistService: ItemChecklistService,
     public dialog: MatDialog) {
     this.servicio = this.dataShared.getSharedObject();
     this.dataSourceItems = this.dataShared.getSharedObject().itemChecklistDto;
@@ -32,17 +35,27 @@ export class ChecklistComponent implements OnInit {
   ngOnInit(): void {
     // Escucha los eventos de actualización
     this.dataShared.updateChecklist$.subscribe(() => {
-      this.updateItemsCheckList();
+      this.refreshItemsCheckList();
     });
   }
 
-  updateItemsCheckList(): void {
+  refreshItemsCheckList(): void {
     this.servicioService.getItemsChecklist(this.dataShared.getSharedObject().idServicio)
       .subscribe(
         (data) => {
           this.dataSourceItems = data;
         }
       )
+  }
+
+  updateCheckList() {
+    let updateCheckList = new ItemChecklist();
+    this.itemChecklistService.addItemCheckList(updateCheckList).subscribe(
+      (data) => {
+        console.log('se actualizó el item');
+        console.log(data);
+      }
+    )
   }
 
   updateAvance(item: ItemChecklistDto) {

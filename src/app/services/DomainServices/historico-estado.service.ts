@@ -21,9 +21,6 @@ export class HistoricoEstadoService {
     return this.http.post<HistoricoEstado>(this.addNewHistoricoEstadoUrl, addHistoricoEstado, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
           console.error('Error al agregar un nuevo HistoricoEstado', error);
           return throwError(error);
         })
