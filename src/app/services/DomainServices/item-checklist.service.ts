@@ -21,10 +21,6 @@ export class ItemChecklistService {
     return this.http.post<ItemChecklist>(this.addNewItemCheckListUrl, newItemCheckList, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            console.error('Permisos insificientes', error);
-            return throwError(error);
-          }
           console.error('Error al agregar un nuevo ItemChecklist', error);
           return throwError(error);
         })
