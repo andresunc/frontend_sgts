@@ -1,0 +1,29 @@
+<ng-container>
+<form [formGroup]="firstFormGroup" >
+    <mat-form-field>
+      <input
+       type="text" 
+       placeholder="Buscar Rubro" 
+       aria-label="Buscar Rubro" 
+       matInput
+      [formControl]="myControl" 
+      [matAutocomplete]="auto"
+      (focus)="onInputFocus()">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-option *ngFor="let rubro of filteredOptions | async" [value]="rubro.rubro"
+          (onSelectionChange)="seleccionarRubro(rubro.idRubro!)">
+          {{ rubro.rubro }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label for="Rubro">Rubro</mat-label>
+           <input matInput placeholder="Nuevo Rubro" formControlName="Rubro">
+        </mat-form-field>
+    <div class="btn-abm">
+        <button mat-button (click)="crearRubro()" [disabled]="modificarEliminarHabilitado">Crear</button>
+        <button mat-button (click)="modificarRubro()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
+        <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+    </div>
+</form>
+</ng-container>

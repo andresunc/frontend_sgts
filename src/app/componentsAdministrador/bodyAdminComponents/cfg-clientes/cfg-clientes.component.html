@@ -16,7 +16,9 @@
              placeholder="Buscar Cliente" 
              aria-label="Buscar Cliente" 
              matInput
-            [formControl]="myControl" [matAutocomplete]="auto">
+            [formControl]="myControl" 
+            [matAutocomplete]="auto"
+            (focus)="onInputFocus()">
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
               <mat-option *ngFor="let empresa of filteredOptions | async" [value]="empresa.cliente"
                 (onSelectionChange)="seleccionarEmpresa(empresa.idEmpresa!)">
@@ -24,9 +26,6 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
-          <button mat-mini-fab class="btn-buscar">
-            <mat-icon>search</mat-icon>
-          </button>
           <mat-form-field>
             <mat-label>Razon Social</mat-label>
             <input matInput placeholder="" formControlName="RazonSocial" required>
@@ -36,8 +35,8 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <mat-label>CUIT / DNI / CUIL</mat-label>
-            <input matInput placeholder="Ingrese solo números" formControlName="CUIT" required>
+            <mat-label>CUIT / CUIL</mat-label>
+            <input matInput placeholder="Ingrese solo números" formControlName="CUIT" required maxlength="13">
             <mat-error
               *ngIf="firstFormGroup.get('CUIT')?.invalid && (firstFormGroup.get('CUIT')?.dirty || firstFormGroup.get('CUIT')?.touched)">
               Dato obligatorio.
@@ -124,7 +123,6 @@
                 </mat-card-actions>
               </mat-card-header>
               <mat-card-content>
-
                 <p>Teléfono: {{ contacto.telefono }}</p>
                 <p>Email: {{ contacto.email }}</p>
               </mat-card-content>

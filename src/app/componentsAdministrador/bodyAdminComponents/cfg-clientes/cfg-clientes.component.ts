@@ -65,15 +65,18 @@ export class CfgClientesComponent implements OnInit {
       Telefono: ['', [Validators.required, Validators.pattern('^[0-9]{6,}$')]],
       Email: ['', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]]
     });
+
+
   }
   firstFormGroup = new FormGroup({
     BuscarCliente: new FormControl<string>(''),
     RazonSocial: new FormControl<string>('', Validators.required),
-    CUIT: new FormControl<string>('', [Validators.required, Validators.pattern(/^\d{2}-\d{8}-\d$/)]),
+    CUIT: new FormControl<string>('', [Validators.required, Validators.pattern(/^\d{11}$/)]),
     Direccion: new FormControl<string>(''),
     Rubro: new FormControl<Rubro>(new Rubro, Validators.required),
     Riesgo: new FormControl<Riesgo>(new Riesgo, Validators.required),
   });
+  
 
   getStepperStyles() {
     return {
@@ -100,15 +103,21 @@ export class CfgClientesComponent implements OnInit {
       map(value => {
         return value ? this._filter(value) : this.empresas.slice();
       })
+
     );
 
 
-
     this.firstFormGroup.get('CUIT')?.valueChanges.subscribe((value: string | null) => {
-      // Verificar si el valor tiene 2, 10 y 11 caracteres respectivamente
-      if (value !== null && (value.length === 2 || value.length === 11)) {
-        // Agregar guiones en las posiciones adecuadas
-        this.firstFormGroup.get('CUIT')?.patchValue(value + '-', { emitEvent: false });
+      // Eliminar guiones antes de la validación
+      const cleanedValue = value ? value.replace(/-/g, '') : '';
+      
+      // Verificar si el valor tiene 2 y 11 caracteres respectivamente
+      if (cleanedValue.length === 2 || cleanedValue.length === 11) {
+        // Agregar guiones solo cuando el usuario haya ingresado los primeros dos dígitos y los siguientes nueve dígitos del CUIT
+        const formattedValue = cleanedValue.length > 2 ?
+          cleanedValue.substring(0, 2) + '-' + cleanedValue.substring(2, 10) + '-' + cleanedValue.substring(10) :
+          cleanedValue.substring(0, 2);
+        this.firstFormGroup.get('CUIT')?.setValue(formattedValue, { emitEvent: false });
       }
     });
 
@@ -385,6 +394,10 @@ export class CfgClientesComponent implements OnInit {
       // Deshabilitar el botón Modificar y Eliminar
       this.modificarEliminarHabilitado = false;
     }
+  }
+
+  onInputFocus() {
+    this.myControl.setValue(''); // Limpiar el valor del control para que se dispare el evento de filtro.
   }
 
   private _filter(value: string): EmpresaDto[] {
