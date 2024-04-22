@@ -23,6 +23,11 @@
 
 }
 
+.example-full-width{
+  display: flex;
+  margin-top: 4%;
+}
+
 
 .btn-contacto {
 
@@ -46,7 +51,7 @@
  color: rgb(250, 250, 250);
 }
 
-.btn-buscar, .btn-editar{
+.btn-editar{
   cursor: pointer;
   background-color: #5f5e5e;
   box-shadow: 2px 0.2rem 0.2rem rgba(111, 110, 110, 0.468);
@@ -57,12 +62,6 @@
   margin-bottom: 1rem;
 }
 
-.btn-buscar:hover{ 
-  background-color:#673ab7;
-  border-style: solid;
-  color: #fefefe;
-  transform: scale(1.05);
-}
 
 .btn-editar{
   position: absolute;
@@ -256,7 +255,7 @@ mat-card-title{
    margin-left:0%;
   }
 
-  .btn-contacto, .btn-buscar{
+  .btn-contacto{
 
     margin-left:43%;
     

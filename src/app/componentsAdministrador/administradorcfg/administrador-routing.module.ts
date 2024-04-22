@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdministradorComponent } from '../administrador/administrador.component';
 import { CfgClientesComponent } from '../bodyAdminComponents/cfg-clientes/cfg-clientes.component';
 import { CfgServiciosComponent } from '../bodyAdminComponents/cfg-servicios/cfg-servicios.component';
+import { CfgRubrosComponent } from '../bodyAdminComponents/cfg-rubros/cfg-rubros.component';
 
 const routes: Routes = [
   { path: '', 
@@ -11,6 +12,8 @@ const routes: Routes = [
 
     { path: 'clientes', component: CfgClientesComponent },
     { path: 'servicios', component: CfgServiciosComponent },
+    { path: 'rubros', component: CfgRubrosComponent },
+
 
   ]
 },
