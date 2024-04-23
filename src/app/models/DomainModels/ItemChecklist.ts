@@ -1,5 +1,5 @@
 export class ItemChecklist {
-    
+    idItemChecklist?: number;
     inicioEstandar?: Date;
     finEstandar?: Date;
     inicioConDesvio?: Date;
