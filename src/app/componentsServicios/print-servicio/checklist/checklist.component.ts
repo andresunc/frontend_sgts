@@ -48,14 +48,17 @@ export class ChecklistComponent implements OnInit {
       )
   }
 
-  updateCheckList() {
-    let updateCheckList = new ItemChecklist();
-    this.itemChecklistService.addItemCheckList(updateCheckList).subscribe(
-      (data) => {
-        console.log('se actualizó el item');
-        console.log(data);
-      }
-    )
+  updateCheckList(item: ItemChecklist) {
+
+    item.completo = true;
+    if (item && item !== null && item !== undefined) {
+      this.itemChecklistService.updateItemCheckList(item.idItemChecklist!, item).subscribe(
+        (data) => {
+          console.log('se actualizó el item');
+          console.log(data);
+        }
+      )
+    }
   }
 
   updateAvance(item: ItemChecklistDto) {

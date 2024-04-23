@@ -12,6 +12,7 @@ export class ItemChecklistService {
 
   urlBackend = new UrlBackend().getUrlBackend();
   addNewItemCheckListUrl = this.urlBackend + '/itemChecklist/create';
+  updateItemCheckListUrl = this.urlBackend + '/itemChecklist/update/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -26,5 +27,18 @@ export class ItemChecklistService {
         })
       );
   }
+
+  // Método para actualizar un ItemChecklist existente
+updateItemCheckList(idItem: number, updatedItemCheckList: ItemChecklist): Observable<ItemChecklist> {
+  const headers: HttpHeaders = this.authService.getHeader();
+  
+  return this.http.put<ItemChecklist>(this.updateItemCheckListUrl+idItem, updatedItemCheckList, { headers })
+    .pipe(
+      catchError((error) => {
+        console.error('Error al actualizar el ItemChecklist', error);
+        return throwError(error);
+      })
+    );
+}
 
 }
