@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Validators, FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { RubroService } from 'src/app/services/DomainServices/rubro.service';
 import { Rubro } from 'src/app/models/DomainModels/Rubro';
 import { Observable, map, startWith } from 'rxjs';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { Router } from '@angular/router';
+import { MatAutocomplete } from '@angular/material/autocomplete';
 
 
 @Component({
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./cfg-rubros.component.css']
 })
 export class CfgRubrosComponent implements OnInit {
+  @ViewChild('auto') matAutocomplete!: MatAutocomplete;
 
   myControl = new FormControl();
   rubros: Rubro[] = [];
@@ -40,6 +42,19 @@ export class CfgRubrosComponent implements OnInit {
 
     this.obtenerRubro();
 
+    // Observar los cambios en el input para detectar si se ha borrado el rubro seleccionado
+    this.firstFormGroup.controls.Rubro.valueChanges.subscribe({
+      next: (newValue: string | null) => {
+        if (!newValue && this.rubroSeleccionado) {
+          // Restablecer la variable del rubro seleccionado y deshabilitar la modificación
+          this.rubroSeleccionado = undefined;
+          this.modificarEliminarHabilitado = false;
+         
+        }
+      }
+    });
+
+   
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -73,6 +88,8 @@ export class CfgRubrosComponent implements OnInit {
 
   onInputFocus() {
     this.myControl.setValue(''); // Limpiar el valor del control para que se dispare el evento de filtro.
+    this.matAutocomplete.options.forEach(option => option.deselect());
+    
   }
 
   private _filter(value: string): Rubro[] {
@@ -89,10 +106,22 @@ export class CfgRubrosComponent implements OnInit {
   }
 
   crearRubro() {
-    this.dataShared.mostrarSpinner();
-    this.modificarEliminarHabilitado = true;
 
     const rubroName = this.firstFormGroup.controls.Rubro.value;
+    if (rubroName === '' || rubroName === null) return;
+
+
+    if (!rubroName && this.rubroSeleccionado) {
+      // Restablecer la variable del rubro seleccionado y deshabilitar la modificación
+      this.rubroSeleccionado = undefined;
+      this.modificarEliminarHabilitado = false;
+      // Limpiar el input
+      this.firstFormGroup.controls.Rubro.setValue('');
+      return;
+    }
+
+    this.dataShared.mostrarSpinner();
+    this.modificarEliminarHabilitado = true;
 
     const rubro: Rubro = new Rubro();
     rubroName ? rubro.rubro = rubroName : undefined;
