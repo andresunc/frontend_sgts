@@ -97,14 +97,7 @@ export class CfgRubrosComponent implements OnInit {
     return this.rubros.filter(rubro => rubro.rubro?.toLowerCase().startsWith(filterValue));
   }
 
-  checkDelete() {
-    throw new Error('Method not implemented.');
-  }
-
-  modificarRubro() {
-    throw new Error('Method not implemented.');
-  }
-
+  
   crearRubro() {
 
     const rubroName = this.firstFormGroup.controls.Rubro.value;
@@ -148,5 +141,84 @@ export class CfgRubrosComponent implements OnInit {
         this.modificarEliminarHabilitado = false;
       });
   }
+
+  modificarRubro() {
+
+    if (!this.rubroSeleccionado) {
+      console.error('No se ha seleccionado ningún rubro para modificar.');
+      return;
+    }
+  
+    const nuevoNombreRubro = this.firstFormGroup.controls.Rubro.value;
+    if (!nuevoNombreRubro || nuevoNombreRubro.trim() === '') {
+      console.error('El nuevo nombre del rubro no puede estar vacío.');
+      return;
+    }
+  
+    const idRubroModificar = this.rubroSeleccionado.idRubro;
+    const rubroModificado: Rubro = { ...this.rubroSeleccionado, rubro: nuevoNombreRubro };
+  
+    this.dataShared.mostrarSpinner();
+    this.modificarEliminarHabilitado = true;
+  
+    this.rubroService.updateRubro(idRubroModificar!, rubroModificado)
+      .subscribe(
+        (data) => {
+          console.log('Rubro modificado: ', data);
+  
+          this._snackBar.okSnackBar('El rubro se modificó correctamente');
+          // Recargar el componente navegando a la misma ruta
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['administrador/rubros']);
+          });
+  
+        },
+        (error) => {
+          this._snackBar.warnSnackBar('Error al modificar el rubro');
+          console.error('Error al modificar el rubro:', error);
+        }
+      )
+      .add(() => {
+        this.dataShared.ocultarSpinner();
+        this.modificarEliminarHabilitado = false;
+      });
+
+  }
+
+  rubroDelete() {
+    if (!this.rubroSeleccionado) {
+      console.error('No se ha seleccionado ningún rubro para eliminar.');
+      return;
+    }
+  
+    const idRubroEliminar = this.rubroSeleccionado.idRubro;
+  
+    this.dataShared.mostrarSpinner();
+    this.modificarEliminarHabilitado = true;
+  
+    this.rubroService.deleteLogico(idRubroEliminar!)
+      .subscribe(
+        () => {
+          console.log('Rubro eliminado correctamente');
+  
+          this._snackBar.okSnackBar('El rubro se eliminó correctamente');
+          // Recargar el componente navegando a la misma ruta
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['administrador/rubros']);
+          });
+  
+        },
+        (error) => {
+          this._snackBar.warnSnackBar('Error al eliminar el rubro');
+          console.error('Error al eliminar el rubro:', error);
+        }
+      )
+      .add(() => {
+        this.dataShared.ocultarSpinner();
+        this.modificarEliminarHabilitado = false;
+      });
+  }
+
+
 
 }

@@ -46,9 +46,9 @@ export class RubroService {
   }
 
   // Método para modificar un Rubro
-  public updateRubro(idRubro: number, rubro: RubroService): Observable<RubroService> {
+  public updateRubro(idRubro: number, rubro: Rubro): Observable<Rubro> {
     const headers: HttpHeaders = this.authService.getHeader();
-    return this.http.put<RubroService>(this.upDateRubroUrl + idRubro, { headers })
+    return this.http.put<Rubro>(this.upDateRubroUrl + idRubro, rubro, { headers })
       .pipe(
         catchError((error) => {
           if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
