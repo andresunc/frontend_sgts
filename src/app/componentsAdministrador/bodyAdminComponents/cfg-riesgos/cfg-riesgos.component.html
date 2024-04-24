@@ -1,0 +1,30 @@
+<ng-container>
+    <form [formGroup]="firstFormGroup" >
+        <mat-form-field>
+          <input
+           type="text" 
+           placeholder="Buscar Riesgo" 
+           aria-label="Buscar Riesgo" 
+           matInput
+          [formControl]="myControl" 
+          [matAutocomplete]="auto"
+          (focus)="onInputFocus()">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let riesgo of filteredOptions | async" [value]="riesgo.riesgo"
+              (onSelectionChange)="seleccionarRiesgo(riesgo.idRiesgo!)">
+              {{ riesgo.riesgo }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label for="Riesgo">Riesgo</mat-label>
+               <input matInput placeholder="Nuevo Riesgo" formControlName="Riesgo">
+            </mat-form-field>
+        <div class="btn-abm">
+            <button mat-button (click)="crearRiesgo()" [disabled]="modificarEliminarHabilitado">Crear</button>
+            <button mat-button (click)="modificarRiesgo()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
+            <button mat-button (click)="riesgoDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+        </div>
+    </form>
+    </ng-container>
+    

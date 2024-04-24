@@ -114,7 +114,6 @@ export class CfgRubrosComponent implements OnInit {
     }
 
     this.dataShared.mostrarSpinner();
-    this.modificarEliminarHabilitado = true;
 
     const rubro: Rubro = new Rubro();
     rubroName ? rubro.rubro = rubroName : undefined;
@@ -138,7 +137,6 @@ export class CfgRubrosComponent implements OnInit {
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
-        this.modificarEliminarHabilitado = false;
       });
   }
 
@@ -179,7 +177,6 @@ export class CfgRubrosComponent implements OnInit {
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
-        this.modificarEliminarHabilitado = false;
       });
 
   }
@@ -210,7 +207,6 @@ export class CfgRubrosComponent implements OnInit {
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
-        this.modificarEliminarHabilitado = false;
          // Recargar el componente navegando a la misma ruta
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate(['administrador/rubros']);
