@@ -3,9 +3,6 @@ import { TipoServicioService } from './DomainServices/tipo-servicio.service';
 import { EstadosService } from './DomainServices/estados.service';
 import { RecursoDtoService } from './ServiciosDto/recurso-dto.service';
 import { EmpresaDtoService } from './ServiciosDto/empresa-dto.service';
-import { UrlBackend } from '../models/Url';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { NuevoServicioDto } from '../models/ModelsDto/NuevoServicioDto';
 import { ServicioService } from './ServiciosDto/ServicioService';
 
@@ -20,7 +17,6 @@ export class NewServicioService {
     private recurso: RecursoDtoService,
     private empresa: EmpresaDtoService,
     private servicioService: ServicioService,
-    private http: HttpClient,
     ) { }
 
   /** Este Servicio requiere de los siguientes datos:

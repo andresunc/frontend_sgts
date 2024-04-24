@@ -37,7 +37,7 @@ export class PopupService {
 
   warnSnackBar(mensaje: string, action?: string, icon?: string) {
     icon = icon || 'warning';
-    action = action || 'Reintentar';
+    action = action || '';
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
       data: {
         msj: mensaje,
