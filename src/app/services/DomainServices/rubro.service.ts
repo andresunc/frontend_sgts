@@ -13,8 +13,8 @@ export class RubroService {
   urlBackend = new UrlBackend().getUrlBackend();
   getAllRubrosNotDeletedUrl = this.urlBackend + '/rubro/getAllNotDeleted';
   createRubroUrl = this.urlBackend + '/rubro/create';
-  upDateRubroUrl = this.urlBackend + '/rubro/update';
-  deleteRubroUrl = this.urlBackend + '/rubro/delete';
+  upDateRubroUrl = this.urlBackend + '/rubro/update/';
+  deleteRubroUrl = this.urlBackend + '/rubro/delete/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -36,9 +36,7 @@ export class RubroService {
     return this.http.post<Rubro>(this.createRubroUrl, newRubro, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
+          
           console.error('Error al agregar un nuevo Rubro', error);
           return throwError(error);
         })
@@ -51,9 +49,7 @@ export class RubroService {
     return this.http.put<Rubro>(this.upDateRubroUrl + idRubro, rubro, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
+          
           console.error('Error al actualizar el Rubro', error);
           return throwError(error);
         })
@@ -66,9 +62,7 @@ export class RubroService {
     return this.http.delete<void>(this.deleteRubroUrl + idRubro, { headers })
       .pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this.authService.logout();
-          }
+          
           console.error('Error al eliminar el Rubro', error);
           return throwError(error);
         })

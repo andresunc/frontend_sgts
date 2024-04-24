@@ -173,10 +173,9 @@ export class CfgRubrosComponent implements OnInit {
           });
   
         },
-        (error) => {
+        () => {
           this._snackBar.warnSnackBar('Error al modificar el rubro');
-          console.error('Error al modificar el rubro:', error);
-        }
+         }
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
@@ -202,20 +201,21 @@ export class CfgRubrosComponent implements OnInit {
           console.log('Rubro eliminado correctamente');
   
           this._snackBar.okSnackBar('El rubro se eliminó correctamente');
-          // Recargar el componente navegando a la misma ruta
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['administrador/rubros']);
-          });
-  
+         
+          
         },
-        (error) => {
+        () => {
           this._snackBar.warnSnackBar('Error al eliminar el rubro');
-          console.error('Error al eliminar el rubro:', error);
-        }
+          }
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
         this.modificarEliminarHabilitado = false;
+         // Recargar el componente navegando a la misma ruta
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['administrador/rubros']);
+        });
+
       });
   }
 
