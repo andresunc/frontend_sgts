@@ -48,10 +48,11 @@ export class ChecklistComponent implements OnInit {
       )
   }
 
-  updateCheckList(item: ItemChecklist) {
+  updateCheckList() {
 
-    item.completo = true;
-    if (item && item !== null && item !== undefined) {
+    let item: ItemChecklist = new ItemChecklist();
+    
+    if (item || item !== null || item !== undefined) {
       this.itemChecklistService.updateItemCheckList(item.idItemChecklist!, item).subscribe(
         (data) => {
           console.log('se actualizó el item');
@@ -59,9 +60,16 @@ export class ChecklistComponent implements OnInit {
         }
       )
     }
+    
+  }
+
+  valorTasa: string = '';
+  setValorTasa(item: ItemChecklistDto) {
+    this.valorTasa =  item.valorTasa?.toString()!;
   }
 
   updateAvance(item: ItemChecklistDto) {
+    item.completo = !item.completo
     // Encuentra el índice del elemento en la lista
     const index = this.servicio!.itemChecklistDto.findIndex((element) => element.idItemChecklist === item.idItemChecklist);
 
@@ -92,6 +100,11 @@ export class ChecklistComponent implements OnInit {
 
   updateNotificado(item: any) {
     item.notificado = !item.notificado;
+  }
+
+  incluyeImpuesto!: boolean;
+  updateCheckTasa() {
+    this.incluyeImpuesto = !this.incluyeImpuesto;
   }
 
   openAddItemComponent() {

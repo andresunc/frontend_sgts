@@ -1,14 +1,14 @@
-<div class="checklistpopup">
+<div id="bodyCheckList" class="checklistpopup">
     <div class="modal-header">
         <div>
             <h6 class="modal-title font-weight-bold">CHECKLIST</h6>
-            <p>Seleccioná un elemento para ver su descripción</p>
+            <h5>Seleccioná un elemento para ver su descripción</h5>
         </div>
         <mat-icon style="font-size: 1.2rem; cursor: pointer;" [mat-dialog-close]="true">close</mat-icon>
     </div>
 
     <!-- Cuerpo del checklist -->
-    <div class="modal-body" *ngFor="let item of dataSourceItems; let index = index">
+    <div class="modal-body">
 
         <!-- Progress bar -->
         <span style="display: block; padding-bottom: 0.3rem;">
@@ -18,7 +18,7 @@
         <!-- Lista de items del checklist -->
         <div id="checkBox" class="list-group">
 
-            <cdk-accordion>
+            <cdk-accordion *ngFor="let item of dataSourceItems; let index = index">
 
                 <cdk-accordion-item #accordionItem="cdkAccordionItem" role="button" tabindex="0"
                     [attr.id]="'accordion-header-' + index" [attr.aria-expanded]="accordionItem.expanded"
@@ -47,40 +47,94 @@
                     <div role="region" class="cdk-accordion-content-body"
                         [style.display]="accordionItem.expanded ? '' : 'none'" [attr.id]="'accordion-body-' + index"
                         [attr.aria-labelledby]="'accordion-header-' + index">
-                        <!-- Contenido del item del checklist-->
-                        <span>
-                            <p>Se ha iniciado el: {{ item.inicioEstimado | date:'dd/MM/yyyy' }}</p>
-                            <p>Se pensó terminar el: {{ item.finEstimado | date:'dd/MM/yyyy' }}</p>
-                            <!-- El fin real será igual al momento en que el usuario seleccione completar -->
-                            <p *ngIf="item.finReal">Fecha de finalización: {{ item.finReal | date:'dd/MM/yyyy' }}</p>
-                            <!-- El valor de la tasa se mostrará siempre que sea mayor a cero -->
-                            <span *ngIf="item.valorTasa">
-                                <p>Valor Tasa: ${{ item.valorTasa }}</p>
-                                <p>Hojas: {{ item.hojas }}</p>
-                            </span>
-                            <p>Responsable: {{ item.responsable }}</p>
-                            <p>URL Comprobante: {{ item.urlComprobante }}</p>
-                            <!-- Zona para marcar al item como notificado -->
-                            <p>
-                                <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
-                                    (click)="updateNotificado(item); getChange(index+1)">
-                                    <span>{{ item.notificado? 'Notificado' : 'Notificar'}}</span>
-                                </mat-chip-option>
-                            </p>
-                        </span>
-                    </div>
-                </cdk-accordion-item>
 
+                        <!-- Contenido del item del checklist-->
+                        <!-- Mensaje estático -->
+                        <p>Responsable: {{ item.responsable }}</p>
+                        <p>Se ha iniciado el: {{ item.inicioEstimado | date:'dd/MM/yyyy' }}</p>
+
+                        <ng-container *ngIf="!item.completo">
+                            <p>Es estima finalizar el: {{ item.finEstimado | date:'dd/MM/yyyy' }}</p>
+                        </ng-container>
+
+                        <!-- Mensaje según ítem finalizado -->
+                        <ng-container>
+                            <ng-template *ngIf="item.completo && item.finReal !== null; else notCompletedMessage">
+                                <p style="color: #f44336">
+                                    Se ha finalizado el: {{ item.finReal | date:'dd/MM/yyyy' }}
+                                </p>
+                            </ng-template>
+                            <ng-template #notCompletedMessage>
+                                <p *ngIf="item.completo" style="color: #f44336">
+                                    Se marcó como finalizado
+                                </p>
+                            </ng-template>
+                        </ng-container>
+
+                        <mat-divider style="margin: 0.5rem 0;"></mat-divider>
+
+                        <!-- Datos editables -->
+                        <form>
+
+                            <fieldset>
+                                <mat-chip-option [selected]="incluyeImpuesto" style="height: 50%;" color="warn" (click)="updateCheckTasa()">
+                                    <span>{{ incluyeImpuesto? 'Establecer impuestos/tasas' : 'Editar impuestos/tasas'}}</span>
+                                </mat-chip-option>
+                            </fieldset>
+
+                            <div class="row" style="display: flex; justify-content:flex-start; align-items: flex-start;">
+                                <div class="col-md-4">
+                                    <fieldset class="form-group">
+                                        <label for="valorTasa" style="margin-right: 0.5rem;">Valor de impuestos/tasas</label>
+                                        <div style="display: flex; align-items: center;">
+                                            <span style="margin-right: 0.5rem;">$</span>
+                                            <input type="number" id="valorTasa" name="valorTasa"
+                                                style="width: calc(100% - 0.5rem);" [(ngModel)]="item.valorTasa"
+                                                [disabled]="!incluyeImpuesto" (change)="getChange(index+1)">
+                                        </div>
+                                    </fieldset>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <fieldset class="form-group">
+                                        <label for="hojas">Cantidad de hojas </label>
+                                        <input type="number" id="hojas" name="hojas" style="width: 100%;"
+                                            [(ngModel)]="item.hojas" [disabled]="!incluyeImpuesto" (change)="getChange(index+2)">
+                                    </fieldset>
+                                </div>
+                            </div>
+
+                            <fieldset class="form-group">
+                                <label for="urlComprobante">URL Comprobante:</label>
+                                <input type="url" name="urlComprobante" id="urlComprobante"
+                                    placeholder="https://repo-gg.com" pattern="https://.*" style="width: 100%;"
+                                    [(ngModel)]="item.urlComprobante" [disabled]="!incluyeImpuesto" (change)="getChange(index+3)"/>
+                            </fieldset>
+
+                            <fieldset>
+                                <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
+                                    (click)="updateNotificado(item); getChange(index+4)">
+                                    <span>{{ item.notificado? 'Se ha establecido notificado' : 'Establecer como notificado'}}</span>
+                                </mat-chip-option>
+                            </fieldset>
+                        </form>
+
+                        <mat-divider style="margin: 0.5rem 0;"></mat-divider>
+
+                    </div>
+
+                </cdk-accordion-item>
             </cdk-accordion>
+
         </div>
 
         <!-- Botones del checklist -->
         <div id="checklist-footer" class="modal-footer">
             <button mat-raised-button color="primary" (click)="openAddItemComponent()">
-                <span matTooltip="Agregar Item">+ Nuevo Ítem</span>
+                <span matTooltip="Agregar al checklist">+ Nuevo Ítem</span>
             </button>
-            <button id="btnSave" [disabled]="!modified" type="button" class="btn" (click)="updateCheckList(item)">
-                <mat-icon>save</mat-icon>
+            <button mat-raised-button color="accent" [disabled]="!modified" type="button" (click)="updateCheckList()">
+                <span>Guardar</span>
             </button>
         </div>
 
