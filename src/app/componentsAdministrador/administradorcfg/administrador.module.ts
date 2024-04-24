@@ -9,6 +9,7 @@ import { CfgServiciosComponent } from '../bodyAdminComponents/cfg-servicios/cfg-
 import { CfgClientesComponent } from '../bodyAdminComponents/cfg-clientes/cfg-clientes.component';
 import { ConfigMenuComponent } from 'src/app/componentsShared/config-menu/config-menu.component';
 import { CfgRubrosComponent } from '../bodyAdminComponents/cfg-rubros/cfg-rubros.component';
+import { CfgRiesgosComponent } from '../bodyAdminComponents/cfg-riesgos/cfg-riesgos.component';
 
 import { MatStepperModule } from '@angular/material/stepper';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +25,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     CfgClientesComponent,
     ConfigMenuComponent,
     CfgRubrosComponent,
+    CfgRiesgosComponent,
   ],
   imports: [
     CommonModule,

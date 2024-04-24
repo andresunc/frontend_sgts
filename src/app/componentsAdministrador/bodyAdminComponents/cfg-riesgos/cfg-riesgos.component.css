@@ -1,0 +1,58 @@
+
+
+form{
+    margin-left: 10%;
+    justify-content:center;
+    align-items: center;
+  }
+  
+  mat-form-field{
+    width: 100%;
+  }
+  
+  .btn-next{
+      display: flex;
+      justify-content: center;
+      border-color: transparent;
+     
+    }
+  
+    .btn-buscar, .btn-editar{
+      cursor: pointer;
+      background-color: #5f5e5e;
+      box-shadow: 2px 0.2rem 0.2rem rgba(111, 110, 110, 0.468);
+      border-width:2px;
+      border-color: aliceblue;
+      color: rgb(250, 250, 250);
+      margin-left: 3%;
+      margin-bottom: 1rem;
+    }
+    
+    .btn-buscar:hover{ 
+      background-color:#673ab7;
+      border-style: solid;
+      color: #fefefe;
+      transform: scale(1.05);
+    }
+    
+    .btn-editar{
+      position: absolute;
+      top: 5px; /* Ajusta según sea necesario para la distancia desde la parte superior */
+      right: 5px; /* Ajusta según sea necesario para la distancia desde el lado derecho */
+      z-index: 1;
+      height: 24px; /* Altura */
+      width: 24px;
+      bottom: 0px;
+    }
+    
+    .btn-editar mat-icon{
+      line-height: 22px;
+      font-size:small;
+    }
+    
+    .btn-editar:hover{ 
+      background-color:#673ab7;
+      border-style: solid;
+      color: #fefefe;
+      transform: scale(1.05);
+    }
