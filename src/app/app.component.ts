@@ -3,7 +3,8 @@ import { AuthService } from './services/auth.service';
 import { DataSharedService } from './services/data-shared.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AuthUser } from './models/SupportModels/AuthUser';
+import { Router } from '@angular/router';
+import { PopupService } from './services/SupportServices/popup.service';
 
 
 @Component({
@@ -16,12 +17,13 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
   access: boolean = false;
   sidebarOpened: boolean = false; // Cambia a false para ocultar la barra lateral automáticamente
-  authObj: AuthService;
 
-  constructor(private authService: AuthService,
-    private dataShared: DataSharedService) {
+  constructor(
+    private authService: AuthService,
+    private dataShared: DataSharedService,
+    private router: Router,
+    private _snackBar: PopupService,) {
     this.access = this.authService.isLoggedInUser();
-    this.authObj = this.authService;
   }
 
   ngOnInit() {
@@ -41,4 +43,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  goNuevo() {
+    if (this.authService.canAddService()) {
+      this.router.navigate(['/nuevo']);
+    } else {
+      this._snackBar.warnSnackBar('Permisos insuficientes');
+    }
+  }
 }
