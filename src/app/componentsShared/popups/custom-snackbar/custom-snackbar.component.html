@@ -1,6 +1,15 @@
 <div id="snackContainer">
-    <button mat-button disabled><mat-icon [class]="color">{{data?.icon}}</mat-icon></button>
-    <p class="text-light">{{data?.msj}}</p>
-    <button mat-button [class]="color"
-    (click)="closeSnackbar()">{{data?.btn}}</button>
+
+    <div class="icon">
+        <mat-icon [class]="color">{{data?.icon}}</mat-icon>
+    </div>
+
+    <div class="msj" style="width: 100%; display: flex; align-items: center; justify-content: center;">
+        <p class="text-light">{{ data?.msj }}</p>
+    </div>
+
+    <button mat-button [class]="color" class="btn" *ngIf="data?.btn" (click)="closeSnackbar()">
+        {{data?.btn}}
+    </button>
+
 </div>

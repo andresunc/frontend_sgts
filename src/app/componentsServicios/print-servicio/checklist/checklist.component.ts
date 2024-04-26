@@ -7,6 +7,8 @@ import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
 @Component({
@@ -26,6 +28,8 @@ export class ChecklistComponent implements OnInit {
     private svManager: ManagerService,
     private servicioService: ServicioService,
     private itemChecklistService: ItemChecklistService,
+    private authService: AuthService,
+    private _snackBar: PopupService,
     public dialog: MatDialog) {
     this.servicio = this.dataShared.getSharedObject();
     this.dataSourceItems = this.dataShared.getSharedObject().itemChecklistDto;
@@ -48,27 +52,20 @@ export class ChecklistComponent implements OnInit {
       )
   }
 
-  updateCheckList() {
-
-    let item: ItemChecklist = new ItemChecklist();
-    
-    if (item || item !== null || item !== undefined) {
-      this.itemChecklistService.updateItemCheckList(item.idItemChecklist!, item).subscribe(
-        (data) => {
-          console.log('se actualizó el item');
-          console.log(data);
+  managElement() {
+    console.log('Lista de items a actualizar: ', this.dataSourceItems)
+    if (this.dataSourceItems) {
+      this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
+        (data: ItemChecklistDto[]) => {
+          console.log('Items Actualizados', data);
         }
       )
     }
-    
   }
 
-  valorTasa: string = '';
-  setValorTasa(item: ItemChecklistDto) {
-    this.valorTasa =  item.valorTasa?.toString()!;
-  }
-
+  completo: boolean = false;
   updateAvance(item: ItemChecklistDto) {
+    this.completo = !this.completo;
     item.completo = !item.completo
     // Encuentra el índice del elemento en la lista
     const index = this.servicio!.itemChecklistDto.findIndex((element) => element.idItemChecklist === item.idItemChecklist);
@@ -90,12 +87,26 @@ export class ChecklistComponent implements OnInit {
   // Función para detectar cambios en el listado de items
   modified: boolean = false;
   indicesCambiados: number[] = [];
-  getChange(index: number) {
+  getChange(index: number, item: ItemChecklist) {
+
+    // Buscar el índice del elemento existente en dataSourceItems
+    const indexItemExistente = this.dataSourceItems.findIndex(element => element.idItemChecklist === item.idItemChecklist);
+
+    // Verificar si el elemento existe en dataSourceItems
+    if (indexItemExistente !== -1) {
+      // Reemplazar el elemento existente con el nuevo item
+      this.dataSourceItems[indexItemExistente] = item;
+    } else {
+      // Manejar el caso donde el elemento no está en dataSourceItems
+      console.log('El elemento no existe en la lista.');
+    }
+
     // Verifica si el índice ya está en el array
     const indexEncontrado = this.indicesCambiados.indexOf(index);
     indexEncontrado === -1 ? this.indicesCambiados.push(index) : this.indicesCambiados.splice(indexEncontrado, 1);
     // Verificar si hay cambios finalmente
     this.modified = this.indicesCambiados.length > 0;
+
   }
 
   updateNotificado(item: any) {
@@ -108,6 +119,10 @@ export class ChecklistComponent implements OnInit {
   }
 
   openAddItemComponent() {
-    this.dialog.open(AddItemComponent);
+    if (this.authService.canAddService()) {
+      this.dialog.open(AddItemComponent);
+    } else {
+      this._snackBar.warnSnackBar('Permisos insuficientes');
+    }
   }
 }

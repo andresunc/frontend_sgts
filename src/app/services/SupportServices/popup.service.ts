@@ -35,13 +35,13 @@ export class PopupService {
     });
   }
 
-  warnSnackBar(mensaje: string, action?: string, icon?: string) {
+  warnSnackBar(mensaje: string, action?: string | null | undefined, icon?: string) {
     icon = icon || 'warning';
-    action = action || '';
+    action = action;
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
       data: {
         msj: mensaje,
-        btn: action,
+        btn: action !== null && action !== undefined ? action : null,
         icon: icon,
         snackBar: this._snackBar,
         color: 'text-warning'
