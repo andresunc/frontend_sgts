@@ -52,19 +52,6 @@ export class ChecklistComponent implements OnInit {
       )
   }
 
-  managElement() {
-    console.log('Lista de items a actualizar: ', this.dataSourceItems)
-    this.dataShared.mostrarSpinner();
-    if (this.dataSourceItems) {
-      this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
-        (data: ItemChecklistDto[]) => {
-          console.log('Items Actualizados', data);
-          this.dataShared.ocultarSpinner();
-        }
-      )
-    }
-  }
-
   completo: boolean = false;
   updateAvance(item: ItemChecklistDto) {
     this.completo = !this.completo;
@@ -98,16 +85,15 @@ export class ChecklistComponent implements OnInit {
     if (indexItemExistente !== -1) {
       // Reemplazar el elemento existente con el nuevo item
       this.dataSourceItems[indexItemExistente] = item;
+      // Verifica si el índice ya está en el array
+      const indexEncontrado = this.indicesCambiados.indexOf(index);
+      indexEncontrado === -1 ? this.indicesCambiados.push(index) : this.indicesCambiados.splice(indexEncontrado, 1);
+      // Verificar si hay cambios finalmente
+      this.modified = this.indicesCambiados.length > 0;
     } else {
       // Manejar el caso donde el elemento no está en dataSourceItems
-      console.log('El elemento no existe en la lista.');
+      alert('Ocorrió un error con un aspecto en el cambio de información del ítem.');
     }
-
-    // Verifica si el índice ya está en el array
-    const indexEncontrado = this.indicesCambiados.indexOf(index);
-    indexEncontrado === -1 ? this.indicesCambiados.push(index) : this.indicesCambiados.splice(indexEncontrado, 1);
-    // Verificar si hay cambios finalmente
-    this.modified = this.indicesCambiados.length > 0;
 
   }
 
@@ -118,6 +104,20 @@ export class ChecklistComponent implements OnInit {
   incluyeImpuesto!: boolean;
   updateCheckTasa() {
     this.incluyeImpuesto = !this.incluyeImpuesto;
+  }
+
+  managElement() {
+    console.log('Lista de items a actualizar: ', this.dataSourceItems)
+    this.dataShared.mostrarSpinner();
+    this.modified = false;
+    if (this.dataSourceItems) {
+      this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
+        (data: ItemChecklistDto[]) => {
+          console.log('Items Actualizados', data);
+          this.dataShared.ocultarSpinner();
+        }
+      )
+    }
   }
 
   openAddItemComponent() {

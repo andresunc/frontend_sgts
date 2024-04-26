@@ -89,7 +89,7 @@
                                         <div style="display: flex; align-items: center;">
                                             <span style="margin-right: 0.5rem;">$</span>
                                             <input type="number" id="valorTasa" name="valorTasa"
-                                                style="width: calc(100% - 0.5rem);" [(ngModel)]="item.valorTasa"
+                                                style="width: calc(100% - 0.5rem);" [(ngModel)]="item.tasaValor"
                                                 [disabled]="!incluyeImpuesto" (change)="getChange(index+1, item)">
                                         </div>
                                     </fieldset>
@@ -99,7 +99,7 @@
                                     <fieldset class="form-group">
                                         <label for="hojas">Cantidad de hojas </label>
                                         <input type="number" id="hojas" name="hojas" style="width: 100%;"
-                                            [(ngModel)]="item.hojas" [disabled]="!incluyeImpuesto" (change)="getChange(index+2, item)">
+                                            [(ngModel)]="item.tasaCantidadHojas" [disabled]="!incluyeImpuesto" (change)="getChange(index+2, item)">
                                     </fieldset>
                                 </div>
                             </div>
@@ -108,7 +108,7 @@
                                 <label for="urlComprobante">URL Comprobante:</label>
                                 <input type="url" name="urlComprobante" id="urlComprobante"
                                     placeholder="https://repo-gg.com" pattern="https://.*" style="width: 100%;"
-                                    [(ngModel)]="item.urlComprobante" [disabled]="!incluyeImpuesto" (change)="getChange(index+3, item)"/>
+                                    [(ngModel)]="item.urlComprobanteTasa" [disabled]="!incluyeImpuesto" (change)="getChange(index+3, item)"/>
                             </fieldset>
 
                             <fieldset>
