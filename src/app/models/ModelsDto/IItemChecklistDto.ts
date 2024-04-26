@@ -7,11 +7,11 @@ export class ItemChecklistDto {
     ejecucion_real?: string;
     finReal?: string;
     notificado?: boolean;
-    valorTasa?: number;
-    hojas?: number;
+    tasaValor?: number;
+    tasaCantidadHojas?: number;
     idRecurso?: number;
     responsable?: string;
-    urlComprobante?: string;
+    urlComprobanteTasa?: string;
     completo?: boolean;
 
     constructor(){}
