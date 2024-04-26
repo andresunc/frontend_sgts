@@ -54,10 +54,12 @@ export class ChecklistComponent implements OnInit {
 
   managElement() {
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
+    this.dataShared.mostrarSpinner();
     if (this.dataSourceItems) {
       this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
         (data: ItemChecklistDto[]) => {
           console.log('Items Actualizados', data);
+          this.dataShared.ocultarSpinner();
         }
       )
     }
