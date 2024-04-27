@@ -1,10 +1,9 @@
 export class Estado {
     
-    idEstado: number;
+    idEstado!: number;
     tipoEstado: string;
 
-    constructor(idEstado: number, estado: string) {
-        this.idEstado = idEstado;
+    constructor(estado: string) {
         this.tipoEstado = estado;
     }
 }

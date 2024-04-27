@@ -10,6 +10,7 @@ import { CfgClientesComponent } from '../bodyAdminComponents/cfg-clientes/cfg-cl
 import { ConfigMenuComponent } from 'src/app/componentsShared/config-menu/config-menu.component';
 import { CfgRubrosComponent } from '../bodyAdminComponents/cfg-rubros/cfg-rubros.component';
 import { CfgRiesgosComponent } from '../bodyAdminComponents/cfg-riesgos/cfg-riesgos.component';
+import { CfgEstadosComponent } from '../bodyAdminComponents/cfg-estados/cfg-estados.component';
 
 import { MatStepperModule } from '@angular/material/stepper';
 import {  FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {AsyncPipe} from '@angular/common';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     ConfigMenuComponent,
     CfgRubrosComponent,
     CfgRiesgosComponent,
+    CfgEstadosComponent,
   ],
   imports: [
     CommonModule,

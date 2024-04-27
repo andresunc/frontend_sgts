@@ -5,6 +5,7 @@ import { CfgClientesComponent } from '../bodyAdminComponents/cfg-clientes/cfg-cl
 import { CfgServiciosComponent } from '../bodyAdminComponents/cfg-servicios/cfg-servicios.component';
 import { CfgRubrosComponent } from '../bodyAdminComponents/cfg-rubros/cfg-rubros.component';
 import { CfgRiesgosComponent } from '../bodyAdminComponents/cfg-riesgos/cfg-riesgos.component';
+import { CfgEstadosComponent } from '../bodyAdminComponents/cfg-estados/cfg-estados.component';
 
 const routes: Routes = [
   { path: '', 
@@ -15,6 +16,7 @@ const routes: Routes = [
     { path: 'servicios', component: CfgServiciosComponent },
     { path: 'rubros', component: CfgRubrosComponent },
     { path: 'riesgos', component: CfgRiesgosComponent },
+    { path: 'estados', component: CfgEstadosComponent },
 
 
   ]
