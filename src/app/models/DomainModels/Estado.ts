@@ -1,7 +1,7 @@
 export class Estado {
     
-    idEstado!: number;
-    tipoEstado!: string;
+    idEstado?: number;
+    tipoEstado?: string;
 
     constructor() {
     }

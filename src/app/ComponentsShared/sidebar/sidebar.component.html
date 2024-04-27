@@ -19,7 +19,7 @@
 
           <div class="checkboxContainer" *ngFor=" let estado of listEstados;">
             <p>
-              <mat-checkbox (change)="sendStatus(estado.tipoEstado)"></mat-checkbox>
+              <mat-checkbox (change)="sendStatus(estado.tipoEstado!)"></mat-checkbox>
              {{estado.tipoEstado}}
             </p>
           </div>

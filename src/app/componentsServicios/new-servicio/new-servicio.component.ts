@@ -228,7 +228,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   // Si el id no está en el arreglo, se deshabilita la opción
   idPermitidos = [1, 2];
   isOptionDisabled(estado: Estado): boolean {
-    return !this.idPermitidos.includes(estado.idEstado);
+    return !this.idPermitidos.includes(estado.idEstado!);
   }
 
 }
