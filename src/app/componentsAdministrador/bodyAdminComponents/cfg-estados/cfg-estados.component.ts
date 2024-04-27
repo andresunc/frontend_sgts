@@ -115,8 +115,7 @@ export class CfgEstadosComponent implements OnInit {
   
       this.dataShared.mostrarSpinner();
   
-      const estado: Estado = new Estado();
-      estadoName ? estado.tipoEstado = estadoName : undefined;
+      const estado: Estado = new Estado(estadoName);
   
       this.estadosService.createEstado(estado)
         .subscribe(
@@ -128,7 +127,6 @@ export class CfgEstadosComponent implements OnInit {
             this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
               this.router.navigate(['administrador/estados']);
             });
-  
           },
           (error) => {
             this._snackBar.warnSnackBar('Error al crear el estado');
