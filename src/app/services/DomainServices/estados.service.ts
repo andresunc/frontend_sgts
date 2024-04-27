@@ -35,6 +35,8 @@ export class EstadosService {
   // Método para crear un nuevo Estado
   createEstado(newEstado: Estado): Observable<Estado> {
     const headers: HttpHeaders = this.authService.getHeader();
+    console.log("headers create estado: ", headers)
+    console.log("newEstado: ", newEstado)
     return this.http.post<Estado>(this.createEstadoUrl, newEstado, { headers })
       .pipe(
         catchError((error) => {
