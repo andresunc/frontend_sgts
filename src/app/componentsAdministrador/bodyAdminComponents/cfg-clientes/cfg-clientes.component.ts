@@ -71,12 +71,12 @@ export class CfgClientesComponent implements OnInit {
   firstFormGroup = new FormGroup({
     BuscarCliente: new FormControl<string>(''),
     RazonSocial: new FormControl<string>('', Validators.required),
-    CUIT: new FormControl<string>('', [Validators.required, Validators.pattern(/^\d{11}$/)]),
+    CUIT: new FormControl<string>('', [Validators.required, Validators.pattern(/^\d{2}-\d{8}-\d$/)]),
     Direccion: new FormControl<string>(''),
     Rubro: new FormControl<Rubro>(new Rubro, Validators.required),
     Riesgo: new FormControl<Riesgo>(new Riesgo, Validators.required),
   });
-  
+
 
   getStepperStyles() {
     return {
@@ -106,19 +106,26 @@ export class CfgClientesComponent implements OnInit {
 
     );
 
-
     this.firstFormGroup.get('CUIT')?.valueChanges.subscribe((value: string | null) => {
-      // Eliminar guiones antes de la validación
-      const cleanedValue = value ? value.replace(/-/g, '') : '';
-      
-      // Verificar si el valor tiene 2 y 11 caracteres respectivamente
-      if (cleanedValue.length === 2 || cleanedValue.length === 11) {
-        // Agregar guiones solo cuando el usuario haya ingresado los primeros dos dígitos y los siguientes nueve dígitos del CUIT
-        const formattedValue = cleanedValue.length > 2 ?
-          cleanedValue.substring(0, 2) + '-' + cleanedValue.substring(2, 10) + '-' + cleanedValue.substring(10) :
-          cleanedValue.substring(0, 2);
-        this.firstFormGroup.get('CUIT')?.setValue(formattedValue, { emitEvent: false });
+      // Eliminar caracteres que no sean números
+      const cleanedValue = value ? value.replace(/\D/g, '') : '';
+
+      // Formatear el valor del CUIT
+      let formattedValue = '';
+      if (cleanedValue.length > 2) {
+        formattedValue += cleanedValue.substring(0, 2) + '-';
+        if (cleanedValue.length > 9) {
+          formattedValue += cleanedValue.substring(2, 10) + '-';
+          formattedValue += cleanedValue.substring(10, 12);
+        } else {
+          formattedValue += cleanedValue.substring(2);
+        }
+      } else {
+        formattedValue = cleanedValue;
       }
+
+      // Establecer el valor del campo de entrada del CUIT en el formulario
+      this.firstFormGroup.get('CUIT')?.setValue(formattedValue, { emitEvent: false });
     });
 
   }
@@ -334,7 +341,7 @@ export class CfgClientesComponent implements OnInit {
           console.log('Empresa actualizada:', data);
           // Lógica adicional después de la actualización exitosa, por ejemplo:
           this.dataShared.ocultarSpinner();
-          
+
           this._snackBar.okSnackBar('La empresa se modificó correctamente');
           console.log('La empresa se modificó correctamente.');
           // Recargar el componente navegando a la misma ruta

@@ -15,7 +15,7 @@
     overflow-x: hidden;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 800px) {
     #formContent {
         max-height: auto;
         min-width: auto;
