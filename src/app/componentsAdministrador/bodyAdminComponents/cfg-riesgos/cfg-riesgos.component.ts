@@ -7,6 +7,8 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { Router } from '@angular/router';
 import { MatAutocomplete } from '@angular/material/autocomplete';
+import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -33,6 +35,7 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
     private riesgoService: RiesgoService,
     private dataShared: DataSharedService,
     private _snackBar: PopupService,
+    private dialog: MatDialog,
     private router: Router,
   ) {
 
@@ -180,6 +183,21 @@ import { MatAutocomplete } from '@angular/material/autocomplete';
       });
 
   }
+
+  checkDelete(): void {
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      data: { message: `¿Eliminar riesgo ${this.riesgoSeleccionado?.riesgo}?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.riesgoDelete();
+      } else {
+        console.log('Se canceló la eliminación');
+      }
+    });
+  }
+
 
   riesgoDelete() {
     if (!this.riesgoSeleccionado) {

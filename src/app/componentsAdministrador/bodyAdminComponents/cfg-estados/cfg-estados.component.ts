@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 import { MatAutocomplete } from '@angular/material/autocomplete';
 import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
+import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-cfg-estados',
@@ -37,6 +39,7 @@ export class CfgEstadosComponent implements OnInit {
     private dataShared: DataSharedService,
     private _snackBar: PopupService,
     private categoriaService: CategoriaService,
+    private dialog: MatDialog,
     private router: Router,
   ) {
 
@@ -196,6 +199,21 @@ export class CfgEstadosComponent implements OnInit {
       });
 
   }
+
+  checkDelete(): void {
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      data: { message: `¿Eliminar estado ${this.estadoSeleccionado?.tipoEstado}?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.estadoDelete();
+      } else {
+        console.log('Se canceló la eliminación');
+      }
+    });
+  }
+
 
   estadoDelete() {
     if (!this.estadoSeleccionado) {
