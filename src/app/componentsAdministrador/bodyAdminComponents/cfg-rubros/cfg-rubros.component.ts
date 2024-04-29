@@ -7,6 +7,8 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { Router } from '@angular/router';
 import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatDialog } from '@angular/material/dialog';
+import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 
 
 @Component({
@@ -33,6 +35,7 @@ export class CfgRubrosComponent implements OnInit {
     private rubroService: RubroService,
     private dataShared: DataSharedService,
     private _snackBar: PopupService,
+    private dialog: MatDialog,
     private router: Router,
   ) {
 
@@ -180,6 +183,21 @@ export class CfgRubrosComponent implements OnInit {
       });
 
   }
+
+  checkDelete(): void {
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      data: { message: `¿Eliminar rubro ${this.rubroSeleccionado?.rubro}?` }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.rubroDelete();
+      } else {
+        console.log('Se canceló la eliminación');
+      }
+    });
+  }
+
 
   rubroDelete() {
     if (!this.rubroSeleccionado) {

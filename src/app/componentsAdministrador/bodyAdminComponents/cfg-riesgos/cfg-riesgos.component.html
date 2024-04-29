@@ -23,7 +23,7 @@
         <div class="btn-abm">
             <button mat-button (click)="crearRiesgo()" [disabled]="modificarEliminarHabilitado">Crear</button>
             <button mat-button (click)="modificarRiesgo()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
-            <button mat-button (click)="riesgoDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+            <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
         </div>
     </form>
     </ng-container>

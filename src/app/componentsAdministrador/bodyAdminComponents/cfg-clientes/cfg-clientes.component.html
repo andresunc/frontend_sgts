@@ -115,7 +115,7 @@
           <div class="contact-cards">
             <mat-card *ngFor="let contacto of contactos">
               <mat-card-header>
-                <mat-card-title>Contacto: {{ contacto.nombre+' '+contacto.apellido }}</mat-card-title>
+                <mat-card-title>Contacto: {{ contacto.nombre + ' ' + contacto.apellido }}</mat-card-title>
                 <mat-card-actions>
                   <button mat-mini-fab (click)="editarContacto(contacto)" class="btn-editar">
                     <mat-icon>edit</mat-icon>
