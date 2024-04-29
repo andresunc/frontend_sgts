@@ -45,16 +45,27 @@ export class EditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.setDateTime();
+    this.dataShared.mostrarSpinner();
     this.estadoService.getStatusNotDeleted().subscribe(
       (data) => {
         this.estadosList = data;
-        console.log(data)
+        this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
+        this.checkEditable();
+        this.dataShared.ocultarSpinner();
       })
-
   }
 
+  checkEditable(): boolean {
+    // Estado contiene un idCategoria
+    // La categoria "Finalizado" tiene el id: 3
+    // Si la categoria del estado seleccionado es igual a 3 no se podrá editar el servicio
+    return this.estadoMatch?.idCategoria === 3;
+  }
+
+  estadoMatch: Estado | undefined;
   onEstadoChange() {
-    this.data.servicioRecibido.estado = this.selectedEstado;
+    this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
+    this.checkEditable();
   }
 
   minDate: any;
@@ -104,15 +115,12 @@ export class EditorComponent implements OnInit {
 
     this.dataShared.mostrarSpinner();
 
-    // Busco el obj Estado que coincida con el estado seleccionado
-    let estadoEncontrado = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
-
-    // Verificar si hay cambios en el estado y ejecutar
-    if (estadoEncontrado?.idEstado != this.data.servicioRecibido.idEstado) {
+    // Si estadoMatch no es nulo y los id no coinciden entonces hay cambios y ejecutar el addHistorico
+    if (this.estadoMatch && this.estadoMatch?.idEstado != this.data.servicioRecibido.idEstado) {
 
       // Armo el objeto historico de estado
       let historicoEstado = new HistoricoEstado();
-      historicoEstado.estadoIdEstado = estadoEncontrado?.idEstado;
+      historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;
       historicoEstado.servicioIdServicio = this.data.servicioRecibido.idServicio;
 
       // Suscripción al servicio Historico Estado para agregar el último estado a la bd

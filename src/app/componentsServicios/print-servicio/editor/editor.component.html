@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="fechaHoraNotificacion">Indique hora y fecha para el recordatorio</label>
-                            <input name="fechaHoraNotificacion" type="datetime-local" class="form-control"
+                            <input [disabled]="checkEditable()" name="fechaHoraNotificacion" type="datetime-local" class="form-control"
                                 [(ngModel)]="data.servicioRecibido.fecha_notificacion" (change)="handleChange($event)"
                                 [min]="minDate">
                         </div>
@@ -37,7 +37,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="presupuesto">Se ha presupuestado</label>
-                            <input type="number" class="form-control" id="presupuesto" name="presupuesto"
+                            <input [disabled]="checkEditable()" type="number" class="form-control" id="presupuesto" name="presupuesto"
                                 [(ngModel)]="data.servicioRecibido.total_presupuestado" min="0"
                                 (blur)="validarPresupuesto()" #presupuestoInput>
                         </div>
@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="comentario">Comentario</label>
-                            <textarea type="text" class="form-control" id="comentario" name="comentario"
+                            <textarea [disabled]="checkEditable()" type="text" class="form-control" id="comentario" name="comentario"
                                 [(ngModel)]="data.servicioRecibido.comentario"></textarea>
                         </div>
                     </div>
