@@ -118,8 +118,13 @@ export class PrintServicioComponent implements OnInit {
   }
 
   openChecklistPopUp() {
-    this.dataShared.setSharedObject(this.servicioRecibido);
-    this.dialog.open(ChecklistComponent);
+    // si no esta finalizado
+    if (this.servicioRecibido.idCategoria != 3) {
+      this.dataShared.setSharedObject(this.servicioRecibido);
+      this.dialog.open(ChecklistComponent);
+    } else {
+      this._snackBar.warnSnackBar(`El servicio ha ${this.servicioRecibido.categoria.toLowerCase()}`)
+    }
   }
 
 }
