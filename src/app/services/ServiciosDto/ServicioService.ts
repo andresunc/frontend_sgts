@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Servicios } from '../../models/DomainModels/Servicios';
@@ -20,10 +20,14 @@ export class ServicioService {
   private getTopServicesUrl = this.urlBackend + '/servicioDto/getTopServices';
   private getItemsChecklistUrl = this.urlBackend + '/servicioDto/getItemsChecklist';
   private urlNewServicio = this.urlBackend + '/nuevo/crearServicio';
+  countdown: number = 5;
+  retry: number;
 
   constructor(private http: HttpClient,
     private _snackBar: PopupService,
-    private authService: AuthService) { }
+    private authService: AuthService) { 
+      this.retry = parseInt(localStorage.getItem('retry')!) || 1;
+    }
 
   // Método para obtener los servicios más recientes
   getTopServices(limit: number): Observable<Servicios[]> {
@@ -38,11 +42,25 @@ export class ServicioService {
           return data;
         }),
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-            this._snackBar.warnSnackBar('Permisos insuficientes', '');
-          }
-          this._snackBar.warnSnackBar('Error en la conexión', 'Aceptar');
-          console.error('Error en la solicitud getTopServices', error);
+
+          const interval = setInterval(() => {
+            this.countdown--;
+            this._snackBar.dismiss();
+            this._snackBar.warnSnackBar(`Reconectando en: ${this.countdown}`);
+            if (this.countdown === 0) {
+              this.retry++;
+              localStorage.setItem('retry', this.retry.toString());
+              console.log(this.retry)
+              clearInterval(interval);
+              window.location.reload();
+            }
+            if (this.retry > 3) {
+              this.authService.logout();
+              localStorage.clear();
+              this._snackBar.warnSnackBar(`${this.countdown} itentos, has sido desconectado`, 'Ok');
+            }
+          }, 1000);
+
           return throwError(error);
         })
       );
@@ -64,7 +82,7 @@ export class ServicioService {
   }
 
   addServicio(addServicio: NuevoServicioDto): Observable<NuevoServicioDto> {
-    
+
     const headers: HttpHeaders = this.authService.getHeader();
     return this.http.post<NuevoServicioDto>(this.urlNewServicio, addServicio, { headers })
       .pipe(

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { CustomSnackbarComponent } from 'src/app/componentsShared/popups/custom-snackbar/custom-snackbar.component';
 
 @Injectable({
@@ -7,7 +9,9 @@ import { CustomSnackbarComponent } from 'src/app/componentsShared/popups/custom-
 })
 export class PopupService {
 
-  constructor(private _snackBar: MatSnackBar) { }
+  constructor(
+    private _snackBar: MatSnackBar,
+    private dialog: MatDialog,) { }
 
   okSnackBar(mensaje: string) {
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
@@ -37,7 +41,7 @@ export class PopupService {
 
   warnSnackBar(mensaje: string, action?: string | null | undefined, icon?: string) {
     icon = icon || 'warning';
-    action = action;
+    (action?.toLowerCase() === 'cancelar') ? () => this.dismiss() : undefined;
     this._snackBar.openFromComponent(CustomSnackbarComponent, {
       data: {
         msj: mensaje,
@@ -49,4 +53,26 @@ export class PopupService {
       duration: 5000,
     });
   }
+
+  dismiss() {
+    this._snackBar.dismiss();
+  }
+
+  checkDecision(inTitle?: string, inMessage?: string, inTextAction?: string, inBtnColor?: string): Promise<boolean> {
+    return new Promise((resolve) => {
+      const dialogRef = this.dialog.open(DeletePopupComponent, {
+        data: {
+          title: inTitle,
+          message: inMessage,
+          textAction: inTextAction,
+          btnColor: inBtnColor
+        }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        resolve(result);
+      });
+    });
+  }
+
 }

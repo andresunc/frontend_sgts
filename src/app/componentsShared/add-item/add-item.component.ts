@@ -199,7 +199,6 @@ export class AddItemComponent implements OnInit {
   saveData() {
 
     this.dataShared.mostrarSpinner();
-
     // Crear el Item del CheckList
     let addItemCheckList = new ItemChecklist();
     addItemCheckList.servicioIdServicio = this.servicioRecibido.idServicio;
@@ -211,23 +210,26 @@ export class AddItemComponent implements OnInit {
     addItemCheckList.urlComprobanteTasa = this.urlComprobante;
     addItemCheckList.notificado = this.haSidoNotificado;
 
+    // Actualzar lista de items del checklist
+    this.servicioRecibido.itemChecklistDto.push(addItemCheckList);
+
     // Persistir item del checklist
     this.itemChecklistService.addItemCheckList(addItemCheckList).subscribe(
       (data: ItemChecklist) => {
         addItemCheckList = data;
         console.log('ItemChecklist persistido: ', addItemCheckList);
+        this.dataShared.ocultarSpinner();
       }
     )
 
     // Actualizar Lista de Items en el CheckList del componente ChecklistComponent
     this.updateChecklist();
 
-    this.dataShared.ocultarSpinner();
-
   }
 
   updateChecklist() {
     this.dataShared.triggerUpdateChecklist();
+    this.dataShared.triggerUpdateLoadServicioRecibido();
   }
 
 }
