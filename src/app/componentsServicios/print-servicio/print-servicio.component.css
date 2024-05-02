@@ -70,12 +70,14 @@ span, p, .mat-icon {
   cursor: pointer;
   background: #DFEEEE;
   transition: background-color 0.3s, box-shadow 0.3s, width 0.3s, height 0.3s;
+  height: auto;
 }
 .selectPrint:hover {
   color: #673ab7;
   background: #ffd740;
   box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
 }
+
 .mat-icon {
   height: auto;
 }

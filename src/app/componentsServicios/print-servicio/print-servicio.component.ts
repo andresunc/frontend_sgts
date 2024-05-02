@@ -13,6 +13,7 @@ import { ChecklistComponent } from './checklist/checklist.component';
 import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
 import { Router } from '@angular/router';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-print-servicio',
@@ -25,6 +26,7 @@ export class PrintServicioComponent implements OnInit {
   title: string = 'Información del servicio: ';
   recurrencia: number = 0;
   contactoEmpresa: ContactoEmpresa[] = [];
+  authorized: boolean = false;
 
 
   constructor(
@@ -34,7 +36,8 @@ export class PrintServicioComponent implements OnInit {
     private printService: PrintService,
     private servicioEmpresa: ServicioEmpresaService,
     private router: Router,
-    private _snackBar: PopupService
+    private _snackBar: PopupService,
+    private authService: AuthService,
   ) { }
 
   getSvManager() {
@@ -43,6 +46,7 @@ export class PrintServicioComponent implements OnInit {
 
   ngOnInit() {
     this.loadServicioRecibido();
+    this.authorized = this.authService.isAdmin()
   }
 
   loadServicioRecibido() {
@@ -67,9 +71,7 @@ export class PrintServicioComponent implements OnInit {
   editable: boolean = false;
   editarServicio() {
     this.editable = !this.editable;
-
     if (this.editable) console.log('Ahora es posible editar las características de ésta página');
-
     this.dialog.open(EditorComponent, {
       data: { servicioRecibido: this.servicioRecibido } //
     });

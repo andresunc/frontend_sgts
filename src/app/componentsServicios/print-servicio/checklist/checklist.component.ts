@@ -121,7 +121,7 @@ export class ChecklistComponent implements OnInit {
   }
 
   openAddItemComponent() {
-    if (this.authService.canAddService()) {
+    if (this.authService.isAdmin()) {
       this.dialog.open(AddItemComponent);
     } else {
       this._snackBar.warnSnackBar('Permisos insuficientes');

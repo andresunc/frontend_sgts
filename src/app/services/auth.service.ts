@@ -42,6 +42,12 @@ export class AuthService implements OnInit {
   logout(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('currentUser'); // Eliminar del localStorage al cerrar sesión
+    this.router.navigate(['']);
+  }
+
+  response400(): void {
+    this.isLoggedIn = false;
+    localStorage.removeItem('currentUser');
     alert('La session ha expirado');
     this.router.navigate(['']);
     setTimeout(() => {
@@ -101,7 +107,7 @@ export class AuthService implements OnInit {
     });
   }
 
-  canAddService(): boolean {
+  isAdmin(): boolean {
     const currentUserString: string | null = localStorage.getItem('currentUser');
     if (currentUserString !== null && currentUserString !== undefined) {
       const currentUser: AuthUser = JSON.parse(currentUserString);
