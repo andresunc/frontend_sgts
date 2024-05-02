@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   goNuevo() {
-    if (this.authService.canAddService()) {
+    if (this.authService.isAdmin()) {
       this.router.navigate(['/nuevo']);
     } else {
       this._snackBar.warnSnackBar('Permisos insuficientes');

@@ -24,7 +24,7 @@ export class SidebarComponent implements OnInit {
     private dataShared: DataSharedService,
     private authService: AuthService,
     ) { 
-      this.canAddServicio = this.authService.canAddService();
+      this.canAddServicio = this.authService.isAdmin();
     }
 
   ngOnInit(): void {

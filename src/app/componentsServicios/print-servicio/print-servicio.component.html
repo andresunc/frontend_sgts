@@ -25,12 +25,13 @@
 
             <div class="col-md-4 mb-3 p-0">
               <div class="card p-0">
-                <div mat-button [matMenuTriggerFor]="menu" class="paddingBody selectPrint">
+                <button id="btnServiceAdmin" mat-button [matMenuTriggerFor]="authorized ? menu : null" class="paddingBody selectPrint"
+                  [disabled]="!authorized">
                   <h6 class="card-title textCenter btnChecklist">
-                      SERVICIO N° {{ servicioRecibido.idServicio }}
-                      <mat-icon style="margin-left: 0.5rem; font-size: 1rem;" color="primary" class="mat-icon">tune</mat-icon>
+                    SERVICIO N° {{ servicioRecibido.idServicio }}
+                    <mat-icon style="margin-left: 0.5rem; font-size: 1rem;" [style.color]="authorized ? 'primary' : 'disabled'" class="mat-icon">tune</mat-icon>
                   </h6>
-                </div>
+                </button>
                 <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
                   <button mat-menu-item (click)="editarServicio()"><span>Editar</span></button>
                   <button mat-menu-item (click)="checkDelete()"><span>Eliminar</span></button>

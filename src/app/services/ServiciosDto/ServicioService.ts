@@ -41,7 +41,7 @@ export class ServicioService {
           return data;
         }),
         catchError((error) => {
-          this.authService.logout();
+          this.authService.response400();
           return throwError(error);
         })
       );
