@@ -52,7 +52,7 @@ export class CfgClientesComponent implements OnInit {
     private contactoEmpresaService: ContactoEmpresaService,
     private dialog: MatDialog,
     private router: Router,
-    private _snackBar: PopupService
+    private popupService: PopupService
   ) {
     this.stepperOrientation = this.breakpointObserver
       .observe('(min-width: 800px)')
@@ -292,7 +292,7 @@ export class CfgClientesComponent implements OnInit {
         (data) => {
           console.log('Empresa creada: ', data);
 
-          this._snackBar.okSnackBar('La empresa se creó correctamente');
+          this.popupService.okSnackBar('La empresa se creó correctamente');
           console.log('La empresa se creó correctamente.');
           // Recargar el componente navegando a la misma ruta
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -301,7 +301,7 @@ export class CfgClientesComponent implements OnInit {
 
         },
         (error) => {
-          this._snackBar.warnSnackBar('Error al crear la empresa');
+          this.popupService.warnSnackBar('Error al crear la empresa');
           console.error('Error al crear la empresa:', error);
         }
       )
@@ -342,7 +342,7 @@ export class CfgClientesComponent implements OnInit {
           // Lógica adicional después de la actualización exitosa, por ejemplo:
           this.dataShared.ocultarSpinner();
 
-          this._snackBar.okSnackBar('La empresa se modificó correctamente');
+          this.popupService.okSnackBar('La empresa se modificó correctamente');
           console.log('La empresa se modificó correctamente.');
           // Recargar el componente navegando a la misma ruta
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
@@ -352,7 +352,7 @@ export class CfgClientesComponent implements OnInit {
           this.modificarEliminarHabilitado = false;
         },
         (error) => {
-          this._snackBar.warnSnackBar('Error al actualizar la empresa');
+          this.popupService.warnSnackBar('Error al actualizar la empresa');
           console.error('Error al actualizar la empresa:', error);
           // Lógica para manejar errores, si es necesario
           this.dataShared.ocultarSpinner();
@@ -361,6 +361,8 @@ export class CfgClientesComponent implements OnInit {
       );
 
   }
+
+
 
   checkDelete(): void {
     const dialogRef = this.dialog.open(DeletePopupComponent, {
@@ -381,14 +383,14 @@ export class CfgClientesComponent implements OnInit {
     this.empresaService.deleteLogico(this.empresaSeleccionada?.idEmpresa!)
       .subscribe(
         () => {
-          this._snackBar.okSnackBar('La empresa se eliminó correctamente');
+          this.popupService.okSnackBar('La empresa se eliminó correctamente');
           console.log('La empresa se eliminó correctamente.');
           // Recargar el componente navegando a la misma ruta
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['administrador/clientes']);
           });
         },
-        () => this._snackBar.warnSnackBar('Error al eliminar la empresa', 'OK')
+        () => this.popupService.warnSnackBar('Error al eliminar la empresa', 'OK')
       );
   }
 

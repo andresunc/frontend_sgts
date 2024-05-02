@@ -43,9 +43,6 @@ export class PrintServicioComponent implements OnInit {
 
   ngOnInit() {
     this.loadServicioRecibido();
-    this.dataShared.updateChecklist$.subscribe(() => {
-      this.loadServicioRecibido();
-    });
   }
 
   loadServicioRecibido() {

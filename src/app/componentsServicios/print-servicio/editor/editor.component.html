@@ -13,9 +13,10 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="tipoEstado" style="margin-right: 1rem;">Establecer nuevo estado</label><br>
-                            <select class="form-select" id="tipoEstado" [(ngModel)]="selectedEstado" name="selectedEstado"
-                                (ngModelChange)="onEstadoChange()">
-                                <option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">{{ estado.tipoEstado
+                            <select class="form-select" id="tipoEstado" [(ngModel)]="selectedEstado"
+                                name="selectedEstado" (ngModelChange)="onEstadoChange()">
+                                <option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">{{
+                                    estado.tipoEstado
                                     }}</option>
                             </select>
                         </div>
@@ -26,9 +27,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="fechaHoraNotificacion">Indique hora y fecha para el recordatorio</label>
-                            <input [disabled]="checkEditable()" name="fechaHoraNotificacion" type="datetime-local" class="form-control"
-                                [(ngModel)]="data.servicioRecibido.fecha_notificacion" (change)="handleChange($event)"
-                                [min]="minDate">
+                            <input [disabled]="checkEditable()" name="fechaHoraNotificacion" type="datetime-local"
+                                class="form-control" [(ngModel)]="data.servicioRecibido.fecha_notificacion"
+                                (change)="handleChange($event)" [min]="minDate">
                         </div>
                     </div>
                 </div>
@@ -37,9 +38,13 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="presupuesto">Se ha presupuestado</label>
-                            <input [disabled]="checkEditable()" type="number" class="form-control" id="presupuesto" name="presupuesto"
-                                [(ngModel)]="data.servicioRecibido.total_presupuestado" min="0"
-                                (blur)="validarPresupuesto()" #presupuestoInput>
+                            <input [disabled]="checkEditable()" type="number" class="form-control" id="presupuesto"
+                                name="presupuesto" [(ngModel)]="data.servicioRecibido.total_presupuestado"
+                                (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
+                            <mat-error
+                                *ngIf="data.servicioRecibido.total_presupuestado && data.servicioRecibido.total_presupuestado.toString().length > maxDigits">
+                                No puedes ingresar más de {{maxDigits}} digitos
+                            </mat-error>
                         </div>
                     </div>
                 </div>
@@ -48,11 +53,17 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label for="comentario">Comentario</label>
-                            <textarea [disabled]="checkEditable()" type="text" class="form-control" id="comentario" name="comentario"
-                                [(ngModel)]="data.servicioRecibido.comentario"></textarea>
+                            <textarea [disabled]="checkEditable()" class="form-control" id="comentario"
+                                name="comentario" [(ngModel)]="data.servicioRecibido.comentario"
+                                maxlength="500"></textarea>
+                            <mat-error
+                                *ngIf="data.servicioRecibido.comentario && data.servicioRecibido.comentario.length >= 500">
+                                El comentario no puede tener más de 500 caracteres.
+                            </mat-error>
                         </div>
                     </div>
                 </div>
+
             </mat-card-content>
 
             <div style="display: flex; justify-content: end;">

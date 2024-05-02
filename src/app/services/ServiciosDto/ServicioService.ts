@@ -24,7 +24,6 @@ export class ServicioService {
   retry: number;
 
   constructor(private http: HttpClient,
-    private _snackBar: PopupService,
     private authService: AuthService) { 
       this.retry = parseInt(localStorage.getItem('retry')!) || 1;
     }
@@ -42,25 +41,7 @@ export class ServicioService {
           return data;
         }),
         catchError((error) => {
-
-          const interval = setInterval(() => {
-            this.countdown--;
-            this._snackBar.dismiss();
-            this._snackBar.warnSnackBar(`Reconectando en: ${this.countdown}`);
-            if (this.countdown === 0) {
-              this.retry++;
-              localStorage.setItem('retry', this.retry.toString());
-              console.log(this.retry)
-              clearInterval(interval);
-              window.location.reload();
-            }
-            if (this.retry > 3) {
-              this.authService.logout();
-              localStorage.clear();
-              this._snackBar.warnSnackBar(`${this.countdown} itentos, has sido desconectado`, 'Ok');
-            }
-          }, 1000);
-
+          this.authService.logout();
           return throwError(error);
         })
       );
