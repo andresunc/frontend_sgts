@@ -58,21 +58,4 @@ export class PopupService {
     this._snackBar.dismiss();
   }
 
-  checkDecision(inTitle?: string, inMessage?: string, inTextAction?: string, inBtnColor?: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      const dialogRef = this.dialog.open(DeletePopupComponent, {
-        data: {
-          title: inTitle,
-          message: inMessage,
-          textAction: inTextAction,
-          btnColor: inBtnColor
-        }
-      });
-
-      dialogRef.afterClosed().subscribe(result => {
-        resolve(result);
-      });
-    });
-  }
-
 }

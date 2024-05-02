@@ -10,6 +10,7 @@ import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio
 import { ServicioEntityService } from 'src/app/services/DomainServices/servicio-entity.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
+import { ValideishonService } from 'src/app/valideishon.service';
 
 @Component({
   selector: 'app-editor',
@@ -34,6 +35,7 @@ export class EditorComponent implements OnInit {
     private servicioService: ServicioEntityService,
     private dataShared: DataSharedService,
     public dialogRef: MatDialogRef<EditorComponent>,
+    public valideishon: ValideishonService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.selectedEstado = this.data.servicioRecibido.estado;
@@ -101,13 +103,18 @@ export class EditorComponent implements OnInit {
     }
   }
 
-  // Assuming 'presupuestoInput' is the correct identifier in the template
   @ViewChild('presupuestoInput', { static: false }) presupuestoInput!: ElementRef<HTMLInputElement>;
   validarPresupuesto() {
     const presupuesto = parseFloat(this.presupuestoInput.nativeElement.value);
-
     if (presupuesto < 0) {
       this.presupuestoInput.nativeElement.value = '0';
+    }
+  }
+
+  maxDigits = 10;
+  limitarLongitud(event: any) {
+    if (event.target.value.length > this.maxDigits) {
+      event.target.value = event.target.value.slice(0, this.maxDigits);
     }
   }
 

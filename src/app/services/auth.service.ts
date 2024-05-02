@@ -17,7 +17,8 @@ export class AuthService implements OnInit {
 
   private isLoggedIn: boolean = false;
 
-  constructor(private router: Router, private http: HttpClient) {
+  constructor(private router: Router,
+    private http: HttpClient,) {
     this.isLoggedIn = this.isLoggedInUser();
   }
 
@@ -41,7 +42,11 @@ export class AuthService implements OnInit {
   logout(): void {
     this.isLoggedIn = false;
     localStorage.removeItem('currentUser'); // Eliminar del localStorage al cerrar sesión
+    alert('La session ha expirado');
     this.router.navigate(['']);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   }
 
   // Verificar si esta logeado
@@ -61,6 +66,16 @@ export class AuthService implements OnInit {
     if (currentUserString !== null && currentUserString !== undefined) {
       const currentUser: AuthUser = JSON.parse(currentUserString);
       return currentUser.jwt!;
+    } else {
+      return null;
+    }
+  }
+
+  getCurrentUser(): AuthUser | null {
+    const currentUserString: string | null = localStorage.getItem('currentUser');
+    if (currentUserString !== null && currentUserString !== undefined) {
+      const currentUser: AuthUser = JSON.parse(currentUserString);
+      return currentUser;
     } else {
       return null;
     }
