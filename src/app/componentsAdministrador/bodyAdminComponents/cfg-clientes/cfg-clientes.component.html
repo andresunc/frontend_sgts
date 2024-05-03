@@ -28,7 +28,7 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Razon Social</mat-label>
-            <input matInput placeholder="" formControlName="RazonSocial" required>
+            <input matInput placeholder="" formControlName="RazonSocial" required maxlength="99">
             <mat-error
               *ngIf="firstFormGroup.get('RazonSocial')?.invalid && (firstFormGroup.get('RazonSocial')?.dirty || firstFormGroup.get('RazonSocial')?.touched)">
               Dato obligatorio.
@@ -44,7 +44,7 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Dirección</mat-label>
-            <input matInput formControlName="Direccion" placeholder="Calle, número, ciudad" required>
+            <input matInput formControlName="Direccion" placeholder="Calle, número, ciudad" required maxlength="199">
             <mat-error
               *ngIf="firstFormGroup.get('Direccion')?.invalid && (firstFormGroup.get('Direccion')?.dirty || firstFormGroup.get('Direccion')?.touched)">
               Dato obligatorio.
@@ -75,7 +75,7 @@
               <div class="contact-inputs">
                 <mat-form-field>
                   <mat-label>Nombre</mat-label>
-                  <input matInput placeholder="" formControlName="Nombre" maxlength="45" required>
+                  <input matInput placeholder="" formControlName="Nombre" maxlength="44" required>
                   <mat-error
                     *ngIf="secondFormGroup.get('Nombre')?.invalid && (secondFormGroup.get('Nombre')?.dirty || secondFormGroup.get('Nombre')?.touched)">
                     Dato obligatorio.
@@ -83,11 +83,11 @@
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Apellido</mat-label>
-                  <input matInput placeholder="" formControlName="Apellido" maxlength="45">
+                  <input matInput placeholder="" formControlName="Apellido" maxlength="44">
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Teléfono</mat-label>
-                  <input matInput formControlName="Telefono" placeholder="+54 351 xxxxxxxxx" maxlength="45" required>
+                  <input matInput formControlName="Telefono" placeholder="+54 351 xxxxxxxxx" maxlength="44" required>
                   <mat-error
                     *ngIf="secondFormGroup.get('Telefono')?.invalid && (secondFormGroup.get('Telefono')?.dirty || secondFormGroup.get('Telefono')?.touched)">
                     Dato obligatorio.
@@ -95,7 +95,7 @@
                 </mat-form-field>
                 <mat-form-field>
                   <mat-label>Email</mat-label>
-                  <input matInput type="email" formControlName="Email" placeholder="ejemplo@gmail.com">
+                  <input matInput type="email" formControlName="Email" placeholder="ejemplo@gmail.com" maxlength="99">
                   <mat-error
                     *ngIf="secondFormGroup?.get('email')?.hasError('email') && !secondFormGroup.get('email')?.hasError('required')">
                     Por favor ingrese un e-mail válido.

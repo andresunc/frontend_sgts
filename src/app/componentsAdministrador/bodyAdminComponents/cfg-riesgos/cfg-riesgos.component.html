@@ -18,7 +18,7 @@
         </mat-form-field>
         <mat-form-field>
             <mat-label for="Riesgo">Riesgo</mat-label>
-               <input matInput placeholder="Nuevo Riesgo" formControlName="Riesgo">
+               <input matInput placeholder="Nuevo Riesgo" formControlName="Riesgo" maxlength="45">
             </mat-form-field>
         <div class="btn-abm">
             <button mat-button (click)="crearRiesgo()" [disabled]="modificarEliminarHabilitado">Crear</button>

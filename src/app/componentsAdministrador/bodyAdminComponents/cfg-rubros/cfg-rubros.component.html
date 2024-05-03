@@ -18,7 +18,7 @@
     </mat-form-field>
     <mat-form-field>
         <mat-label for="Rubro">Rubro</mat-label>
-           <input matInput placeholder="Nuevo Rubro" formControlName="Rubro">
+           <input matInput placeholder="Nuevo Rubro" formControlName="Rubro" maxlength="45">
         </mat-form-field>
     <div class="btn-abm">
         <button mat-button (click)="crearRubro()" [disabled]="modificarEliminarHabilitado">Crear</button>
