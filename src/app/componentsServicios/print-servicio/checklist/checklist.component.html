@@ -29,7 +29,7 @@
                         <p
                             class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
                             <span>
-                                <mat-checkbox [disabled]="item.completo && item.finReal" [checked]="item.completo" (change)="updateAvance(item); getChange(index, item)"
+                                <mat-checkbox [checked]="item.completo" (change)="updateAvance(item); getChange(index, item)"
                                     (click)="$event.stopPropagation()">
                                 </mat-checkbox>
                                 <span>
@@ -61,7 +61,7 @@
 
                         <!-- Mensaje según ítem finalizado -->
                         <ng-container *ngIf="!item.completo">
-                            <p>Es estima finalizar el: {{ item.finEstimado | date:'dd/MM/yyyy' }}</p>
+                            <p>Se estima finalizar el: {{ item.finEstimado | date:'dd/MM/yyyy' }}</p>
                         </ng-container>
 
                         <ng-container>

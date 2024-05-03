@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ChecklistComponent } from 'src/app/componentsServicios/print-servicio/checklist/checklist.component';
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
@@ -8,6 +7,7 @@ import { SelectItemDto } from 'src/app/models/ModelsDto/SelectitemsDto';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
 import { SelectItemService } from 'src/app/services/ServiciosDto/select-item.service';
+import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -43,6 +43,7 @@ export class AddItemComponent implements OnInit {
     private selectItemService: SelectItemService,
     private recursoDtoService: RecursoDtoService,
     private itemChecklistService: ItemChecklistService,
+    private managerService: ManagerService,
     public dialog: MatDialog
   ) { }
 
@@ -53,8 +54,6 @@ export class AddItemComponent implements OnInit {
   }
 
   getParameters() {
-
-    this.dataShared.mostrarSpinner();
 
     this.selectItemService.getSelectItemDto().subscribe(
       (data: SelectItemDto[]) => {
@@ -81,8 +80,6 @@ export class AddItemComponent implements OnInit {
     )
 
     this.servicioRecibido = this.dataShared.getSharedObject();
-
-    this.dataShared.ocultarSpinner();
 
   }
 
@@ -117,9 +114,11 @@ export class AddItemComponent implements OnInit {
       const dependenciaMatch = !this.selectedDependencia || item.dependencia === this.selectedDependencia;
       const rubroMatch = !this.selectedRubro || item.rubro === this.selectedRubro;
       const tipoItemMatch = !this.selectedTipoItem || item.tipoItem === this.selectedTipoItem;
+      // Comprobar si el ID del elemento no está presente en itemChecklistDto
+      const idNotInDto = !this.servicioRecibido.itemChecklistDto.some(dtoItem => dtoItem.nombreItem === item.descripcion);
 
       // Retornar true solo si todas las condiciones coinciden
-      return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch;
+      return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch && idNotInDto;
     });
 
     // Verificar si el elemento seleccionado todavía está presente en la lista filtrada
@@ -212,6 +211,7 @@ export class AddItemComponent implements OnInit {
 
     // Actualzar lista de items del checklist
     this.servicioRecibido.itemChecklistDto.push(addItemCheckList);
+    this.dataShared.setSharedObject(this.servicioRecibido);
 
     // Persistir item del checklist
     this.itemChecklistService.addItemCheckList(addItemCheckList).subscribe(

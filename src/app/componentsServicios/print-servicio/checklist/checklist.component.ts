@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddItemComponent } from 'src/app/componentsShared/add-item/add-item.component';
+import { AddItemComponent } from 'src/app/componentsServicios/print-servicio/add-item/add-item.component';
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
