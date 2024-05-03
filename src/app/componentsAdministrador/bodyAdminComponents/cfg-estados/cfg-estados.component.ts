@@ -31,6 +31,7 @@ export class CfgEstadosComponent implements OnInit {
   firstFormGroup = new FormGroup({
     BuscarEstado: new FormControl<string>(''),
     Estado: new FormControl<string>(''),
+    Categoria: new FormControl<number | null>(null),
 
   })
 
@@ -48,7 +49,7 @@ export class CfgEstadosComponent implements OnInit {
   ngOnInit() {
 
     this.obtenerEstado();
-    this.optenerCategorias();
+    this.obtenerCategorias();
 
     // Observar los cambios en el input para detectar si se ha borrado el estado seleccionado
     this.firstFormGroup.controls.Estado.valueChanges.subscribe({
@@ -79,7 +80,7 @@ export class CfgEstadosComponent implements OnInit {
     });
   }
 
-  optenerCategorias() {
+  obtenerCategorias() {
 
     this.categoriaService.getAllCategorias()
     .subscribe(
@@ -120,7 +121,8 @@ export class CfgEstadosComponent implements OnInit {
   crearEstado() {
 
     const estadoName = this.firstFormGroup.controls.Estado.value;
-    if (estadoName === '' || estadoName === null) return;
+    const idCategoriaSeleccionada = this.firstFormGroup.controls.Categoria.value;
+    if (estadoName === '' || estadoName === null || idCategoriaSeleccionada === null) return;
 
 
     if (!estadoName && this.estadoSeleccionado) {
@@ -135,7 +137,8 @@ export class CfgEstadosComponent implements OnInit {
     this.dataShared.mostrarSpinner();
 
     const estado: Estado = new Estado();
-    estadoName ? estado.tipoEstado = estadoName : undefined;
+    estado.tipoEstado = estadoName;
+    estado.idCategoria = idCategoriaSeleccionada;
 
     this.estadosService.createEstado(estado)
       .subscribe(
@@ -143,6 +146,8 @@ export class CfgEstadosComponent implements OnInit {
           console.log('Estado creado: ', data);
 
           this._snackBar.okSnackBar('El estado se creó correctamente');
+          this.obtenerEstado();
+
           // Recargar el componente navegando a la misma ruta
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['administrador/estados']);
@@ -167,13 +172,14 @@ export class CfgEstadosComponent implements OnInit {
     }
 
     const nuevoNombreEstado = this.firstFormGroup.controls.Estado.value;
-    if (!nuevoNombreEstado || nuevoNombreEstado.trim() === '') {
-      console.error('El nuevo nombre del estado no puede estar vacío.');
+    const idCategoriaSeleccionada = this.firstFormGroup.controls.Categoria.value;
+    if (!nuevoNombreEstado || nuevoNombreEstado.trim() === ''  || idCategoriaSeleccionada === null) {
+      console.error('El nuevo nombre del estado y la categoria no pueden estar vacíos.');
       return;
     }
 
     const idEstadoModificar = this.estadoSeleccionado.idEstado;
-    const estadoModificado: Estado = { ...this.estadoSeleccionado, tipoEstado: nuevoNombreEstado };
+    const estadoModificado: Estado = { ...this.estadoSeleccionado, tipoEstado: nuevoNombreEstado, idCategoria: idCategoriaSeleccionada };
 
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
