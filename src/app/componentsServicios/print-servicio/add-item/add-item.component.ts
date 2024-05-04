@@ -7,7 +7,6 @@ import { SelectItemDto } from 'src/app/models/ModelsDto/SelectitemsDto';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
 import { SelectItemService } from 'src/app/services/ServiciosDto/select-item.service';
-import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -43,7 +42,6 @@ export class AddItemComponent implements OnInit {
     private selectItemService: SelectItemService,
     private recursoDtoService: RecursoDtoService,
     private itemChecklistService: ItemChecklistService,
-    private managerService: ManagerService,
     public dialog: MatDialog
   ) { }
 
@@ -199,37 +197,29 @@ export class AddItemComponent implements OnInit {
 
     this.dataShared.mostrarSpinner();
     // Crear el Item del CheckList
-    let addItemCheckList = new ItemChecklist();
-    addItemCheckList.servicioIdServicio = this.servicioRecibido.idServicio;
-    addItemCheckList.itemIdItem = parseInt(this.selectItem!);
-    addItemCheckList.finEstandar = (this.fechaHoraRealizacion) ? new Date(this.fechaHoraRealizacion) : undefined;
-    addItemCheckList.recursoGgIdRecursoGg = parseInt(this.idResponsable);
-    addItemCheckList.tasaValor = this.montoTasa;
-    addItemCheckList.tasaCantidadHojas = this.cantidadHojas;
-    addItemCheckList.urlComprobanteTasa = this.urlComprobante;
-    addItemCheckList.notificado = this.haSidoNotificado;
+    let addItemToCheckList = new ItemChecklist();
+    addItemToCheckList.servicioIdServicio = this.servicioRecibido.idServicio;
+    addItemToCheckList.itemIdItem = parseInt(this.selectItem!);
+    addItemToCheckList.finEstandar = (this.fechaHoraRealizacion) ? new Date(this.fechaHoraRealizacion) : undefined;
+    addItemToCheckList.recursoGgIdRecursoGg = parseInt(this.idResponsable);
+    addItemToCheckList.tasaValor = this.montoTasa;
+    addItemToCheckList.tasaCantidadHojas = this.cantidadHojas;
+    addItemToCheckList.urlComprobanteTasa = this.urlComprobante;
+    addItemToCheckList.notificado = this.haSidoNotificado;
 
     // Actualzar lista de items del checklist
-    this.servicioRecibido.itemChecklistDto.push(addItemCheckList);
+    this.servicioRecibido.itemChecklistDto.push(addItemToCheckList);
     this.dataShared.setSharedObject(this.servicioRecibido);
 
     // Persistir item del checklist
-    this.itemChecklistService.addItemCheckList(addItemCheckList).subscribe(
+    this.itemChecklistService.addItemCheckList(addItemToCheckList).subscribe(
       (data: ItemChecklist) => {
-        addItemCheckList = data;
-        console.log('ItemChecklist persistido: ', addItemCheckList);
+        addItemToCheckList = data;
+        console.log('ItemChecklist persistido: ', addItemToCheckList);
         this.dataShared.ocultarSpinner();
       }
     )
 
-    // Actualizar Lista de Items en el CheckList del componente ChecklistComponent
-    this.updateChecklist();
-
-  }
-
-  updateChecklist() {
-    this.dataShared.triggerUpdateChecklist();
-    this.dataShared.triggerUpdateLoadServicioRecibido();
   }
 
 }

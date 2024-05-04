@@ -4,6 +4,7 @@ import { Estado } from 'src/app/models/DomainModels/Estado';
 import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
 import { Servicio } from 'src/app/models/DomainModels/Servicio';
 import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
+import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
 import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
 import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
@@ -25,6 +26,7 @@ export class EditorComponent implements OnInit {
   recordatoriOriginal!: any;
   idEstadOriginal!: string;
   comentariOriginal!: string;
+  servicioRecibido!: Servicios;
 
   // inyecto el servicio recibido desde print
   constructor(
@@ -36,13 +38,13 @@ export class EditorComponent implements OnInit {
     private dataShared: DataSharedService,
     public dialogRef: MatDialogRef<EditorComponent>,
     public valideishon: ValideishonService,
-    @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.selectedEstado = this.data.servicioRecibido.estado;
-    this.presupuestOriginal = this.data.servicioRecibido.total_presupuestado;
-    this.recordatoriOriginal = this.data.servicioRecibido.fecha_notificacion;
-    this.comentariOriginal = this.data.servicioRecibido.comentario;
-    this.idEstadOriginal = this.data.servicioRecibido.estado;
+    this.servicioRecibido = this.dataShared.getSharedObject();
+    this.selectedEstado = this.servicioRecibido.estado;
+    this.presupuestOriginal = this.servicioRecibido.total_presupuestado;
+    this.recordatoriOriginal = this.servicioRecibido.fecha_notificacion;
+    this.comentariOriginal = this.servicioRecibido.comentario;
+    this.idEstadOriginal = this.servicioRecibido.estado;
   }
 
   ngOnInit(): void {
@@ -99,7 +101,7 @@ export class EditorComponent implements OnInit {
 
     if (selectedTime < currenTime) {
       this._snackBar.errorSnackBar("Tu selección es menor al momento actual");
-      this.data.servicioRecibido.fecha_notificacion = "";
+      this.servicioRecibido.fecha_notificacion = "";
     }
   }
 
@@ -122,37 +124,56 @@ export class EditorComponent implements OnInit {
 
     this.dataShared.mostrarSpinner();
 
+    let requestsCount = 0; // Inicializamos un contador de solicitudes
+
+    const handleComplete = () => {
+      requestsCount--;
+      if (requestsCount === 0) {
+        this.dataShared.ocultarSpinner(); // Ocultar el spinner cuando no haya más solicitudes en curso
+      }
+    };
+
     // Si estadoMatch no es nulo y los id no coinciden entonces hay cambios y ejecutar el addHistorico
-    if (this.estadoMatch && this.estadoMatch?.idEstado != this.data.servicioRecibido.idEstado) {
+    // Incrementar el contador de solicitudes antes de realizar cada solicitud
+    requestsCount++;
+    if (this.estadoMatch && this.estadoMatch?.idEstado != this.servicioRecibido.idEstado) {
 
       // Armo el objeto historico de estado
       let historicoEstado = new HistoricoEstado();
       historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;
-      historicoEstado.servicioIdServicio = this.data.servicioRecibido.idServicio;
-
+      historicoEstado.servicioIdServicio = this.servicioRecibido.idServicio;
+      this.dataShared.setSharedObject(this.servicioRecibido) //
       // Suscripción al servicio Historico Estado para agregar el último estado a la bd
       this.historicoEstado.addHistoricoEstado(historicoEstado)
         .subscribe(
-          (response) => console.log('HistoricoEstado agregado con éxito:', response),
-          (error) => {
-            console.error('Error al agregar HistoricoEstado:', error)
-          }
+          (response) => {
+            console.log('HistoricoEstado agregado con éxito:', response);
+            this.dataShared.setSharedObject(this.servicioRecibido);
+          },
+          (error) => console.error('Error al agregar HistoricoEstado:', error),
+          handleComplete, // Llamar a handleComplete después de completar la solicitud
         );
     } else {
       console.log('No hay cambios en el estado de servicio')
     }
 
     // Verificar si hay cambios en el presupuesto y ejecutar
-    if (this.presupuestOriginal != this.data.servicioRecibido.total_presupuestado) {
+    // Incrementar el contador de solicitudes antes de realizar cada solicitud
+    requestsCount++;
+    if (this.presupuestOriginal != this.servicioRecibido.total_presupuestado) {
 
       let servicioEmpresa = new ServicioEmpresa();
-      servicioEmpresa.costoServicio = this.data.servicioRecibido.total_presupuestado;
+      servicioEmpresa.costoServicio = this.servicioRecibido.total_presupuestado;
 
       // Suscripción a Servicio Empresa para agregar el último estado a la bd
-      this.servicioEmpresa.update(this.data.servicioRecibido.idServicio, servicioEmpresa)
+      this.servicioEmpresa.update(this.servicioRecibido.idServicio, servicioEmpresa)
         .subscribe(
-          (response) => console.log('ServicioEmpresa actualizado con éxito:', response),
-          (error) => console.error('Error al actualizar ServicioEmpresa:', error)
+          (response) => {
+            console.log('ServicioEmpresa actualizado con éxito:', response);
+            this.dataShared.setSharedObject(this.servicioRecibido);
+          },
+          (error) => console.error('Error al actualizar ServicioEmpresa:', error),
+          handleComplete // Llamar a handleComplete después de completar la solicitud
         );
 
     } else {
@@ -160,24 +181,34 @@ export class EditorComponent implements OnInit {
     }
 
     // Verificar si hay cambios en el servicio y ejecutar (Recordatorio, comentario)
-    if (this.recordatoriOriginal != this.data.servicioRecibido.fecha_notificacion ||
-      this.comentariOriginal != this.data.servicioRecibido.comentario) {
+    // Incrementar el contador de solicitudes antes de realizar cada solicitud
+    requestsCount++;
+    if (this.recordatoriOriginal != this.servicioRecibido.fecha_notificacion ||
+      this.comentariOriginal != this.servicioRecibido.comentario) {
 
       let servicio: Servicio = new Servicio();
-      servicio.fechaHoraAlertaVenc = this.data.servicioRecibido.fecha_notificacion;
-      servicio.comentario = this.data.servicioRecibido.comentario;
-      //servicio.tipoServicioIdTipoServicio = this.data.servicioRecibido.idTipoServicio;
+      servicio.fechaHoraAlertaVenc = new Date(this.servicioRecibido.fecha_notificacion);
+      servicio.comentario = this.servicioRecibido.comentario;
+      //servicio.tipoServicioIdTipoServicio = this.servicioRecibido.idTipoServicio;
 
-      this.servicioService.update(this.data.servicioRecibido.idServicio, servicio).subscribe(
-        (response) => console.log('Servicio actualizado con éxito:', response),
-        (error) => console.error('Error al actualizar el Servicio:', error)
-      );
+      this.servicioService.update(this.servicioRecibido.idServicio, servicio)
+        .subscribe(
+          (response) => {
+            console.log('Servicio actualizado con éxito:', response);
+            this.dataShared.setSharedObject(this.servicioRecibido);
+          },
+          (error) => console.error('Error al actualizar el Servicio:', error),
+          handleComplete // Llamar a handleComplete después de completar la solicitud
+        );
 
     } else {
       console.log('No hay cambios en el recordatorio o el comentario')
     }
 
-    this.dataShared.ocultarSpinner();
+    // Llamar a handleComplete si no hay solicitudes que realizar
+    if (requestsCount === 0) {
+      handleComplete();
+    }
 
   }
 

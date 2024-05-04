@@ -14,6 +14,7 @@ import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio
 import { Router } from '@angular/router';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 
 @Component({
   selector: 'app-print-servicio',
@@ -38,42 +39,49 @@ export class PrintServicioComponent implements OnInit {
     private router: Router,
     private _snackBar: PopupService,
     private authService: AuthService,
-  ) { }
+    private servicioService: ServicioService
+  ) { 
+    this.servicioRecibido = this.getServicioLocalStorage();
+  }
+
+  ngOnInit() {
+    this.setParams();
+    this.authorized = this.authService.isAdmin();
+    this.getServicioById(this.servicioRecibido.idServicio);
+  }
 
   getSvManager() {
     return this.svManager;
   }
 
-  ngOnInit() {
-    this.loadServicioRecibido();
-    this.authorized = this.authService.isAdmin()
+  getServicioLocalStorage(): Servicios {
+    return JSON.parse(localStorage.getItem('servicioRecibido') || '{}');
   }
 
-  loadServicioRecibido() {
-    // Intentará obtener el servicio desde localStorage
-    this.servicioRecibido = JSON.parse(localStorage.getItem('servicioRecibido') || '{}');
-    // Si no está en localStorage, obtenerlo de dataShared y guardarlo en localStorage
-    if (!this.servicioRecibido) {
-      this.servicioRecibido = this.dataShared.getSharedObject();
-      localStorage.setItem('servicioRecibido', JSON.stringify(this.servicioRecibido));
-    }
+  getServicioById(idServicio: number) {
+    this.dataShared.mostrarSpinner();
+    this.servicioService.getServicioById(idServicio)
+      .subscribe(
+        (data: Servicios) => {
+          this.servicioRecibido = data;
+          this.dataShared.ocultarSpinner();
+        }
+      )
+  }
 
+  setParams() {
     this.title = this.title + this.servicioRecibido.cliente + ' | ' + this.servicioRecibido.tipo;
-    //this.avance = this.svManager.calcularAvance(this.servicioRecibido);
     this.recurrencia = this.servicioRecibido.recurrencia;
     this.getContactoEmpresa();
   }
 
-  /**
-   * Función para activar la edición de los items 
-   * (Refactorizar segun permisos de usuario)
-   */
-  editable: boolean = false;
   editarServicio() {
-    this.editable = !this.editable;
-    if (this.editable) console.log('Ahora es posible editar las características de ésta página');
-    this.dialog.open(EditorComponent, {
+    this.dataShared.setSharedObject(this.servicioRecibido);
+    const dialogRef = this.dialog.open(EditorComponent, {
       data: { servicioRecibido: this.servicioRecibido } //
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.getServicioById(this.servicioRecibido.idServicio);
     });
   }
 
@@ -120,10 +128,16 @@ export class PrintServicioComponent implements OnInit {
   }
 
   openChecklistPopUp() {
-    // si no esta finalizado
+    // si no está finalizado
     if (this.servicioRecibido.idCategoria != 3) {
       this.dataShared.setSharedObject(this.servicioRecibido);
-      this.dialog.open(ChecklistComponent);
+      const dialogRef = this.dialog.open(ChecklistComponent);
+
+      dialogRef.afterClosed().subscribe(() => {
+        // Se ejecutará cuando se cierre el modal del checklist
+        this.dataShared.setSharedObject(this.servicioRecibido);
+        this.getServicioById(this.servicioRecibido.idServicio);
+      });
     } else {
       this._snackBar.warnSnackBar(`El servicio ha ${this.servicioRecibido.categoria.toLowerCase()}`)
     }

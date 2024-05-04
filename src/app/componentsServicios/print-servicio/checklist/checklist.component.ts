@@ -21,7 +21,7 @@ export class ChecklistComponent implements OnInit {
   dataSourceItems: ItemChecklistDto[];
   avance: number = 0;
   editable: boolean = false;
-  servicio: Servicios | null = null;
+  servicio: Servicios;
 
   constructor(
     private dataShared: DataSharedService,
@@ -32,8 +32,8 @@ export class ChecklistComponent implements OnInit {
     private _snackBar: PopupService,
     public dialog: MatDialog) {
     this.servicio = this.dataShared.getSharedObject();
-    this.dataSourceItems = this.dataShared.getSharedObject().itemChecklistDto;
-    this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject());
+    this.dataSourceItems = this.servicio.itemChecklistDto;
+    this.avance = this.svManager.calcularAvance(this.servicio.itemChecklistDto);
   }
 
   ngOnInit(): void {
@@ -44,10 +44,13 @@ export class ChecklistComponent implements OnInit {
   }
 
   refreshItemsCheckList(): void {
+    this.dataShared.mostrarSpinner();
     this.servicioService.getItemsChecklist(this.dataShared.getSharedObject().idServicio)
       .subscribe(
         (data) => {
-          this.dataSourceItems = data;
+          this.dataShared.getSharedObject().itemChecklistDto = data;
+          this.dataShared.setSharedObject(this.dataShared.getSharedObject());
+          this.dataShared.ocultarSpinner();
         }
       )
   }
@@ -57,15 +60,16 @@ export class ChecklistComponent implements OnInit {
     this.completo = !this.completo;
     item.completo = !item.completo
     // Encuentra el índice del elemento en la lista
-    const index = this.servicio!.itemChecklistDto.findIndex((element) => element.idItemChecklist === item.idItemChecklist);
+    const index = this.dataShared.getSharedObject().itemChecklistDto.findIndex((element: any) => element.idItemChecklist === item.idItemChecklist);
 
     // Si se encuentra el elemento y no es undefined
-    if (index !== -1 && this.servicio?.itemChecklistDto[index] !== undefined) {
+    if (index !== -1 && this.dataShared.getSharedObject().itemChecklistDto[index] !== undefined) {
       // Actualiza la propiedad completo del elemento encontrado
-      this.servicio.itemChecklistDto[index].completo = !this.servicio?.itemChecklistDto[index].completo;
+      this.dataShared.getSharedObject().itemChecklistDto[index].completo = !this.dataShared.getSharedObject().itemChecklistDto[index].completo;
+      this.dataShared.setSharedObject(this.dataShared.getSharedObject());
 
       // Calcula el nuevo avance
-      this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject());
+      this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject().itemChecklistDto);
     } else {
       // Maneja el caso en que el elemento no se encuentre o sea undefined
       console.error('No se encontró el elemento con ID:', item.idItemChecklist);
@@ -113,6 +117,8 @@ export class ChecklistComponent implements OnInit {
     if (this.dataSourceItems) {
       this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
         (data: ItemChecklistDto[]) => {
+          this.servicio.itemChecklistDto = data;
+          this.dataShared.setSharedObject(this.servicio);
           console.log('Items Actualizados', data);
           this.dataShared.ocultarSpinner();
         }
@@ -122,7 +128,11 @@ export class ChecklistComponent implements OnInit {
 
   openAddItemComponent() {
     if (this.authService.isAdmin()) {
-      this.dialog.open(AddItemComponent);
+      const dialogRef = this.dialog.open(AddItemComponent);
+
+      dialogRef.afterClosed().subscribe(() => {
+        this.refreshItemsCheckList();
+      });
     } else {
       this._snackBar.warnSnackBar('Permisos insuficientes');
     }

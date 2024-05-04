@@ -71,7 +71,7 @@
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
                             (click)="svService.enviarObjeto(element)">
-                            <span class="contentTable">{{svService.calcularAvance(element) + '%'}}</span>
+                            <span class="contentTable">{{svService.calcularAvance(element.itemChecklistDto) + '%'}}</span>
                         </td>
                     </ng-container>
 

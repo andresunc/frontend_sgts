@@ -26,7 +26,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
-    private servicioService: ServicioService, svManager: ManagerService,
+    private servicioService: ServicioService, private svManager: ManagerService,
     private _snackBar: PopupService, private authService: AuthService) {
     this.svService = svManager;
   }

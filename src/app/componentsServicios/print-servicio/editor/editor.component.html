@@ -1,7 +1,7 @@
 <div>
     <div class="modal-header">
         <div>
-            <h6 class="modal-title font-weight-bold">Editar servicio ID: {{ data.servicioRecibido.idServicio }}</h6>
+            <h6 class="modal-title font-weight-bold">Editar servicio ID: {{ servicioRecibido.idServicio }}</h6>
         </div>
         <mat-icon style="font-size: 1.2rem; cursor: pointer;" [mat-dialog-close]="true">close</mat-icon>
     </div>
@@ -28,7 +28,7 @@
                         <div class="col-md-12">
                             <label for="fechaHoraNotificacion">Indique hora y fecha para el recordatorio</label>
                             <input [disabled]="checkEditable()" name="fechaHoraNotificacion" type="datetime-local"
-                                class="form-control" [(ngModel)]="data.servicioRecibido.fecha_notificacion"
+                                class="form-control" [(ngModel)]="servicioRecibido.fecha_notificacion"
                                 (change)="handleChange($event)" [min]="minDate">
                         </div>
                     </div>
@@ -39,10 +39,10 @@
                         <div class="col-md-12">
                             <label for="presupuesto">Se ha presupuestado</label>
                             <input [disabled]="checkEditable()" type="number" class="form-control" id="presupuesto"
-                                name="presupuesto" [(ngModel)]="data.servicioRecibido.total_presupuestado"
+                                name="presupuesto" [(ngModel)]="servicioRecibido.total_presupuestado"
                                 (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
                             <mat-error
-                                *ngIf="data.servicioRecibido.total_presupuestado && data.servicioRecibido.total_presupuestado.toString().length > maxDigits">
+                                *ngIf="servicioRecibido.total_presupuestado && servicioRecibido.total_presupuestado.toString().length > maxDigits">
                                 No puedes ingresar más de {{maxDigits}} digitos
                             </mat-error>
                         </div>
@@ -54,10 +54,10 @@
                         <div class="col-md-12">
                             <label for="comentario">Comentario</label>
                             <textarea [disabled]="checkEditable()" class="form-control" id="comentario"
-                                name="comentario" [(ngModel)]="data.servicioRecibido.comentario"
+                                name="comentario" [(ngModel)]="servicioRecibido.comentario"
                                 maxlength="500"></textarea>
                             <mat-error
-                                *ngIf="data.servicioRecibido.comentario && data.servicioRecibido.comentario.length >= 500">
+                                *ngIf="servicioRecibido.comentario && servicioRecibido.comentario.length >= 500">
                                 El comentario no puede tener más de 500 caracteres.
                             </mat-error>
                         </div>

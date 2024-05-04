@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Servicios } from '../models/DomainModels/Servicios';
 
 @Injectable({
   providedIn: 'root'
@@ -18,21 +19,15 @@ export class DataSharedService {
   private updateChecklistSubject = new BehaviorSubject<void>(undefined);
   updateChecklist$ = this.updateChecklistSubject.asObservable();
 
-  private UpdateLoadServicioRecibido = new BehaviorSubject<void>(undefined);
-  UpdateLoadServicioRecibido$ = this.UpdateLoadServicioRecibido.asObservable();
 
   constructor() { }
-
-  triggerUpdateLoadServicioRecibido() {
-    this.UpdateLoadServicioRecibido.next();
-  }
 
   triggerUpdateChecklist() {
     this.updateChecklistSubject.next();
   }
     
-  setSharedObject(data: any) {
-    this.sharedObject = data;
+  setSharedObject(servicio: Servicios) {
+    this.sharedObject = servicio;
   }
 
   getSharedObject() {
