@@ -22,7 +22,7 @@ export class PopupService {
         snackBar: this._snackBar,
         color: 'text-success'
       },
-      duration: 2000,
+      duration: 5000,
     });
   }
 

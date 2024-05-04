@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ChecklistComponent } from 'src/app/componentsServicios/print-servicio/checklist/checklist.component';
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
@@ -54,8 +53,6 @@ export class AddItemComponent implements OnInit {
 
   getParameters() {
 
-    this.dataShared.mostrarSpinner();
-
     this.selectItemService.getSelectItemDto().subscribe(
       (data: SelectItemDto[]) => {
         this.selectItemList = data;
@@ -81,8 +78,6 @@ export class AddItemComponent implements OnInit {
     )
 
     this.servicioRecibido = this.dataShared.getSharedObject();
-
-    this.dataShared.ocultarSpinner();
 
   }
 
@@ -117,9 +112,11 @@ export class AddItemComponent implements OnInit {
       const dependenciaMatch = !this.selectedDependencia || item.dependencia === this.selectedDependencia;
       const rubroMatch = !this.selectedRubro || item.rubro === this.selectedRubro;
       const tipoItemMatch = !this.selectedTipoItem || item.tipoItem === this.selectedTipoItem;
+      // Comprobar si el ID del elemento no está presente en itemChecklistDto
+      const idNotInDto = !this.servicioRecibido.itemChecklistDto.some(dtoItem => dtoItem.nombreItem === item.descripcion);
 
       // Retornar true solo si todas las condiciones coinciden
-      return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch;
+      return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch && idNotInDto;
     });
 
     // Verificar si el elemento seleccionado todavía está presente en la lista filtrada
@@ -200,36 +197,29 @@ export class AddItemComponent implements OnInit {
 
     this.dataShared.mostrarSpinner();
     // Crear el Item del CheckList
-    let addItemCheckList = new ItemChecklist();
-    addItemCheckList.servicioIdServicio = this.servicioRecibido.idServicio;
-    addItemCheckList.itemIdItem = parseInt(this.selectItem!);
-    addItemCheckList.finEstandar = (this.fechaHoraRealizacion) ? new Date(this.fechaHoraRealizacion) : undefined;
-    addItemCheckList.recursoGgIdRecursoGg = parseInt(this.idResponsable);
-    addItemCheckList.tasaValor = this.montoTasa;
-    addItemCheckList.tasaCantidadHojas = this.cantidadHojas;
-    addItemCheckList.urlComprobanteTasa = this.urlComprobante;
-    addItemCheckList.notificado = this.haSidoNotificado;
+    let addItemToCheckList = new ItemChecklist();
+    addItemToCheckList.servicioIdServicio = this.servicioRecibido.idServicio;
+    addItemToCheckList.itemIdItem = parseInt(this.selectItem!);
+    addItemToCheckList.finEstandar = (this.fechaHoraRealizacion) ? new Date(this.fechaHoraRealizacion) : undefined;
+    addItemToCheckList.recursoGgIdRecursoGg = parseInt(this.idResponsable);
+    addItemToCheckList.tasaValor = this.montoTasa;
+    addItemToCheckList.tasaCantidadHojas = this.cantidadHojas;
+    addItemToCheckList.urlComprobanteTasa = this.urlComprobante;
+    addItemToCheckList.notificado = this.haSidoNotificado;
 
     // Actualzar lista de items del checklist
-    this.servicioRecibido.itemChecklistDto.push(addItemCheckList);
+    this.servicioRecibido.itemChecklistDto.push(addItemToCheckList);
+    this.dataShared.setSharedObject(this.servicioRecibido);
 
     // Persistir item del checklist
-    this.itemChecklistService.addItemCheckList(addItemCheckList).subscribe(
+    this.itemChecklistService.addItemCheckList(addItemToCheckList).subscribe(
       (data: ItemChecklist) => {
-        addItemCheckList = data;
-        console.log('ItemChecklist persistido: ', addItemCheckList);
+        addItemToCheckList = data;
+        console.log('ItemChecklist persistido: ', addItemToCheckList);
         this.dataShared.ocultarSpinner();
       }
     )
 
-    // Actualizar Lista de Items en el CheckList del componente ChecklistComponent
-    this.updateChecklist();
-
-  }
-
-  updateChecklist() {
-    this.dataShared.triggerUpdateChecklist();
-    this.dataShared.triggerUpdateLoadServicioRecibido();
   }
 
 }

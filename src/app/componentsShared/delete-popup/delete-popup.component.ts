@@ -12,11 +12,11 @@ export class DeletePopupComponent {
 
   constructor(public dialogRef: MatDialogRef<DeletePopupComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { message: string }) {
-      this.message = data.message;
-     }
+    this.message = data.message;
+  }
 
   checkDelete(result: boolean): void {
     this.dialogRef.close(result);
   }
-  
+
 }

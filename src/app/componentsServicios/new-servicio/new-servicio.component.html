@@ -54,7 +54,7 @@
                                         <mat-label>Responsable</mat-label>
                                         <mat-select formControlName="responsable" placeholder="Seleccionar responsable">
                                             <mat-option *ngFor="let recurso of recursoList" [value]="recurso">
-                                                <span>{{ recurso.nombre + ' Dni: ' + recurso.dni }}</span>
+                                                <span>{{ recurso.nombre + ', ' + recurso.apellido }}</span>
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -115,7 +115,6 @@
                                     <h5>Datos del Responsable general:</h5>
                                     <mat-card class="cardResume">
                                         <span>{{ 'Responsable: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.nombre + ' ' + servicioForm.get('responsable')?.value.apellido : '*') }}</span>
-                                        <span>{{ 'Rol: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.rol : '*') }}</span>
                                         <span>{{ 'DNI: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.dni : '*') }}</span>
                                     </mat-card>
                                 </div>

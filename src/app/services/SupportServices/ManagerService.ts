@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { ServicioService } from '../ServiciosDto/ServicioService';
 import { Subject, takeUntil } from 'rxjs';
+import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,13 +25,13 @@ export default class ManagerService implements OnDestroy {
     return !this.editable;
   }
 
-  calcularAvance(servicio: Servicios): number {
+  calcularAvance(itemsChecklist: ItemChecklistDto[]): number {
 
-    const totalItems = servicio.itemChecklistDto.length;
+    const totalItems = itemsChecklist.length;
     // 1 Si el total de items es mayor a 0 hacer, sino retornar 0
     // 2 Filtrar los completos? y contarlos
     // 3 Calcular y retornar el porcentaje de items completados (Completos/Total) * 100
-    return servicio.itemChecklistDto.filter(item => item.completo).length / totalItems * 100 | 0;
+    return itemsChecklist.filter(item => item.completo).length / totalItems * 100 | 0;
   }
 
   // Establece la alerta de un servicio cuando esta en estado presentado.
@@ -57,17 +58,17 @@ export default class ManagerService implements OnDestroy {
   castNewServicio(newServicio: NuevoServicioDto) {
     // Se consultan los últimos 10 para evitar problemas si se crean servicios de manera simultánea
     this.servicioService.getTopServices(10)
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe(
-      (data) => {
-        this.listServicios = data.filter(servicio => servicio.idServicio === newServicio.servicio.idServicio);
-        if (this.listServicios.length > 0) {
-          this.enviarObjeto(this.listServicios[0]);
-        } else {
-          console.log("No se encontraron servicios con el id proporcionado.");
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (data) => {
+          this.listServicios = data.filter(servicio => servicio.idServicio === newServicio.servicio.idServicio);
+          if (this.listServicios.length > 0) {
+            this.enviarObjeto(this.listServicios[0]);
+          } else {
+            console.log("No se encontraron servicios con el id proporcionado.");
+          }
         }
-      }
-    )
+      )
   }
 
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.

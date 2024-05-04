@@ -59,7 +59,7 @@
 
           <div class="row">
 
-            <div class="col-md-12 mb-3 p-0" *ngIf="this.getSvManager().calcularAvance(servicioRecibido) as avance">
+            <div class="col-md-12 mb-3 p-0" *ngIf="this.getSvManager().calcularAvance(servicioRecibido.itemChecklistDto) as avance">
               <div class="card">
                 <div class="card-body paddingBody">
                   <h6 class="card-title">{{avance === 0 ? 'Aún no se ha comenzado a trabajar' : avance === 100 ? 'Servicio finalizado':'Avance'}}</h6>

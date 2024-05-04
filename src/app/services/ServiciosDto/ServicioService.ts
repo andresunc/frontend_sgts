@@ -4,7 +4,6 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Servicios } from '../../models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
-import { PopupService } from '../SupportServices/popup.service';
 import { UrlBackend } from '../../models/Url';
 import { AuthService } from '../auth.service';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
@@ -20,6 +19,7 @@ export class ServicioService {
   private getTopServicesUrl = this.urlBackend + '/servicioDto/getTopServices';
   private getItemsChecklistUrl = this.urlBackend + '/servicioDto/getItemsChecklist';
   private urlNewServicio = this.urlBackend + '/nuevo/crearServicio';
+  private getServicioByIdUrl = this.urlBackend + '/servicioDto/';
   countdown: number = 5;
   retry: number;
 
@@ -38,6 +38,24 @@ export class ServicioService {
       .pipe(
         tap((data) => {
           console.log('getTopServices: ', data);
+          return data;
+        }),
+        catchError((error) => {
+          this.authService.response400();
+          return throwError(error);
+        })
+      );
+  }
+
+  // Método para obtener los servicios más recientes
+  getServicioById(servicioId: number): Observable<Servicios> {
+
+    const headers: HttpHeaders = this.authService.getHeader();
+
+    return this.http.get<Servicios>(this.getServicioByIdUrl + servicioId, { headers })
+      .pipe(
+        tap((data) => {
+          console.log('Servicio ID: ' + servicioId, data);
           return data;
         }),
         catchError((error) => {
