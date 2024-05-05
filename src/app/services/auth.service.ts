@@ -49,11 +49,11 @@ export class AuthService implements OnInit {
   response400(): void {
     this.isLoggedIn = false;
     this.flag++
-    this.router.navigate(['']);
     if (this.flag === 1) {
       alert('La session ha expirado');
       localStorage.removeItem('currentUser');
       setTimeout(() => {
+        this.router.navigate(['']);
         window.location.reload();
       }, 1000);
     }

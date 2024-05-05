@@ -4,7 +4,7 @@ export class ItemChecklistDto {
     nombreItem?: string;
     inicioEstimado?: string;
     finEstimado?: string;
-    ejecucion_real?: string;
+    horasDesvio?: number;
     finReal?: string;
     notificado?: boolean;
     tasaValor?: number;

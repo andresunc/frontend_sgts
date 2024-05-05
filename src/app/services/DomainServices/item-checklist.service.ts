@@ -4,6 +4,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { UrlBackend } from 'src/app/models/Url';
 import { AuthService } from '../auth.service';
+import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class ItemChecklistService {
   urlBackend = new UrlBackend().getUrlBackend();
   addNewItemCheckListUrl = this.urlBackend + '/itemChecklist/create';
   updateItemCheckListUrl = this.urlBackend + '/itemChecklist/update';
+  deleteItemCheckListUrl = this.urlBackend + '/itemChecklist/delete';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -36,6 +38,24 @@ export class ItemChecklistService {
       .pipe(
         catchError((error) => {
           console.error('Error al actualizar el ItemChecklist', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  // Método para eliminar un listado de Items del Checklist
+  deleteListItems(itemToDelete: ItemChecklistDto): Observable<ItemChecklistDto> {
+    const headers: HttpHeaders = this.authService.getHeader();
+
+    const options = {
+      headers: headers,
+      body: itemToDelete
+    };
+
+    return this.http.delete<ItemChecklistDto>(this.deleteItemCheckListUrl, options)
+      .pipe(
+        catchError((error) => {
+          console.error('Error al eliminar el listado', error);
           return throwError(error);
         })
       );
