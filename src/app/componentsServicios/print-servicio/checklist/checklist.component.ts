@@ -20,8 +20,9 @@ export class ChecklistComponent implements OnInit {
 
   dataSourceItems: ItemChecklistDto[];
   avance: number = 0;
-  editable: boolean = false;
+  editable: boolean = true;
   servicio: Servicios;
+  isAdmin: boolean;
 
   constructor(
     private dataShared: DataSharedService,
@@ -31,6 +32,7 @@ export class ChecklistComponent implements OnInit {
     private authService: AuthService,
     private _snackBar: PopupService,
     public dialog: MatDialog) {
+    this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
     this.dataSourceItems = this.servicio.itemChecklistDto;
     this.avance = this.svManager.calcularAvance(this.servicio.itemChecklistDto);
@@ -41,6 +43,7 @@ export class ChecklistComponent implements OnInit {
     this.dataShared.updateChecklist$.subscribe(() => {
       this.refreshItemsCheckList();
     });
+    
   }
 
   refreshItemsCheckList(): void {
@@ -127,7 +130,7 @@ export class ChecklistComponent implements OnInit {
   }
 
   openAddItemComponent() {
-    if (this.authService.isAdmin()) {
+    if (this.isAdmin) {
       const dialogRef = this.dialog.open(AddItemComponent);
 
       dialogRef.afterClosed().subscribe(() => {

@@ -45,14 +45,18 @@ export class AuthService implements OnInit {
     this.router.navigate(['']);
   }
 
+  flag: number = 0;
   response400(): void {
     this.isLoggedIn = false;
-    localStorage.removeItem('currentUser');
-    alert('La session ha expirado');
+    this.flag++
     this.router.navigate(['']);
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    if (this.flag === 1) {
+      alert('La session ha expirado');
+      localStorage.removeItem('currentUser');
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    }
   }
 
   // Verificar si esta logeado
