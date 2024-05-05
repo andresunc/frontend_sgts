@@ -111,8 +111,8 @@ export class ChecklistComponent implements OnInit {
 
     if (index !== -1) {
       const deletedItem = this.dataSourceItems[index];
+      this.itemsToDelete.push(deletedItem); // Agregarlo a la lista de eliminados
 
-      this.itemsToDelete.push(deletedItem); // Agregarlo a la nueva lista
       // Esperar 3 segundos
       setTimeout(() => {
         // Si después de 3 seg sigue estando en itemsToDelete eliminar el ítem del listado permanentemente
@@ -123,11 +123,11 @@ export class ChecklistComponent implements OnInit {
               (data) => {
                 console.log('ID del itemChecklist eliminado: ', data);
                 this.dataSourceItems.splice(indexToDelete, 1);
-                this.itemsToDelete.splice(indexToDelete, 1);
               }, () => {
                 this.itemsToDelete.splice(indexToDelete, 1);
               }
             );
+          this.itemsToDelete.splice(indexToDelete, 1);
         }
       }, 3000);
     }
