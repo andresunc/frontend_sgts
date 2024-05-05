@@ -43,7 +43,7 @@ export class ChecklistComponent implements OnInit {
     this.dataShared.updateChecklist$.subscribe(() => {
       this.refreshItemsCheckList();
     });
-    
+
   }
 
   refreshItemsCheckList(): void {
@@ -88,7 +88,7 @@ export class ChecklistComponent implements OnInit {
     // Buscar el índice del elemento existente en dataSourceItems
     const indexItemExistente = this.dataSourceItems.findIndex(element => element.idItemChecklist === item.idItemChecklist);
 
-    // Verificar si el elemento existe en dataSourceItems
+    // Verificar si el elemento existe en dataSourceItems, o sea si el resultado es distinto de -1
     if (indexItemExistente !== -1) {
       // Reemplazar el elemento existente con el nuevo item
       this.dataSourceItems[indexItemExistente] = item;
@@ -104,14 +104,54 @@ export class ChecklistComponent implements OnInit {
 
   }
 
+  itemsToDelete: ItemChecklistDto[] = [];
+  goDelete(item: ItemChecklistDto) {
+
+    const index = this.dataSourceItems.indexOf(item); // buscar el item en dataSourceItems
+
+    if (index !== -1) {
+      const deletedItem = this.dataSourceItems[index];
+
+      this.itemsToDelete.push(deletedItem); // Agregarlo a la nueva lista
+      // Esperar 3 segundos
+      setTimeout(() => {
+        // Si después de 3 seg sigue estando en itemsToDelete eliminar el ítem del listado permanentemente
+        const indexToDelete = this.itemsToDelete.indexOf(deletedItem);
+        if (indexToDelete !== -1) {
+          this.itemChecklistService.deleteListItems(this.itemsToDelete[indexToDelete])
+            .subscribe(
+              (data) => {
+                console.log('ID del itemChecklist eliminado: ', data);
+                this.dataSourceItems.splice(indexToDelete, 1);
+                this.itemsToDelete.splice(indexToDelete, 1);
+              }, () => {
+                this.itemsToDelete.splice(indexToDelete, 1);
+              }
+            );
+        }
+      }, 3000);
+    }
+
+  }
+
+  undoDelete(item: ItemChecklistDto) {
+    const index = this.itemsToDelete.indexOf(item);
+    if (index !== -1) {
+      this.itemsToDelete.splice(index, 1)[0];
+    }
+  }
+
   updateNotificado(item: any) {
     item.notificado = !item.notificado;
   }
 
-  incluyeImpuesto!: boolean;
-  updateCheckTasa() {
-    this.incluyeImpuesto = !this.incluyeImpuesto;
+  // Declara un objeto para mantener el estado de incluyeImpuesto para cada ítem del acordeón
+  incluyeImpuestoStates: { [idItemChecklist: number]: boolean } = {};
+  updateCheckTasa(item: ItemChecklistDto) {
+    // Cambia el estado de incluyeImpuesto para el ítem específico del acordeón
+    this.incluyeImpuestoStates[item.idItemChecklist!] = !this.incluyeImpuestoStates[item.idItemChecklist!];
   }
+
 
   managElement() {
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
