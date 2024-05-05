@@ -24,10 +24,9 @@
                     *ngFor="let item of dataSourceItems; let index = index" [attr.id]="'accordion-header-' + index"
                     [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + index">
                     
-                    <div (click)="accordionItem.toggle()">
+                    <div id="accordionItem" (click)="accordionItem.toggle()">
                         <!-- Rotulo del item del checklist -->
-                        <p
-                            class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
+                        <div class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
                             <span>
                                 <mat-checkbox [checked]="item.completo" (change)="updateAvance(item); getChange(index, item)"
                                     (click)="$event.stopPropagation()">
@@ -39,10 +38,13 @@
                                     </span>
                                 </span>
                             </span>
-                            <span *ngIf="editable">
-                                <mat-icon matTooltip="eliminar" class="btnAdmin delete-btn">delete</mat-icon>
-                            </span>
-                        </p>
+                    
+                            <button id="btnDele" mat-button color="warn" 
+                            *ngIf="isAdmin" (click)="$event.stopPropagation()">
+                                Borrar
+                            </button>
+                    
+                        </div>
                     </div>
 
                     <!-- Cuerpo o región del item del checklist -->
