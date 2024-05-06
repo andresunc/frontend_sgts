@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PreferenciasService } from 'src/app/services/preferencias.service';
 import { ConfigMenuComponent } from '../config-menu/config-menu.component';
+import { ActionListComponent } from 'src/app/componentsReportes/action-list/action-list.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -90,6 +91,11 @@ export class SidebarComponent implements OnInit {
   openAdminMenu() {
     this.dialog.open(ConfigMenuComponent);
     this.router.navigate(['/administrador']); // Redirige al enlace '/administrador'
+  }
+
+  openRptMenu() {
+    this.dialog.open(ActionListComponent);
+    this.router.navigate(['/reportes']); // Redirige al enlace '/administrador'
   }
 
 }

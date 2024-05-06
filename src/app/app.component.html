@@ -25,11 +25,11 @@
                     <mat-icon>tune</mat-icon>
                 </button>
 
-                <button mat-mini-fab color="warn" matTooltip="Panel de informes" routerLink="/reportes" class="btn-menu">
+                <button mat-mini-fab color="warn" matTooltip="Panel de informes" routerLink="/reportes" (click)="openRptList()" class="btn-menu">
                     <mat-icon>timeline</mat-icon>
                 </button>
 
-                <button mat-mini-fab color="warn" matTooltip="BackOffice" routerLink="/administrador" (click)="openRptList()" class="btn-menu">
+                <button mat-mini-fab color="warn" matTooltip="BackOffice" routerLink="/administrador" (click)="openCfgList()" class="btn-menu">
                     <mat-icon>settings</mat-icon>
                 </button>
 
