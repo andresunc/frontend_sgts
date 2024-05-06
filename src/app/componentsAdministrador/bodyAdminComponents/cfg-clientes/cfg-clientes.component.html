@@ -13,7 +13,7 @@
           <mat-form-field class="example-full-width">
             <input
              type="text" 
-             placeholder="Buscar Cliente" 
+             placeholder="Seleccione un cliente para Modificar/Eliminar" 
              aria-label="Buscar Cliente" 
              matInput
             [formControl]="myControl" 
@@ -26,6 +26,9 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
+          <div class="ayuda">
+          <a>Para crear un nuevo cliente complete los siguientes campos: </a>
+          </div>
           <mat-form-field>
             <mat-label>Razon Social</mat-label>
             <input matInput placeholder="" formControlName="RazonSocial" required maxlength="99">

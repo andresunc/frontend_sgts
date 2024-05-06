@@ -1,9 +1,5 @@
 
-/* Descomentar para eliminar el efecto display:flex 
-.childContainer > * {
-  display: block;
-}
-*/
+
 
 .example-stepper {
   
@@ -18,14 +14,14 @@
 
   width: calc(50% - 16px); /* 50% del ancho del contenedor menos el margen */
   margin: 8px; /* Margen entre los campos */
-  margin-top: 5px;
+  margin-top: 3px;
   margin-bottom: 0px; 
 
 }
 
 .example-full-width{
   display: flex;
-  margin-top: 4%;
+  margin-top: 2%;
 }
 
 
@@ -65,8 +61,8 @@
 
 .btn-editar{
   position: absolute;
-  top: 5px; /* Ajusta según sea necesario para la distancia desde la parte superior */
-  right: 5px; /* Ajusta según sea necesario para la distancia desde el lado derecho */
+  top: 5px; 
+  right: 5px;
   z-index: 1;
   height: 24px; /* Altura */
   width: 24px;
@@ -97,6 +93,15 @@
   justify-content: center;
   border-color: transparent;
  
+}
+
+.ayuda{
+  display: flex;
+  justify-content: left;
+  margin-left: 0.7rem;
+  padding-bottom: 0.5rem;
+  font-size: 14px;
+  color: #5f5e5e;
 }
 
 .tarjetas {

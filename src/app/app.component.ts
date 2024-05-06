@@ -5,6 +5,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { PopupService } from './services/SupportServices/popup.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfigMenuComponent } from './componentsShared/config-menu/config-menu.component';
 
 
 @Component({
@@ -22,6 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private dataShared: DataSharedService,
     private router: Router,
+    private dialog: MatDialog,
     private _snackBar: PopupService,) {
     this.access = this.authService.isLoggedInUser();
   }
@@ -41,6 +44,10 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  openRptList() {
+    this.dialog.open(ConfigMenuComponent);
   }
 
   goNuevo() {
