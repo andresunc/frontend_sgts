@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfigMenuComponent } from 'src/app/componentsShared/config-menu/config-menu.component';
 import { Subject } from 'rxjs';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -19,10 +18,6 @@ export class AdministradorComponent implements OnInit {
 
   ngOnInit(): void {
     
-  }
-
-  openRptList() {
-    this.dialog.open(ConfigMenuComponent);
   }
 
   private unsubscribe$ = new Subject<void>();

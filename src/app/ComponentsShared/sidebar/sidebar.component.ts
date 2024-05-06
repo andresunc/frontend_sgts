@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router'; //servicio que permite la navegación entre vistas o componentes en una aplicación Angular.
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PreferenciasService } from 'src/app/services/preferencias.service';
+import { ConfigMenuComponent } from '../config-menu/config-menu.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,6 +24,7 @@ export class SidebarComponent implements OnInit {
     private router: Router,
     private preference: PreferenciasService,
     private dataShared: DataSharedService,
+    private dialog: MatDialog,
     private authService: AuthService,
     ) { 
       this.canAddServicio = this.authService.isAdmin();
@@ -83,4 +86,10 @@ export class SidebarComponent implements OnInit {
       this.dataShared.triggerFilterByCheckbox();
     }
   }
+
+  openAdminMenu() {
+    this.dialog.open(ConfigMenuComponent);
+    this.router.navigate(['/administrador']); // Redirige al enlace '/administrador'
+  }
+
 }
