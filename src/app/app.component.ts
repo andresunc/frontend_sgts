@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { PopupService } from './services/SupportServices/popup.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfigMenuComponent } from './componentsShared/config-menu/config-menu.component';
+import { ActionListComponent } from './componentsReportes/action-list/action-list.component';
 
 
 @Component({
@@ -46,8 +47,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  openRptList() {
+  openCfgList() {
     this.dialog.open(ConfigMenuComponent);
+  }
+
+  openRptList() {
+    this.dialog.open(ActionListComponent);
   }
 
   goNuevo() {
