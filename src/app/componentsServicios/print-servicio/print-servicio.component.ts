@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
+import { Estado } from 'src/app/models/DomainModels/Estado';
+import { EstadosService } from 'src/app/services/DomainServices/estados.service';
 
 @Component({
   selector: 'app-print-servicio',
@@ -24,11 +26,12 @@ import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 export class PrintServicioComponent implements OnInit {
 
   servicioRecibido!: Servicios;
-  title: string = 'Información del servicio: ';
+  title: string = 'Detalle del servicio';
   recurrencia: number = 0;
   contactoEmpresa: ContactoEmpresa[] = [];
   authorized: boolean = false;
-
+  estadosList: Estado[] = [];
+  selectedEstado: string = '';
 
   constructor(
     private dataShared: DataSharedService,
@@ -39,14 +42,15 @@ export class PrintServicioComponent implements OnInit {
     private router: Router,
     private _snackBar: PopupService,
     private authService: AuthService,
-    private servicioService: ServicioService
-  ) { 
+    private servicioService: ServicioService,
+    private estadoService: EstadosService,
+  ) {
     this.servicioRecibido = this.getServicioLocalStorage();
+    this.selectedEstado = this.servicioRecibido.estado;
   }
 
   ngOnInit() {
     this.setParams();
-    this.authorized = this.authService.isAdmin();
     this.getServicioById(this.servicioRecibido.idServicio);
   }
 
@@ -70,12 +74,22 @@ export class PrintServicioComponent implements OnInit {
   }
 
   setParams() {
-    this.title = this.title + this.servicioRecibido.cliente + ' | ' + this.servicioRecibido.tipo;
     this.recurrencia = this.servicioRecibido.recurrencia;
     this.getContactoEmpresa();
+    this.getEstados();
+  }
+
+  enableMenuEdit(): boolean {
+    return this.authService.isAdmin()
+  }
+
+  getAvance(): number {
+    return this.getSvManager().calcularAvance(this.servicioRecibido.itemChecklistDto)
   }
 
   editarServicio() {
+    this.authorized = this.authService.isAdmin();
+
     this.dataShared.setSharedObject(this.servicioRecibido);
     const dialogRef = this.dialog.open(EditorComponent, {
       data: { servicioRecibido: this.servicioRecibido } //
@@ -141,6 +155,28 @@ export class PrintServicioComponent implements OnInit {
     } else {
       this._snackBar.warnSnackBar(`El servicio ha ${this.servicioRecibido.categoria.toLowerCase()}`)
     }
+  }
+
+  getEstados() {
+    if (this.authService.isAdmin()) {
+      this.dataShared.mostrarSpinner();
+      this.estadoService.getStatusNotDeleted().subscribe(
+        (data) => {
+          this.estadosList = data;
+          this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
+          //this.checkEditable();
+          console.log('Estados cargados OK');
+          this.dataShared.ocultarSpinner();
+        })
+    } else {
+      console.log('No es admin, no se cargaron los estados para el edit');
+    }
+  }
+
+  estadoMatch: Estado | undefined;
+  onEstadoChange() {
+    this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
+    // this.checkEditable();
   }
 
 }

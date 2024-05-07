@@ -150,8 +150,10 @@
                         </div>
                         <div class="col-md-6" style="display: flex; justify-content: end;">
                             <mat-card-actions>
-                                <button mat-raised-button color="primary" type="submit"
-                                    [disabled]="!form.valid" [mat-dialog-close]="true">Guardar</button>
+                                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid" [mat-dialog-close]="true">
+                                    <mat-icon class="mat-icon">save</mat-icon>
+                                    Guardar
+                                </button>
                             </mat-card-actions>
                         </div>
                     </div>

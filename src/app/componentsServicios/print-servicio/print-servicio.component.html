@@ -1,162 +1,228 @@
-<!-- Contenedor de la sección ver servicios -->
 <div class="moduleContainer">
-
   <app-title-bar [titulo]="title"></app-title-bar>
 
-  <ng-container class="childContainer">
+  <section id="seccionInfoServicio">
+    <div class="cardContainer">
+      <div class="container">
 
-    <section class="" id="seccionInfoServicio">
+        <!-- Información básica del servicio -->
 
-      <div class="cardContainer">
-        <div class="container">
+        <mat-grid-list cols="8" rowHeight="6rem">
 
-          <div class="row">
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia > 0">
 
-            <div class="col-md-8 mb-3 p-0">
-              <div class="card">
-                <div class="card-body paddingBody">
-                  <h6 class="card-title">
-                    <span class="mr-3">{{ recurrencia > 0 ? 'Cantidad de renovaciones: ' + recurrencia :'Este servicio no presenta renovaciones'}}</span>
-                    <span class="mr-3" *ngIf="recurrencia > 0">ID Referente: {{ servicioRecibido.referencia }}</span>
-                  </h6>
-                </div>
-              </div>
-            </div>
+            <mat-form-field appearance="fill">
+              <mat-label>Cantidad de renovaciones:</mat-label>
+              <input matInput [(ngModel)]="recurrencia" [readonly]="true">
+            </mat-form-field>
 
-            <div class="col-md-4 mb-3 p-0">
-              <div class="card p-0">
-                <button id="btnServiceAdmin" mat-button [matMenuTriggerFor]="authorized ? menu : null" class="paddingBody selectPrint"
-                  [disabled]="!authorized">
-                  <h6 class="card-title textCenter btnChecklist">
-                    SERVICIO N° {{ servicioRecibido.idServicio }}
-                    <mat-icon style="margin-left: 0.5rem; font-size: 1rem;" [style.color]="authorized ? 'primary' : 'disabled'" class="mat-icon">tune</mat-icon>
-                  </h6>
-                </button>
-                <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
-                  <button mat-menu-item (click)="editarServicio()"><span>Editar</span></button>
-                  <button mat-menu-item (click)="checkDelete()"><span>Eliminar</span></button>
-                </mat-menu>
-              </div>
-            </div>
+          </mat-grid-tile>
 
-          </div>
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia > 0">
 
-          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>ID Referente:</mat-label>
+              <input matInput [(ngModel)]="servicioRecibido.referencia" [readonly]="true">
+            </mat-form-field>
 
-            <div class="col-md-12 mb-3 p-0">
-              <div class="card">
-                <div class="card-body paddingBody">
-                  <h6 class="card-title">
-                    <span class="mr-3">Cliente: {{ servicioRecibido.cliente }}</span>
-                    <span class="mr-3">Rubro: {{ servicioRecibido.rubro }}</span>
-                    <span (click)="openContactPopUp()" class="mr-3 link">Datos de contacto</span>
-                  </h6>
-                </div>
-              </div>
-            </div>
+          </mat-grid-tile>
 
-          </div>
+          <mat-grid-tile [colspan]="6" [rowspan]="1" [style.background]="''" *ngIf="recurrencia === 0">
 
-          <div class="row">
+            <mat-form-field appearance="fill">
+              <mat-label>Renovaciones</mat-label>
+              <input matInput value="Este servicio no presenta renovaciones" [readonly]="true">
+            </mat-form-field>
 
-            <div class="col-md-12 mb-3 p-0" *ngIf="this.getSvManager().calcularAvance(servicioRecibido.itemChecklistDto) as avance">
-              <div class="card">
-                <div class="card-body paddingBody">
-                  <h6 class="card-title">{{avance === 0 ? 'Aún no se ha comenzado a trabajar' : avance === 100 ? 'Servicio finalizado':'Avance'}}</h6>
-                  <div class="progress" role="progressbar" [attr.aria-valuenow]="avance" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="avance">
-                      <span>{{ avance === 100 ? 'Completo' : avance + '%'}}</span>
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="2" [rowspan]="1" [style.background]="''">
+
+            <button mat-flat-button color="accent" style="width: 100%;"
+              [matMenuTriggerFor]="enableMenuEdit() ? menu : null">
+              SERVICIO N° {{ servicioRecibido.idServicio }}
+              <mat-icon *ngIf="enableMenuEdit()" class="mat-icon">tune</mat-icon>
+            </button>
+            <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
+              <button mat-menu-item (click)="editarServicio()"><span>Editar</span></button>
+              <button mat-menu-item (click)="checkDelete()"><span>Eliminar</span></button>
+            </mat-menu>
+
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <!-- Información del cliente / empresa -->
+
+        <mat-grid-list cols="8" rowHeight="6rem">
+
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+            <mat-form-field appearance="fill">
+              <mat-label>Cliente</mat-label>
+              <input matInput [value]="servicioRecibido.cliente" [readonly]="true">
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+            <mat-form-field appearance="fill">
+              <mat-label>Rubro</mat-label>
+              <input matInput [value]="servicioRecibido.rubro" [readonly]="true">
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="2" [rowspan]="1" [style.background]="''">
+
+            <button style="width: 100%;" mat-flat-button color="primary" (click)="openContactPopUp()">
+              CONTACTO CLIENTE
+            </button>
+
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <!-- Información detallada del servicio -->
+
+        <mat-grid-list cols="12" rowHeight="6rem">
+
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+            <mat-form-field appearance="fill">
+              <mat-label>Tipo de servicio</mat-label>
+              <input matInput [value]="servicioRecibido.tipo" [readonly]="true">
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+            <mat-form-field>
+              <mat-label [style.color]="authorized ? '#dc3545' : ''">Estado</mat-label>
+              <input matInput *ngIf="!authorized" [value]="selectedEstado" [readonly]="!authorized">
+              <mat-select *ngIf="authorized" [(ngModel)]="selectedEstado" (ngModelChange)="onEstadoChange()">
+                <mat-option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">
+                  {{ estado.tipoEstado }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+
+
+            <mat-form-field>
+              <mat-label [style.color]="authorized ? '#dc3545' : ''">Fecha de recordatorio</mat-label>
+              <input matInput [matDatepicker]="picker" [value]="servicioRecibido.fecha_notificacion" [readonly]="true">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker [disabled]="!authorized"></mat-datepicker>
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+            <mat-card style="width: 100%">
+              <mat-card-content style="max-height: 3.74rem; padding-top: 0.74rem;">
+                <div>
+                  <mat-label style="font-size: 1rem;">
+                    {{ getAvance() === 0 ? 'Sin ítems completos' : getAvance() === 100 ? 'ítems 100% completos' :
+                    'Avance' }}
+                  </mat-label>
+                  <div class="progress" role="progressbar" [attr.aria-valuenow]="getAvance()" aria-valuemin="0"
+                    aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="getAvance()">
+                      <span>{{ getAvance() === 100 ? 'Completo' : getAvance() + '%' }}</span>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              </mat-card-content>
+            </mat-card>
 
-          </div>
+          </mat-grid-tile>
 
-          <div class="row">
 
-            <div class="col-md-3 mb-3 p-0">
-              <div class="card">
-                <div class="card-body paddingBody">
-                  <h6 class="card-title">Tipo de servicio</h6>
-                  <p class="card-text">{{ servicioRecibido.tipo }}</p>
-                </div>
-              </div>
-            </div>
 
-            <div class="col-md-3 mb-3 p-0">
-              <div class="card">
-                <div class="card-body paddingBody">
-                  <h6 class="card-title">Estado</h6>
-                  <p class="card-text" style="color: #673ab7;">{{ servicioRecibido.estado }}</p>
-                </div>
-              </div>
-            </div>
+        </mat-grid-list>
 
-            <div class="col-md-3 mb-3 p-0">
-              <div class="card">
-                <div class="card-body paddingBody">
-                  <h6 class="card-title">Recordatorio</h6>
-                  <span style="display: flex;">
-                    <p class="card-text">{{ servicioRecibido.fecha_notificacion ? (servicioRecibido.fecha_notificacion | date:'dd/MM/yyyy') : 'Sin establecer'}}</p>
-                    <p class="card-text" style="margin-left: .5rem;">{{ servicioRecibido.fecha_notificacion |
-                      date:'HH:mm'}}</p>
-                  </span>
-                </div>
-              </div>
-            </div>
+        <mat-grid-list cols="12" rowHeight="6rem">
 
-            <div class="col-md-3 mb-3 p-0">
-              <div class="card">
-                <div class="card-body paddingBody textCenter">
-                  <h6 class="card-title">Se ha presupuestado</h6>
-                  <p class="card-text">{{"$ "+servicioRecibido.total_presupuestado}}</p>
-                </div>
-              </div>
-            </div>
+          <!-- Hay renovaciones -->
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia === 0">
 
-          </div>
+            <mat-form-field appearance="fill">
+              <mat-label>Renovaciones y referencia</mat-label>
+              <input matInput [value]="'Cantidad: ' +recurrencia + ' Ref-ID: ' + servicioRecibido.referencia"
+                [readonly]="true">
+            </mat-form-field>
 
-          <div class="row" >
+          </mat-grid-tile>
 
-            <div class="col-md-12 mb-3 p-0">
-              <div class="card custom-background">
-                <div class="card-body paddingBody">
-                  <h6 class="card-title">Comentario</h6>
-                  <p style="font-style: oblique;" class="card-text">{{servicioRecibido.comentario}}</p>
-                </div>
-              </div>
-            </div>
+          <!-- No hay renovaciones -->
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia > 0">
 
-          </div>
+            <mat-form-field appearance="fill">
+              <mat-label>Renovaciones</mat-label>
+              <input matInput value="Sin renovaciones" [readonly]="true">
+            </mat-form-field>
 
-          <!-- Sección para el Pop up del checklist -->
-          <div class="row">
+          </mat-grid-tile>
 
-            <div class="col-md-12 mb-3 p-0">
-              <div class="card" style="align-items: center;">
-                <div class="card-body paddingBody">
+          <!-- Presupuesto -->
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
-                  <!-- Button trigger modal -->
-                  <button (click)="openChecklistPopUp()" type="button" class="btn selectPrint contentChecklist">
-                    <h6 class="card-title textCenter btnChecklist">
-                      <mat-icon class="mat-icon">checklist</mat-icon>
-                      ABRIR CHECKLIST
-                    </h6>
-                  </button>
+            <mat-form-field floatLabel="always" style="padding: 0;">
+              <mat-label [style.color]="authorized ? '#dc3545' : ''">Presupuesto</mat-label>
+              <input matInput type="number" style="text-align: center;" [value]="servicioRecibido.total_presupuestado"
+                placeholder="0" [readonly]="!authorized">
+              <span matTextPrefix>$&nbsp;</span>
+            </mat-form-field>
 
-                </div>
-              </div>
-            </div>
-            
-          </div>
-          
-        </div>
+          </mat-grid-tile>
+
+          <!-- Disponible para editar el expediente -->
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+          </mat-grid-tile>
+
+          <!-- Pop up del checklist -->
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+            <button style="width: 100%;" mat-flat-button color="primary" (click)="openChecklistPopUp()" *ngIf="!authorized">
+              <mat-icon class="mat-icon">checklist</mat-icon>
+              ABRIR CHECKLIST
+            </button>
+
+            <button style="width: 100%;" mat-flat-button color="accent" *ngIf="authorized">
+              <mat-icon class="mat-icon">save</mat-icon>
+              GUARDAR CAMBIOS
+            </button>
+
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
+        <mat-grid-list cols="12" rowHeight="6rem">
+
+          <mat-grid-tile [colspan]="12" [rowspan]="1" [style.background]="''">
+
+            <mat-form-field appearance="fill">
+              <mat-label [style.color]="authorized ? '#dc3545' : ''">Comentario</mat-label>
+              <textarea style="font-style: oblique;" class="card-text" matInput [readonly]="!authorized">
+                {{servicioRecibido.comentario}}
+              </textarea>
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+        </mat-grid-list>
+
       </div>
-
-    </section>
-
-  </ng-container>
-
+    </div>
+  </section>
 </div>
