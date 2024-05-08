@@ -1,4 +1,4 @@
-span, p, .mat-icon {
+p {
   font-size: 0.8rem;
 }
 
@@ -62,4 +62,24 @@ mat-form-field {
   .mat-mdc-form-field-subscript-wrapper {
     display: none;
   }
+}
+
+mat-menu, mat-icon {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+#matMenu,
+span {
+    font-size: 1rem;
+}
+
+.editMenu:hover, .editMenu:hover span, .editMenu:hover mat-icon {
+  color: #673ab7;
+}
+
+/* Estilo para cuando se pasa el cursor sobre el elemento de eliminación */
+.deleteMenu:hover, .deleteMenu:hover span, .deleteMenu:hover mat-icon {
+  color: #f44336
 }

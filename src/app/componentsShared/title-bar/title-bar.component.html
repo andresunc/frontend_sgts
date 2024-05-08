@@ -18,18 +18,20 @@
         <img src="./assets/img/logo-unc-escmb.png" alt="Imagen Derecha" class="logos">
         <mat-divider [vertical]="true"></mat-divider>
         <div [matMenuTriggerFor]="menu" class="btnAcc">
-            <mat-icon class="primaryBtn" matTooltip="Cuenta">logout</mat-icon>
+            <mat-icon class="primaryBtn" matTooltip="Cuenta">account_circle</mat-icon>
         </div>
-        <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
-            <button mat-menu-item>
+
+        <mat-menu id="matMenu" #menu="matMenu" xPosition="before" >
+            <button mat-menu-item class="accMenu">
                 <mat-icon>settings</mat-icon>
                 <span>Configuración</span>
             </button>
-            <button mat-menu-item (click)="handleLogout()">
+            <button mat-menu-item (click)="handleLogout()" class="accMenu">
                 <mat-icon>logout</mat-icon>
                 <span>Cerrar sesión</span>
             </button>
         </mat-menu>
+
     </div>
     
 </mat-toolbar>

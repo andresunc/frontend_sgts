@@ -26,8 +26,14 @@
               <mat-icon *ngIf="enableMenuEdit()" class="mat-icon">tune</mat-icon>
             </button>
             <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
-              <button mat-menu-item (click)="editarServicio()"><span>Editar</span></button>
-              <button mat-menu-item (click)="checkDelete()"><span>Eliminar</span></button>
+              <button mat-menu-item (click)="editarServicio()" class="editMenu">
+                <mat-icon>edit</mat-icon>
+                <span>Editar</span>
+              </button>
+              <button mat-menu-item (click)="checkDelete()" class="deleteMenu">
+                <mat-icon>delete</mat-icon>
+                <span>Eliminar</span>
+              </button>
             </mat-menu>
 
           </mat-grid-tile>
