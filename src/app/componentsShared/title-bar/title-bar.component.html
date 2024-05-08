@@ -1,6 +1,6 @@
 <mat-toolbar>
     <div class="contenido-izquierdo">
-        <mat-icon matTooltip="Regresar al home" routerLink="/home" fontIcon="home"></mat-icon>
+        <mat-icon class="primaryBtn" matTooltip="Regresar al home" routerLink="/home" fontIcon="home"></mat-icon>
         <p class="titulo">{{titulo}}</p>
     </div>
 
@@ -17,12 +17,18 @@
         </span>
         <img src="./assets/img/logo-unc-escmb.png" alt="Imagen Derecha" class="logos">
         <mat-divider [vertical]="true"></mat-divider>
-        <div [matMenuTriggerFor]="menu" class="btnLogout">
-            <mat-icon matTooltip="Cerrar sesión">logout</mat-icon>
+        <div [matMenuTriggerFor]="menu" class="btnAcc">
+            <mat-icon class="primaryBtn" matTooltip="Cuenta">logout</mat-icon>
         </div>
         <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
-            <button mat-menu-item class="btnLogout"><span>Configuración</span></button>
-            <button mat-menu-item (click)="handleLogout()" class="btnLogout"><span>Cerrar sesión</span></button>
+            <button mat-menu-item>
+                <mat-icon>settings</mat-icon>
+                <span>Configuración</span>
+            </button>
+            <button mat-menu-item (click)="handleLogout()">
+                <mat-icon>logout</mat-icon>
+                <span>Cerrar sesión</span>
+            </button>
         </mat-menu>
     </div>
     
