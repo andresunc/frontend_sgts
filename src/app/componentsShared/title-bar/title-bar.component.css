@@ -34,7 +34,12 @@ mat-toolbar {
 
 #matMenu,
 span {
-    font-size: 0.8rem;
+    font-size: 1rem;
+}
+
+#matMenu,
+mat-icon {
+    font-size: 1.2rem;
 }
 
 .titulo {
@@ -78,4 +83,16 @@ mat-divider {
     /* Grosor del divider */
     height: 60%;
     /* Altura del divider */
+}
+
+mat-menu,
+mat-icon {
+    display: flex;
+    align-items: center;
+}
+
+.accMenu:hover,
+.accMenu:hover span,
+.accMenu:hover mat-icon {
+    color: #673ab7;
 }
