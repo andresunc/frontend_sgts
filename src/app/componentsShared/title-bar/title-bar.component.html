@@ -17,9 +17,13 @@
         </span>
         <img src="./assets/img/logo-unc-escmb.png" alt="Imagen Derecha" class="logos">
         <mat-divider [vertical]="true"></mat-divider>
-        <div class="btnLogout" (click)="handleLogout()">
+        <div [matMenuTriggerFor]="menu" class="btnLogout">
             <mat-icon matTooltip="Cerrar sesión">logout</mat-icon>
         </div>
+        <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
+            <button mat-menu-item class="btnLogout"><span>Configuración</span></button>
+            <button mat-menu-item (click)="handleLogout()" class="btnLogout"><span>Cerrar sesión</span></button>
+        </mat-menu>
     </div>
     
 </mat-toolbar>
