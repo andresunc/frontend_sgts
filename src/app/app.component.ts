@@ -48,11 +48,17 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   openCfgList() {
-    this.dialog.open(ConfigMenuComponent);
+    if (this.authService.isAdmin()) {
+      this.dialog.open(ConfigMenuComponent);
+    }
   }
 
   openRptList() {
-    this.dialog.open(ActionListComponent);
+    if (this.authService.isAdmin()) {
+      this.dialog.open(ActionListComponent);
+    } else {
+      this._snackBar.warnSnackBar('Permisos insuficientes');
+    }
   }
 
   goNuevo() {

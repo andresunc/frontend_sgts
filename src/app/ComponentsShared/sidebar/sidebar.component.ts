@@ -8,6 +8,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PreferenciasService } from 'src/app/services/preferencias.service';
 import { ConfigMenuComponent } from '../config-menu/config-menu.component';
 import { ActionListComponent } from 'src/app/componentsReportes/action-list/action-list.component';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -27,14 +28,15 @@ export class SidebarComponent implements OnInit {
     private dataShared: DataSharedService,
     private dialog: MatDialog,
     private authService: AuthService,
-    ) { 
-      this.canAddServicio = this.authService.isAdmin();
-    }
+    private _snackBar: PopupService,
+  ) {
+    this.canAddServicio = this.authService.isAdmin();
+  }
 
   ngOnInit(): void {
     // Verifica la ruta actual y decide si mostrar la barra lateral
     this.shouldShowSidebar = this.router.url !== '/login';
-    
+
     // Cargo los "Estados No Eliminados" de los servicios
     this.preference.getStatusNotDeleted().subscribe((data) => {
       this.listEstados = data;
@@ -89,13 +91,19 @@ export class SidebarComponent implements OnInit {
   }
 
   openAdminMenu() {
-    this.dialog.open(ConfigMenuComponent);
     this.router.navigate(['/administrador']); // Redirige al enlace '/administrador'
+    if (this.authService.isAdmin()) {
+      this.dialog.open(ConfigMenuComponent);
+    }
   }
 
   openRptMenu() {
-    this.dialog.open(ActionListComponent);
-    this.router.navigate(['/reportes']); // Redirige al enlace '/administrador'
+    if (this.authService.isAdmin()) {
+      this.dialog.open(ActionListComponent);
+      this.router.navigate(['/reportes']); // Redirige al enlace '/administrador'
+    } else {
+      this._snackBar.warnSnackBar('Permisos insuficientes');
+    }
   }
 
 }
