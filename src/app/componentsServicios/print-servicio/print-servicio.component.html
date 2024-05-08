@@ -180,7 +180,8 @@
           <!-- Pop up del checklist -->
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
-            <button style="width: 100%;" mat-flat-button color="primary" (click)="openChecklistPopUp()" *ngIf="!isEditable">
+            <button style="width: 100%;" mat-flat-button color="primary" 
+            (click)="openChecklistPopUp()" *ngIf="!isEditable" [disabled]="checkEditable()">
               <mat-icon class="mat-icon">checklist</mat-icon>
               ABRIR CHECKLIST
             </button>
