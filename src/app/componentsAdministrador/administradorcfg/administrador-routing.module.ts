@@ -6,19 +6,17 @@ import { CfgServiciosComponent } from '../bodyAdminComponents/cfg-servicios/cfg-
 import { CfgRubrosComponent } from '../bodyAdminComponents/cfg-rubros/cfg-rubros.component';
 import { CfgRiesgosComponent } from '../bodyAdminComponents/cfg-riesgos/cfg-riesgos.component';
 import { CfgEstadosComponent } from '../bodyAdminComponents/cfg-estados/cfg-estados.component';
+import { AuthGuard } from 'src/app/componentsShared/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', 
   component: AdministradorComponent,
   children:[ 
-
-    { path: 'clientes', component: CfgClientesComponent },
-    { path: 'servicios', component: CfgServiciosComponent },
-    { path: 'rubros', component: CfgRubrosComponent },
-    { path: 'riesgos', component: CfgRiesgosComponent },
-    { path: 'estados', component: CfgEstadosComponent },
-
-
+    { path: 'clientes', component: CfgClientesComponent,canActivate: [AuthGuard] },
+    { path: 'servicios', component: CfgServiciosComponent,canActivate: [AuthGuard] },
+    { path: 'rubros', component: CfgRubrosComponent,canActivate: [AuthGuard] },
+    { path: 'riesgos', component: CfgRiesgosComponent,canActivate: [AuthGuard] },
+    { path: 'estados', component: CfgEstadosComponent, canActivate: [AuthGuard]},
   ]
 },
   
