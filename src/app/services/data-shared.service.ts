@@ -25,9 +25,14 @@ export class DataSharedService {
   triggerUpdateChecklist() {
     this.updateChecklistSubject.next();
   }
-    
+
   setSharedObject(servicio: Servicios) {
     this.sharedObject = servicio;
+    /**
+     * if (localStorage.getItem('servicioRecibido')) localStorage.removeItem('servicioRecibido');
+    localStorage.setItem('servicioRecibido', JSON.stringify(servicio));
+     */
+    
   }
 
   getSharedObject() {

@@ -9,29 +9,11 @@
 
         <mat-grid-list cols="8" rowHeight="6rem">
 
-          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia > 0">
+          <mat-grid-tile [colspan]="6" [rowspan]="1" [style.background]="''">
 
             <mat-form-field appearance="fill">
-              <mat-label>Cantidad de renovaciones:</mat-label>
-              <input matInput [(ngModel)]="recurrencia" [readonly]="true">
-            </mat-form-field>
-
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia > 0">
-
-            <mat-form-field appearance="fill">
-              <mat-label>ID Referente:</mat-label>
-              <input matInput [(ngModel)]="servicioRecibido.referencia" [readonly]="true">
-            </mat-form-field>
-
-          </mat-grid-tile>
-
-          <mat-grid-tile [colspan]="6" [rowspan]="1" [style.background]="''" *ngIf="recurrencia === 0">
-
-            <mat-form-field appearance="fill">
-              <mat-label>Renovaciones</mat-label>
-              <input matInput value="Este servicio no presenta renovaciones" [readonly]="true">
+              <mat-label>Responsable general</mat-label>
+              <input matInput [value]="servicioRecibido.fullname_responsable" [readonly]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -101,8 +83,8 @@
 
             <mat-form-field>
               <mat-label [style.color]="authorized ? '#dc3545' : ''">Estado</mat-label>
-              <input matInput *ngIf="!authorized" [value]="selectedEstado" [readonly]="!authorized">
-              <mat-select *ngIf="authorized" [(ngModel)]="selectedEstado" (ngModelChange)="onEstadoChange()">
+              <input matInput *ngIf="!authorized" [value]="servicioRecibido.estado" [readonly]="!authorized">
+              <mat-select *ngIf="authorized" [(ngModel)]="servicioRecibido.estado" (ngModelChange)="onEstadoChange()">
                 <mat-option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">
                   {{ estado.tipoEstado }}
                 </mat-option>
@@ -113,14 +95,12 @@
 
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
-
-
             <mat-form-field>
               <mat-label [style.color]="authorized ? '#dc3545' : ''">Fecha de recordatorio</mat-label>
-              <input matInput [matDatepicker]="picker" [value]="servicioRecibido.fecha_notificacion" [readonly]="true">
-              <mat-hint>MM/DD/YYYY</mat-hint>
+              <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" [value]="servicioRecibido.fecha_notificacion" [readonly]="true">
+              <mat-hint>DD/MM//YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker [disabled]="!authorized"></mat-datepicker>
+              <mat-datepicker #picker [disabled]="!authorized || completed"></mat-datepicker>
             </mat-form-field>
 
           </mat-grid-tile>
@@ -176,10 +156,10 @@
           <!-- Presupuesto -->
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
-            <mat-form-field floatLabel="always" style="padding: 0;">
+            <mat-form-field floatLabel="always">
               <mat-label [style.color]="authorized ? '#dc3545' : ''">Presupuesto</mat-label>
-              <input matInput type="number" style="text-align: center;" [value]="servicioRecibido.total_presupuestado"
-                placeholder="0" [readonly]="!authorized">
+              <input matInput type="number" style="text-align: center;" [(ngModel)]="servicioRecibido.total_presupuestado" 
+                placeholder="0" [readonly]="!authorized" [disabled]="completed" (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
               <span matTextPrefix>$&nbsp;</span>
             </mat-form-field>
 
@@ -198,7 +178,7 @@
               ABRIR CHECKLIST
             </button>
 
-            <button style="width: 100%;" mat-flat-button color="accent" *ngIf="authorized">
+            <button style="width: 100%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="authorized" >
               <mat-icon class="mat-icon">save</mat-icon>
               GUARDAR CAMBIOS
             </button>
@@ -213,7 +193,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label [style.color]="authorized ? '#dc3545' : ''">Comentario</mat-label>
-              <textarea style="font-style: oblique;" class="card-text" matInput [readonly]="!authorized">
+              <textarea style="font-style: oblique; padding: 0;" class="card-text" matInput [readonly]="!authorized" [disabled]="completed">
                 {{servicioRecibido.comentario}}
               </textarea>
             </mat-form-field>

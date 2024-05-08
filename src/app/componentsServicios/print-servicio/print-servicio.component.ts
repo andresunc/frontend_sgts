@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/componentsShared/material/material.module';
 import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
@@ -17,6 +17,11 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
+import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
+import { Servicio } from 'src/app/models/DomainModels/Servicio';
+import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
+import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
+import { ServicioEntityService } from 'src/app/services/DomainServices/servicio-entity.service';
 
 @Component({
   selector: 'app-print-servicio',
@@ -29,9 +34,15 @@ export class PrintServicioComponent implements OnInit {
   title: string = 'Detalle del servicio';
   recurrencia: number = 0;
   contactoEmpresa: ContactoEmpresa[] = [];
-  authorized: boolean = false;
   estadosList: Estado[] = [];
   selectedEstado: string = '';
+  minDate: Date;
+  maxDate: Date;
+
+  presupuestOriginal!: number;
+  recordatoriOriginal!: any;
+  idEstadOriginal!: string;
+  comentariOriginal!: string;
 
   constructor(
     private dataShared: DataSharedService,
@@ -44,9 +55,17 @@ export class PrintServicioComponent implements OnInit {
     private authService: AuthService,
     private servicioService: ServicioService,
     private estadoService: EstadosService,
+    private historicoEstado: HistoricoEstadoService,
   ) {
     this.servicioRecibido = this.getServicioLocalStorage();
+    this.minDate = new Date();
+    this.maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 6, this.minDate.getDate());
+
     this.selectedEstado = this.servicioRecibido.estado;
+    this.presupuestOriginal = this.servicioRecibido.total_presupuestado;
+    this.recordatoriOriginal = this.servicioRecibido.fecha_notificacion;
+    this.comentariOriginal = this.servicioRecibido.comentario;
+    this.idEstadOriginal = this.servicioRecibido.estado;
   }
 
   ngOnInit() {
@@ -87,9 +106,14 @@ export class PrintServicioComponent implements OnInit {
     return this.getSvManager().calcularAvance(this.servicioRecibido.itemChecklistDto)
   }
 
+  authorized: boolean = false;
+  completed: boolean = false;
   editarServicio() {
     this.authorized = this.authService.isAdmin();
+    this.completed = this.servicioRecibido.idCategoria === 3;
 
+    /**
+     *
     this.dataShared.setSharedObject(this.servicioRecibido);
     const dialogRef = this.dialog.open(EditorComponent, {
       data: { servicioRecibido: this.servicioRecibido } //
@@ -97,6 +121,7 @@ export class PrintServicioComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.getServicioById(this.servicioRecibido.idServicio);
     });
+     */
   }
 
   checkDelete(): void {
@@ -177,6 +202,113 @@ export class PrintServicioComponent implements OnInit {
   onEstadoChange() {
     this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
     // this.checkEditable();
+  }
+
+  @ViewChild('presupuestoInput', { static: false }) presupuestoInput!: ElementRef<HTMLInputElement>;
+  validarPresupuesto() {
+    const presupuesto = parseFloat(this.presupuestoInput.nativeElement.value);
+    if (presupuesto < 0) {
+      this.presupuestoInput.nativeElement.value = '0';
+    }
+  }
+
+  maxDigits = 10;
+  limitarLongitud(event: any) {
+    if (event.target.value.length > this.maxDigits) {
+      event.target.value = event.target.value.slice(0, this.maxDigits);
+    }
+  }
+
+  loadChanges() {
+
+    this.dataShared.mostrarSpinner();
+
+    let requestsCount = 0; // Inicializamos un contador de solicitudes
+
+    const handleComplete = () => {
+      requestsCount--;
+      if (requestsCount === 0) {
+        this.dataShared.ocultarSpinner(); // Ocultar el spinner y actuazlizar obj cuando no haya más solicitudes en curso
+        this.getServicioById(this.servicioRecibido.idServicio)
+      }
+    };
+
+    // Si estadoMatch no es nulo y los id no coinciden entonces hay cambios y ejecutar el addHistorico
+    // Incrementar el contador de solicitudes antes de realizar cada solicitud
+    requestsCount++;
+    if (this.estadoMatch && this.estadoMatch?.idEstado != this.servicioRecibido.idEstado) {
+
+      // Armo el objeto historico de estado
+      let historicoEstado = new HistoricoEstado();
+      historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;
+      historicoEstado.servicioIdServicio = this.servicioRecibido.idServicio;
+      this.dataShared.setSharedObject(this.servicioRecibido) //
+      // Suscripción al servicio Historico Estado para agregar el último estado a la bd
+      this.historicoEstado.addHistoricoEstado(historicoEstado)
+        .subscribe(
+          (response) => {
+            console.log('HistoricoEstado agregado con éxito:', response);
+          },
+          (error) => console.error('Error al agregar HistoricoEstado:', error),
+          handleComplete, // Llamar a handleComplete después de completar la solicitud
+        );
+    } else {
+      console.log('No hay cambios en el estado de servicio')
+    }
+
+    // Verificar si hay cambios en el presupuesto y ejecutar
+    // Incrementar el contador de solicitudes antes de realizar cada solicitud
+    requestsCount++;
+    if (this.presupuestOriginal != this.servicioRecibido.total_presupuestado) {
+
+      let servicioEmpresa = new ServicioEmpresa();
+      servicioEmpresa.costoServicio = this.servicioRecibido.total_presupuestado;
+
+      // Suscripción a Servicio Empresa para agregar el último estado a la bd
+      this.servicioEmpresa.update(this.servicioRecibido.idServicio, servicioEmpresa)
+        .subscribe(
+          (response) => {
+            console.log('ServicioEmpresa actualizado con éxito:', response);
+            this.dataShared.setSharedObject(this.servicioRecibido);
+          },
+          (error) => console.error('Error al actualizar ServicioEmpresa:', error),
+          handleComplete // Llamar a handleComplete después de completar la solicitud
+        );
+
+    } else {
+      console.log('No hay cambios en el presupuesto')
+    }
+
+    // Verificar si hay cambios en el servicio y ejecutar (Recordatorio, comentario)
+    // Incrementar el contador de solicitudes antes de realizar cada solicitud
+    requestsCount++;
+    if (this.recordatoriOriginal != this.servicioRecibido.fecha_notificacion ||
+      this.comentariOriginal != this.servicioRecibido.comentario) {
+
+      let servicio: Servicio = new Servicio();
+      servicio.fechaHoraAlertaVenc = new Date(this.servicioRecibido.fecha_notificacion);
+      servicio.comentario = this.servicioRecibido.comentario;
+      //servicio.tipoServicioIdTipoServicio = this.servicioRecibido.idTipoServicio;
+
+      this.servicioService.update(this.servicioRecibido.idServicio, servicio)
+        .subscribe(
+          (response) => {
+            console.log('Servicio actualizado con éxito:', response);
+            this.dataShared.setSharedObject(this.servicioRecibido);
+          },
+          (error) => console.error('Error al actualizar el Servicio:', error),
+          handleComplete // Llamar a handleComplete después de completar la solicitud
+        );
+
+    } else {
+      console.log('No hay cambios en el recordatorio o el comentario')
+    }
+
+    // Llamar a handleComplete si no hay solicitudes que realizar
+    if (requestsCount === 0) {
+      handleComplete();
+    }
+
   }
 
 }

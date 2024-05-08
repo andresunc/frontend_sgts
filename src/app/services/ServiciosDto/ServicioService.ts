@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Servicios } from '../../models/DomainModels/Servicios';
@@ -7,6 +7,7 @@ import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { UrlBackend } from '../../models/Url';
 import { AuthService } from '../auth.service';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
+import { Servicio } from 'src/app/models/DomainModels/Servicio';
 
 
 @Injectable({
@@ -20,6 +21,7 @@ export class ServicioService {
   private getItemsChecklistUrl = this.urlBackend + '/servicioDto/getItemsChecklist';
   private urlNewServicio = this.urlBackend + '/nuevo/crearServicio';
   private getServicioByIdUrl = this.urlBackend + '/servicioDto/';
+  private upDateServicioUrl = this.urlBackend + '/servicio/update/';
   countdown: number = 5;
   retry: number;
 
@@ -90,6 +92,23 @@ export class ServicioService {
           return throwError(error);
         })
       );
+  }
+
+  // UpDate Servicio Empresa por Servicio ID
+  public update(id: number, servicio: Servicio): Observable<Servicio> {
+
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.put<Servicio>(this.upDateServicioUrl + id, servicio, { headers })
+    .pipe(
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+          console.error('Permisos insificientes', error);
+          return throwError(error);
+        }
+        console.error('Error al actualizar el servicio', error);
+        return throwError(error);
+      })
+    );
   }
 
 }
