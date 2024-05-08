@@ -8,7 +8,7 @@ import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
 import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
 import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
-import { ServicioEntityService } from 'src/app/services/DomainServices/servicio-entity.service';
+import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { ValideishonService } from 'src/app/valideishon.service';
@@ -34,7 +34,7 @@ export class EditorComponent implements OnInit {
     private estadoService: EstadosService,
     private historicoEstado: HistoricoEstadoService,
     private servicioEmpresa: ServicioEmpresaService,
-    private servicioService: ServicioEntityService,
+    private servicioService: ServicioService,
     private dataShared: DataSharedService,
     public dialogRef: MatDialogRef<EditorComponent>,
     public valideishon: ValideishonService,

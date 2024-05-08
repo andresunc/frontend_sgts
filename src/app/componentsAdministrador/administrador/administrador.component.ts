@@ -13,8 +13,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 export class AdministradorComponent implements OnInit {
 
   title: string = "Configuración General";
-  constructor(public dialog: MatDialog,
-    private dataShared: DataSharedService) { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
     

@@ -4,7 +4,7 @@ mat-toolbar {
     background-color: #ffffff;
     box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
     height: 2.8rem;
-    justify-content:space-between;
+    justify-content: space-between;
 }
 
 mat-icon {
@@ -30,6 +30,12 @@ mat-icon:hover {
 
 .btnLogout {
     margin-left: 0.5rem;
+    border: 0px;
+    background-color: transparent;
+}
+
+.btnLogout, span {
+    font-size: 0.8rem;
 }
 
 .titulo {
@@ -51,6 +57,7 @@ mat-icon:hover {
     justify-content: flex-end;
     background-color: white;
 }
+
 .logos {
     margin: 0.5rem;
     width: 1.75rem;
@@ -68,6 +75,8 @@ mat-icon:hover {
 
 /* Sobre escribo los estilos del divisor */
 mat-divider {
-    width: 0.05rem; /* Grosor del divider */
-    height: 60%; /* Altura del divider */
+    width: 0.05rem;
+    /* Grosor del divider */
+    height: 60%;
+    /* Altura del divider */
 }
