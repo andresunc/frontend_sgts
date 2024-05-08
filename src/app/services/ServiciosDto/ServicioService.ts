@@ -95,7 +95,7 @@ export class ServicioService {
   }
 
   // UpDate Servicio Empresa por Servicio ID
-  public update(id: number, servicio: Servicio): Observable<Servicio> {
+  update(id: number, servicio: Servicio): Observable<Servicio> {
 
     const headers: HttpHeaders = this.authService.getHeader();
     return this.http.put<Servicio>(this.upDateServicioUrl + id, servicio, { headers })

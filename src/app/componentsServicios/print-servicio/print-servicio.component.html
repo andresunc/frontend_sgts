@@ -82,9 +82,9 @@
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
             <mat-form-field>
-              <mat-label [style.color]="authorized ? '#dc3545' : ''">Estado</mat-label>
-              <input matInput *ngIf="!authorized" [value]="servicioRecibido.estado" [readonly]="!authorized">
-              <mat-select *ngIf="authorized" [(ngModel)]="servicioRecibido.estado" (ngModelChange)="onEstadoChange()">
+              <mat-label [style.color]="isEditable ? '#dc3545' : ''">Estado</mat-label>
+              <input matInput *ngIf="!isEditable" [value]="servicioRecibido.estado" [readonly]="!isEditable">
+              <mat-select *ngIf="isEditable" [(ngModel)]="servicioRecibido.estado" (ngModelChange)="onEstadoChange()">
                 <mat-option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">
                   {{ estado.tipoEstado }}
                 </mat-option>
@@ -96,11 +96,12 @@
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
             <mat-form-field>
-              <mat-label [style.color]="authorized ? '#dc3545' : ''">Fecha de recordatorio</mat-label>
-              <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" [value]="servicioRecibido.fecha_notificacion" [readonly]="true">
+              <mat-label [style.color]="isEditable ? '#dc3545' : ''">Fecha de recordatorio</mat-label>
+              <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
+              [(ngModel)]="servicioRecibido.fecha_notificacion" [value]="servicioRecibido.fecha_notificacion" [readonly]="true">
               <mat-hint>DD/MM//YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker [disabled]="!authorized || completed"></mat-datepicker>
+              <mat-datepicker #picker [disabled]="!isEditable || checkEditable()"></mat-datepicker>
             </mat-form-field>
 
           </mat-grid-tile>
@@ -157,9 +158,9 @@
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
             <mat-form-field floatLabel="always">
-              <mat-label [style.color]="authorized ? '#dc3545' : ''">Presupuesto</mat-label>
+              <mat-label [style.color]="isEditable ? '#dc3545' : ''">Presupuesto</mat-label>
               <input matInput type="number" style="text-align: center;" [(ngModel)]="servicioRecibido.total_presupuestado" 
-                placeholder="0" [readonly]="!authorized" [disabled]="completed" (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
+                placeholder="0" [readonly]="!isEditable" [disabled]="checkEditable()" (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
               <span matTextPrefix>$&nbsp;</span>
             </mat-form-field>
 
@@ -173,12 +174,12 @@
           <!-- Pop up del checklist -->
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
-            <button style="width: 100%;" mat-flat-button color="primary" (click)="openChecklistPopUp()" *ngIf="!authorized">
+            <button style="width: 100%;" mat-flat-button color="primary" (click)="openChecklistPopUp()" *ngIf="!isEditable">
               <mat-icon class="mat-icon">checklist</mat-icon>
               ABRIR CHECKLIST
             </button>
 
-            <button style="width: 100%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="authorized" >
+            <button style="width: 100%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="isEditable" [disabled]="!isEditable">
               <mat-icon class="mat-icon">save</mat-icon>
               GUARDAR CAMBIOS
             </button>
@@ -188,18 +189,22 @@
         </mat-grid-list>
 
         <mat-grid-list cols="12" rowHeight="6rem">
-
+        
           <mat-grid-tile [colspan]="12" [rowspan]="1" [style.background]="''">
-
+        
             <mat-form-field appearance="fill">
-              <mat-label [style.color]="authorized ? '#dc3545' : ''">Comentario</mat-label>
-              <textarea style="font-style: oblique; padding: 0;" class="card-text" matInput [readonly]="!authorized" [disabled]="completed">
+              <mat-label [style.color]="isEditable ? '#dc3545' : ''">Comentario</mat-label>
+              <textarea style="font-style: oblique; padding: 0;" class="card-text" [(ngModel)]="servicioRecibido.comentario"
+                matInput [readonly]="!isEditable" [disabled]="checkEditable()" maxlength="500">
                 {{servicioRecibido.comentario}}
               </textarea>
+              <mat-error *ngIf="servicioRecibido.comentario && servicioRecibido.comentario.length >= 500">
+                El comentario no puede tener más de 500 caracteres.
+              </mat-error>
             </mat-form-field>
-
+        
           </mat-grid-tile>
-
+        
         </mat-grid-list>
 
       </div>

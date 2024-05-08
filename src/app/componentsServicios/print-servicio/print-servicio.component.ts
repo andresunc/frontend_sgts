@@ -8,9 +8,7 @@ import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PrintService } from 'src/app/services/print.service';
-import { EditorComponent } from './editor/editor.component';
 import { ChecklistComponent } from './checklist/checklist.component';
-import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
 import { Router } from '@angular/router';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { AuthService } from 'src/app/services/auth.service';
@@ -21,7 +19,7 @@ import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
 import { Servicio } from 'src/app/models/DomainModels/Servicio';
 import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
 import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
-import { ServicioEntityService } from 'src/app/services/DomainServices/servicio-entity.service';
+import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
 
 @Component({
   selector: 'app-print-servicio',
@@ -61,7 +59,7 @@ export class PrintServicioComponent implements OnInit {
     this.minDate = new Date();
     this.maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 6, this.minDate.getDate());
 
-    this.selectedEstado = this.servicioRecibido.estado;
+    // this.selectedEstado = this.servicioRecibido.estado; Borrar ?
     this.presupuestOriginal = this.servicioRecibido.total_presupuestado;
     this.recordatoriOriginal = this.servicioRecibido.fecha_notificacion;
     this.comentariOriginal = this.servicioRecibido.comentario;
@@ -106,11 +104,9 @@ export class PrintServicioComponent implements OnInit {
     return this.getSvManager().calcularAvance(this.servicioRecibido.itemChecklistDto)
   }
 
-  authorized: boolean = false;
-  completed: boolean = false;
+  isEditable: boolean = false;
   editarServicio() {
-    this.authorized = this.authService.isAdmin();
-    this.completed = this.servicioRecibido.idCategoria === 3;
+    this.isEditable = this.authService.isAdmin();
 
     /**
      *
@@ -122,6 +118,7 @@ export class PrintServicioComponent implements OnInit {
       this.getServicioById(this.servicioRecibido.idServicio);
     });
      */
+
   }
 
   checkDelete(): void {
@@ -182,13 +179,14 @@ export class PrintServicioComponent implements OnInit {
     }
   }
 
+  // Lógica para los estados
   getEstados() {
     if (this.authService.isAdmin()) {
       this.dataShared.mostrarSpinner();
       this.estadoService.getStatusNotDeleted().subscribe(
         (data) => {
           this.estadosList = data;
-          this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
+          this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.servicioRecibido.estado);
           //this.checkEditable();
           console.log('Estados cargados OK');
           this.dataShared.ocultarSpinner();
@@ -198,12 +196,27 @@ export class PrintServicioComponent implements OnInit {
     }
   }
 
+  /**
+   * Buscar en la lista de estados el objeto que conicida con el seleccionado
+   * Llamar a this.checkEditable()
+   */
   estadoMatch: Estado | undefined;
   onEstadoChange() {
-    this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.selectedEstado);
-    // this.checkEditable();
+    this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.servicioRecibido.estado);
+    this.checkEditable();
   }
 
+  checkEditable(): boolean {
+    /**
+     * Todo Estado contiene un atributo llamado idCategoria.
+     * La categoria "Finalizado" tiene el id: 3
+     * Si la categoria del estado seleccionado es igual a 3 no se podrá editar el servicio
+     */
+    return this.estadoMatch?.idCategoria === 3;
+  }
+  /* Fin de la sección de lógica para los estados */
+
+  // Lógica para el presupuesto 
   @ViewChild('presupuestoInput', { static: false }) presupuestoInput!: ElementRef<HTMLInputElement>;
   validarPresupuesto() {
     const presupuesto = parseFloat(this.presupuestoInput.nativeElement.value);
@@ -218,18 +231,28 @@ export class PrintServicioComponent implements OnInit {
       event.target.value = event.target.value.slice(0, this.maxDigits);
     }
   }
+  /* Fin de lógica para el presupuesto */
 
+  /**
+   * Lógica para el almacenamiento de los cambios
+   */
   loadChanges() {
 
     this.dataShared.mostrarSpinner();
-
+    this.isEditable = !this.isEditable; // Cambiar estado booleano de isEditable
     let requestsCount = 0; // Inicializamos un contador de solicitudes
 
+    /**
+     * 1 - Ocultar el spinner
+     * 2 - Actuazlizar obj cuando no haya más solicitudes en curso
+     * 3 - Volver el botón al estado con el que entró a la función
+     */
     const handleComplete = () => {
       requestsCount--;
       if (requestsCount === 0) {
-        this.dataShared.ocultarSpinner(); // Ocultar el spinner y actuazlizar obj cuando no haya más solicitudes en curso
-        this.getServicioById(this.servicioRecibido.idServicio)
+        this.dataShared.ocultarSpinner();
+        this.getServicioById(this.servicioRecibido.idServicio);
+        console.log('ACTUALIZACIONES FINALIZADAS OK')
       }
     };
 
@@ -247,7 +270,7 @@ export class PrintServicioComponent implements OnInit {
       this.historicoEstado.addHistoricoEstado(historicoEstado)
         .subscribe(
           (response) => {
-            console.log('HistoricoEstado agregado con éxito:', response);
+            console.log('Historico Estado actualizado OK:', response);
           },
           (error) => console.error('Error al agregar HistoricoEstado:', error),
           handleComplete, // Llamar a handleComplete después de completar la solicitud
@@ -268,7 +291,7 @@ export class PrintServicioComponent implements OnInit {
       this.servicioEmpresa.update(this.servicioRecibido.idServicio, servicioEmpresa)
         .subscribe(
           (response) => {
-            console.log('ServicioEmpresa actualizado con éxito:', response);
+            console.log('Presupuesto actualizado OK:', response);
             this.dataShared.setSharedObject(this.servicioRecibido);
           },
           (error) => console.error('Error al actualizar ServicioEmpresa:', error),
@@ -293,7 +316,7 @@ export class PrintServicioComponent implements OnInit {
       this.servicioService.update(this.servicioRecibido.idServicio, servicio)
         .subscribe(
           (response) => {
-            console.log('Servicio actualizado con éxito:', response);
+            console.log('Se actualizó el comentario o recordatorio OK:', response);
             this.dataShared.setSharedObject(this.servicioRecibido);
           },
           (error) => console.error('Error al actualizar el Servicio:', error),
