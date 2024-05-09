@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,6 +26,7 @@ import { AddItemComponent } from './componentsServicios/print-servicio/add-item/
 import { EditorComponent } from './componentsServicios/print-servicio/editor/editor.component';
 import { ChecklistComponent } from './componentsServicios/print-servicio/checklist/checklist.component';
 import { DeletePopupComponent } from './componentsShared/delete-popup/delete-popup.component';
+import { ErrorInterceptor } from './ErrorInterceptor/error.interceptor';
 
 
 @NgModule({
@@ -54,7 +55,9 @@ import { DeletePopupComponent } from './componentsShared/delete-popup/delete-pop
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

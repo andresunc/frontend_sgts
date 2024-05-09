@@ -45,20 +45,6 @@ export class AuthService implements OnInit {
     this.router.navigate(['']);
   }
 
-  flag: number = 0;
-  response400(): void {
-    this.isLoggedIn = false;
-    this.flag++
-    if (this.flag === 1) {
-      alert('La session ha expirado');
-      localStorage.removeItem('currentUser');
-      setTimeout(() => {
-        this.router.navigate(['']);
-        window.location.reload();
-      }, 1000);
-    }
-  }
-
   // Verificar si esta logeado
   isLoggedInUser(): boolean {
     const currentUserString: string | null = localStorage.getItem('currentUser');

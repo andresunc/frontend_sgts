@@ -43,7 +43,6 @@ export class ServicioService {
           return data;
         }),
         catchError((error) => {
-          this.authService.response400();
           return throwError(error);
         })
       );
@@ -61,7 +60,6 @@ export class ServicioService {
           return data;
         }),
         catchError((error) => {
-          this.authService.response400();
           return throwError(error);
         })
       );
