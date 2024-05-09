@@ -35,7 +35,7 @@ export class ChecklistComponent implements OnInit {
     this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
     this.dataSourceItems = this.servicio.itemChecklistDto;
-    this.avance = this.svManager.calcularAvance(this.servicio.itemChecklistDto);
+    this.avance = this.svManager.calcularAvance(this.dataSourceItems);
   }
 
   ngOnInit(): void {
@@ -43,19 +43,20 @@ export class ChecklistComponent implements OnInit {
     this.dataShared.updateChecklist$.subscribe(() => {
       this.refreshItemsCheckList();
     });
-
   }
 
   refreshItemsCheckList(): void {
     this.dataShared.mostrarSpinner();
-    this.servicioService.getItemsChecklist(this.dataShared.getSharedObject().idServicio)
+    this.servicioService.getItemsChecklist(this.servicio.idServicio)
       .subscribe(
         (data) => {
-          this.dataShared.getSharedObject().itemChecklistDto = data;
-          this.dataShared.setSharedObject(this.dataShared.getSharedObject());
+          this.dataSourceItems = data;
+          this.avance = this.svManager.calcularAvance(this.dataSourceItems);
+          this.dataShared.setSharedObject(this.servicio);
           this.dataShared.ocultarSpinner();
-        }
-      )
+        });
+
+    
   }
 
   completo: boolean = false;
@@ -63,10 +64,10 @@ export class ChecklistComponent implements OnInit {
     this.completo = !this.completo;
     item.completo = !item.completo
     // Encuentra el índice del elemento en la lista
-    const index = this.dataShared.getSharedObject().itemChecklistDto.findIndex((element: any) => element.idItemChecklist === item.idItemChecklist);
+    const index = this.dataSourceItems.findIndex((element: any) => element.idItemChecklist === item.idItemChecklist);
 
     // Si se encuentra el elemento y no es undefined
-    if (index !== -1 && this.dataShared.getSharedObject().itemChecklistDto[index] !== undefined) {
+    if (index !== -1 && this.dataSourceItems[index] !== undefined) {
       // Actualiza la propiedad completo del elemento encontrado
       this.dataShared.getSharedObject().itemChecklistDto[index].completo = !this.dataShared.getSharedObject().itemChecklistDto[index].completo;
       this.dataShared.setSharedObject(this.dataShared.getSharedObject());
@@ -104,6 +105,7 @@ export class ChecklistComponent implements OnInit {
 
   }
 
+  /* Lógica para los ítems eliminados */
   itemsToDelete: ItemChecklistDto[] = [];
   goDelete(item: ItemChecklistDto) {
 
@@ -140,6 +142,7 @@ export class ChecklistComponent implements OnInit {
       this.itemsToDelete.splice(index, 1)[0];
     }
   }
+  /* Lógica para la eliminación de los servicios */
 
   updateNotificado(item: any) {
     item.notificado = !item.notificado;

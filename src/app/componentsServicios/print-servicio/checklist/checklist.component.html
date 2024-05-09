@@ -21,7 +21,7 @@
             <cdk-accordion>
 
                 <cdk-accordion-item #accordionItem="cdkAccordionItem" role="button" tabindex="0"
-                    *ngFor="let item of dataSourceItems; let index = index" [attr.id]="'accordion-header-' + index"
+                    *ngFor="let item of this.dataSourceItems; let index = index" [attr.id]="'accordion-header-' + index"
                     [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + index">
                     
                     <div id="accordionItem" (click)="accordionItem.toggle()">
