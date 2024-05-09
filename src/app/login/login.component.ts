@@ -47,7 +47,7 @@ export class LoginComponent {
           this.handleLoginError('Credenciales incorrectas o inexistentes');
         } else {
           console.error('Error en el inicio de sesión:', error);
-          this._snackBar.warnSnackBar('Error en la conexión', 'Aceptar');
+          this._snackBar.warnSnackBar('No se pudo conectar con el servidor', null, 'power_off');
         }
       }
     );
