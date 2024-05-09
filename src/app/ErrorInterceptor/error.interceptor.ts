@@ -8,13 +8,16 @@ import { AuthService } from '../services/auth.service';
 export class ErrorInterceptor implements HttpInterceptor {
 
     private connectionLostHandled: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+    private isLogged: boolean;
 
-    constructor(private authService: AuthService) { }
+    constructor(private authService: AuthService) { 
+        this.isLogged = this.authService.isLoggedInUser();
+    }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: any) => {
-                if (error instanceof HttpErrorResponse && error.status >= 400) {
+                if (error instanceof HttpErrorResponse && error.status >= 400 && this.isLogged) {
                     // Solo manejar si no se ha manejado anteriormente
                     if (!this.connectionLostHandled.value) {
                         this.connectionLostHandled.next(true); // Marcar como manejado
@@ -23,7 +26,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                         window.location.reload();
                     }
                 }
-                if (error instanceof HttpErrorResponse && error.status === 0 && this.authService.isLoggedInUser()) {
+                if (error instanceof HttpErrorResponse && error.status === 0 && this.isLogged) {
                     // Solo manejar si no se ha manejado anteriormente
                     if (!this.connectionLostHandled.value) {
                         this.connectionLostHandled.next(true); // Marcar como manejado
