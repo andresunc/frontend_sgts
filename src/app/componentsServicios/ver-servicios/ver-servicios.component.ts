@@ -40,7 +40,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   }
 
   enableRow(serv: Servicios): boolean {
-    return this.authService.canEditItem(serv);
+    return this.authService.canEditServicio(serv);
   }
 
   // Método para cargar los servicios con limite de cantidad

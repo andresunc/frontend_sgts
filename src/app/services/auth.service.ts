@@ -67,6 +67,7 @@ export class AuthService implements OnInit {
     }
   }
 
+  // tomar el currentUser completo
   getCurrentUser(): AuthUser | null {
     const currentUserString: string | null = localStorage.getItem('currentUser');
     if (currentUserString !== null && currentUserString !== undefined) {
@@ -77,7 +78,7 @@ export class AuthService implements OnInit {
     }
   }
 
-  // tomar el token del local storage
+  // tomar el nombre de usuario del currentUser
   getCurrentName(): string | null {
     const currentUserString: string | null = localStorage.getItem('currentUser');
     if (currentUserString !== null && currentUserString !== undefined) {
@@ -115,7 +116,7 @@ export class AuthService implements OnInit {
 
   // tomar el idRecurso del usuario conectado y verificar:
   // Si puede administrar en base a que si es admin o coinciden los idRecursos.
-  canEditItem(serv: Servicios): boolean {
+  canEditServicio(serv: Servicios): boolean {
     const currentUserString: string | null = localStorage.getItem('currentUser');
     if (currentUserString !== null && currentUserString !== undefined) {
       const currentUser: AuthUser = JSON.parse(currentUserString);

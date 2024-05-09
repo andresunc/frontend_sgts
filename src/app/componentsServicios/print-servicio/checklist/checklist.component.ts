@@ -7,7 +7,6 @@ import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
-import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -30,7 +29,6 @@ export class ChecklistComponent implements OnInit {
     private servicioService: ServicioService,
     private itemChecklistService: ItemChecklistService,
     private authService: AuthService,
-    private _snackBar: PopupService,
     public dialog: MatDialog) {
     this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
@@ -56,7 +54,7 @@ export class ChecklistComponent implements OnInit {
           this.dataShared.ocultarSpinner();
         });
 
-    
+
   }
 
   completo: boolean = false;
@@ -142,10 +140,15 @@ export class ChecklistComponent implements OnInit {
       this.itemsToDelete.splice(index, 1)[0];
     }
   }
-  /* Lógica para la eliminación de los servicios */
+  /* Fin Lógica para la eliminación */
 
+  /* Lógica para administrar los ítems del checklist */
   updateNotificado(item: any) {
     item.notificado = !item.notificado;
+  }
+
+  itemManagement(item: ItemChecklistDto): boolean {
+    return this.isAdmin || item.idRecurso === this.authService.getCurrentUser()?.id_recurso;
   }
 
   // Declara un objeto para mantener el estado de incluyeImpuesto para cada ítem del acordeón
@@ -154,7 +157,6 @@ export class ChecklistComponent implements OnInit {
     // Cambia el estado de incluyeImpuesto para el ítem específico del acordeón
     this.incluyeImpuestoStates[item.idItemChecklist!] = !this.incluyeImpuestoStates[item.idItemChecklist!];
   }
-
 
   managElement() {
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
@@ -173,14 +175,10 @@ export class ChecklistComponent implements OnInit {
   }
 
   openAddItemComponent() {
-    if (this.isAdmin) {
-      const dialogRef = this.dialog.open(AddItemComponent);
+    const dialogRef = this.dialog.open(AddItemComponent);
 
-      dialogRef.afterClosed().subscribe(() => {
-        this.refreshItemsCheckList();
-      });
-    } else {
-      this._snackBar.warnSnackBar('Permisos insuficientes');
-    }
+    dialogRef.afterClosed().subscribe(() => {
+      this.refreshItemsCheckList();
+    });
   }
 }
