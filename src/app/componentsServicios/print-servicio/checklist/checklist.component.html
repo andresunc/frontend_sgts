@@ -21,15 +21,15 @@
             <cdk-accordion>
 
                 <cdk-accordion-item #accordionItem="cdkAccordionItem" role="button" tabindex="0"
-                    *ngFor="let item of this.dataSourceItems; let index = index" [attr.id]="'accordion-header-' + index"
-                    [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + index">
+                    *ngFor="let item of this.dataSourceItems; let index = index;" [attr.id]="'accordion-header-' + index"
+                    [attr.aria-expanded]="accordionItem.expanded" [attr.aria-controls]="'accordion-body-' + index" [disabled]="!itemManagement(item)">
                     
                     <div id="accordionItem" (click)="accordionItem.toggle()">
                         <!-- Rotulo del item del checklist -->
                         <div class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
                             <span>
                                 <mat-checkbox [checked]="item.completo" (change)="updateAvance(item); getChange(index, item)"
-                                    (click)="$event.stopPropagation()">
+                                    (click)="$event.stopPropagation()" [disabled]="!itemManagement(item)">
                                 </mat-checkbox>
                                 <span>
                                     {{item.nombreItem}} &nbsp;
@@ -132,7 +132,7 @@
 
             <!-- Botones del checklist -->
             <div id="checklist-footer" class="modal-footer">
-                <button mat-raised-button color="primary" (click)="openAddItemComponent()">
+                <button *ngIf="isAdmin" mat-raised-button color="primary" (click)="openAddItemComponent()">
                     <span matTooltip="Agregar al checklist">+ Nuevo Ítem</span>
                 </button>
                 <button mat-raised-button color="accent" [disabled]="!modified" 
