@@ -10,8 +10,8 @@ import { AuthService } from '../auth.service';
 })
 export class TipoServicioService {
 
-  urlBackend = new UrlBackend().getUrlBackend();
-  getTipoServicesNotDeletedUrl = this.urlBackend + '/tipoServicio/getAllNotDeleted';
+  private urlBackend = new UrlBackend().getUrlBackend();
+  private getTipoServicesNotDeletedUrl = this.urlBackend + '/tipoServicio/getAllNotDeleted';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

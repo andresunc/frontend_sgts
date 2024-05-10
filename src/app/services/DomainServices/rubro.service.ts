@@ -10,11 +10,11 @@ import { AuthService } from '../auth.service';
 })
 export class RubroService {
 
-  urlBackend = new UrlBackend().getUrlBackend();
-  getAllRubrosNotDeletedUrl = this.urlBackend + '/rubro/getAllNotDeleted';
-  createRubroUrl = this.urlBackend + '/rubro/create';
-  upDateRubroUrl = this.urlBackend + '/rubro/update/';
-  deleteRubroUrl = this.urlBackend + '/rubro/delete/';
+  private urlBackend = new UrlBackend().getUrlBackend();
+  private getAllRubrosNotDeletedUrl = this.urlBackend + '/rubro/getAllNotDeleted';
+  private createRubroUrl = this.urlBackend + '/rubro/create';
+  private upDateRubroUrl = this.urlBackend + '/rubro/update/';
+  private deleteRubroUrl = this.urlBackend + '/rubro/delete/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
