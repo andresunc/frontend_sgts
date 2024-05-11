@@ -28,10 +28,10 @@
   
   .mat-mdc-list-base {
     --mdc-list-list-item-label-text-font: Quicksand;
-    --mdc-list-list-item-label-text-size: 14px;
+    --mdc-list-list-item-label-text-size: 0.94rem;
   }
 
   .mdc-list-item {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 0.67rem;
+    padding-right: 0.67rem;
 }

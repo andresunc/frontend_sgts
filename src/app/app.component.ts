@@ -8,6 +8,8 @@ import { PopupService } from './services/SupportServices/popup.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfigMenuComponent } from './componentsShared/config-menu/config-menu.component';
 import { ActionListComponent } from './componentsReportes/action-list/action-list.component';
+import { adminMenuItems, adminMenuTitle } from './componentsAdministrador/administradorcfg/adminMenuItems';
+import { reporteMenuItems, reporteMenuTitle } from './componentsReportes/reportescfg/reporteMenuItems';
 
 
 @Component({
@@ -49,13 +51,23 @@ export class AppComponent implements OnInit, OnDestroy {
 
   openCfgList() {
     if (this.authService.isAdmin()) {
-      this.dialog.open(ConfigMenuComponent);
+      this.dialog.open(ConfigMenuComponent, {
+        data: {
+          menuTitle: adminMenuTitle,
+          menuItems: adminMenuItems
+        }
+      });
     }
   }
 
   openRptList() {
     if (this.authService.isAdmin()) {
-      this.dialog.open(ActionListComponent);
+      this.dialog.open(ConfigMenuComponent, {
+        data: {
+          menuTitle: reporteMenuTitle,
+          menuItems: reporteMenuItems
+        }
+      });
     } else {
       this._snackBar.warnSnackBar('Permisos insuficientes');
     }
