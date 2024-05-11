@@ -9,6 +9,7 @@ import { PreferenciasService } from 'src/app/services/preferencias.service';
 import { ConfigMenuComponent } from '../config-menu/config-menu.component';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { reporteMenuTitle, reporteMenuItems } from 'src/app/componentsReportes/reportescfg/reporteMenuItems';
+import { adminMenuTitle, adminMenuItems } from 'src/app/componentsAdministrador/administradorcfg/adminMenuItems';
 
 @Component({
   selector: 'app-sidebar',
@@ -91,9 +92,13 @@ export class SidebarComponent implements OnInit {
   }
 
   openAdminMenu() {
-    this.router.navigate(['/administrador']); // Redirige al enlace '/administrador'
     if (this.authService.isAdmin()) {
-      this.dialog.open(ConfigMenuComponent);
+      this.dialog.open(ConfigMenuComponent, {
+        data: {
+          menuTitle: adminMenuTitle,
+          menuItems: adminMenuItems
+        }
+      });
     }
   }
 

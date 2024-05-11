@@ -1,31 +1,17 @@
-  
   button:hover {
     margin: 0;
     border-left: 0.15rem solid #ffd740;
-    margin-left: 0.1rem;
-   }
-  
- 
-  
-  #menuTitle {
-    margin-top: 0.75rem;
-    margin-bottom: 0;
-       
   }
-  
+
   mat-divider {
     margin: 0;
     padding: 0;
   }
-  
-  .mat-divider-custom {
-    border-color: rgba(0, 0, 0, 0.354) !important;
-  }
-  
+
   .mdc-list {
     padding: 0;
   }
-  
+
   .mat-mdc-list-base {
     --mdc-list-list-item-label-text-font: Quicksand;
     --mdc-list-list-item-label-text-size: 0.94rem;
@@ -34,4 +20,4 @@
   .mdc-list-item {
     padding-left: 0.67rem;
     padding-right: 0.67rem;
-}
+  }

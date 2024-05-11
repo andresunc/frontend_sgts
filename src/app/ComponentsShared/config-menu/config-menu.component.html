@@ -1,6 +1,7 @@
-<div class="modal-body">
-    <div class="menu-Confg">
-        <mat-label id="menuTitle">{{ data.menuTitle }}</mat-label>
+<mat-label mat-dialog-title id="menuTitle">{{ data.menuTitle }}</mat-label>
+<mat-dialog-content class="modal-body">
+    
+        
         <mat-divider class="mat-divider-custom"></mat-divider>
         <mat-action-list class="action-list">
             <button *ngFor="let item of data.menuItems" mat-list-item [routerLink]="item.link" mat-dialog-close>
@@ -8,5 +9,5 @@
             </button>
             <mat-divider></mat-divider>
         </mat-action-list>
-    </div>
-</div>
+    
+</mat-dialog-content>
