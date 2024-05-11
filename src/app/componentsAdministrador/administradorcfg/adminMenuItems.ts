@@ -7,7 +7,7 @@ export const adminMenuItems: { label: string, link: string }[] = [
     { label: 'Rubros', link: 'administrador/rubros' },
     { label: 'Riesgos', link: 'administrador/riesgos' },
     { label: 'Tipos de Servicio', link: 'administrador/servicios' },
-    { label: 'Items', link: '' },
+    { label: 'Items', link: 'administrador/items' },
     { label: 'Estados', link: 'administrador/estados' },
-    { label: 'Usuarios', link: '' }
+    { label: 'Usuarios', link: 'admistrador/usuarios' }
 ];
