@@ -1,23 +1,43 @@
-  button:hover {
+.flexAling {
+  display: flex;
+  align-items: center;
+
+  mat-label,
+  mat-icon {
     margin: 0;
-    border-left: 0.15rem solid #ffd740;
-  }
+    padding: 0 0.6rem;
 
-  mat-divider {
-    margin: 0;
-    padding: 0;
+    span {
+      font-size: 1.1rem;
+    }
   }
+}
 
-  .mdc-list {
-    padding: 0;
-  }
+button:hover {
+  color: var(--primary);
+}
 
-  .mat-mdc-list-base {
-    --mdc-list-list-item-label-text-font: Quicksand;
-    --mdc-list-list-item-label-text-size: 0.94rem;
-  }
+.btnMenuItems:hover {
+  margin: 0;
+  border-left: 0.2rem solid var(--primary);
 
-  .mdc-list-item {
-    padding-left: 0.67rem;
-    padding-right: 0.67rem;
+  span {
+    color: var(--primary);
   }
+}
+
+.mdc-list {
+  padding: 0;
+}
+
+.mat-mdc-list-base {
+  --mdc-list-list-item-label-text-font: Quicksand;
+}
+
+mat-dialog-content {
+  padding-bottom: 0 !important;
+  padding: 0rem !important;
+  background-image: url('src\assets\img\porcelana2.jpg');
+  background-size: auto;
+  background-position: top;
+}
