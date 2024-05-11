@@ -86,6 +86,9 @@ export class PrintServicioComponent implements OnInit {
         (data: Servicios) => {
           this.servicioRecibido = data;
           this.dataShared.ocultarSpinner();
+        }, 
+        () => {
+          this.dataShared.ocultarSpinner();
         }
       )
   }
@@ -249,6 +252,7 @@ export class PrintServicioComponent implements OnInit {
      */
     const handleComplete = () => {
       requestsCount--;
+      console.log('valor del handleComplete: ', requestsCount)
       if (requestsCount === 0) {
         this.dataShared.ocultarSpinner();
         this.getServicioById(this.servicioRecibido.idServicio);
@@ -258,9 +262,10 @@ export class PrintServicioComponent implements OnInit {
 
     // Si estadoMatch no es nulo y los id no coinciden entonces hay cambios y ejecutar el addHistorico
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
-    requestsCount++;
+
     if (this.estadoMatch && this.estadoMatch?.idEstado != this.servicioRecibido.idEstado) {
 
+      requestsCount++;
       // Armo el objeto historico de estado
       let historicoEstado = new HistoricoEstado();
       historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;
@@ -281,9 +286,9 @@ export class PrintServicioComponent implements OnInit {
 
     // Verificar si hay cambios en el presupuesto y ejecutar
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
-    requestsCount++;
     if (this.presupuestOriginal != this.servicioRecibido.total_presupuestado) {
 
+      requestsCount++;
       let servicioEmpresa = new ServicioEmpresa();
       servicioEmpresa.costoServicio = this.servicioRecibido.total_presupuestado;
 
@@ -304,10 +309,11 @@ export class PrintServicioComponent implements OnInit {
 
     // Verificar si hay cambios en el servicio y ejecutar (Recordatorio, comentario)
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
-    requestsCount++;
+
     if (this.recordatoriOriginal != this.servicioRecibido.fecha_notificacion ||
       this.comentariOriginal != this.servicioRecibido.comentario) {
 
+      requestsCount++;
       let servicio: Servicio = new Servicio();
       servicio.fechaHoraAlertaVenc = new Date(this.servicioRecibido.fecha_notificacion);
       servicio.comentario = this.servicioRecibido.comentario;

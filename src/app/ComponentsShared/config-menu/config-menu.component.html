@@ -1,15 +1,17 @@
-<div class="modal-body">
-    <div class="menu-Confg">
-        <mat-label id="menuTitle">Administrar</mat-label>
-        <mat-divider class="mat-divider-custom"></mat-divider>
-        <mat-action-list class="action-list">
-            <button mat-list-item routerLink="administrador/clientes" mat-dialog-close>Clientes</button><mat-divider></mat-divider>
-            <button mat-list-item routerLink="administrador/estados" mat-dialog-close>Estados</button><mat-divider></mat-divider>
-            <button mat-list-item routerLink="administrador/items" mat-dialog-close>Items</button><mat-divider></mat-divider>
-            <button mat-list-item routerLink="administrador/rubros" mat-dialog-close>Rubros</button><mat-divider></mat-divider>
-            <button mat-list-item routerLink="administrador/riesgos" mat-dialog-close>Riesgos</button><mat-divider></mat-divider>
-            <button mat-list-item routerLink="administrador/servicios" mat-dialog-close>Tipos de Servicio</button><mat-divider></mat-divider>
-            <button mat-list-item routerLink="administrador/usuarios" mat-dialog-close>Usuarios</button><mat-divider></mat-divider>
-        </mat-action-list>
-    </div>
-</div>  
+<div class="flexAling">
+    <mat-icon>menu_open</mat-icon>
+    <mat-label mat-dialog-title class="flexAling"><span>{{ data.menuTitle }}</span></mat-label>
+</div>
+<mat-dialog-content>
+
+    <mat-action-list>
+        <button class="btnMenuItems" *ngFor="let item of data.menuItems" mat-list-item [routerLink]="item.link"
+            mat-dialog-close>
+            {{ item.label }}
+        </button>
+    </mat-action-list>
+
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button mat-dialog-close>Cerrar menú</button>
+</mat-dialog-actions>

@@ -23,7 +23,6 @@ import { PrintServicioComponent } from './componentsServicios/print-servicio/pri
 import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.component';
 import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
 import { AddItemComponent } from './componentsServicios/print-servicio/add-item/add-item.component';
-import { EditorComponent } from './componentsServicios/print-servicio/editor/editor.component';
 import { ChecklistComponent } from './componentsServicios/print-servicio/checklist/checklist.component';
 import { DeletePopupComponent } from './componentsShared/delete-popup/delete-popup.component';
 import { ErrorInterceptor } from './ErrorInterceptor/error.interceptor';
@@ -39,7 +38,6 @@ import { ErrorInterceptor } from './ErrorInterceptor/error.interceptor';
     LoginComponent,
     CustomSnackbarComponent,
     AddItemComponent,
-    EditorComponent,
     ChecklistComponent,
     DeletePopupComponent,
           ],

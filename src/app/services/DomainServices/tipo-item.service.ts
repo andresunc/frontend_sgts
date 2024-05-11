@@ -10,8 +10,8 @@ import { AuthService } from '../auth.service';
 })
 export class TipoItemService {
 
-  urlBackend = new UrlBackend().getUrlBackend();
-  getTipoItemsUrl = this.urlBackend + '/tipoItem/getAll';
+  private urlBackend = new UrlBackend().getUrlBackend();
+  private getTipoItemsUrl = this.urlBackend + '/tipoItem/getAll';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

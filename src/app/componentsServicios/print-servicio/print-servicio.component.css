@@ -8,23 +8,6 @@ p {
   border-radius: 0.5rem;
 }
 
-.childContainer {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap-reverse;
-  left: 0.5%;
-  margin-top: 0.4rem;
-  width: 99%;
-  height: calc(97% - 2.8rem);
-  /* Resta el alto de la barra de título */
-  border-radius: 0.5rem;
-  box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
-  justify-content: center;
-  align-items: center;
-  overflow-y: auto;
-  overflow-x: auto;
- }
-
 #seccionInfoServicio {  
   display: flex;
   justify-content: center;

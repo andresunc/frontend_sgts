@@ -7,8 +7,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PreferenciasService } from 'src/app/services/preferencias.service';
 import { ConfigMenuComponent } from '../config-menu/config-menu.component';
-import { ActionListComponent } from 'src/app/componentsReportes/action-list/action-list.component';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { reporteMenuTitle, reporteMenuItems } from 'src/app/componentsReportes/reportescfg/reporteMenuItems';
+import { adminMenuTitle, adminMenuItems } from 'src/app/componentsAdministrador/administradorcfg/adminMenuItems';
 
 @Component({
   selector: 'app-sidebar',
@@ -91,16 +92,24 @@ export class SidebarComponent implements OnInit {
   }
 
   openAdminMenu() {
-    this.router.navigate(['/administrador']); // Redirige al enlace '/administrador'
     if (this.authService.isAdmin()) {
-      this.dialog.open(ConfigMenuComponent);
+      this.dialog.open(ConfigMenuComponent, {
+        data: {
+          menuTitle: adminMenuTitle,
+          menuItems: adminMenuItems
+        }
+      });
     }
   }
 
   openRptMenu() {
     if (this.authService.isAdmin()) {
-      this.dialog.open(ActionListComponent);
-      this.router.navigate(['/reportes']); // Redirige al enlace '/administrador'
+      this.dialog.open(ConfigMenuComponent, {
+        data: {
+          menuTitle: reporteMenuTitle,
+          menuItems: reporteMenuItems
+        }
+      });
     } else {
       this._snackBar.warnSnackBar('Permisos insuficientes');
     }

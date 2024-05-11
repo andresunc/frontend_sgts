@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
         return true; // Si es administrador, permite el acceso
       } else {
         // Si no es administrador, redirige al '/home'
-        return this.router.navigate(['/home']);;
+        return false;
       }
   }
   

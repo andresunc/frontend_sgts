@@ -7,14 +7,11 @@ import { ReportesComponent } from '../reportes-pag-home/reportes.component';
 import { TitleBarModule } from 'src/app/componentsShared/title-bar/title-bar.module';
 import { MaterialModule } from 'src/app/componentsShared/material/material.module';
 import { ServiciosEnCursoComponent } from '../bodyRptComponents/servicios-en-curso/servicios-en-curso.component';
-import { ActionListComponent } from '../action-list/action-list.component';
-
 
 @NgModule({
   declarations: [
     ReportesComponent,
     ServiciosEnCursoComponent,
-    ActionListComponent
   ],
   imports: [
     CommonModule,
