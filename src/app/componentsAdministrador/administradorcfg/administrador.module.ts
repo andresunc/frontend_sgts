@@ -18,6 +18,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {AsyncPipe} from '@angular/common';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { CfgItemsComponent } from '../bodyAdminComponents/cfg-items/cfg-items.component';
+import { CfgUsuariosComponent } from '../bodyAdminComponents/cfg-usuarios/cfg-usuarios.component';
+
+
 
 
 @NgModule({
@@ -29,6 +33,8 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     CfgRubrosComponent,
     CfgRiesgosComponent,
     CfgEstadosComponent,
+    CfgItemsComponent,
+    CfgUsuariosComponent,
   ],
   imports: [
     CommonModule,
@@ -41,8 +47,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
     MatInputModule,
     MatAutocompleteModule,
     AsyncPipe,
-
-    MatFormFieldModule
+    MatFormFieldModule,
     
   ]
 })

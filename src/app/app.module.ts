@@ -27,7 +27,6 @@ import { EditorComponent } from './componentsServicios/print-servicio/editor/edi
 import { ChecklistComponent } from './componentsServicios/print-servicio/checklist/checklist.component';
 import { DeletePopupComponent } from './componentsShared/delete-popup/delete-popup.component';
 import { ErrorInterceptor } from './ErrorInterceptor/error.interceptor';
-import { CfgItemsComponent } from './componentsAdministrador/bodyAdminComponents/cfg-items/cfg-items.component';
 
 
 @NgModule({
@@ -43,8 +42,7 @@ import { CfgItemsComponent } from './componentsAdministrador/bodyAdminComponents
     EditorComponent,
     ChecklistComponent,
     DeletePopupComponent,
-    CfgItemsComponent,
-      ],
+          ],
   imports: [
     BrowserModule,
     AppRoutingModule,

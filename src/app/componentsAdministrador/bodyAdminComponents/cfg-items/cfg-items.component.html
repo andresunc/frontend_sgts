@@ -1,1 +1,82 @@
-<p>cfg-items works!</p>
+<div class="container">
+    <form [formGroup]="firstFormGroup">
+        <div class="principal">
+            <mat-form-field class="buscar">
+                <input type="text" placeholder="Seleccione un Item para Modificar/Eliminar" aria-label="Buscar Item"
+                    matInput [formControl]="myControl" [matAutocomplete]="auto" (focus)="onInputFocus()">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                    <mat-option *ngFor="let requisito of filteredOptions | async" [value]="requisito.descripcion"
+                        (onSelectionChange)="seleccionarRequisito(requisito.idRequisito!)">
+                        {{ requisito.descripcion }}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div class="central">
+            <div class="ayuda">
+                <a>Para crear un nuevo item complete los siguientes campos: </a>
+            </div>
+            <mat-form-field>
+                <mat-label>Nombre del Item</mat-label>
+                <input matInput placeholder="" formControlName="nombreItem" required maxlength="99">
+                <mat-error
+                    *ngIf="firstFormGroup.get('nombreItem')?.invalid && (firstFormGroup.get('nombreItem')?.dirty || firstFormGroup.get('nombreItem')?.touched)">
+                    Dato obligatorio.
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label for="tipoServicio">Tipo de Servicio</mat-label>
+                <mat-select name="tipoServicio" formControlName="tipoServicio" required>
+                    <mat-option *ngFor="let tipo_servicio of tipo_servicios" [value]="tipo_servicio">{{
+                        tipo_servicio.tipo_servicio
+                        }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label for="tipoItem">Tipo de Item</mat-label>
+                <mat-select name="tipoItem" formControlName="tipoItem" required>
+                    <mat-option *ngFor="let tipo_item of tipo_items" [value]="tipo_item">{{ tipo_item.tipo_item
+                        }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label for="dependencia">Dependencia</mat-label>
+                <mat-select name="dependencia" formControlName="dependencia" required>
+                    <mat-option *ngFor="let dependencia of dependencias" [value]="dependencia">{{
+                        dependencia.dependencia }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div class="ayudaTpo">
+                <a>Ingrese la duración estandar del requisito:</a>
+            </div>
+            <div class="tpoEstandar">
+                <div class="duracion">
+                    <mat-form-field>
+                        <mat-label>Cantidad</mat-label>
+                        <input matInput #input maxlength="5">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Días/Horas</mat-label>
+                        <mat-select>
+                            <mat-option value="Dias">Días</mat-option>
+                            <mat-option value="Horas">Horas</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <mat-form-field class="rubro">
+                <mat-label for="rubro">Rubro</mat-label>
+                <mat-select name="rubro" formControlName="rubro" required>
+                    <mat-option *ngFor="let rubro of rubros" [value]="rubro">{{ rubro.rubro }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        
+        </div>
+    </form>
+
+    <div class="btn">
+        <button mat-button (click)="crearItem()" [disabled]="modificarEliminarHabilitado">Crear</button>
+        <button mat-button (click)="modificarItem()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
+        <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+    </div>
+</div>

@@ -7,6 +7,8 @@ import { CfgRubrosComponent } from '../bodyAdminComponents/cfg-rubros/cfg-rubros
 import { CfgRiesgosComponent } from '../bodyAdminComponents/cfg-riesgos/cfg-riesgos.component';
 import { CfgEstadosComponent } from '../bodyAdminComponents/cfg-estados/cfg-estados.component';
 import { AuthGuard } from 'src/app/componentsShared/guards/auth.guard';
+import { CfgItemsComponent } from '../bodyAdminComponents/cfg-items/cfg-items.component';
+import { CfgUsuariosComponent } from '../bodyAdminComponents/cfg-usuarios/cfg-usuarios.component';
 
 const routes: Routes = [
   { path: '', 
@@ -17,6 +19,8 @@ const routes: Routes = [
     { path: 'rubros', component: CfgRubrosComponent,canActivate: [AuthGuard] },
     { path: 'riesgos', component: CfgRiesgosComponent,canActivate: [AuthGuard] },
     { path: 'estados', component: CfgEstadosComponent, canActivate: [AuthGuard]},
+    { path: 'items', component: CfgItemsComponent, canActivate: [AuthGuard]},
+    { path: 'usuarios', component: CfgUsuariosComponent, canActivate: [AuthGuard]},
   ]
 },
   
