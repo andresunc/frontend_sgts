@@ -217,6 +217,8 @@ export class AddItemComponent implements OnInit {
         addItemToCheckList = data;
         console.log('ItemChecklist persistido: ', addItemToCheckList);
         this.dataShared.ocultarSpinner();
+      }, ()=> {
+        this.dataShared.ocultarSpinner();
       }
     )
 

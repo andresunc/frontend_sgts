@@ -52,7 +52,9 @@ export class ChecklistComponent implements OnInit {
           this.avance = this.svManager.calcularAvance(this.dataSourceItems);
           this.dataShared.setSharedObject(this.servicio);
           this.dataShared.ocultarSpinner();
-        });
+        }).add(
+          this.dataShared.ocultarSpinner()
+        );
 
 
   }
@@ -170,6 +172,8 @@ export class ChecklistComponent implements OnInit {
           console.log('Items Actualizados', data);
           this.dataShared.ocultarSpinner();
         }
+      ).add(
+        this.dataShared.ocultarSpinner()
       )
     }
   }
