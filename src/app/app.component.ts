@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { PopupService } from './services/SupportServices/popup.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfigMenuComponent } from './componentsShared/config-menu/config-menu.component';
-import { ActionListComponent } from './componentsReportes/action-list/action-list.component';
 import { adminMenuItems, adminMenuTitle } from './componentsAdministrador/administradorcfg/adminMenuItems';
 import { reporteMenuItems, reporteMenuTitle } from './componentsReportes/reportescfg/reporteMenuItems';
 
