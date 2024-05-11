@@ -21,6 +21,7 @@ export class CfgServiciosComponent implements OnInit {
   rubroList: Rubro[] = [];
   dependenciaList: Dependencia[] = [];
   tipoServicioList: TipoServicio[] = [];
+  defaultTipoServicio: TipoServicio = new TipoServicio();
   RequisitoList: Requisito[] = [];
 
   constructor(
@@ -30,6 +31,7 @@ export class CfgServiciosComponent implements OnInit {
     private tipoServicioService: TipoServicioService,
     private requisitoService: RequisitoService
   ) {  }
+
   ngOnInit(): void {
     this.setParams();
   }
@@ -70,6 +72,9 @@ export class CfgServiciosComponent implements OnInit {
     .subscribe(
       (data) => {
         this.tipoServicioList = data;
+        this.defaultTipoServicio.idTipoServicio = -99
+        this.defaultTipoServicio.tipoServicio = 'indistinto';
+        this.tipoServicioList.push(this.defaultTipoServicio);
         console.log(
         this.tipoServicioList,
         )
