@@ -254,18 +254,6 @@ export class CfgClientesComponent implements OnInit {
   }
 
 
-  cargarDatosClienteSeleccionado(clienteSeleccionado: any) {
-    // Cargar los datos del cliente en los campos del primer paso del formulario
-    this.firstFormGroup.patchValue({
-      RazonSocial: clienteSeleccionado.razonSocial,
-      CUIT: clienteSeleccionado.cuit,
-      // Otras propiedades del cliente
-    });
-
-    // Cargar los contactos del cliente en el paso 2 del formulario
-    this.contactos = clienteSeleccionado.contactos;
-  }
-
   crearCliente() {
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;

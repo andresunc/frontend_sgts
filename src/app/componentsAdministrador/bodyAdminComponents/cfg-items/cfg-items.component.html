@@ -27,15 +27,15 @@
             <mat-form-field>
                 <mat-label for="tipoServicio">Tipo de Servicio</mat-label>
                 <mat-select name="tipoServicio" formControlName="tipoServicio" required>
-                    <mat-option *ngFor="let tipo_servicio of tipo_servicios" [value]="tipo_servicio">{{
-                        tipo_servicio.tipo_servicio
+                    <mat-option *ngFor="let tipoServicio of tipoServicios" [value]="tipoServicio">{{
+                        tipoServicio.tipoServicio
                         }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
                 <mat-label for="tipoItem">Tipo de Item</mat-label>
                 <mat-select name="tipoItem" formControlName="tipoItem" required>
-                    <mat-option *ngFor="let tipo_item of tipo_items" [value]="tipo_item">{{ tipo_item.tipo_item
+                    <mat-option *ngFor="let tipoItem of tipoItems" [value]="tipoItem">{{ tipoItem.tipoItem
                         }}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -53,12 +53,12 @@
                 <div class="duracion">
                     <mat-form-field>
                         <mat-label>Cantidad</mat-label>
-                        <input matInput #input maxlength="5">
+                        <input matInput formControlName="cantidad" #input maxlength="5">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Días/Horas</mat-label>
-                        <mat-select>
-                            <mat-option value="Dias">Días</mat-option>
+                        <mat-select formControlName="diaHora">
+                            <mat-option value="Días">Días</mat-option>
                             <mat-option value="Horas">Horas</mat-option>
                         </mat-select>
                     </mat-form-field>
