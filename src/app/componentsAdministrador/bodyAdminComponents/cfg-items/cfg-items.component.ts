@@ -30,7 +30,7 @@ export class CfgItemsComponent implements OnInit {
   tipoServicios: TipoServicio[] = [];
   defaultTipoServicio: TipoServicio = new TipoServicio();
   requisitos: Requisito[] = [];
-  modificarEliminarHabilitado: any;
+  modificarEliminarHabilitado: boolean = false;
 
   firstFormGroup = new FormGroup({
     nombreItem: new FormControl<string>('', [Validators.maxLength(50)]),
