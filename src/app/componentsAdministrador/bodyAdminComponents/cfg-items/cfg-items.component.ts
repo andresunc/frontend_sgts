@@ -12,6 +12,8 @@ import { RequisitoService } from 'src/app/services/DomainServices/requisito.serv
 import { RubroService } from 'src/app/services/DomainServices/rubro.service';
 import { TipoItemService } from 'src/app/services/DomainServices/tipo-item.service';
 import { TipoServicioService } from 'src/app/services/DomainServices/tipo-servicio.service';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { DataSharedService } from 'src/app/services/data-shared.service';
 
 @Component({
   selector: 'app-cfg-items',
