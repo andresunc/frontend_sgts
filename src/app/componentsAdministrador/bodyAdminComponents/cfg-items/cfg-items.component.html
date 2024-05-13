@@ -67,7 +67,7 @@
             <mat-form-field class="rubro">
                 <mat-label for="rubro">Rubro</mat-label>
                 <mat-select name="rubro" formControlName="rubro" required>
-                    <mat-option *ngFor="let rubro of rubros" [value]="rubro">{{ rubro.rubro }}</mat-option>
+                    <mat-option *ngFor="let rubro of rubros" [value]="rubro">{{ rubro?.rubro }}</mat-option>
                 </mat-select>
             </mat-form-field>
         

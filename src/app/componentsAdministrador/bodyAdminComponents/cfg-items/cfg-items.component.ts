@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable, Subscribable, map, startWith } from 'rxjs';
+import { Observable, map, startWith } from 'rxjs';
 import { Dependencia } from 'src/app/models/DomainModels/Dependencia';
 import { Requisito } from 'src/app/models/DomainModels/Requisito';
 import { Rubro } from 'src/app/models/DomainModels/Rubro';
@@ -46,8 +46,6 @@ export class CfgItemsComponent implements OnInit {
 
 
   constructor(
-    private router: Router,
-    private popupService: PopupService,
     private tipoItemService: TipoItemService,
     private rubroService: RubroService,
     private dependenciaService: DependenciaService,
@@ -127,7 +125,7 @@ export class CfgItemsComponent implements OnInit {
     )
   }
   
-  seleccionarRequisito(arg0: any) {
+  seleccionarRequisito(value: any) {
     throw new Error('Method not implemented.');
   }
 
