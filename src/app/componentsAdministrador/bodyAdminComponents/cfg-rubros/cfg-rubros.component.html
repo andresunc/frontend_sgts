@@ -10,9 +10,9 @@
       [matAutocomplete]="auto"
       (focus)="onInputFocus()">
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let rubro of filteredOptions | async" [value]="rubro.rubro"
-          (onSelectionChange)="seleccionarRubro(rubro.idRubro!)">
-          {{ rubro.rubro }}
+        <mat-option *ngFor="let rubro of filteredOptions | async" [value]="rubro?.rubro"
+          (onSelectionChange)="seleccionarRubro(rubro?.idRubro!)">
+          {{ rubro?.rubro }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
