@@ -186,7 +186,7 @@ export class CfgClientesComponent implements OnInit {
 
     // Verificar si se encontró la empresa seleccionada
     if (this.empresaSeleccionada) {
-      console.log('Se encontr la empresa OK')
+      console.log('Empresa seleccionada OK')
       // habilitar la opcion de eliminar
       this.modificarEliminarHabilitado = true;
       // Completar los campos del formulario con los datos de la empresa seleccionada
@@ -195,7 +195,8 @@ export class CfgClientesComponent implements OnInit {
         CUIT: this.empresaSeleccionada.cuit,
         Direccion: this.empresaSeleccionada.direccion,
         // Selección, selecciona automáticamente los valores correspondientes
-        Rubro: this.rubros.find(rubro => rubro.idRubro === this.empresaSeleccionada!.idRubro),
+        Rubro: this.empresaSeleccionada && this.empresaSeleccionada.idRubro ?
+          this.rubros.find(rubro => rubro.idRubro === this.empresaSeleccionada?.idRubro) : null,
         Riesgo: this.riesgos.find(riesgo => riesgo.idRiesgo === this.empresaSeleccionada!.idRiesgo)
       });
 
