@@ -19,10 +19,10 @@
             [formControl]="myControl" 
             [matAutocomplete]="auto"
             (focus)="onInputFocus()">
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-autocomplete (optionSelected)="seleccionarEmpresa($event.option.value)" #auto="matAutocomplete" [displayWith]="displayFn">
               <mat-option *ngFor="let empresa of filteredOptions | async" [value]="empresa.cliente"
-                (onSelectionChange)="seleccionarEmpresa(empresa.idEmpresa!)">
-                {{ empresa.cliente }}
+                >
+                {{ empresa?.cliente }}
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
@@ -56,13 +56,13 @@
           <mat-form-field>
             <mat-label for="Rubro">Rubro</mat-label>
             <mat-select name="Rubro" formControlName="Rubro" required>
-              <mat-option *ngFor="let rubro of rubros" [value]="rubro">{{ rubro.rubro }}</mat-option>
+              <mat-option *ngFor="let rubro of rubros" [value]="rubro">{{ rubro?.rubro }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field>
             <mat-label  for="Riesgo">Riesgo</mat-label>
             <mat-select name="Riesgo" formControlName="Riesgo" required>
-              <mat-option *ngFor="let riesgo of riesgos" [value]="riesgo">{{ riesgo.riesgo }}</mat-option>
+              <mat-option *ngFor="let riesgo of riesgos" [value]="riesgo">{{ riesgo?.riesgo }}</mat-option>
             </mat-select>
           </mat-form-field>
           <div class="btn-next">
@@ -118,7 +118,7 @@
           <div class="contact-cards">
             <mat-card *ngFor="let contacto of contactos">
               <mat-card-header>
-                <mat-card-title>Contacto: {{ contacto.nombre + ' ' + contacto.apellido }}</mat-card-title>
+                <mat-card-title>Contacto: {{ contacto?.nombre + ' ' + contacto?.apellido }}</mat-card-title>
                 <mat-card-actions>
                   <button mat-mini-fab (click)="editarContacto(contacto)" class="btn-editar">
                     <mat-icon>edit</mat-icon>
@@ -126,8 +126,8 @@
                 </mat-card-actions>
               </mat-card-header>
               <mat-card-content>
-                <p>Teléfono: {{ contacto.telefono }}</p>
-                <p>Email: {{ contacto.email }}</p>
+                <p>Teléfono: {{ contacto?.telefono }}</p>
+                <p>Email: {{ contacto?.email }}</p>
               </mat-card-content>
             </mat-card>
           </div>
@@ -146,8 +146,8 @@
               <p *ngIf="resumenDatos.datosCliente">Razon social: {{ resumenDatos.datosCliente.RazonSocial }}</p>
               <p *ngIf="resumenDatos.datosCliente">CUIT: {{ resumenDatos.datosCliente.CUIT }}</p>
               <p *ngIf="resumenDatos.datosCliente">Dirección: {{ resumenDatos.datosCliente.Direccion }}</p>
-              <p *ngIf="resumenDatos.datosCliente">Riesgo: {{ resumenDatos.datosCliente.Riesgo.riesgo }}</p>
-              <p *ngIf="resumenDatos.datosCliente">Rubro: {{ resumenDatos.datosCliente.Rubro.rubro }}</p>
+              <p *ngIf="resumenDatos.datosCliente">Riesgo: {{ resumenDatos.datosCliente.Riesgo?.riesgo }}</p>
+              <p *ngIf="resumenDatos.datosCliente">Rubro: {{ resumenDatos.datosCliente.Rubro?.rubro }}</p>
             </div>
 
             <div *ngIf="resumenDatos.contactos && resumenDatos.contactos.length > 0" class="contactos-container">

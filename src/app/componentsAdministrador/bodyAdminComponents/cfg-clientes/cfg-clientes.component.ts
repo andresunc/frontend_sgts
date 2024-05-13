@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
-import { Observable } from 'rxjs';
-import { map, startWith, window } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { map, startWith, takeUntil } from 'rxjs/operators';
 import { RiesgoService } from 'src/app/services/DomainServices/riesgo.service';
 import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
@@ -130,31 +130,44 @@ export class CfgClientesComponent implements OnInit {
 
   }
 
+  // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
+  private unsubscribe$ = new Subject<void>();
+  ngOnDestroy() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   obtenerRiesgo() {
 
-    this.riesgoService.getAllRiesgo().subscribe((data: Riesgo[]) => {
-      this.riesgos = data;
-      console.log("Riesgos obtenidos:", this.riesgos);
-    });
+    this.riesgoService.getAllRiesgo()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data: Riesgo[]) => {
+        this.riesgos = data;
+        console.log("Riesgos obtenidos:", this.riesgos);
+      });
   }
 
   obtenerRubro() {
-
-    this.rubroService.getAllRubro().subscribe((data: Rubro[]) => {
-      this.rubros = data;
-      console.log("Rubros obtenidos:", this.rubros);
-    });
+    this.rubroService.getAllRubro()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data: Rubro[]) => {
+        this.rubros = data;
+        console.log("Rubros obtenidos:", this.rubros);
+      });
   }
 
 
   obtenerEmpresas() {
-    this.empresaDtoService.getEmpresas().subscribe((data: EmpresaDto[]) => {
-      this.empresas = data;
-    });
+    this.empresaDtoService.getEmpresas()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data: EmpresaDto[]) => {
+        this.empresas = data;
+      });
   }
 
   obtenerContactosEmpresa(idEmpresa: number) {
     this.contactoEmpresaService.getContactoEmpresa(idEmpresa)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (data) => {
           this.contactos = data;
@@ -164,14 +177,16 @@ export class CfgClientesComponent implements OnInit {
   }
 
   empresaSeleccionada: EmpresaDto | undefined;
-  seleccionarEmpresa(idEmpresa: number) {
+  seleccionarEmpresa(cliente: any) {
 
     // Buscar contactos de la empresa y la empresa seleccionada
-    this.obtenerContactosEmpresa(idEmpresa);
-    this.empresaSeleccionada = this.empresas.find(empresa => empresa.idEmpresa === idEmpresa);
+    this.empresaSeleccionada = this.empresas.find(empresa => empresa.cliente === cliente);
+    this.obtenerContactosEmpresa(this.empresaSeleccionada?.idEmpresa!);
+    console.log('Empresa Seleccionada, ', this.empresaSeleccionada);
 
     // Verificar si se encontró la empresa seleccionada
     if (this.empresaSeleccionada) {
+      console.log('Empresa seleccionada OK')
       // habilitar la opcion de eliminar
       this.modificarEliminarHabilitado = true;
       // Completar los campos del formulario con los datos de la empresa seleccionada
@@ -180,14 +195,15 @@ export class CfgClientesComponent implements OnInit {
         CUIT: this.empresaSeleccionada.cuit,
         Direccion: this.empresaSeleccionada.direccion,
         // Selección, selecciona automáticamente los valores correspondientes
-        Rubro: this.rubros.find(rubro => rubro.idRubro === this.empresaSeleccionada!.idRubro),
+        Rubro: this.empresaSeleccionada && this.empresaSeleccionada.idRubro ?
+          this.rubros.find(rubro => rubro.idRubro === this.empresaSeleccionada?.idRubro) : null,
         Riesgo: this.riesgos.find(riesgo => riesgo.idRiesgo === this.empresaSeleccionada!.idRiesgo)
       });
 
       // Actualizar resumen
       this.actualizarResumen();
     } else {
-      console.error('No se encontró la empresa con el ID:', idEmpresa);
+      console.error('No se encontró la empresa');
     }
   }
 
@@ -276,6 +292,7 @@ export class CfgClientesComponent implements OnInit {
     empresaWithContacts.contactos = this.contactos;
 
     this.empresaService.addEmpresaWithContacts(empresaWithContacts)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (data) => {
           console.log('Empresa creada: ', data);
@@ -324,6 +341,7 @@ export class CfgClientesComponent implements OnInit {
     empresaWithContacts.contactos = this.contactos;
 
     this.empresaService.updateEmpresaWithContacts(empresaWithContacts)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (data) => {
           console.log('Empresa actualizada:', data);
@@ -357,18 +375,21 @@ export class CfgClientesComponent implements OnInit {
       data: { message: `¿Eliminar cliente ${this.empresaSeleccionada?.cliente}?` }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.eliminarCliente();
-      } else {
-        console.log('Se canceló la eliminación');
-      }
-    });
+    dialogRef.afterClosed()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(result => {
+        if (result) {
+          this.eliminarCliente();
+        } else {
+          console.log('Se canceló la eliminación');
+        }
+      });
   }
 
 
   eliminarCliente() {
     this.empresaService.deleteLogico(this.empresaSeleccionada?.idEmpresa!)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         () => {
           this.popupService.okSnackBar('La empresa se eliminó correctamente');
@@ -398,7 +419,7 @@ export class CfgClientesComponent implements OnInit {
   }
 
   private _filter(value: string): EmpresaDto[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value ? value.toLowerCase() : '';
     return this.empresas.filter(empresa => empresa.cliente?.toLowerCase().startsWith(filterValue));
   }
 
