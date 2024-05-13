@@ -11,7 +11,7 @@ import { AuthService } from '../auth.service';
 export class RiesgoService {
 
   urlBackend = new UrlBackend().getUrlBackend();
-  getAllRiesgoUrl = this.urlBackend + '/riesgo/getAll';
+  getAllRiesgoUrl = this.urlBackend + '/riesgo/getAllNotDeleted';
   createRiesgoUrl = this.urlBackend + '/riesgo/create';
   upDateRiesgoUrl = this.urlBackend + '/riesgo/update/';
   deleteRiesgoUrl = this.urlBackend + '/riesgo/delete/';
