@@ -5,9 +5,9 @@
                 <input type="text" placeholder="Seleccione un Item para Modificar/Eliminar" aria-label="Buscar Item"
                     matInput [formControl]="myControl" [matAutocomplete]="auto" (focus)="onInputFocus()">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngFor="let requisito of filteredOptions | async" [value]="requisito.descripcion"
+                    <mat-option *ngFor="let requisito of filteredOptions | async" [value]="requisito?.descripcion"
                         (onSelectionChange)="seleccionarRequisito(requisito.idRequisito!)">
-                        {{ requisito.descripcion }}
+                        {{ requisito?.descripcion }}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
@@ -28,7 +28,7 @@
                 <mat-label for="tipoServicio">Tipo de Servicio</mat-label>
                 <mat-select name="tipoServicio" formControlName="tipoServicio" required>
                     <mat-option *ngFor="let tipoServicio of tipoServicios" [value]="tipoServicio">{{
-                        tipoServicio.tipoServicio
+                        tipoServicio?.tipoServicio
                         }}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -43,7 +43,7 @@
                 <mat-label for="dependencia">Dependencia</mat-label>
                 <mat-select name="dependencia" formControlName="dependencia" required>
                     <mat-option *ngFor="let dependencia of dependencias" [value]="dependencia">{{
-                        dependencia.dependencia }}</mat-option>
+                        dependencia?.dependencia }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <div class="ayudaTpo">
