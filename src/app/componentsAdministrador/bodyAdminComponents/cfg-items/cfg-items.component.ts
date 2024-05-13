@@ -8,11 +8,13 @@ import { Rubro } from 'src/app/models/DomainModels/Rubro';
 import { TipoItem } from 'src/app/models/DomainModels/TipoItem';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { DependenciaService } from 'src/app/services/DomainServices/dependencia.service';
+import { ItemService } from 'src/app/services/DomainServices/item.service';
 import { RequisitoService } from 'src/app/services/DomainServices/requisito.service';
 import { RubroService } from 'src/app/services/DomainServices/rubro.service';
 import { TipoItemService } from 'src/app/services/DomainServices/tipo-item.service';
 import { TipoServicioService } from 'src/app/services/DomainServices/tipo-servicio.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { DataSharedService } from 'src/app/services/data-shared.service';
 
 @Component({
   selector: 'app-cfg-items',
@@ -50,7 +52,9 @@ export class CfgItemsComponent implements OnInit {
     private rubroService: RubroService,
     private dependenciaService: DependenciaService,
     private tipoServicioService: TipoServicioService,
-    private requisitoService: RequisitoService
+    private requisitoService: RequisitoService,
+    private itemService: ItemService,
+    private dataShared: DataSharedService,
   ) { }
 
   ngOnInit() : void {
@@ -140,7 +144,53 @@ export class CfgItemsComponent implements OnInit {
 
 
   crearItem() {
-    throw new Error('Method not implemented.');
+   /* this.dataShared.mostrarSpinner();
+    this.modificarEliminarHabilitado = true;
+
+    const nombreItem = this.firstFormGroup.get('nombreItem')?.value;
+    const tipoServicio = this.firstFormGroup.controls.tipoServicio;
+    const tipoItem = this.firstFormGroup.controls.tipoItem;
+    const dependencia = this.firstFormGroup.controls.dependencia;
+    const rubro = this.firstFormGroup.controls.rubro;
+    
+    const cantidad = this.firstFormGroup.get('cantidad')?.value;
+    const diaHora = this.firstFormGroup.get('diaHora')?.value;
+
+    const Item: Item = new Item();
+    const Requisito: Requisito = new Requisito();
+    Requisito.descripcion = nombreItem;
+    empresa.direccion = direccion;
+    empresa.rubroIdRubro = rubro.value?.idRubro;
+    empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
+    empresa.razonSocial = razonSocial;
+
+    const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
+    empresaWithContacts.empresa = empresa;
+    empresaWithContacts.contactos = this.contactos;
+
+    this.empresaService.addEmpresaWithContacts(empresaWithContacts)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (data) => {
+          console.log('Empresa creada: ', data);
+
+          this.popupService.okSnackBar('La empresa se creó correctamente');
+          console.log('La empresa se creó correctamente.');
+          // Recargar el componente navegando a la misma ruta
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['administrador/clientes']);
+          });
+
+        },
+        (error) => {
+          this.popupService.warnSnackBar('Error al crear la empresa');
+          console.error('Error al crear la empresa:', error);
+        }
+      )
+      .add(() => {
+        this.dataShared.ocultarSpinner();
+        this.modificarEliminarHabilitado = false;
+      })*/
   }
   modificarItem() {
     throw new Error('Method not implemented.');
