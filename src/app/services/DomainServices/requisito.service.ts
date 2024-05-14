@@ -11,7 +11,7 @@ import { AuthService } from '../auth.service';
 export class RequisitoService {
 
   private urlBackend = new UrlBackend().getUrlBackend();
-  private getRequisitosUrl = this.urlBackend + '/requisito/getAll';
+  private getRequisitosUrl = this.urlBackend + '/requisito/getAllNotDeleted';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

@@ -9,9 +9,9 @@
           [formControl]="myControl" 
           [matAutocomplete]="auto"
           (focus)="onInputFocus()">
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let riesgo of filteredOptions | async" [value]="riesgo?.riesgo"
-              (onSelectionChange)="seleccionarRiesgo(riesgo?.idRiesgo!)">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+          (optionSelected)="seleccionarRiesgo($event.option.value)">
+            <mat-option *ngFor="let riesgo of filteredOptions | async" [value]="riesgo.riesgo">
               {{ riesgo?.riesgo }}
             </mat-option>
           </mat-autocomplete>
