@@ -1,11 +1,10 @@
 <ng-container>
   <form [formGroup]="firstFormGroup">
     <mat-form-field>
-      <input type="text" placeholder="Buscar Estado" aria-label="Buscar Estado" matInput [formControl]="myControl"
+      <input type="text" placeholder="Buscar Estado" aria-label="Buscar Estado para modificar o eliminar" matInput [formControl]="myControl"
         [matAutocomplete]="auto" (focus)="onInputFocus()">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        <mat-option *ngFor="let estado of filteredOptions | async" [value]="estado.tipoEstado"
-          (onSelectionChange)="seleccionarEstado(estado.idEstado!)">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="seleccionarEstado($event.option.value)">
+        <mat-option *ngFor="let estado of filteredOptions | async" [value]="estado.tipoEstado">
           {{ estado.tipoEstado }}
         </mat-option>
       </mat-autocomplete>

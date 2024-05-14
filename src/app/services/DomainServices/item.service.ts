@@ -10,11 +10,11 @@ import { Item } from 'src/app/models/DomainModels/Item';
 })
 export class ItemService {
 
-  urlBackend = new UrlBackend().getUrlBackend();
-  getItemsNotDeleteUrl = this.urlBackend + '/item/getAllNotDeleted';
-  createItemUrl = this.urlBackend + '/item/create';
-  updateItemUrl = this.urlBackend + '/item/update/';
-  deleteItemUrl = this.urlBackend + '/item/delete/';
+  private urlBackend = new UrlBackend().getUrlBackend();
+  private getItemsNotDeleteUrl = this.urlBackend + '/item/getAllNotDeleted';
+  private createItemUrl = this.urlBackend + '/item/create';
+  private updateItemUrl = this.urlBackend + '/item/update/';
+  private deleteItemUrl = this.urlBackend + '/item/delete/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 

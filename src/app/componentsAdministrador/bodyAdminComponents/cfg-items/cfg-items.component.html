@@ -1,76 +1,81 @@
 <div class="container">
     <form [formGroup]="firstFormGroup">
+        <!--
         <div class="principal">
             <mat-form-field class="buscar">
-                <input type="text" placeholder="Seleccione un Item para Modificar/Eliminar" aria-label="Buscar Item"
+                <mat-label>Nombre del Item</mat-label>
+                <input type="text" placeholder="Buscar o crear un ítem" formControlName="nombreItem"
                     matInput [formControl]="myControl" [matAutocomplete]="auto" (focus)="onInputFocus()">
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                    <mat-option *ngFor="let requisito of filteredOptions | async" [value]="requisito?.descripcion"
-                        (onSelectionChange)="seleccionarRequisito(requisito.idRequisito!)">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="seleccionarRequisito($event.option.value)">
+                    <mat-option *ngFor="let requisito of filteredOptions | async" [value]="requisito?.descripcion">
                         {{ requisito?.descripcion }}
                     </mat-option>
                 </mat-autocomplete>
             </mat-form-field>
-        </div>
+        </div> 
+        -->
+        <h2>Buscá un ítem o ingresa el nombre y sus propiedades para uno nuevo</h2><br>
         <div class="central">
-            <div class="ayuda">
-                <a>Para crear un nuevo item complete los siguientes campos: </a>
-            </div>
-            <mat-form-field>
-                <mat-label>Nombre del Item</mat-label>
-                <input matInput placeholder="" formControlName="nombreItem" required maxlength="99">
-                <mat-error
-                    *ngIf="firstFormGroup.get('nombreItem')?.invalid && (firstFormGroup.get('nombreItem')?.dirty || firstFormGroup.get('nombreItem')?.touched)">
-                    Dato obligatorio.
-                </mat-error>
+
+            <mat-form-field class="buscar">
+                <mat-label for="nombreItem">Nombre del Item</mat-label>
+                <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" formControlName="nombreItem"
+                    matInput [formControl]="myControl" [matAutocomplete]="auto" (focus)="onInputFocus()">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                    (optionSelected)="seleccionarRequisito($event.option.value)">
+                    <mat-option *ngFor="let requisito of filteredOptions | async" [value]="requisito?.descripcion">
+                        {{ requisito?.descripcion }}
+                    </mat-option>
+                </mat-autocomplete>
             </mat-form-field>
+
             <mat-form-field>
                 <mat-label for="tipoServicio">Tipo de Servicio</mat-label>
                 <mat-select name="tipoServicio" formControlName="tipoServicio" required>
-                    <mat-option *ngFor="let tipoServicio of tipoServicios" [value]="tipoServicio">{{
-                        tipoServicio?.tipoServicio
-                        }}</mat-option>
+                    <mat-option *ngFor="let tipoServicio of tipoServicios" [value]="tipoServicio">
+                    {{ tipoServicio?.tipoServicio }}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
                 <mat-label for="tipoItem">Tipo de Item</mat-label>
                 <mat-select name="tipoItem" formControlName="tipoItem" required>
-                    <mat-option *ngFor="let tipoItem of tipoItems" [value]="tipoItem">{{ tipoItem.tipoItem
-                        }}</mat-option>
+                    <mat-option *ngFor="let tipoItem of tipoItems" [value]="tipoItem">
+                        {{ tipoItem.tipoItem }}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
                 <mat-label for="dependencia">Dependencia</mat-label>
                 <mat-select name="dependencia" formControlName="dependencia" required>
-                    <mat-option *ngFor="let dependencia of dependencias" [value]="dependencia">{{
-                        dependencia?.dependencia }}</mat-option>
+                    <mat-option *ngFor="let dependencia of dependencias" [value]="dependencia">
+                        {{ dependencia?.dependencia }}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
-            <div class="ayudaTpo">
-                <a>Ingrese la duración estandar del requisito:</a>
-            </div>
             <div class="tpoEstandar">
                 <div class="duracion">
                     <mat-form-field>
-                        <mat-label>Cantidad</mat-label>
-                        <input matInput formControlName="cantidad" #input maxlength="5">
+                        <mat-label>Tiempo de duración</mat-label>
+                        <input matInput formControlName="duracionEstandar" #input maxlength="5">
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Días/Horas</mat-label>
                         <mat-select formControlName="diaHora">
-                            <mat-option value="Días">Días</mat-option>
-                            <mat-option value="Horas">Horas</mat-option>
+                            <mat-option value="dias">Días</mat-option>
+                            <mat-option value="horas">Horas</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
             <mat-form-field class="rubro">
                 <mat-label for="rubro">Rubro</mat-label>
-                <mat-select name="rubro" formControlName="rubro" required>
-                    <mat-option *ngFor="let rubro of rubros" [value]="rubro">{{ rubro?.rubro }}</mat-option>
+                <mat-select name="rubro" formControlName="rubro">
+                    <mat-option *ngFor="let rubro of rubros" [value]="rubro">
+                        {{ rubro?.rubro }}
+                    </mat-option>
                 </mat-select>
             </mat-form-field>
-        
+
         </div>
     </form>
 
