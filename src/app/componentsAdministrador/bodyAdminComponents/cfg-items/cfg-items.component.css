@@ -1,115 +1,117 @@
-.container{
+.container {
   text-align: center;
 }
 
 .backspace {
   cursor: pointer;
-}
-.backspace:hover {
-  color: var(--warn);
+  color: var(--secondary)
 }
 
-.principal{
+.backspace:hover {
+  color: var(--warn);
+  transition: color 0.3s ease;
+}
+
+.principal {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   width: 100%;
 }
 
-.principal> mat-form-field{
+.principal>mat-form-field {
   width: 80%;
 }
 
-.ayuda{
+.ayuda {
   width: 100%;
   margin-left: 1%;
   color: rgb(118, 118, 118);
 }
 
-.central{
+.central {
   display: flex;
   flex-wrap: wrap;
   text-align: left;
 }
 
-.central> mat-form-field{
+.central>mat-form-field {
   width: 50%;
-  padding: 0.5% 1% ;
+  padding: 0.5% 1%;
 }
 
-.tpoEstandar{
- width: 50%;
- display: inline;
- text-align: left;
+.tpoEstandar {
+  width: 50%;
+  display: inline;
+  text-align: left;
 
 }
 
-.ayudaTpo{
+.ayudaTpo {
   color: rgb(118, 118, 118);
   width: 100%;
-  margin-left:1%;
+  margin-left: 1%;
   margin-bottom: 0.6rem;
 
 }
 
-.duracion> mat-form-field{
+.duracion>mat-form-field {
   width: 48%;
-  padding: 0.7% 1% ;
+  padding: 0.7% 1%;
   margin-left: 0.4rem;
 }
 
-.btn{
+.btn {
   padding-top: 1.5rem;
 }
 
 
 @media screen and (max-width: 700px) {
- 
-  
-  .principal{
+
+
+  .principal {
     margin-top: 3%;
     justify-content: left;
     align-items: left;
   }
-  
-  .principal> mat-form-field{
+
+  .principal>mat-form-field {
     width: 100%;
   }
-  
-  .tpoEstandar{
+
+  .tpoEstandar {
     width: 100%;
     display: inline;
     text-align: left;
-  
-   }
 
-   .duracion> mat-form-field{
-    width: 48.5%;
-    padding: 0.3% ;
   }
-  
-  .rubro{
+
+  .duracion>mat-form-field {
+    width: 48.5%;
+    padding: 0.3%;
+  }
+
+  .rubro {
     margin-left: 0.5%;
   }
 
-  .btn{
+  .btn {
     padding-top: 0;
   }
- 
-  mat-form-field, mat-option, mat-label{
+
+  mat-form-field,
+  mat-option,
+  mat-label {
     font-size: small;
   }
 
- .container{
+  .container {
     font-size: small;
 
   }
 
- .ayudaTpo{
-   margin-bottom: 0.1rem;
+  .ayudaTpo {
+    margin-bottom: 0.1rem;
 
   }
 }
-
-
-

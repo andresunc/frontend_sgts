@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
+import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { Dependencia } from 'src/app/models/DomainModels/Dependencia';
 import { Item } from 'src/app/models/DomainModels/Item';
 import { Requisito } from 'src/app/models/DomainModels/Requisito';
@@ -13,6 +16,7 @@ import { RequisitoService } from 'src/app/services/DomainServices/requisito.serv
 import { RubroService } from 'src/app/services/DomainServices/rubro.service';
 import { TipoItemService } from 'src/app/services/DomainServices/tipo-item.service';
 import { TipoServicioService } from 'src/app/services/DomainServices/tipo-servicio.service';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
 @Component({
@@ -42,7 +46,7 @@ export class CfgItemsComponent implements OnInit {
     tipoItem: new FormControl<TipoItem>(new TipoItem, Validators.required),
     dependencia: new FormControl<Dependencia>(new Dependencia, Validators.required),
     rubro: new FormControl<Rubro>(new Rubro, Validators.required),
-    duracionEstandar: new FormControl<number>(0, [Validators.required,Validators.min(0),Validators.max(365)]),
+    duracionEstandar: new FormControl<number>(0, [Validators.required, Validators.min(0), Validators.max(365)]),
     diaHora: new FormControl<string>("", Validators.required),
   });
 
@@ -55,6 +59,9 @@ export class CfgItemsComponent implements OnInit {
     private requisitoService: RequisitoService,
     private itemService: ItemService,
     private dataShared: DataSharedService,
+    private dialog: MatDialog,
+    private snackService: PopupService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -87,7 +94,7 @@ export class CfgItemsComponent implements OnInit {
       .subscribe(
         (data) => {
           this.rubros = data;
-          this.setRubro.idRubro = 99;
+          this.setRubro.idRubro = undefined;
           this.setRubro.rubro = "No aplica";
           this.rubros.push(this.setRubro);
           console.log(
@@ -99,7 +106,7 @@ export class CfgItemsComponent implements OnInit {
     this.dependenciaService.getAll()
       .subscribe(
         (data) => {
-          this.defaultDependencia.idDependencia = 99;
+          this.defaultDependencia.idDependencia = undefined;
           this.defaultDependencia.dependencia = 'No aplica'
           this.dependencias = data;
           this.dependencias.push(this.defaultDependencia);
@@ -113,7 +120,7 @@ export class CfgItemsComponent implements OnInit {
       .subscribe(
         (data) => {
           this.tipoServicios = data;
-          this.defaultTipoServicio.idTipoServicio = 99
+          this.defaultTipoServicio.idTipoServicio = undefined
           this.defaultTipoServicio.tipoServicio = 'Indistinto';
           this.tipoServicios.push(this.defaultTipoServicio);
           console.log(
@@ -169,14 +176,14 @@ export class CfgItemsComponent implements OnInit {
 
       this.firstFormGroup.patchValue({
         nombreItem: this.requisitoSelected,
-        tipoServicio: this.tipoServicios.find(ts => ts.idTipoServicio === this.itemMatch?.tipoServicioIdTipoServicio || ts.idTipoServicio === 99),
+        tipoServicio: this.tipoServicios.find(ts => ts.idTipoServicio === this.itemMatch?.tipoServicioIdTipoServicio || ts.idTipoServicio === undefined),
         tipoItem: this.tipoItems.find(item => item.idTipoItem === this.itemMatch?.tipoItemIdTipoItem),
-        dependencia: this.dependencias.find(dep => dep.idDependencia === this.itemMatch?.dependenciaIdDependencia || dep.idDependencia === 99),
-        rubro: this.rubros.find(ru => ru.idRubro === this.itemMatch?.rubroIdRubro || ru.idRubro === 99),
+        dependencia: this.dependencias.find(dep => dep.idDependencia === this.itemMatch?.dependenciaIdDependencia || dep.idDependencia === undefined),
+        rubro: this.rubros.find(ru => ru.idRubro === this.itemMatch?.rubroIdRubro || ru.idRubro === undefined),
         duracionEstandar: this.itemMatch?.duracionEstandar,
         diaHora: diasHorasValue
       })
-      
+
       this.disableBtnEditDelete = false;
       console.log(this.firstFormGroup);
 
@@ -194,12 +201,6 @@ export class CfgItemsComponent implements OnInit {
     this.firstFormGroup.reset();
   }
 
-  showClearIcon() {
-    return this.firstFormGroup.value.dependencia || this.firstFormGroup.value.diaHora ||
-    this.firstFormGroup.value.duracionEstandar || this.firstFormGroup.value.nombreItem ||
-    this.firstFormGroup.value.rubro || this.firstFormGroup.value.tipoItem || this.firstFormGroup.value.tipoServicio
-  }
-
   private _filter(value: string): Requisito[] {
     const filterValue = value.toLowerCase();
     return this.requisitos.filter(requisito => requisito.descripcion?.toLowerCase().startsWith(filterValue));
@@ -207,59 +208,75 @@ export class CfgItemsComponent implements OnInit {
 
 
   crearItem() {
-    /* this.dataShared.mostrarSpinner();
-     this.modificarEliminarHabilitado = true;
- 
-     const nombreItem = this.firstFormGroup.get('nombreItem')?.value;
-     const tipoServicio = this.firstFormGroup.controls.tipoServicio;
-     const tipoItem = this.firstFormGroup.controls.tipoItem;
-     const dependencia = this.firstFormGroup.controls.dependencia;
-     const rubro = this.firstFormGroup.controls.rubro;
-     
-     const duracionEstandar = this.firstFormGroup.get('duracionEstandar')?.value;
-     const diaHora = this.firstFormGroup.get('diaHora')?.value;
- 
-     const Item: Item = new Item();
-     const Requisito: Requisito = new Requisito();
-     Requisito.descripcion = nombreItem;
-     empresa.direccion = direccion;
-     empresa.rubroIdRubro = rubro.value?.idRubro;
-     empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
-     empresa.razonSocial = razonSocial;
- 
-     const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
-     empresaWithContacts.empresa = empresa;
-     empresaWithContacts.contactos = this.contactos;
- 
-     this.empresaService.addEmpresaWithContacts(empresaWithContacts)
-       .pipe(takeUntil(this.unsubscribe$))
-       .subscribe(
-         (data) => {
-           console.log('Empresa creada: ', data);
- 
-           this.popupService.okSnackBar('La empresa se creó correctamente');
-           console.log('La empresa se creó correctamente.');
-           // Recargar el componente navegando a la misma ruta
-           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-             this.router.navigate(['administrador/clientes']);
-           });
- 
-         },
-         (error) => {
-           this.popupService.warnSnackBar('Error al crear la empresa');
-           console.error('Error al crear la empresa:', error);
-         }
-       )
-       .add(() => {
-         this.dataShared.ocultarSpinner();
-         this.modificarEliminarHabilitado = false;
-       })*/
+    this.dataShared.mostrarSpinner();
+
+    const nombreItem = this.firstFormGroup.get('nombreItem')?.value;
+    const tipoServicio = this.firstFormGroup.controls.tipoServicio.value;
+    const tipoItem = this.firstFormGroup.controls.tipoItem.value;
+    const dependencia = this.firstFormGroup.controls.dependencia.value;
+    const rubro = this.firstFormGroup.controls.rubro.value;
+    let duracionEstandar = this.firstFormGroup.get('duracionEstandar')?.value!;
+    const diaHora = this.firstFormGroup.controls.diaHora.value;
+
+    if (diaHora === 'dias') {
+      duracionEstandar = duracionEstandar * 24
+    }
+
+    const item: Item = new Item();
+
+    item.descripcion = nombreItem;
+    item.tipoItemIdTipoItem = tipoItem?.idTipoItem;
+    item.rubroIdRubro = rubro?.idRubro;
+    item.dependenciaIdDependencia = dependencia?.idDependencia;
+    item.tipoServicioIdTipoServicio = tipoServicio?.idTipoServicio;
+    item.duracionEstandar = duracionEstandar
+
+    this.itemService.createItem(item)
+      .subscribe(
+        (data) => {
+          console.log('Creación ok', data);
+          this.firstFormGroup.reset();
+        }
+      ).add(
+        this.dataShared.ocultarSpinner()
+      );
+
+    console.log(item)
   }
+
   modificarItem() {
     throw new Error('Method not implemented.');
   }
+
   checkDelete() {
-    throw new Error('Method not implemented.');
+    const nombreItem = this.firstFormGroup.get('nombreItem')?.value;
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      data: { message: `¿Eliminar el ítem ${nombreItem}?` }
+    });
+
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result) {
+          this.eliminarItem();
+        } else {
+          console.log('Se canceló la eliminación');
+        }
+      });
+  }
+
+  eliminarItem() {
+    this.itemService.deleteItem(this.itemMatch?.idItem!)
+      .subscribe(
+        () => {
+          this.snackService.errorSnackBar('Ítem eliminado correctamente');
+          // Recargar el componente navegando a la misma ruta
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['administrador/items']);
+          });
+        }
+      ).add(
+        this.firstFormGroup.reset()
+      )
   }
 
 }

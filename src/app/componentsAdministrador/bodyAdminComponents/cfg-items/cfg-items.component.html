@@ -7,8 +7,7 @@
                 <mat-label for="nombreItem">Nombre del Item</mat-label>
                 <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" formControlName="nombreItem"
                     matInput [matAutocomplete]="auto" (focus)="onInputFocus()" [maxlength]="60" required>
-                <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()"
-                    *ngIf="firstFormGroup">
+                <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
                     backspace
                 </mat-icon>
                 <mat-error *ngIf="firstFormGroup.get('nombreItem')!.hasError('maxlength')">
