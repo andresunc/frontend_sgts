@@ -75,8 +75,8 @@ import { MatDialog } from '@angular/material/dialog';
   }
 
   riesgoSeleccionado: Riesgo | undefined;
-  seleccionarRiesgo(idRiesgo: number) {
-    this.riesgoSeleccionado = this.riesgos.find(riesgo => riesgo.idRiesgo === idRiesgo);
+  seleccionarRiesgo(value: any) {
+    this.riesgoSeleccionado = this.riesgos.find(ri => ri.riesgo === value);
 
     if (this.riesgoSeleccionado) {
       this.modificarEliminarHabilitado = true;

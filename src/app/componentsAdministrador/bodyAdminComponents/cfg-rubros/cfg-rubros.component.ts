@@ -75,9 +75,9 @@ export class CfgRubrosComponent implements OnInit {
   }
 
   rubroSeleccionado: Rubro | undefined;
-  seleccionarRubro(idRubro: number) {
-    this.rubroSeleccionado = this.rubros.find(rubro => rubro.idRubro === idRubro);
-
+  seleccionarRubro(value: any) {
+    this.rubroSeleccionado = this.rubros.find(ru => ru.rubro === value);
+    
     if (this.rubroSeleccionado) {
       this.modificarEliminarHabilitado = true;
       // Asignar el objeto Rubro directamente
