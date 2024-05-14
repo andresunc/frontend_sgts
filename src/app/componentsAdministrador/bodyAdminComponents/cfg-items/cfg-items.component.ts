@@ -144,33 +144,50 @@ export class CfgItemsComponent implements OnInit {
   }
 
   itemMatch: Item | undefined = new Item();
-  requisitoSelected: string = 'asdasdsad';
-  seleccionarRequisito(nombreRequisito: any) {
+  requisitoSelected: string = '';
+  showItemSelected: boolean = false;
+  seleccionarRequisito(nombreRequisito: string) {
 
-    this.dataShared.mostrarSpinner();
-    const requisitoMatch = this.requisitos.find(req => req.descripcion === nombreRequisito);
-    this.itemMatch = this.itemLists.find(item => item.requisitoIdRequisito === requisitoMatch?.idRequisito);
-    let diasHorasValue: string = '';
-    if (this.itemMatch?.duracionEstandar && this.itemMatch.duracionEstandar <= 24) {
-      diasHorasValue = 'horas'
+    try {
+
+      this.dataShared.mostrarSpinner();
+      this.requisitoSelected = nombreRequisito;
+      const requisitoMatch = this.requisitos.find(req => req.descripcion === this.requisitoSelected);
+      this.itemMatch = this.itemLists.find(item => item.requisitoIdRequisito === requisitoMatch?.idRequisito);
+      let diasHorasValue: string = '';
+      if (this.itemMatch?.duracionEstandar && this.itemMatch.duracionEstandar <= 24) {
+        diasHorasValue = 'horas'
+      }
+      if (this.itemMatch?.duracionEstandar && this.itemMatch.duracionEstandar > 24) {
+        this.itemMatch.duracionEstandar = Math.floor(this.itemMatch.duracionEstandar / 24); // Tomar solo la parte entera
+        diasHorasValue = 'dias'
+      }
+
+      this.firstFormGroup.patchValue({
+        nombreItem: requisitoMatch?.descripcion,
+        tipoServicio: this.tipoServicios.find(ts => ts.idTipoServicio === this.itemMatch?.tipoServicioIdTipoServicio || ts.idTipoServicio === 99),
+        tipoItem: this.tipoItems.find(item => item.idTipoItem === this.itemMatch?.tipoItemIdTipoItem),
+        dependencia: this.dependencias.find(dep => dep.idDependencia === this.itemMatch?.dependenciaIdDependencia || dep.idDependencia === 99),
+        rubro: this.rubros.find(ru => ru.idRubro === this.itemMatch?.rubroIdRubro || ru.idRubro === 99),
+        duracionEstandar: this.itemMatch?.duracionEstandar,
+        diaHora: diasHorasValue
+      })
+
+      this.showItemSelected = true;
+      this.myControl.setValue(nombreRequisito);
+
+      this.dataShared.ocultarSpinner();
+
+    } catch (error) {
+      console.log('Error en la ejecución de seleccionarRequisito()')
+      this.dataShared.ocultarSpinner();
     }
-    if (this.itemMatch?.duracionEstandar && this.itemMatch.duracionEstandar > 24) {
-      this.itemMatch.duracionEstandar = Math.floor(this.itemMatch.duracionEstandar / 24); // Tomar solo la parte entera
-      diasHorasValue = 'dias'
-    }
+  }
 
-    this.firstFormGroup.patchValue({
-      nombreItem: requisitoMatch?.descripcion,
-      tipoServicio: this.tipoServicios.find(ts => ts.idTipoServicio === this.itemMatch?.tipoServicioIdTipoServicio || ts.idTipoServicio === 99),
-      tipoItem: this.tipoItems.find(item => item.idTipoItem === this.itemMatch?.tipoItemIdTipoItem),
-      dependencia: this.dependencias.find(dep => dep.idDependencia === this.itemMatch?.dependenciaIdDependencia || dep.idDependencia === 99),
-      rubro: this.rubros.find(ru => ru.idRubro === this.itemMatch?.rubroIdRubro || ru.idRubro === 99),
-      duracionEstandar: this.itemMatch?.duracionEstandar,
-      diaHora: diasHorasValue
-    })
-
-    console.log(this.setRubro);
-    this.dataShared.ocultarSpinner();
+  backspace() {
+    console.log('backspace works');
+    this.showItemSelected = false;
+    this.firstFormGroup.reset();
   }
 
   onInputFocus() {

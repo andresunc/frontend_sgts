@@ -1,7 +1,12 @@
-
-
 .container{
   text-align: center;
+}
+
+.backspace {
+  cursor: pointer;
+}
+.backspace:hover {
+  color: var(--warn);
 }
 
 .principal{

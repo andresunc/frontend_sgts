@@ -17,16 +17,24 @@
         <h2>Buscá un ítem o ingresa el nombre y sus propiedades para uno nuevo</h2><br>
         <div class="central">
 
-            <mat-form-field class="buscar">
+            <mat-form-field class="buscar" *ngIf="!showItemSelected">
                 <mat-label for="nombreItem">Nombre del Item</mat-label>
                 <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" formControlName="nombreItem"
-                    matInput [formControl]="myControl" [matAutocomplete]="auto" (focus)="onInputFocus()">
+                    matInput [matAutocomplete]="auto" (focus)="onInputFocus()">
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
                     (optionSelected)="seleccionarRequisito($event.option.value)">
                     <mat-option *ngFor="let requisito of filteredOptions | async" [value]="requisito?.descripcion">
                         {{ requisito?.descripcion }}
                     </mat-option>
                 </mat-autocomplete>
+            </mat-form-field>
+
+            <mat-form-field class="buscar" *ngIf="showItemSelected">
+                <mat-label for="nombreItem">Editarás este ítem</mat-label>
+                <input type="text" matInput [value]="requisitoSelected" [readonly]="true">
+                <mat-icon matSuffix class="backspace"matTooltip="Limpiar formulario" (click)="backspace()">
+                    backspace
+                </mat-icon>
             </mat-form-field>
 
             <mat-form-field>
