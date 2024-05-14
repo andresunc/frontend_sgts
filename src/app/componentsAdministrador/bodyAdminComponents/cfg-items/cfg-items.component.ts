@@ -221,8 +221,9 @@ export class CfgItemsComponent implements OnInit {
     const diaHora = this.firstFormGroup.controls.diaHora.value;
 
     if (diaHora === 'dias') {
-      duracionEstandar = duracionEstandar * 24
+      duracionEstandar *= 24
     }
+    duracionEstandar = Math.ceil(duracionEstandar);
 
     const item: Item = new Item();
 
