@@ -187,6 +187,8 @@ export class CfgItemsComponent implements OnInit {
       this.disableBtnEditDelete = false;
       console.log(this.firstFormGroup);
 
+
+
       this.dataShared.ocultarSpinner();
 
     } catch (error) {
@@ -235,7 +237,8 @@ export class CfgItemsComponent implements OnInit {
       .subscribe(
         (data) => {
           console.log('Creación ok', data);
-          this.firstFormGroup.reset();
+          this.refresh();
+          this.snackService.okSnackBar('Ítem creado correctamente')
         }
       ).add(
         this.dataShared.ocultarSpinner()
@@ -266,17 +269,18 @@ export class CfgItemsComponent implements OnInit {
 
   eliminarItem() {
     this.itemService.deleteItem(this.itemMatch?.idItem!)
-      .subscribe(
-        () => {
-          this.snackService.errorSnackBar('Ítem eliminado correctamente');
-          // Recargar el componente navegando a la misma ruta
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate(['administrador/items']);
-          });
-        }
-      ).add(
-        this.firstFormGroup.reset()
-      )
+      .subscribe( () => {
+        this.refresh();
+        this.snackService.errorSnackBar('Ítem eliminado correctamente') 
+      })
+  }
+
+  refresh() {
+    this.firstFormGroup.reset();
+    // Recargar el componente navegando a la misma ruta
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['administrador/items']);
+    });
   }
 
 }
