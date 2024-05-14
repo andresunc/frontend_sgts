@@ -92,9 +92,9 @@ export class CfgEstadosComponent implements OnInit {
   }
 
   estadoSeleccionado: Estado | undefined;
-  seleccionarEstado(idEstado: number) {
-    this.estadoSeleccionado = this.estados.find(estado => estado.idEstado === idEstado);
-
+  seleccionarEstado(value: any) {
+    this.estadoSeleccionado = this.estados.find(estado => estado.tipoEstado === value);
+    console.log(this.estadoSeleccionado)
     if (this.estadoSeleccionado) {
       this.modificarEliminarHabilitado = true;
       // Asignar el objeto Estado directamente
