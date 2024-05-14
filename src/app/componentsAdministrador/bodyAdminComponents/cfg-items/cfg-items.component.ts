@@ -34,7 +34,7 @@ export class CfgItemsComponent implements OnInit {
   setRubro: Rubro = new Rubro();
   requisitos: Requisito[] = [];
   itemLists: Item[] = [];
-  modificarEliminarHabilitado: boolean = false;
+  disableBtnEditDelete: boolean = true;
 
   firstFormGroup = new FormGroup({
     nombreItem: new FormControl<string>('', [Validators.maxLength(60)]),
@@ -42,7 +42,7 @@ export class CfgItemsComponent implements OnInit {
     tipoItem: new FormControl<TipoItem>(new TipoItem, Validators.required),
     dependencia: new FormControl<Dependencia>(new Dependencia, Validators.required),
     rubro: new FormControl<Rubro>(new Rubro, Validators.required),
-    duracionEstandar: new FormControl<number>(0, Validators.required),
+    duracionEstandar: new FormControl<number>(0, [Validators.required,Validators.min(0),Validators.max(365)]),
     diaHora: new FormControl<string>("", Validators.required),
   });
 
@@ -143,7 +143,11 @@ export class CfgItemsComponent implements OnInit {
       )
   }
 
-  itemMatch: Item | undefined = new Item();
+  onInputFocus() {
+    this.myControl.setValue('');
+  }
+
+  itemMatch: Item | undefined = undefined;
   requisitoSelected: string = '';
   showItemSelected: boolean = false;
   seleccionarRequisito(nombreRequisito: string) {
@@ -164,7 +168,7 @@ export class CfgItemsComponent implements OnInit {
       }
 
       this.firstFormGroup.patchValue({
-        nombreItem: requisitoMatch?.descripcion,
+        nombreItem: this.requisitoSelected,
         tipoServicio: this.tipoServicios.find(ts => ts.idTipoServicio === this.itemMatch?.tipoServicioIdTipoServicio || ts.idTipoServicio === 99),
         tipoItem: this.tipoItems.find(item => item.idTipoItem === this.itemMatch?.tipoItemIdTipoItem),
         dependencia: this.dependencias.find(dep => dep.idDependencia === this.itemMatch?.dependenciaIdDependencia || dep.idDependencia === 99),
@@ -172,9 +176,9 @@ export class CfgItemsComponent implements OnInit {
         duracionEstandar: this.itemMatch?.duracionEstandar,
         diaHora: diasHorasValue
       })
-
-      this.showItemSelected = true;
-      this.myControl.setValue(nombreRequisito);
+      
+      this.disableBtnEditDelete = false;
+      console.log(this.firstFormGroup);
 
       this.dataShared.ocultarSpinner();
 
@@ -186,12 +190,14 @@ export class CfgItemsComponent implements OnInit {
 
   backspace() {
     console.log('backspace works');
-    this.showItemSelected = false;
+    this.disableBtnEditDelete = true;
     this.firstFormGroup.reset();
   }
 
-  onInputFocus() {
-    this.myControl.setValue('');
+  showClearIcon() {
+    return this.firstFormGroup.value.dependencia || this.firstFormGroup.value.diaHora ||
+    this.firstFormGroup.value.duracionEstandar || this.firstFormGroup.value.nombreItem ||
+    this.firstFormGroup.value.rubro || this.firstFormGroup.value.tipoItem || this.firstFormGroup.value.tipoServicio
   }
 
   private _filter(value: string): Requisito[] {
