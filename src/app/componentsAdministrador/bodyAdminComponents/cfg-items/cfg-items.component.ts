@@ -167,11 +167,11 @@ export class CfgItemsComponent implements OnInit {
       this.itemMatch = this.itemLists.find(item => item.requisitoIdRequisito === requisitoMatch?.idRequisito);
       let diasHorasValue: string = '';
       if (this.itemMatch?.duracionEstandar && this.itemMatch.duracionEstandar <= 24) {
-        diasHorasValue = 'horas'
+        diasHorasValue = 'horas';
       }
       if (this.itemMatch?.duracionEstandar && this.itemMatch.duracionEstandar > 24) {
-        this.itemMatch.duracionEstandar = Math.floor(this.itemMatch.duracionEstandar / 24); // Tomar solo la parte entera
-        diasHorasValue = 'dias'
+        this.itemMatch.duracionEstandar = Math.ceil(this.itemMatch.duracionEstandar / 24); // Tomar solo la parte entera
+        diasHorasValue = 'dias';
       }
 
       this.firstFormGroup.patchValue({
@@ -186,8 +186,6 @@ export class CfgItemsComponent implements OnInit {
 
       this.disableBtnEditDelete = false;
       console.log(this.firstFormGroup);
-
-
 
       this.dataShared.ocultarSpinner();
 
@@ -273,7 +271,7 @@ export class CfgItemsComponent implements OnInit {
     this.itemMatch!.duracionEstandar = duracionEstandar;
     this.itemMatch!.descripcion = nombreItem;
 
-    if (itemOld === this.itemMatch) console.log('no Hay cambios'); return;
+    
 
     this.dataShared.mostrarSpinner();
     this.itemService.updateItem(this.itemMatch!)

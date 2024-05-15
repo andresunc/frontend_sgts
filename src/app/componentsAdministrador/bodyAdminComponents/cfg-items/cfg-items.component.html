@@ -2,7 +2,6 @@
     <form [formGroup]="firstFormGroup">
         <h2>Buscá un ítem o ingresa el nombre y sus propiedades para uno nuevo</h2><br>
         <div class="central">
-
             <mat-form-field class="buscar" *ngIf="!showItemSelected">
                 <mat-label for="nombreItem">Nombre del Item</mat-label>
                 <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" formControlName="nombreItem"
@@ -37,6 +36,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+
             <mat-form-field>
                 <mat-label for="tipoItem">Tipo de Item</mat-label>
                 <mat-select name="tipoItem" formControlName="tipoItem" required>
@@ -45,6 +45,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+
             <mat-form-field>
                 <mat-label for="dependencia">Dependencia</mat-label>
                 <mat-select name="dependencia" formControlName="dependencia" required>
@@ -53,6 +54,7 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
+
             <div class="tpoEstandar">
                 <div class="duracion">
                     <mat-form-field>
@@ -75,6 +77,7 @@
                     </mat-form-field>
                 </div>
             </div>
+            
             <mat-form-field class="rubro">
                 <mat-label for="rubro">Rubro</mat-label>
                 <mat-select name="rubro" formControlName="rubro">
