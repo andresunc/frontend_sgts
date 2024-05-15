@@ -274,6 +274,8 @@ export class CfgItemsComponent implements OnInit {
       .subscribe(
         (data) => {
           console.log('Actualizado, ', data);
+          this.refresh();
+          this.snackService.okSnackBar('Ítem editado correctamente')
         }
       ).add(
         this.dataShared.ocultarSpinner()
