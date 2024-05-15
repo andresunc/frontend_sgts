@@ -130,6 +130,17 @@ export class CfgItemsComponent implements OnInit {
       .subscribe(
         (data) => {
           this.requisitos = data;
+          this.requisitos.sort((a, b) => {
+            const descripcionA = a.descripcion!.toLowerCase(); // Convertimos a minúsculas para evitar problemas de ordenación
+            const descripcionB = b.descripcion!.toLowerCase();
+            if (descripcionA < descripcionB) {
+              return -1; // a debe ir antes que b
+            } else if (descripcionA > descripcionB) {
+              return 1; // a debe ir después de b
+            } else {
+              return 0; // a y b son iguales
+            }
+          });
           console.log(
             'Requisitos: ', this.requisitos
           )
