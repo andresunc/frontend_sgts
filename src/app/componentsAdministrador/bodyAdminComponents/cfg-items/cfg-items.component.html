@@ -2,31 +2,39 @@
     <form [formGroup]="firstFormGroup">
         <h2>Buscá un ítem o ingresa el nombre y sus propiedades para uno nuevo</h2><br>
         <div class="central">
-            <mat-form-field class="buscar" *ngIf="!showItemSelected">
+            <mat-form-field class="buscar">
+
                 <mat-label for="nombreItem">Nombre del Item</mat-label>
-                <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" formControlName="nombreItem"
-                    matInput [matAutocomplete]="auto" (focus)="onInputFocus()" [maxlength]="60" required>
+                <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" 
+                formControlName="nombreItem" matInput [matAutocomplete]="auto" 
+                (focus)="onInputFocus()" [maxlength]="60" required>
+                
                 <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
                     backspace
                 </mat-icon>
+
                 <mat-error *ngIf="firstFormGroup.get('nombreItem')!.hasError('maxlength')">
                     Ingresa menos de 60 caracteres.
                 </mat-error>
+
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
                     (optionSelected)="seleccionarRequisito($event.option.value)">
                     <mat-option *ngFor="let requisito of filteredOptions | async" [value]="requisito?.descripcion">
                         {{ requisito?.descripcion }}
                     </mat-option>
                 </mat-autocomplete>
+
             </mat-form-field>
 
+            <!--
             <mat-form-field class="buscar" *ngIf="showItemSelected">
-                <mat-label for="nombreItem">Editarás este ítem</mat-label>
-                <input type="text" matInput [value]="requisitoSelected">
-                <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
-                    backspace
-                </mat-icon>
+            <mat-label for="nombreItem">Editarás este ítem</mat-label>
+            <input type="text" matInput [value]="requisitoSelected">
+            <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
+                backspace
+            </mat-icon>
             </mat-form-field>
+            -->
 
             <mat-form-field>
                 <mat-label for="tipoServicio">Tipo de Servicio</mat-label>
@@ -77,7 +85,7 @@
                     </mat-form-field>
                 </div>
             </div>
-            
+
             <mat-form-field class="rubro">
                 <mat-label for="rubro">Rubro</mat-label>
                 <mat-select name="rubro" formControlName="rubro">
@@ -93,7 +101,8 @@
     <div class="btn">
         <button mat-button (click)="crearItem()"
             [disabled]="!firstFormGroup.valid || !disableBtnEditDelete">Crear</button>
-        <button mat-button (click)="modificarItem()" [disabled]="disableBtnEditDelete || !firstFormGroup.valid">Modificar</button>
+        <button mat-button (click)="modificarItem()"
+            [disabled]="disableBtnEditDelete || !firstFormGroup.valid">Modificar</button>
         <button mat-button (click)="checkDelete()" [disabled]="disableBtnEditDelete">Eliminar</button>
     </div>
 </div>

@@ -71,9 +71,7 @@ export class CfgItemsComponent implements OnInit {
       startWith(''),
       map(value => {
         return value ? this._filter(value) : this.requisitos.slice();
-      })
-
-    );
+      }));
 
   }
 
@@ -88,7 +86,6 @@ export class CfgItemsComponent implements OnInit {
           )
         }
       )
-
 
     this.rubroService.getAllRubro()
       .subscribe(
@@ -156,7 +153,6 @@ export class CfgItemsComponent implements OnInit {
 
   itemMatch: Item | undefined = undefined;
   requisitoSelected: string = '';
-  showItemSelected: boolean = false;
   seleccionarRequisito(nombreRequisito: string) {
 
     try {
@@ -267,21 +263,21 @@ export class CfgItemsComponent implements OnInit {
     this.itemMatch!.rubroIdRubro = rubro?.idRubro;
     this.itemMatch!.dependenciaIdDependencia = dependencia?.idDependencia;
     this.itemMatch!.tipoServicioIdTipoServicio = tipoServicio?.idTipoServicio;
-    
+
     this.itemMatch!.duracionEstandar = duracionEstandar;
     this.itemMatch!.descripcion = nombreItem;
 
-    
+
 
     this.dataShared.mostrarSpinner();
     this.itemService.updateItem(this.itemMatch!)
-    .subscribe(
-      (data) => {
-        console.log('Actualizado, ', data);
-      }
-    ).add(
-      this.dataShared.ocultarSpinner()
-    )
+      .subscribe(
+        (data) => {
+          console.log('Actualizado, ', data);
+        }
+      ).add(
+        this.dataShared.ocultarSpinner()
+      )
 
   }
 
@@ -303,9 +299,9 @@ export class CfgItemsComponent implements OnInit {
 
   eliminarItem() {
     this.itemService.deleteItem(this.itemMatch?.idItem!)
-      .subscribe( () => {
+      .subscribe(() => {
         this.refresh();
-        this.snackService.errorSnackBar('Ítem eliminado correctamente') 
+        this.snackService.errorSnackBar('Ítem eliminado correctamente')
       })
   }
 
