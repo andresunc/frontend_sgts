@@ -5,16 +5,18 @@
             <mat-form-field class="buscar">
 
                 <mat-label for="nombreItem">Nombre del Item</mat-label>
-                <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" 
-                formControlName="nombreItem" matInput [matAutocomplete]="auto" 
-                (focus)="onInputFocus()" [maxlength]="60" required>
-                
+                <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" formControlName="nombreItem"
+                    matInput [matAutocomplete]="auto" (focus)="onInputFocus()" [maxlength]="60" required
+                    (input)="checkRequisitoName($event)">
+
                 <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
                     backspace
                 </mat-icon>
-
                 <mat-error *ngIf="firstFormGroup.get('nombreItem')!.hasError('maxlength')">
                     Ingresa menos de 60 caracteres.
+                </mat-error>
+                <mat-error *ngIf="firstFormGroup.get('nombreItem')?.hasError('duplicate')">
+                    Esa descripción ya existe.
                 </mat-error>
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
@@ -98,7 +100,7 @@
         </div>
     </form>
 
-    <div class="btn">
+    <div class="btn" (click)="formularioTieneErrores()">
         <button mat-button (click)="crearItem()"
             [disabled]="!firstFormGroup.valid || !disableBtnEditDelete">Crear</button>
         <button mat-button (click)="modificarItem()"
