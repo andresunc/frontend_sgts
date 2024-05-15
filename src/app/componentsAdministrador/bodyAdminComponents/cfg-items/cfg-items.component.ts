@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, map, startWith } from 'rxjs';
@@ -202,17 +202,10 @@ export class CfgItemsComponent implements OnInit {
     }
   }
 
-  backspace() {
-    console.log('backspace works');
-    this.disableBtnEditDelete = true;
-    this.firstFormGroup.reset();
-  }
-
   private _filter(value: string): Requisito[] {
     const filterValue = value.toLowerCase();
     return this.requisitos.filter(requisito => requisito.descripcion?.toLowerCase().startsWith(filterValue));
   }
-
 
   crearItem() {
     this.dataShared.mostrarSpinner();
@@ -295,19 +288,25 @@ export class CfgItemsComponent implements OnInit {
   }
 
   checkDelete() {
-    const nombreItem = this.firstFormGroup.get('nombreItem')?.value;
-    const dialogRef = this.dialog.open(DeletePopupComponent, {
-      data: { message: `¿Eliminar el ítem ${nombreItem}?` }
-    });
 
-    dialogRef.afterClosed()
-      .subscribe(result => {
-        if (result) {
-          this.eliminarItem();
-        } else {
-          console.log('Se canceló la eliminación');
-        }
+    if (!this.formularioTieneErrores()) {
+      
+      const nombreItem = this.firstFormGroup.get('nombreItem')?.value;
+      const dialogRef = this.dialog.open(DeletePopupComponent, {
+        data: { message: `¿Eliminar el ítem ${nombreItem}?` }
       });
+
+      dialogRef.afterClosed()
+        .subscribe(result => {
+          if (result) {
+            this.eliminarItem();
+          } else {
+            console.log('Se canceló la eliminación');
+          }
+        });
+    } else {
+      this.firstFormGroup.markAllAsTouched();
+    }
   }
 
   eliminarItem() {
@@ -324,6 +323,38 @@ export class CfgItemsComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['administrador/items']);
     });
+  }
+
+  backspace() {
+    console.log('backspace works');
+    this.disableBtnEditDelete = true;
+    this.firstFormGroup.reset();
+  }
+
+  checkRequisitoName(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const inputData = inputElement.value;
+    const found = this.requisitos.some(re => re.descripcion === inputData);
+    if (found) {
+      this.firstFormGroup.get('nombreItem')?.setErrors({ duplicate: true });
+    } else {
+      const errors = this.firstFormGroup.get('nombreItem')?.errors;
+      if (errors) {
+        delete errors['duplicate'];
+        if (Object.keys(errors).length === 0) {
+          this.firstFormGroup.get('nombreItem')?.setErrors(null);
+        } else {
+          this.firstFormGroup.get('nombreItem')?.setErrors(errors);
+        }
+      }
+    }
+  }
+
+  formularioTieneErrores(): boolean {
+    this.firstFormGroup.markAllAsTouched();
+    const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
+    console.log('Datos erroneos en el formulario: ', hayErrores)
+    return hayErrores
   }
 
 }
