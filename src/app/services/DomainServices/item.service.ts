@@ -13,7 +13,7 @@ export class ItemService {
   private urlBackend = new UrlBackend().getUrlBackend();
   private getItemsNotDeleteUrl = this.urlBackend + '/item/getAllNotDeleted';
   private createItemUrl = this.urlBackend + '/item/create';
-  private updateItemUrl = this.urlBackend + '/item/update/';
+  private updateItemUrl = this.urlBackend + '/item/update';
   private deleteItemUrl = this.urlBackend + '/item/delete/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
@@ -49,9 +49,9 @@ export class ItemService {
   }
 
   // Método para modificar un Item
-  public updateItem(idItem: number): Observable<Item> {
+  public updateItem(itemToUpdate: Item): Observable<Item> {
     const headers: HttpHeaders = this.authService.getHeader();
-    return this.http.put<Item>(this.updateItemUrl + idItem, { headers })
+    return this.http.put<Item>(this.updateItemUrl, itemToUpdate, { headers })
       .pipe(
         catchError((error) => {
           
