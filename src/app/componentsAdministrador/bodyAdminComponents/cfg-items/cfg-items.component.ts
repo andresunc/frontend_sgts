@@ -212,12 +212,12 @@ export class CfgItemsComponent implements OnInit {
   crearItem() {
     this.dataShared.mostrarSpinner();
 
-    const nombreItem = this.firstFormGroup.get('nombreItem')?.value;
+    const nombreItem = this.firstFormGroup.controls.nombreItem.value;
     const tipoServicio = this.firstFormGroup.controls.tipoServicio.value;
     const tipoItem = this.firstFormGroup.controls.tipoItem.value;
     const dependencia = this.firstFormGroup.controls.dependencia.value;
     const rubro = this.firstFormGroup.controls.rubro.value;
-    let duracionEstandar = this.firstFormGroup.get('duracionEstandar')?.value!;
+    let duracionEstandar = this.firstFormGroup.controls.duracionEstandar.value!;
     const diaHora = this.firstFormGroup.controls.diaHora.value;
 
     if (diaHora === 'dias') {
@@ -249,7 +249,42 @@ export class CfgItemsComponent implements OnInit {
   }
 
   modificarItem() {
-    throw new Error('Method not implemented.');
+
+    const itemOld: Item = this.itemMatch!
+
+    const nombreItem = this.firstFormGroup.controls.nombreItem.value;
+    const tipoServicio = this.firstFormGroup.controls.tipoServicio.value;
+    const tipoItem = this.firstFormGroup.controls.tipoItem.value;
+    const dependencia = this.firstFormGroup.controls.dependencia.value;
+    const rubro = this.firstFormGroup.controls.rubro.value;
+    let duracionEstandar = this.firstFormGroup.controls.duracionEstandar.value!;
+    const diaHora = this.firstFormGroup.controls.diaHora.value;
+
+    if (diaHora === 'dias') {
+      duracionEstandar *= 24
+    }
+    duracionEstandar = Math.ceil(duracionEstandar);
+
+    this.itemMatch!.tipoItemIdTipoItem = tipoItem?.idTipoItem;
+    this.itemMatch!.rubroIdRubro = rubro?.idRubro;
+    this.itemMatch!.dependenciaIdDependencia = dependencia?.idDependencia;
+    this.itemMatch!.tipoServicioIdTipoServicio = tipoServicio?.idTipoServicio;
+    
+    this.itemMatch!.duracionEstandar = duracionEstandar;
+    this.itemMatch!.descripcion = nombreItem;
+
+    if (itemOld === this.itemMatch) console.log('no Hay cambios'); return;
+
+    this.dataShared.mostrarSpinner();
+    this.itemService.updateItem(this.itemMatch!)
+    .subscribe(
+      (data) => {
+        console.log('Actualizado, ', data);
+      }
+    ).add(
+      this.dataShared.ocultarSpinner()
+    )
+
   }
 
   checkDelete() {
