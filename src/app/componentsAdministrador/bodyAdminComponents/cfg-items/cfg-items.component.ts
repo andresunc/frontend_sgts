@@ -331,15 +331,16 @@ export class CfgItemsComponent implements OnInit {
     this.firstFormGroup.reset();
   }
 
+  equalName : boolean = true;
   checkRequisitoName(event: Event): void {
     
     const inputElement = event.target as HTMLInputElement;
     const inputData = inputElement.value;
-    const found = this.requisitos.some(re => re.descripcion === inputData);
+    this.equalName = this.requisitos.some(re => re.descripcion?.toLowerCase() === inputData.toLowerCase());
 
-    console.log(found)
-    
-    if (found) {
+    console.log(this.equalName)
+
+    if (this.equalName) {
       this.firstFormGroup.get('nombreItem')?.setErrors({ duplicate: true });
     } else {
       const errors = this.firstFormGroup.get('nombreItem')?.errors;
