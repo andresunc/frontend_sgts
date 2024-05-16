@@ -16,7 +16,7 @@
                     Ingresa menos de 60 caracteres.
                 </mat-error>
                 <mat-error *ngIf="firstFormGroup.get('nombreItem')?.hasError('duplicate')">
-                    Esa descripción ya existe.
+                    Esa nombre ya existe.
                 </mat-error>
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"

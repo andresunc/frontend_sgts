@@ -97,7 +97,7 @@ export class AddItemComponent implements OnInit {
   getUniqueRubro() {
     // Verificar si al menos un elemento en selectItemList tiene el mismo rubro que this.servicioRecibido.rubro
     // voy a configurar por defecto el la lista de rubro a seleccionar
-    if (this.selectItemList.some(item => item.rubro === this.servicioRecibido.rubro)) {
+    if (this.selectItemList.some(item => item.rubro === this.servicioRecibido.rubro || !this.servicioRecibido.rubro)) {
       this.uniqueRubros = [this.servicioRecibido.rubro];
     } else {
       this.uniqueRubros = this.getUniqueValues('rubro');
@@ -106,18 +106,22 @@ export class AddItemComponent implements OnInit {
 
   filterItems() {
     // Aplicar filtro
+  
     this.filteredItems = this.selectItemList.filter(item => {
-      // Verificar si la propiedad ha sido seleccionada y es diferente de null
-      const tipoServicioMatch = !this.selectedTipoServicio || item.tipoServicio === this.selectedTipoServicio;
-      const dependenciaMatch = !this.selectedDependencia || item.dependencia === this.selectedDependencia;
-      const rubroMatch = !this.selectedRubro || item.rubro === this.selectedRubro;
-      const tipoItemMatch = !this.selectedTipoItem || item.tipoItem === this.selectedTipoItem;
-      // Comprobar si el ID del elemento no está presente en itemChecklistDto
-      const idNotInDto = !this.servicioRecibido.itemChecklistDto.some(dtoItem => dtoItem.nombreItem === item.descripcion);
-
-      // Retornar true solo si todas las condiciones coinciden
-      return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch && idNotInDto;
+        // Verificar si tipoServicio ha sido seleccionado o si idTipoServicio es null
+        const tipoServicioMatch = !this.selectedTipoServicio || item.tipoServicio === this.selectedTipoServicio || item.tipoServicio === null;
+        // Verificar si dependencia ha sido seleccionada o si coincide
+        const dependenciaMatch = !this.selectedDependencia || item.dependencia === this.selectedDependencia;
+        // Verificar si rubro ha sido seleccionado o si coincide
+        const rubroMatch = !this.selectedRubro || item.rubro === this.selectedRubro;
+        // Verificar si tipoItem ha sido seleccionado o si coincide
+        const tipoItemMatch = !this.selectedTipoItem || item.tipoItem === this.selectedTipoItem;
+        // Comprobar si el ID del elemento no está presente en itemChecklistDto
+        const idNotInDto = !this.servicioRecibido.itemChecklistDto.some(dtoItem => dtoItem.nombreItem === item.descripcion);
+        // Retornar true solo si todas las condiciones coinciden
+        return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch && idNotInDto;
     });
+    console.log('asdasd', this.filteredItems)
 
     // Verificar si el elemento seleccionado todavía está presente en la lista filtrada
     const selectedItemExists = this.filteredItems.some(item => item.idItem === parseInt(this.selectItem!));
