@@ -16,7 +16,7 @@
                     Ingresa menos de 60 caracteres.
                 </mat-error>
                 <mat-error *ngIf="firstFormGroup.get('nombreItem')?.hasError('duplicate')">
-                    Esa nombre ya existe.
+                    Ese nombre ya existe.
                 </mat-error>
 
                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
@@ -27,16 +27,6 @@
                 </mat-autocomplete>
 
             </mat-form-field>
-
-            <!--
-            <mat-form-field class="buscar" *ngIf="showItemSelected">
-            <mat-label for="nombreItem">Editarás este ítem</mat-label>
-            <input type="text" matInput [value]="requisitoSelected">
-            <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
-                backspace
-            </mat-icon>
-            </mat-form-field>
-            -->
 
             <mat-form-field>
                 <mat-label for="tipoServicio">Tipo de Servicio</mat-label>
