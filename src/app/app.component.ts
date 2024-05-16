@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { DataSharedService } from './services/data-shared.service';
 import { Subject } from 'rxjs';
@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfigMenuComponent } from './componentsShared/config-menu/config-menu.component';
 import { adminMenuItems, adminMenuTitle } from './componentsAdministrador/administradorcfg/adminMenuItems';
 import { reporteMenuItems, reporteMenuTitle } from './componentsReportes/reportescfg/reporteMenuItems';
+import { SidebarComponent } from './componentsShared/sidebar/sidebar.component';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   title = 'Sistema de Gestión y Trazabilidad de Servicios';
   access: boolean = false;
-  sidebarOpened: boolean = false; // Cambia a false para ocultar la barra lateral automáticamente
+  //sidebarOpened: boolean = false; // Cambia a false para ocultar la barra lateral automáticamente
 
   constructor(
     private authService: AuthService,

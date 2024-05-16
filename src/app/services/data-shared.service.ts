@@ -13,6 +13,7 @@ export class DataSharedService {
   private sharedTipoServicio: any[] = [];
   private filterByCheckbox: EventEmitter<void> = new EventEmitter<void>();
   private ControlAccess: EventEmitter<void> = new EventEmitter<void>();
+  private upDateSideBar: EventEmitter<void> = new EventEmitter<void>();
   private spinner = new BehaviorSubject<boolean>(false);
   goSpinner = this.spinner.asObservable();
 
@@ -89,6 +90,14 @@ export class DataSharedService {
   }
 
   getControlAccess() {
+    return this.ControlAccess;
+  }
+
+  triggerUpDateSideBar() {
+    this.ControlAccess.emit();
+  }
+
+  getUpDateSideBar() {
     return this.ControlAccess;
   }
 

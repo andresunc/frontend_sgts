@@ -12,11 +12,11 @@
 
     <mat-form-field>
       <mat-label for="Estado">Estado</mat-label>
-      <input matInput placeholder="Nuevo Estado" formControlName="Estado" maxlength="99">
+      <input matInput placeholder="Nuevo Estado" formControlName="Estado" maxlength="99" [value]="estadoSeleccionado?.tipoEstado">
     </mat-form-field>
 
     <mat-radio-group formControlName="Categoria">
-      <mat-radio-button *ngFor="let categoria of categorias" [value]="categoria.idCategoria!"
+      <mat-radio-button *ngFor="let categoria of categorias" [value]="categoria.idCategoria"
         [checked]="categoria.idCategoria === estadoSeleccionado?.idCategoria">
         {{categoria.categoria}}
       </mat-radio-button>
