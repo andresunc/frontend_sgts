@@ -35,19 +35,34 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('SideBar ON')
     // Verifica la ruta actual y decide si mostrar la barra lateral
     this.shouldShowSidebar = this.router.url !== '/login';
 
+    this.setParameters();
+
+    // cargar setParameters para ser llamado desde otros lados por medio de Servicio
+    this.dataShared.getUpDateSideBar().subscribe(() => {
+      this.setParameters();
+    });
+
+  }
+
+  setParameters() {
     // Cargo los "Estados No Eliminados" de los servicios
     this.preference.getStatusNotDeleted().subscribe((data) => {
+      console.log('Estados cargados OK')
       this.listEstados = data;
     });
 
     // Cargo los "Tipos de Servicios No Eliminados"
     this.preference.getTipoServicesNotDeleted().subscribe((data) => {
+      console.log('Tipo de servicios cargados OK')
       this.tipoServicios = data;
     });
   }
+
+  
 
   // Función para agregar o quitar Estados[] a filtrar.
   selectedStatusToFilter: string[] = [];
@@ -116,3 +131,7 @@ export class SidebarComponent implements OnInit {
   }
 
 }
+function ngOnInit() {
+  throw new Error('Function not implemented.');
+}
+
