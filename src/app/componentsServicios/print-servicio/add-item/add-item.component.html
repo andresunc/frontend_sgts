@@ -121,6 +121,9 @@
                                     <input type="number" class="form-control" id="montoTasa" name="montoTasa"
                                         [(ngModel)]="montoTasa" [disabled]="!incluyeTasa" required min="0"
                                         (blur)="validarMontoTasa()" #montoTasaInput>
+                                    <mat-error *ngIf="montoTasa.toString().length > 9">
+                                        Excediste los 9 dígitos permitidos 
+                                    </mat-error>
                                 </div>
 
                                 <div class="col-md-6">
