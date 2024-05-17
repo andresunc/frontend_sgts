@@ -9,7 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatDateFormats, MatNativeDateModule } from '@angular/material/core';
 
 
 // Módulos compartidos
@@ -27,6 +27,17 @@ import { ChecklistComponent } from './componentsServicios/print-servicio/checkli
 import { DeletePopupComponent } from './componentsShared/delete-popup/delete-popup.component';
 import { ErrorInterceptor } from './ErrorInterceptor/error.interceptor';
 
+export const MY_FORMATS: MatDateFormats = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+}
 
 @NgModule({
   declarations: [
@@ -54,7 +65,8 @@ import { ErrorInterceptor } from './ErrorInterceptor/error.interceptor';
     MatNativeDateModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
   ],
   bootstrap: [AppComponent]
 })

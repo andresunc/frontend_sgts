@@ -121,23 +121,34 @@
                                     <input type="number" class="form-control" id="montoTasa" name="montoTasa"
                                         [(ngModel)]="montoTasa" [disabled]="!incluyeTasa" required min="0"
                                         (blur)="validarMontoTasa()" #montoTasaInput>
+                                    <mat-error *ngIf="montoTasa.toString().length > 9">
+                                        Excediste los 9 dígitos permitidos 
+                                    </mat-error>
                                 </div>
 
                                 <div class="col-md-6">
                                     <label for="cantidadHojas" class="form-label">Cantidad de hojas</label>
                                     <input type="number" class="form-control" id="cantidadHojas" name="cantidadHojas"
-                                        [(ngModel)]="cantidadHojas" [disabled]="!incluyeTasa" required min="0" 
-                                        max="1000" step="1" oninput="this.value = Math.abs(Math.floor(this.value))">
+                                        [(ngModel)]="cantidadHojas" [disabled]="!incluyeTasa" required min="0" max="999"
+                                        step="1" oninput="this.value = Math.abs(Math.floor(this.value))">
+                                    <mat-error *ngIf="cantidadHojas < 0 || cantidadHojas > 999">
+                                        Solo se adminiten valores entre 0 - 999
+                                    </mat-error>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-12">
                                     <label for="urlComprobante" class="form-label">Url de los comprobantes</label>
-                                    <input type="text" class="form-control" id="urlComprobante" name="urlComprobante"
-                                        [(ngModel)]="urlComprobante" [disabled]="!incluyeTasa" required>
+                                    <input type="url" class="form-control" id="urlComprobante" name="urlComprobante"
+                                        [(ngModel)]="urlComprobante" [disabled]="!incluyeTasa" #urlInput="ngModel"
+                                        required pattern="https?://www\..+">
+                                    <mat-error *ngIf="urlInput.invalid && (urlInput.dirty || urlInput.touched)">
+                                        Ingresá una URL válida, ej: http://www o https://www
+                                    </mat-error>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
@@ -150,7 +161,8 @@
                         </div>
                         <div class="col-md-6" style="display: flex; justify-content: end;">
                             <mat-card-actions>
-                                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid" [mat-dialog-close]="true">
+                                <button mat-raised-button color="primary" type="submit" [disabled]="!form.valid"
+                                    [mat-dialog-close]="true">
                                     <mat-icon class="mat-icon">save</mat-icon>
                                     Guardar
                                 </button>
