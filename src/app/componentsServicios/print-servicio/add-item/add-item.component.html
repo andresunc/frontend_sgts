@@ -126,8 +126,11 @@
                                 <div class="col-md-6">
                                     <label for="cantidadHojas" class="form-label">Cantidad de hojas</label>
                                     <input type="number" class="form-control" id="cantidadHojas" name="cantidadHojas"
-                                        [(ngModel)]="cantidadHojas" [disabled]="!incluyeTasa" required min="0"
-                                        max="1000" step="1" oninput="this.value = Math.abs(Math.floor(this.value))">
+                                        [(ngModel)]="cantidadHojas" [disabled]="!incluyeTasa" required min="0" max="999"
+                                        step="1" oninput="this.value = Math.abs(Math.floor(this.value))">
+                                    <mat-error *ngIf="cantidadHojas < 0 || cantidadHojas > 999">
+                                        Solo se adminiten valores entre 0 - 999
+                                    </mat-error>
                                 </div>
                             </div>
 
