@@ -31,7 +31,7 @@ export class CfgClientesComponent implements OnInit {
   title: string = "Configuración de Clientes";
   riesgos: Riesgo[] = [];
   rubros: Rubro[] = [];
-  myControl = new FormControl();
+  RazonSocial = new FormControl();
   empresas: EmpresaDto[] = [];
   filteredOptions?: Observable<EmpresaDto[]>;
   displayFn!: ((value: any) => string);
@@ -40,6 +40,7 @@ export class CfgClientesComponent implements OnInit {
   modificarEliminarHabilitado: boolean = false;
   resumenDatos: any = {};
   contactos: ContactoEmpresa[] = [];
+  disableBtnEditDelete: boolean = true;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -69,8 +70,7 @@ export class CfgClientesComponent implements OnInit {
 
   }
   firstFormGroup = new FormGroup({
-    BuscarCliente: new FormControl<string>(''),
-    RazonSocial: new FormControl<string>('', Validators.required),
+    RazonSocial: new FormControl<string>(''),
     CUIT: new FormControl<string>('', [Validators.required, Validators.pattern(/^\d{2}-\d{8}-\d$/)]),
     Direccion: new FormControl<string>(''),
     Rubro: new FormControl<Rubro>(new Rubro, Validators.required),
@@ -98,7 +98,7 @@ export class CfgClientesComponent implements OnInit {
     this.obtenerEmpresas();
 
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
+    this.filteredOptions = this.RazonSocial.valueChanges.pipe(
       startWith(''),
       map(value => {
         return value ? this._filter(value) : this.empresas.slice();
@@ -274,7 +274,7 @@ export class CfgClientesComponent implements OnInit {
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
 
-    const razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
+    const RazonSocial = this.firstFormGroup.get('RazonSocial')?.value;
     const cuit = this.firstFormGroup.get('CUIT')?.value;
     const direccion = this.firstFormGroup.get('Direccion')?.value;
     const rubro = this.firstFormGroup.controls.Rubro;
@@ -285,7 +285,7 @@ export class CfgClientesComponent implements OnInit {
     empresa.direccion = direccion;
     empresa.rubroIdRubro = rubro.value?.idRubro;
     empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
-    empresa.razonSocial = razonSocial;
+    empresa.razonSocial = RazonSocial;
 
     const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
     empresaWithContacts.empresa = empresa;
@@ -415,12 +415,57 @@ export class CfgClientesComponent implements OnInit {
   }
 
   onInputFocus() {
-    this.myControl.setValue(''); // Limpiar el valor del control para que se dispare el evento de filtro.
+    this.RazonSocial.setValue(''); // Limpiar el valor del control para que se dispare el evento de filtro.
   }
 
   private _filter(value: string): EmpresaDto[] {
     const filterValue = value ? value.toLowerCase() : '';
     return this.empresas.filter(empresa => empresa.cliente?.toLowerCase().startsWith(filterValue));
+  }
+
+  refresh() {
+    this.firstFormGroup.reset();
+    // Recargar el componente navegando a la misma ruta
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['administrador/clientes']);
+    });
+  }
+
+  backspace() {
+    console.log('backspace works');
+    this.disableBtnEditDelete = true;
+    this.firstFormGroup.reset();
+  }
+
+  equalName : boolean = true;
+  checkClienteName(event: Event): void {
+    
+    const inputElement = event.target as HTMLInputElement;
+    const inputData = inputElement.value;
+    this.equalName = this.empresas.some(em => em.cliente?.toLowerCase() === inputData.toLowerCase());
+
+    console.log(this.equalName)
+
+    if (this.equalName) {
+      this.firstFormGroup.get('RazonSocial')?.setErrors({ duplicate: true });
+    } else {
+      const errors = this.firstFormGroup.get('RazonSocial')?.errors;
+      if (errors) {
+        delete errors['duplicate'];
+        if (Object.keys(errors).length === 0) {
+          this.firstFormGroup.get('RazonSocial')?.setErrors(null);
+        } else {
+          this.firstFormGroup.get('RazonSocial')?.setErrors(errors);
+        }
+      }
+    }
+  }
+
+  formularioTieneErrores(): boolean {
+    this.firstFormGroup.markAllAsTouched();
+    const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
+    console.log('Datos erroneos en el formulario: ', hayErrores)
+    return hayErrores
   }
 
 }

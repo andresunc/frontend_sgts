@@ -231,6 +231,12 @@ mat-card-title{
   padding: 1%;
 }
 
+.backspace {
+  cursor: pointer;
+  color: var(--secondary)
+}
+
+
 
 @media screen and (max-width: 800px) {
   .example-stepper {
