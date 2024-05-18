@@ -11,6 +11,7 @@ import { CategoriaService } from 'src/app/services/DomainServices/categoria.serv
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SidebarComponent } from 'src/app/componentsShared/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-cfg-estados',
@@ -143,9 +144,10 @@ export class CfgEstadosComponent implements OnInit {
     this.estadosService.createEstado(estado)
       .subscribe(
         (data) => {
+          this.dataShared.triggerUpDateSideBar(); // Actualiza la SideBar
           console.log('Estado creado: ', data);
 
-          this.dataShared.setSharedEstado(this.dataShared.getSharedEstado().push(data.tipoEstado));
+          
           this._snackBar.okSnackBar('El estado se creó correctamente');
           this.obtenerEstado();
 
@@ -173,10 +175,15 @@ export class CfgEstadosComponent implements OnInit {
     }
 
     const nuevoNombreEstado = this.firstFormGroup.controls.Estado.value;
-    const idCategoriaSeleccionada = this.firstFormGroup.controls.Categoria.value;
-    if (!nuevoNombreEstado || nuevoNombreEstado.trim() === ''  || idCategoriaSeleccionada === null) {
-      console.error('El nuevo nombre del estado y la categoria no pueden estar vacíos.');
+    let idCategoriaSeleccionada = this.firstFormGroup.controls.Categoria.value;
+    idCategoriaSeleccionada ? this.firstFormGroup.controls.Categoria.value : this.estadoSeleccionado.idCategoria;
+    if (!nuevoNombreEstado || nuevoNombreEstado.trim() === '') {
+      console.error('El nuevo nombre del estado no puede estar vacío.');
       return;
+    }
+    if (idCategoriaSeleccionada === null) {
+      idCategoriaSeleccionada = this.estadoSeleccionado.idCategoria!;
+      console.log(`Se tomó por defecto el id ${idCategoriaSeleccionada} original del estado`);
     }
 
     const idEstadoModificar = this.estadoSeleccionado.idEstado;
@@ -188,6 +195,7 @@ export class CfgEstadosComponent implements OnInit {
     this.estadosService.updateEstado(idEstadoModificar!, estadoModificado)
       .subscribe(
         (data) => {
+          this.dataShared.triggerUpDateSideBar();
           console.log('Estado modificado: ', data);
 
           this._snackBar.okSnackBar('El estado se modificó correctamente');
@@ -239,7 +247,7 @@ export class CfgEstadosComponent implements OnInit {
           console.log('Estado eliminado correctamente');
 
           this._snackBar.okSnackBar('El estado se eliminó correctamente');
-
+          this.dataShared.triggerUpDateSideBar();
 
         },
         () => {

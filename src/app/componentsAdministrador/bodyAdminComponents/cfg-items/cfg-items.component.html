@@ -5,10 +5,9 @@
             <mat-form-field class="buscar">
 
                 <mat-label for="nombreItem">Nombre del Item</mat-label>
-                <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem" formControlName="nombreItem"
-                    matInput [matAutocomplete]="auto" (focus)="onInputFocus()" [maxlength]="60" required
-                    (input)="checkRequisitoName($event)">
-
+                <input type="text" placeholder="Buscar o crear un ítem" name="nombreItem"
+                formControlName="nombreItem" matInput [matAutocomplete]="auto" 
+                (focus)="onInputFocus()" [maxlength]="60" required (input)="checkRequisitoName($event)">
                 <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
                     backspace
                 </mat-icon>

@@ -63,3 +63,8 @@ mat-divider {
     font-size: 1.2rem !important;
     color: darkred;
 }
+
+.infoSystem {
+    font-size: 1.4rem;
+    cursor: pointer;
+}

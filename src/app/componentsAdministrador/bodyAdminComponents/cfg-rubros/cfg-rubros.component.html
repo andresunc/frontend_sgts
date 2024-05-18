@@ -1,29 +1,47 @@
 <ng-container>
-<form [formGroup]="firstFormGroup" >
+  <form [formGroup]="firstFormGroup">
     <mat-form-field>
-      <input
-       type="text" 
-       placeholder="Buscar Rubro" 
-       aria-label="Buscar Rubro" 
-       matInput
-      [formControl]="myControl" 
-      [matAutocomplete]="auto"
-      (focus)="onInputFocus()">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" 
-      (optionSelected)="seleccionarRubro($event.option.value)">
+      <input type="text" placeholder="Buscar Rubro" aria-label="Buscar Rubro" matInput [formControl]="myControl"
+        [matAutocomplete]="auto" (focus)="onInputFocus()">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+        (optionSelected)="seleccionarRubro($event.option.value)">
         <mat-option *ngFor="let rubro of filteredOptions | async" [value]="rubro.rubro">
           {{ rubro?.rubro }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
     <mat-form-field>
-        <mat-label for="Rubro">Rubro</mat-label>
-           <input matInput placeholder="Nuevo Rubro" formControlName="Rubro" maxlength="45">
-        </mat-form-field>
+      <mat-label for="Rubro">Rubro</mat-label>
+      <input matInput placeholder="Nuevo Rubro" formControlName="Rubro" maxlength="45">
+      <mat-icon matSuffix color="accent" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+        live_help
+      </mat-icon>
+    </mat-form-field>
     <div class="btn-abm">
-        <button mat-button (click)="crearRubro()" [disabled]="modificarEliminarHabilitado">Crear</button>
-        <button mat-button (click)="modificarRubro()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
-        <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+      <button mat-button (click)="crearRubro()" [disabled]="modificarEliminarHabilitado">Crear</button>
+      <button mat-button (click)="modificarRubro()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
+      <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
     </div>
-</form>
+  </form>
 </ng-container>
+
+<ng-template #rubroHelp>
+  <ol>
+    <li><strong>Crear Rubro:</strong> Ingrese el nombre del nuevo rubro en el segundo campo y presione el botón "Crear".
+    </li>
+    <li><strong>Editar Rubro:</strong>
+      <ol type="a">
+        <li>Busque el rubro que desea editar en el primer campo ("Buscar Rubro").</li>
+        <li>Seleccione el rubro encontrado.</li>
+        <li>Modifique los datos necesarios y presione el botón "Modificar".</li>
+      </ol>
+    </li>
+    <li><strong>Eliminar Rubro:</strong>
+      <ol type="a">
+        <li>Busque el rubro que desea eliminar en el primer campo ("Buscar Rubro").</li>
+        <li>Seleccione el rubro encontrado.</li>
+        <li>Presione el botón "Eliminar".</li>
+      </ol>
+    </li>
+  </ol>
+</ng-template>
