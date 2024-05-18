@@ -10,31 +10,28 @@
     <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()" linear>
       <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente">
         <form [formGroup]="firstFormGroup">
-          <mat-form-field class="example-full-width">
-            <input
-             type="text" 
-             placeholder="Seleccione un cliente para Modificar/Eliminar" 
-             aria-label="Buscar Cliente" 
-             matInput
-            [formControl]="myControl" 
-            [matAutocomplete]="auto"
-            (focus)="onInputFocus()">
-            <mat-autocomplete (optionSelected)="seleccionarEmpresa($event.option.value)" #auto="matAutocomplete" [displayWith]="displayFn">
-              <mat-option *ngFor="let empresa of filteredOptions | async" [value]="empresa.cliente">
-                {{ empresa?.cliente }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-          <div class="ayuda">
-          <a>Para crear un nuevo cliente complete los siguientes campos: </a>
-          </div>
-          <mat-form-field>
-            <mat-label>Razon Social</mat-label>
-            <input matInput placeholder="" formControlName="RazonSocial" required maxlength="99">
-            <mat-error
-              *ngIf="firstFormGroup.get('RazonSocial')?.invalid && (firstFormGroup.get('RazonSocial')?.dirty || firstFormGroup.get('RazonSocial')?.touched)">
-              Dato obligatorio.
+          <mat-form-field class="buscar">
+
+            <mat-label for="cliente">Razon Social</mat-label>
+            <input type="text" placeholder="Buscar o crear un cliente" name="cliente"
+            formControlName="RazonSocial" matInput [matAutocomplete]="auto" 
+            (focus)="onInputFocus()" required (input)="checkClienteName($event)">
+            <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
+                backspace
+            </mat-icon>
+            <mat-error *ngIf="firstFormGroup.get('RazonSocial')!.hasError('maxlength')">
+                Ingresa menos de 60 caracteres.
             </mat-error>
+            <mat-error *ngIf="firstFormGroup.get('RazonSocial')?.hasError('duplicate')">
+                Ese nombre ya existe.
+            </mat-error>
+
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                (optionSelected)="seleccionarEmpresa($event.option.value)">
+                <mat-option *ngFor="let empresa of filteredOptions | async" [value]="empresa.cliente">
+                    {{ empresa.cliente }}
+                </mat-option>
+            </mat-autocomplete>
           </mat-form-field>
           <mat-form-field>
             <mat-label>CUIT / CUIL</mat-label>
@@ -164,7 +161,7 @@
         <div class="btn-next">
           <button mat-button matStepperPrevious>Atrás</button>
           <button mat-button (click)="crearCliente()" [disabled]="modificarEliminarHabilitado">Crear</button>
-          <button mat-button (click)="modificarCliente()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
+          <button mat-button matTooltip="Confirmar Cambio" (click)="modificarCliente()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
           <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
         </div>
       </mat-step>
