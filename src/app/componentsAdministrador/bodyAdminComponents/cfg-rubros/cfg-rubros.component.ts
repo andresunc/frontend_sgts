@@ -97,7 +97,7 @@ export class CfgRubrosComponent implements OnInit {
 
   @ViewChild('rubroHelp') rubroHelpRef!: TemplateRef<HTMLElement>;
   goInstructor() {
-    const title = 'Instrucciones de uso';
+    const title = 'Como administrar un rubro';
     this.dataShared.openInstructor(this.rubroHelpRef, title);
   }
 
