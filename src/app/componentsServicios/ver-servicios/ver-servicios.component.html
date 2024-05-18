@@ -97,7 +97,7 @@
                             <mat-icon *ngIf="!svService.checkPresentado(element)"
                                 (click)="svService.enviarObjeto(element)">-</mat-icon>
                             <mat-icon matTooltip="Presentado" *ngIf="svService.checkPresentado(element)"
-                                style="color: #ffd740" (click)="svService.enviarObjeto(element)">adjust</mat-icon>
+                                color=accent (click)="svService.enviarObjeto(element)">adjust</mat-icon>
 
                             <mat-icon *ngIf="!svService.checkNotificaciones(element)"
                                 (click)="svService.enviarObjeto(element)">-</mat-icon>

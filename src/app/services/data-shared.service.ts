@@ -1,6 +1,8 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { EventEmitter, Injectable, TemplateRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Servicios } from '../models/DomainModels/Servicios';
+import { MatDialog } from '@angular/material/dialog';
+import { InstructorComponent } from '../componentsShared/instructor/instructor.component';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +23,7 @@ export class DataSharedService {
   updateChecklist$ = this.updateChecklistSubject.asObservable();
 
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   triggerUpdateChecklist() {
     this.updateChecklistSubject.next();
@@ -94,11 +96,24 @@ export class DataSharedService {
   }
 
   triggerUpDateSideBar() {
-    this.ControlAccess.emit();
+    this.upDateSideBar.emit();
   }
 
   getUpDateSideBar() {
-    return this.ControlAccess;
+    return this.upDateSideBar;
+  }
+
+  openInstructor(data: TemplateRef<HTMLElement>, title: string): void {
+    const dialogRef = this.dialog.open(InstructorComponent, {
+      data: { 
+        templateRef: data,
+        title: title
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Instructor cerrado correctamente');
+    });
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { RubroService } from 'src/app/services/DomainServices/rubro.service';
 import { Rubro } from 'src/app/models/DomainModels/Rubro';
@@ -52,12 +52,12 @@ export class CfgRubrosComponent implements OnInit {
           // Restablecer la variable del rubro seleccionado y deshabilitar la modificación
           this.rubroSeleccionado = undefined;
           this.modificarEliminarHabilitado = false;
-         
+
         }
       }
     });
 
-   
+
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -77,7 +77,7 @@ export class CfgRubrosComponent implements OnInit {
   rubroSeleccionado: Rubro | undefined;
   seleccionarRubro(value: any) {
     this.rubroSeleccionado = this.rubros.find(ru => ru.rubro === value);
-    
+
     if (this.rubroSeleccionado) {
       this.modificarEliminarHabilitado = true;
       // Asignar el objeto Rubro directamente
@@ -92,7 +92,13 @@ export class CfgRubrosComponent implements OnInit {
   onInputFocus() {
     this.myControl.setValue(''); // Limpiar el valor del control para que se dispare el evento de filtro.
     this.matAutocomplete.options.forEach(option => option.deselect());
-    
+
+  }
+
+  @ViewChild('rubroHelp') rubroHelpRef!: TemplateRef<HTMLElement>;
+  goInstructor() {
+    const title = 'Instrucciones de uso';
+    this.dataShared.openInstructor(this.rubroHelpRef, title);
   }
 
   private _filter(value: string): Rubro[] {
@@ -100,7 +106,7 @@ export class CfgRubrosComponent implements OnInit {
     return this.rubros.filter(rubro => rubro.rubro?.toLowerCase().startsWith(filterValue));
   }
 
-  
+
   crearRubro() {
 
     const rubroName = this.firstFormGroup.controls.Rubro.value;
@@ -149,34 +155,34 @@ export class CfgRubrosComponent implements OnInit {
       console.error('No se ha seleccionado ningún rubro para modificar.');
       return;
     }
-  
+
     const nuevoNombreRubro = this.firstFormGroup.controls.Rubro.value;
     if (!nuevoNombreRubro || nuevoNombreRubro.trim() === '') {
       console.error('El nuevo nombre del rubro no puede estar vacío.');
       return;
     }
-  
+
     const idRubroModificar = this.rubroSeleccionado.idRubro;
     const rubroModificado: Rubro = { ...this.rubroSeleccionado, rubro: nuevoNombreRubro };
-  
+
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
-  
+
     this.rubroService.updateRubro(idRubroModificar!, rubroModificado)
       .subscribe(
         (data) => {
           console.log('Rubro modificado: ', data);
-  
+
           this._snackBar.okSnackBar('El rubro se modificó correctamente');
           // Recargar el componente navegando a la misma ruta
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['administrador/rubros']);
           });
-  
+
         },
         () => {
           this._snackBar.warnSnackBar('Error al modificar el rubro');
-         }
+        }
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
@@ -204,28 +210,28 @@ export class CfgRubrosComponent implements OnInit {
       console.error('No se ha seleccionado ningún rubro para eliminar.');
       return;
     }
-  
+
     const idRubroEliminar = this.rubroSeleccionado.idRubro;
-  
+
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
-  
+
     this.rubroService.deleteLogico(idRubroEliminar!)
       .subscribe(
         () => {
           console.log('Rubro eliminado correctamente');
-  
+
           this._snackBar.okSnackBar('El rubro se eliminó correctamente');
-         
-          
+
+
         },
         () => {
           this._snackBar.warnSnackBar('Error al eliminar el rubro');
-          }
+        }
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
-         // Recargar el componente navegando a la misma ruta
+        // Recargar el componente navegando a la misma ruta
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate(['administrador/rubros']);
         });
