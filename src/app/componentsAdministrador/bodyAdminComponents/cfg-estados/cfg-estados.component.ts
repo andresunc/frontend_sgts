@@ -11,7 +11,6 @@ import { CategoriaService } from 'src/app/services/DomainServices/categoria.serv
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { MatDialog } from '@angular/material/dialog';
-import { SidebarComponent } from 'src/app/componentsShared/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-cfg-estados',
@@ -24,6 +23,7 @@ export class CfgEstadosComponent implements OnInit {
 
   myControl = new FormControl();
   estados: Estado[] = [];
+  initialEstados: Estado[] = [];
   categorias: Categoria[] = [];
   filteredOptions?: Observable<Estado[]>;
   displayFn!: ((value: any) => string) | null;
@@ -77,6 +77,7 @@ export class CfgEstadosComponent implements OnInit {
 
     this.estadosService.getStatusNotDeleted().subscribe((data: Estado[]) => {
       this.estados = data;
+      this.initialEstados = JSON.parse(JSON.stringify(data));
       console.log("Estados obtenidos:", this.estados);
     });
   }
@@ -177,6 +178,7 @@ export class CfgEstadosComponent implements OnInit {
     const nuevoNombreEstado = this.firstFormGroup.controls.Estado.value;
     let idCategoriaSeleccionada = this.firstFormGroup.controls.Categoria.value;
     idCategoriaSeleccionada ? this.firstFormGroup.controls.Categoria.value : this.estadoSeleccionado.idCategoria;
+    
     if (!nuevoNombreEstado || nuevoNombreEstado.trim() === '') {
       console.error('El nuevo nombre del estado no puede estar vacío.');
       return;
@@ -188,6 +190,20 @@ export class CfgEstadosComponent implements OnInit {
 
     const idEstadoModificar = this.estadoSeleccionado.idEstado;
     const estadoModificado: Estado = { ...this.estadoSeleccionado, tipoEstado: nuevoNombreEstado, idCategoria: idCategoriaSeleccionada };
+
+    // buscar el estado con el mismo id que idEstadoModificar
+    const estadoInicial = this.initialEstados.find(est => est.idEstado === idEstadoModificar);
+
+    // Transformar los objetos con JSON.stringify, compararlos y almancenar el resultado en una variable
+    const sameEstado = JSON.stringify(estadoModificado) === JSON.stringify(estadoInicial);
+
+    // comparar las variables
+    if (sameEstado) {
+      console.log('No hay cambios que hacer :/')
+      this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
+      this.dataShared.ocultarSpinner();
+      return;
+    }
 
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
