@@ -315,7 +315,7 @@ export class PrintServicioComponent implements OnInit {
 
       requestsCount++;
       let servicio: Servicio = new Servicio();
-      servicio.fechaHoraAlertaVenc = new Date(this.servicioRecibido.fecha_notificacion);
+      servicio.fechaHoraAlertaVenc = this.servicioRecibido.fecha_notificacion ? new Date(this.servicioRecibido.fecha_notificacion) : undefined;
       servicio.comentario = this.servicioRecibido.comentario;
       //servicio.tipoServicioIdTipoServicio = this.servicioRecibido.idTipoServicio;
 
