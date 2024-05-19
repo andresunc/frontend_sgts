@@ -40,6 +40,8 @@ export class CfgClientesComponent implements OnInit {
   modificarEliminarHabilitado: boolean = false;
   resumenDatos: any = {};
   contactos: ContactoEmpresa[] = [];
+  initialContacts: ContactoEmpresa[] = [];
+  initialEmpresa!: Empresa;
   disableBtnEditDelete: boolean = true;
 
   constructor(
@@ -171,7 +173,8 @@ export class CfgClientesComponent implements OnInit {
       .subscribe(
         (data) => {
           this.contactos = data;
-          console.log('Contactos de la empresa: ', this.contactos)
+          this.initialContacts = JSON.parse(JSON.stringify(data));
+          console.log('Lista de contacto inicial: ', this.initialContacts);
         }
       )
   }
@@ -182,11 +185,9 @@ export class CfgClientesComponent implements OnInit {
     // Buscar contactos de la empresa y la empresa seleccionada
     this.empresaSeleccionada = this.empresas.find(empresa => empresa.cliente === cliente);
     this.obtenerContactosEmpresa(this.empresaSeleccionada?.idEmpresa!);
-    console.log('Empresa Seleccionada, ', this.empresaSeleccionada);
 
     // Verificar si se encontró la empresa seleccionada
     if (this.empresaSeleccionada) {
-      console.log('Empresa seleccionada OK')
       // habilitar la opcion de eliminar
       this.modificarEliminarHabilitado = true;
       // Completar los campos del formulario con los datos de la empresa seleccionada
@@ -199,6 +200,9 @@ export class CfgClientesComponent implements OnInit {
           this.rubros.find(rubro => rubro.idRubro === this.empresaSeleccionada?.idRubro) : null,
         Riesgo: this.riesgos.find(riesgo => riesgo.idRiesgo === this.empresaSeleccionada!.idRiesgo)
       });
+
+      this.initialEmpresa = this.setEmpresa();
+      console.log('Empresa seleccionada: ', this.initialEmpresa)
 
       // Actualizar resumen
       this.actualizarResumen();
@@ -274,18 +278,7 @@ export class CfgClientesComponent implements OnInit {
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
 
-    const RazonSocial = this.firstFormGroup.get('RazonSocial')?.value;
-    const cuit = this.firstFormGroup.get('CUIT')?.value;
-    const direccion = this.firstFormGroup.get('Direccion')?.value;
-    const rubro = this.firstFormGroup.controls.Rubro;
-    const riesgo = this.firstFormGroup.controls.Riesgo;
-
-    const empresa: Empresa = new Empresa();
-    empresa.cuit = cuit;
-    empresa.direccion = direccion;
-    empresa.rubroIdRubro = rubro.value?.idRubro;
-    empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
-    empresa.razonSocial = RazonSocial;
+    const empresa: Empresa = this.setEmpresa();
 
     const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
     empresaWithContacts.empresa = empresa;
@@ -316,28 +309,49 @@ export class CfgClientesComponent implements OnInit {
       });
   }
 
+  setEmpresa(): Empresa {
+
+    const empresa: Empresa = new Empresa();
+    empresa.idEmpresa = this.empresaSeleccionada?.idEmpresa;
+    empresa.razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
+    empresa.cuit = this.firstFormGroup.get('CUIT')?.value;
+    empresa.direccion = this.firstFormGroup.get('Direccion')?.value;
+    empresa.rubroIdRubro = this.firstFormGroup.controls.Rubro.value?.idRubro;
+    empresa.riesgoIdRiesgo = this.firstFormGroup.controls.Riesgo.value?.idRiesgo;
+
+    return empresa;
+  }
+
   modificarCliente() {
 
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
 
-    const razonSocial = this.firstFormGroup.get('RazonSocial')?.value;
-    const cuit = this.firstFormGroup.get('CUIT')?.value;
-    const direccion = this.firstFormGroup.get('Direccion')?.value;
-    const rubro = this.firstFormGroup.controls.Rubro;
-    const riesgo = this.firstFormGroup.controls.Riesgo;
-
-    const empresa: Empresa = new Empresa();
-    empresa.idEmpresa = this.empresaSeleccionada?.idEmpresa;
-    empresa.cuit = cuit;
-    empresa.direccion = direccion;
-    empresa.rubroIdRubro = rubro.value?.idRubro;
-    empresa.riesgoIdRiesgo = riesgo.value?.idRiesgo;
-    empresa.razonSocial = razonSocial;
-
-    const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
-    empresaWithContacts.empresa = empresa;
+    // Empresa a modificar
+    const empresaToModified = this.setEmpresa();
+    // Contactos a modificar
     this.contactos.forEach(contact => contact.empresaIdEmpresa = this.empresaSeleccionada?.idEmpresa)
+
+    // Transformar los objetos con JSON.stringify, compararlos y almancenar el resultado en una variable
+    const sameCompany = JSON.stringify(this.initialEmpresa) === JSON.stringify(empresaToModified);
+    const sameContacts = JSON.stringify(this.contactos) === JSON.stringify(this.initialContacts);
+    
+
+    console.log(sameContacts) // ** VER ESTO !!!!!!!!!!!!!!!! 
+    console.log(this.contactos);
+    console.log(this.initialContacts);
+
+    // comparar las variables
+    if (sameCompany && sameContacts) {
+      console.log('No hay cambios que hacer :/')
+      this.popupService.warnSnackBar('No hay cambios que hacer', 'Ok');
+      this.dataShared.ocultarSpinner();
+      return;
+    }
+
+    // Set valores de la empresa a modificar
+    const empresaWithContacts: EmpresaWithContacts = new EmpresaWithContacts();
+    empresaWithContacts.empresa = empresaToModified;
     empresaWithContacts.contactos = this.contactos;
 
     this.empresaService.updateEmpresaWithContacts(empresaWithContacts)
@@ -437,9 +451,9 @@ export class CfgClientesComponent implements OnInit {
     this.firstFormGroup.reset();
   }
 
-  equalName : boolean = true;
+  equalName: boolean = true;
   checkClienteName(event: Event): void {
-    
+
     const inputElement = event.target as HTMLInputElement;
     const inputData = inputElement.value;
     this.equalName = this.empresas.some(em => em.cliente?.toLowerCase() === inputData.toLowerCase());
@@ -469,4 +483,3 @@ export class CfgClientesComponent implements OnInit {
   }
 
 }
-
