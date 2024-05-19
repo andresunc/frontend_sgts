@@ -2,11 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Subject, delay, retryWhen, scan, takeUntil } from 'rxjs';
+import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
+import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
@@ -26,6 +28,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   estadoList: Estado[] = [];
   recursoList: RecursoDto[] = [];
   empresaList: EmpresaDto[] = [];
+  categorias: Categoria[] = [];
 
   tipoServicioSelected?: TipoServicio;
   estadoSelected?: Estado;
@@ -35,6 +38,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
 
   constructor(private fb: FormBuilder, private dataNewServ: NewServicioService,
     private dataShared: DataSharedService,
+    private categoriaService: CategoriaService,
     private _snackBar: PopupService,
     private svManager: ManagerService) {
   }
@@ -116,6 +120,13 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     const timeDelay = 2000; // Tiempo de espera entre reintentos
     this.dataShared.mostrarSpinner(); // Mostrar el spinner de carga
     try {
+      // 0 Obtener las categorias
+      this.categoriaService.getAllCategorias()
+      .subscribe(
+        (data) => {
+          this.categorias = data;
+        }
+      )
       // 1 Obtener los tipos de servicios
       this.dataNewServ.getTipoServicesNotDeleted().pipe(
         retryWhen(errors =>
@@ -154,6 +165,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
         ),
       ).subscribe((data) => {
         this.estadoList = data;
+        this.setEstadosPermitidos();
         console.log(this.estadoList);
       });
 
@@ -224,11 +236,13 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     return (entity === undefined) ? 'text-danger' : 'none';
   }
 
-  // Configurar los id de los estados que se permiten seleccionar
-  // Si el id no está en el arreglo, se deshabilita la opción
-  idPermitidos = [1, 2];
-  isOptionDisabled(estado: Estado): boolean {
-    return !this.idPermitidos.includes(estado.idEstado!);
+  estadosPermitidos: Estado[] = [];
+  setEstadosPermitidos() {
+    /**
+     * Categoria permitida "Sin iniciar"
+     */
+    const categoriaPermitida = this.categorias.find(ca => ca.categoria === 'Sin iniciar');
+    this.estadosPermitidos = this.estadoList.filter(est => est.idCategoria === categoriaPermitida?.idCategoria);
   }
 
 }

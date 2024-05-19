@@ -10,8 +10,8 @@ import { AuthService } from '../auth.service';
 })
 export class CategoriaService {
 
-  urlBackend = new UrlBackend().getUrlBackend();
-  getCategorias = this.urlBackend + '/categoria/getAll';
+  private urlBackend = new UrlBackend().getUrlBackend();
+  private getCategorias = this.urlBackend + '/categoria/getAll';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
