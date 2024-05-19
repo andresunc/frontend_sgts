@@ -30,8 +30,7 @@
                                     <mat-form-field>
                                         <mat-label>Estado del Servicio</mat-label>
                                         <mat-select formControlName="estado" placeholder="Seleccionar estado">
-                                            <mat-option *ngFor="let estado of estadoList" [value]="estado"
-                                                [disabled]="isOptionDisabled(estado)">
+                                            <mat-option *ngFor="let estado of estadosPermitidos" [value]="estado">
                                                 <span>{{estado.tipoEstado}}</span>
                                             </mat-option>
                                         </mat-select>
