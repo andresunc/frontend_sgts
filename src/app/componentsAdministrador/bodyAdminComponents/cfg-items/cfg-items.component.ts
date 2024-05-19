@@ -60,7 +60,7 @@ export class CfgItemsComponent implements OnInit {
     private itemService: ItemService,
     private dataShared: DataSharedService,
     private dialog: MatDialog,
-    private snackService: PopupService,
+    private _snackBar: PopupService,
     private router: Router,
   ) { }
 
@@ -91,7 +91,7 @@ export class CfgItemsComponent implements OnInit {
       .subscribe(
         (data) => {
           this.rubros = data;
-          this.setRubro.idRubro = undefined;
+          this.setRubro.idRubro = null;
           this.setRubro.rubro = "No aplica";
           this.rubros.push(this.setRubro);
           console.log(
@@ -103,7 +103,7 @@ export class CfgItemsComponent implements OnInit {
     this.dependenciaService.getAll()
       .subscribe(
         (data) => {
-          this.defaultDependencia.idDependencia = undefined;
+          this.defaultDependencia.idDependencia = null;
           this.defaultDependencia.dependencia = 'No aplica'
           this.dependencias = data;
           this.dependencias.push(this.defaultDependencia);
@@ -163,6 +163,7 @@ export class CfgItemsComponent implements OnInit {
   }
 
   itemMatch: Item | undefined = undefined;
+  initialItem: Item | undefined = undefined;
   requisitoSelected: string = '';
   seleccionarRequisito(nombreRequisito: string) {
 
@@ -172,6 +173,9 @@ export class CfgItemsComponent implements OnInit {
       this.requisitoSelected = nombreRequisito;
       const requisitoMatch = this.requisitos.find(req => req.descripcion === this.requisitoSelected);
       this.itemMatch = this.itemLists.find(item => item.requisitoIdRequisito === requisitoMatch?.idRequisito);
+      this.itemMatch!.descripcion = this.requisitoSelected;
+      this.initialItem = JSON.parse(JSON.stringify(this.itemMatch)); // Agrego el item inicial para después compararlos en la fn de editar
+      
       let diasHorasValue: string = '';
       if (this.itemMatch?.duracionEstandar && this.itemMatch.duracionEstandar <= 24) {
         diasHorasValue = 'horas';
@@ -237,7 +241,7 @@ export class CfgItemsComponent implements OnInit {
         (data) => {
           console.log('Creación ok', data);
           this.refresh();
-          this.snackService.okSnackBar('Ítem creado correctamente')
+          this._snackBar.okSnackBar('Ítem creado correctamente')
         }
       ).add(
         this.dataShared.ocultarSpinner()
@@ -247,8 +251,6 @@ export class CfgItemsComponent implements OnInit {
   }
 
   modificarItem() {
-
-    const itemOld: Item = this.itemMatch!
 
     const nombreItem = this.firstFormGroup.controls.nombreItem.value;
     const tipoServicio = this.firstFormGroup.controls.tipoServicio.value;
@@ -271,7 +273,14 @@ export class CfgItemsComponent implements OnInit {
     this.itemMatch!.duracionEstandar = duracionEstandar;
     this.itemMatch!.descripcion = nombreItem;
 
+    const sameItem = JSON.stringify(this.initialItem) === JSON.stringify(this.itemMatch);
+    console.log(sameItem, 'A: ' , this.initialItem, 'B:', this.itemMatch)
 
+    if (sameItem) {
+      console.log('No hay cambios que hacer :/')
+      this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
+      return;
+    }
 
     this.dataShared.mostrarSpinner();
     this.itemService.updateItem(this.itemMatch!)
@@ -279,7 +288,7 @@ export class CfgItemsComponent implements OnInit {
         (data) => {
           console.log('Actualizado, ', data);
           this.refresh();
-          this.snackService.okSnackBar('Ítem editado correctamente')
+          this._snackBar.okSnackBar('Ítem editado correctamente')
         }
       ).add(
         this.dataShared.ocultarSpinner()
@@ -313,7 +322,7 @@ export class CfgItemsComponent implements OnInit {
     this.itemService.deleteItem(this.itemMatch?.idItem!)
       .subscribe(() => {
         this.refresh();
-        this.snackService.errorSnackBar('Ítem eliminado correctamente')
+        this._snackBar.errorSnackBar('Ítem eliminado correctamente')
       })
   }
 

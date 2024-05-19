@@ -21,6 +21,7 @@ export class CfgRubrosComponent implements OnInit {
 
   myControl = new FormControl();
   rubros: Rubro[] = [];
+  initialRubros: Rubro[] = [];
   filteredOptions?: Observable<Rubro[]>;
   displayFn!: ((value: any) => string) | null;
   modificarEliminarHabilitado: boolean = false;
@@ -70,6 +71,7 @@ export class CfgRubrosComponent implements OnInit {
 
     this.rubroService.getAllRubro().subscribe((data: Rubro[]) => {
       this.rubros = data;
+      this.initialRubros = JSON.parse(JSON.stringify(data));
       console.log("Rubros obtenidos:", this.rubros);
     });
   }
@@ -162,13 +164,24 @@ export class CfgRubrosComponent implements OnInit {
       return;
     }
 
-    const idRubroModificar = this.rubroSeleccionado.idRubro;
-    const rubroModificado: Rubro = { ...this.rubroSeleccionado, rubro: nuevoNombreRubro };
+    const idRubroToModified = this.rubroSeleccionado.idRubro;
+    const rubroToModified: Rubro = { ...this.rubroSeleccionado, rubro: nuevoNombreRubro };
+    const rubroInitial = this.initialRubros.find(ru => ru.idRubro === idRubroToModified);
+
+    const sameRubro = JSON.stringify(rubroInitial) === JSON.stringify(rubroToModified);
+
+    console.log(sameRubro)
+
+    if (sameRubro) {
+      console.log('No hay cambios que hacer :/')
+      this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
+      return;
+    }
 
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
 
-    this.rubroService.updateRubro(idRubroModificar!, rubroModificado)
+    this.rubroService.updateRubro(idRubroToModified!, rubroToModified)
       .subscribe(
         (data) => {
           console.log('Rubro modificado: ', data);
