@@ -1,5 +1,5 @@
 export class Dependencia {
-    idDependencia?: number;
+    idDependencia?: number | null;
     dependencia?:string;
 
     constructor() {}

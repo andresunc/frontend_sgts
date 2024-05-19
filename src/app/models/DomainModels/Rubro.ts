@@ -1,5 +1,5 @@
 export class Rubro{
-    idRubro?:number;
+    idRubro?:number | null;
     rubro?:string;
 
     constructor(){
