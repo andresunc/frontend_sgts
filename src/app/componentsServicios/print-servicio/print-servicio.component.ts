@@ -252,7 +252,8 @@ export class PrintServicioComponent implements OnInit {
      */
     const handleComplete = () => {
       requestsCount--;
-      console.log('valor del handleComplete: ', requestsCount)
+      if (requestsCount < 0)  this.dataShared.ocultarSpinner();
+      console.log('valor del handleComplete: ', requestsCount);
       if (requestsCount === 0) {
         this.dataShared.ocultarSpinner();
         this.getServicioById(this.servicioRecibido.idServicio);
@@ -264,7 +265,6 @@ export class PrintServicioComponent implements OnInit {
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
 
     if (this.estadoMatch && this.estadoMatch?.idEstado != this.servicioRecibido.idEstado) {
-
       requestsCount++;
       // Armo el objeto historico de estado
       let historicoEstado = new HistoricoEstado();
