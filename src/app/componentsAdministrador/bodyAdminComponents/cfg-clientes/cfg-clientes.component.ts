@@ -245,10 +245,13 @@ export class CfgClientesComponent implements OnInit {
 
       // Actualizar el resumen después de agregar el contacto
       this.actualizarResumen();
+      this.controlEdit = false;
     }
   }
 
+  controlEdit: boolean = false;
   editarContacto(contacto: any) {
+    if (this.controlEdit ) return;
     // Autocompletar los campos del formulario con los datos del contacto
     this.secondFormGroup.patchValue({
       Nombre: contacto.nombre,
@@ -264,6 +267,7 @@ export class CfgClientesComponent implements OnInit {
     }
 
     this.actualizarResumen();
+    this.controlEdit = true;
   }
 
 
@@ -377,7 +381,10 @@ export class CfgClientesComponent implements OnInit {
 
   }
 
-
+  deleteContact() {
+    this.secondFormGroup.reset();
+    this.controlEdit = false;
+  }
 
   checkDelete(): void {
     const dialogRef = this.dialog.open(DeletePopupComponent, {

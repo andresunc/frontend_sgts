@@ -13,24 +13,23 @@
           <mat-form-field class="buscar">
 
             <mat-label for="cliente">Razon Social</mat-label>
-            <input type="text" placeholder="Buscar o crear un cliente" name="cliente"
-            formControlName="RazonSocial" matInput [matAutocomplete]="auto" 
-            (focus)="onInputFocus()" required (input)="checkClienteName($event)">
+            <input type="text" placeholder="Buscar o crear un cliente" name="cliente" formControlName="RazonSocial"
+              matInput [matAutocomplete]="auto" (focus)="onInputFocus()" required (input)="checkClienteName($event)">
             <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
-                backspace
+              backspace
             </mat-icon>
             <mat-error *ngIf="firstFormGroup.get('RazonSocial')!.hasError('maxlength')">
-                Ingresa menos de 60 caracteres.
+              Ingresa menos de 60 caracteres.
             </mat-error>
             <mat-error *ngIf="firstFormGroup.get('RazonSocial')?.hasError('duplicate')">
-                Ese nombre ya existe.
+              Ese nombre ya existe.
             </mat-error>
 
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-                (optionSelected)="seleccionarEmpresa($event.option.value)">
-                <mat-option *ngFor="let empresa of filteredOptions | async" [value]="empresa.cliente">
-                    {{ empresa.cliente }}
-                </mat-option>
+              (optionSelected)="seleccionarEmpresa($event.option.value)">
+              <mat-option *ngFor="let empresa of filteredOptions | async" [value]="empresa.cliente">
+                {{ empresa.cliente }}
+              </mat-option>
             </mat-autocomplete>
           </mat-form-field>
           <mat-form-field>
@@ -56,7 +55,7 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <mat-label  for="Riesgo">Riesgo</mat-label>
+            <mat-label for="Riesgo">Riesgo</mat-label>
             <mat-select name="Riesgo" formControlName="Riesgo" required>
               <mat-option *ngFor="let riesgo of riesgos" [value]="riesgo">{{ riesgo?.riesgo }}</mat-option>
             </mat-select>
@@ -103,10 +102,17 @@
                     El e-mail es <strong>necesario</strong>
                   </mat-error>
                 </mat-form-field>
-                <div class="btn-contacto">
-                  <button mat-mini-fab tabindex="-1" (click)="agregarContacto()">
-                    <mat-icon>add</mat-icon>
-                  </button>
+                <div style="display: flex;">
+                  <div class="btn-contacto">
+                    <button mat-mini-fab tabindex="-1" (click)="agregarContacto()">
+                      <mat-icon>{{controlEdit ? 'save' : 'add'}}</mat-icon>
+                    </button>
+                  </div>
+                  <div style="padding-left: 0.5rem;" *ngIf="controlEdit">
+                    <button color="warn" mat-mini-fab (click)="deleteContact()">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
                 </div>
               </div>
             </form>
@@ -161,7 +167,8 @@
         <div class="btn-next">
           <button mat-button matStepperPrevious>Atrás</button>
           <button mat-button (click)="crearCliente()" [disabled]="modificarEliminarHabilitado">Crear</button>
-          <button mat-button matTooltip="Confirmar Cambio" (click)="modificarCliente()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
+          <button mat-button matTooltip="Confirmar Cambio" (click)="modificarCliente()"
+            [disabled]="!modificarEliminarHabilitado">Modificar</button>
           <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
         </div>
       </mat-step>
