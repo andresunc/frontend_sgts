@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 
   myControl = new FormControl();
   riesgos: Riesgo[] = [];
+  initialRiesgos: Riesgo[] = [];
   filteredOptions?: Observable<Riesgo[]>;
   displayFn!: ((value: any) => string) | null;
   modificarEliminarHabilitado: boolean = false;
@@ -70,6 +71,7 @@ import { MatDialog } from '@angular/material/dialog';
 
     this.riesgoService.getAllRiesgo().subscribe((data: Riesgo[]) => {
       this.riesgos = data;
+      this.initialRiesgos = JSON.parse(JSON.stringify(data));
       console.log("Riesgos obtenidos:", this.riesgos);
     });
   }
@@ -158,6 +160,18 @@ import { MatDialog } from '@angular/material/dialog';
   
     const idRiesgoModificar = this.riesgoSeleccionado.idRiesgo;
     const riesgoModificado: Riesgo = { ...this.riesgoSeleccionado, riesgo: nuevoNombreRiesgo };
+
+    const rubroInitial = this.initialRiesgos.find(ri => ri.idRiesgo === idRiesgoModificar);
+
+    const sameRiesgo = JSON.stringify(rubroInitial) === JSON.stringify(riesgoModificado);
+
+    console.log(sameRiesgo)
+
+    if (sameRiesgo) {
+      console.log('No hay cambios que hacer :/')
+      this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
+      return;
+    }
   
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;

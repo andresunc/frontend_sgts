@@ -335,11 +335,6 @@ export class CfgClientesComponent implements OnInit {
     // Transformar los objetos con JSON.stringify, compararlos y almancenar el resultado en una variable
     const sameCompany = JSON.stringify(this.initialEmpresa) === JSON.stringify(empresaToModified);
     const sameContacts = JSON.stringify(this.contactos) === JSON.stringify(this.initialContacts);
-    
-
-    console.log(sameContacts) // ** VER ESTO !!!!!!!!!!!!!!!! 
-    console.log(this.contactos);
-    console.log(this.initialContacts);
 
     // comparar las variables
     if (sameCompany && sameContacts) {
