@@ -85,12 +85,12 @@ export class CfgEstadosComponent implements OnInit {
   obtenerCategorias() {
 
     this.categoriaService.getAllCategorias()
-    .subscribe(
-      (data) => {
-        this.categorias = data;
-        console.log('Categorias cargadas: ', data)
-      }
-    )
+      .subscribe(
+        (data) => {
+          this.categorias = data;
+          console.log('Categorias cargadas: ', data)
+        }
+      )
   }
 
   estadoSeleccionado: Estado | undefined;
@@ -120,12 +120,18 @@ export class CfgEstadosComponent implements OnInit {
   }
 
 
+  incomplete: boolean = false;
   crearEstado() {
 
     const estadoName = this.firstFormGroup.controls.Estado.value;
     const idCategoriaSeleccionada = this.firstFormGroup.controls.Categoria.value;
-    if (estadoName === '' || estadoName === null || idCategoriaSeleccionada === null) return;
-
+    if (estadoName === '' || estadoName === null || idCategoriaSeleccionada === null) {
+      this.incomplete = true;
+      setTimeout(() => {
+        this.incomplete = false;
+      }, 2000);
+      return;
+    }
 
     if (!estadoName && this.estadoSeleccionado) {
       // Restablecer la variable del estado seleccionado y deshabilitar la modificación
@@ -148,7 +154,7 @@ export class CfgEstadosComponent implements OnInit {
           this.dataShared.triggerUpDateSideBar(); // Actualiza la SideBar
           console.log('Estado creado: ', data);
 
-          
+
           this._snackBar.okSnackBar('El estado se creó correctamente');
           this.obtenerEstado();
 
@@ -178,7 +184,7 @@ export class CfgEstadosComponent implements OnInit {
     const nuevoNombreEstado = this.firstFormGroup.controls.Estado.value;
     let idCategoriaSeleccionada = this.firstFormGroup.controls.Categoria.value;
     idCategoriaSeleccionada ? this.firstFormGroup.controls.Categoria.value : this.estadoSeleccionado.idCategoria;
-    
+
     if (!nuevoNombreEstado || nuevoNombreEstado.trim() === '') {
       console.error('El nuevo nombre del estado no puede estar vacío.');
       return;
@@ -280,6 +286,33 @@ export class CfgEstadosComponent implements OnInit {
       });
   }
 
+  equalName: boolean = false;
+  checkExistName(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const inputData = inputElement.value;
+    this.equalName = this.estados.some(es => es.tipoEstado?.toLowerCase() === inputData.toLowerCase());
+    console.log(this.equalName);
 
+    if (this.equalName) {
+      this.firstFormGroup.get('Estado')?.setErrors({ duplicate: true });
+    } else {
+      const errors = this.firstFormGroup.get('Estado')?.errors;
+      if (errors) {
+        delete errors['duplicate'];
+        if (Object.keys(errors).length === 0) {
+          this.firstFormGroup.get('Estado')?.setErrors(null);
+        } else {
+          this.firstFormGroup.get('Estado')?.setErrors(errors);
+        }
+      }
+    }
+  }
+
+  formularioTieneErrores(): boolean {
+    this.firstFormGroup.markAllAsTouched();
+    const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
+    console.log('Datos erroneos en el formulario: ', hayErrores)
+    return hayErrores
+  }
 
 }
