@@ -367,7 +367,6 @@ export class CfgItemsComponent implements OnInit {
   formularioTieneErrores(): boolean {
     this.firstFormGroup.markAllAsTouched();
     const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
-    console.log('Datos erroneos en el formulario: ', hayErrores)
     return hayErrores
   }
 

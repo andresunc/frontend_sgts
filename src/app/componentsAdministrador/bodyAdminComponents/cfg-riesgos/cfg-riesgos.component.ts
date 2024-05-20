@@ -12,12 +12,12 @@ import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
-    selector: 'app-cfg-riesgos',
-    templateUrl: './cfg-riesgos.component.html',
-    styleUrls: ['./cfg-riesgos.component.css']
-  })
-  export class CfgRiesgosComponent implements OnInit {
-    @ViewChild('auto') matAutocomplete!: MatAutocomplete;
+  selector: 'app-cfg-riesgos',
+  templateUrl: './cfg-riesgos.component.html',
+  styleUrls: ['./cfg-riesgos.component.css']
+})
+export class CfgRiesgosComponent implements OnInit {
+  @ViewChild('auto') matAutocomplete!: MatAutocomplete;
 
   myControl = new FormControl();
   riesgos: Riesgo[] = [];
@@ -53,12 +53,12 @@ import { MatDialog } from '@angular/material/dialog';
           // Restablecer la variable del riesgo seleccionado y deshabilitar la modificación
           this.riesgoSeleccionado = undefined;
           this.modificarEliminarHabilitado = false;
-         
+
         }
       }
     });
 
-   
+
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -94,7 +94,7 @@ import { MatDialog } from '@angular/material/dialog';
   onInputFocus() {
     this.myControl.setValue(''); // Limpiar el valor del control para que se dispare el evento de filtro.
     this.matAutocomplete.options.forEach(option => option.deselect());
-    
+
   }
 
   private _filter(value: string): Riesgo[] {
@@ -102,11 +102,11 @@ import { MatDialog } from '@angular/material/dialog';
     return this.riesgos.filter(riesgo => riesgo.riesgo?.toLowerCase().startsWith(filterValue));
   }
 
-  
+
   crearRiesgo() {
 
     const riesgoName = this.firstFormGroup.controls.Riesgo.value;
-    if (riesgoName === '' || riesgoName === null) return;
+    if (riesgoName === '' || riesgoName === null || this.equalName) return;
 
 
     if (!riesgoName && this.riesgoSeleccionado) {
@@ -151,13 +151,13 @@ import { MatDialog } from '@angular/material/dialog';
       console.error('No se ha seleccionado ningún riesgo para modificar.');
       return;
     }
-  
+
     const nuevoNombreRiesgo = this.firstFormGroup.controls.Riesgo.value;
     if (!nuevoNombreRiesgo || nuevoNombreRiesgo.trim() === '') {
       console.error('El nuevo nombre del riesgo no puede estar vacío.');
       return;
     }
-  
+
     const idRiesgoModificar = this.riesgoSeleccionado.idRiesgo;
     const riesgoModificado: Riesgo = { ...this.riesgoSeleccionado, riesgo: nuevoNombreRiesgo };
 
@@ -172,25 +172,25 @@ import { MatDialog } from '@angular/material/dialog';
       this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
       return;
     }
-  
+
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
-  
+
     this.riesgoService.updateRiesgo(idRiesgoModificar!, riesgoModificado)
       .subscribe(
         (data) => {
           console.log('Riesgo modificado: ', data);
-  
+
           this._snackBar.okSnackBar('El riesgo se modificó correctamente');
           // Recargar el componente navegando a la misma ruta
           this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
             this.router.navigate(['administrador/riesgos']);
           });
-  
+
         },
         () => {
           this._snackBar.warnSnackBar('Error al modificar el riesgo');
-         }
+        }
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
@@ -218,28 +218,28 @@ import { MatDialog } from '@angular/material/dialog';
       console.error('No se ha seleccionado ningún riesgo para eliminar.');
       return;
     }
-  
+
     const idRiesgoEliminar = this.riesgoSeleccionado.idRiesgo;
-  
+
     this.dataShared.mostrarSpinner();
     this.modificarEliminarHabilitado = true;
-  
+
     this.riesgoService.delete(idRiesgoEliminar!)
       .subscribe(
         () => {
           console.log('Riesgo eliminado correctamente');
-  
+
           this._snackBar.okSnackBar('El riesgo se eliminó correctamente');
-         
-          
+
+
         },
         () => {
           this._snackBar.warnSnackBar('Error al eliminar el riesgo');
-          }
+        }
       )
       .add(() => {
         this.dataShared.ocultarSpinner();
-         // Recargar el componente navegando a la misma ruta
+        // Recargar el componente navegando a la misma ruta
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
           this.router.navigate(['administrador/riesgos']);
         });
@@ -247,5 +247,33 @@ import { MatDialog } from '@angular/material/dialog';
       });
   }
 
-
+  formularioTieneErrores(): boolean {
+    this.firstFormGroup.markAllAsTouched();
+    const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
+    console.log('Datos erroneos en el formulario: ', hayErrores)
+    return hayErrores
   }
+
+  equalName: boolean = false;
+  checkExistName(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const inputData = inputElement.value;
+    this.equalName = this.riesgos.some(ri => ri.riesgo?.toLowerCase() === inputData.toLowerCase());
+    console.log(this.equalName);
+
+    if (this.equalName) {
+      this.firstFormGroup.get('Riesgo')?.setErrors({ duplicate: true });
+    } else {
+      const errors = this.firstFormGroup.get('Riesgo')?.errors;
+      if (errors) {
+        delete errors['duplicate'];
+        if (Object.keys(errors).length === 0) {
+          this.firstFormGroup.get('Riesgo')?.setErrors(null);
+        } else {
+          this.firstFormGroup.get('Riesgo')?.setErrors(errors);
+        }
+      }
+    }
+  }
+
+}

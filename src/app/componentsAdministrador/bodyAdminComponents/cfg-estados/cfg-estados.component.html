@@ -1,9 +1,10 @@
 <ng-container>
   <form [formGroup]="firstFormGroup">
     <mat-form-field>
-      <input type="text" placeholder="Buscar Estado" aria-label="Buscar Estado para modificar o eliminar" matInput [formControl]="myControl"
-        [matAutocomplete]="auto" (focus)="onInputFocus()">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="seleccionarEstado($event.option.value)">
+      <input type="text" placeholder="Buscar Estado" aria-label="Buscar Estado para modificar o eliminar" matInput
+        [formControl]="myControl" [matAutocomplete]="auto" (focus)="onInputFocus()">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+        (optionSelected)="seleccionarEstado($event.option.value)">
         <mat-option *ngFor="let estado of filteredOptions | async" [value]="estado.tipoEstado">
           {{ estado.tipoEstado }}
         </mat-option>
@@ -12,20 +13,30 @@
 
     <mat-form-field>
       <mat-label for="Estado">Estado</mat-label>
-      <input matInput placeholder="Nuevo Estado" formControlName="Estado" maxlength="99" [value]="estadoSeleccionado?.tipoEstado">
+      <input matInput placeholder="Nuevo Estado" formControlName="Estado" maxlength="99"
+        [value]="estadoSeleccionado?.tipoEstado" (input)="checkExistName($event)" [required]="true">
+      <mat-error *ngIf="firstFormGroup.get('Estado')?.hasError('duplicate')">
+        Ese nombre ya existe.
+      </mat-error>
     </mat-form-field>
 
+    
+    <mat-label for="Categoria"></mat-label>
     <mat-radio-group formControlName="Categoria">
-      <mat-radio-button *ngFor="let categoria of categorias" [value]="categoria.idCategoria"
-        [checked]="categoria.idCategoria === estadoSeleccionado?.idCategoria">
+      <mat-error *ngIf="incomplete">Hay datos incompletos</mat-error>
+      <mat-radio-button  *ngFor="let categoria of categorias" [value]="categoria.idCategoria"
+        [checked]="categoria.idCategoria === estadoSeleccionado?.idCategoria" [required]="true">
         {{categoria.categoria}}
       </mat-radio-button>
     </mat-radio-group>
 
-    <div class="btn-abm">
-      <button mat-button (click)="crearEstado()" [disabled]="modificarEliminarHabilitado">Crear</button>
-      <button mat-button (click)="modificarEstado()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
-      <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+    <div (click)="formularioTieneErrores()">
+      <div class="btn-abm">
+        <button mat-button (click)="crearEstado()"
+          [disabled]="modificarEliminarHabilitado || !firstFormGroup.valid">Crear</button>
+        <button mat-button (click)="modificarEstado()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
+        <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+      </div>
     </div>
   </form>
 </ng-container>

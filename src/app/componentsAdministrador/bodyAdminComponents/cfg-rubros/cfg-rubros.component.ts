@@ -252,6 +252,26 @@ export class CfgRubrosComponent implements OnInit {
       });
   }
 
+  equalName: boolean = false;
+  checkExistName(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const inputData = inputElement.value;
+    this.equalName = this.rubros.some(ru => ru.rubro?.toLowerCase() === inputData.toLowerCase());
+    console.log(this.equalName);
 
+    if (this.equalName) {
+      this.firstFormGroup.get('Rubro')?.setErrors({ duplicate: true });
+    } else {
+      const errors = this.firstFormGroup.get('Rubro')?.errors;
+      if (errors) {
+        delete errors['duplicate'];
+        if (Object.keys(errors).length === 0) {
+          this.firstFormGroup.get('Rubro')?.setErrors(null);
+        } else {
+          this.firstFormGroup.get('Rubro')?.setErrors(errors);
+        }
+      }
+    }
+  }
 
 }
