@@ -46,7 +46,7 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">
                             <span class="headTable">SERVICIO</span>
                         </th>
-                        <td id="tipoServicio" mat-cell *matCellDef="let element" class="text-center" matTooltip="Inlcuye comentarios"
+                        <td id="tipoServicio" mat-cell *matCellDef="let element" class="text-center" matTooltip="{{element.comentario ? 'Inlcuye comentarios' : null}}"
                         (click)="element.comentario !== null ? openDialog(element) : svService.enviarObjeto(element)">
                             <span class="contentTable">{{ element.tipo? element.tipo.toUpperCase() : ''}}</span>
                             <mat-icon class="coment" *ngIf="element.comentario" color="warn">mark_unread_chat_alt</mat-icon>
