@@ -191,3 +191,8 @@ las tres etiquetas que siguen de la tabla de servicios*/
   /*font-weight: bold;*/
 }
 
+#servicioRow div{
+  display: flex;
+  background-color: red;
+}
+
