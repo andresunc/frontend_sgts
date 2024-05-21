@@ -88,7 +88,7 @@
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
             <mat-form-field>
-              <mat-label [style.color]="isEditable ? '#dc3545' : ''">Estado</mat-label>
+              <mat-label [style.color]="isEditable ? '#dc3545' : '#673ab7'">Estado</mat-label>
               <input matInput *ngIf="!isEditable" [value]="servicioRecibido.estado" [readonly]="!isEditable">
               <mat-select *ngIf="isEditable" [(ngModel)]="servicioRecibido.estado" (ngModelChange)="onEstadoChange()">
                 <mat-option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">

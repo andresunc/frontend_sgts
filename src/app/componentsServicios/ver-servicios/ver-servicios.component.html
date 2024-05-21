@@ -46,9 +46,10 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">
                             <span class="headTable">SERVICIO</span>
                         </th>
-                        <td mat-cell *matCellDef="let element" class="text-center"
-                            (click)="svService.enviarObjeto(element)">
+                        <td id="tipoServicio" mat-cell *matCellDef="let element" class="text-center" matTooltip="Inlcuye comentarios"
+                        (click)="element.comentario !== null ? openDialog(element) : svService.enviarObjeto(element)">
                             <span class="contentTable">{{ element.tipo? element.tipo.toUpperCase() : ''}}</span>
+                            <mat-icon class="coment" *ngIf="element.comentario" color="warn">mark_unread_chat_alt</mat-icon>
                         </td>
                     </ng-container>
 
@@ -58,7 +59,7 @@
                             <span class="headTable">VIGENCIA</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
-                            (click)="svService.enviarObjeto(element)">
+                            (click)="svService.enviarObjeto(element)" matTooltip="{{ element.fecha_alta | date:'dd-MMM-yy' }}">
                             <span>{{ element.fecha_alta ? calcularDiferencia(element.fecha_alta) : ''}}</span>
                         </td>
                     </ng-container>
@@ -75,14 +76,14 @@
                     </ng-container>
 
                     <!-- comentario Column -->
-                    <ng-container matColumnDef="comentario">
+                    <ng-container matColumnDef="estado">
                         <th mat-header-cell *matHeaderCellDef class="text-center">
-                            <span class="headTable">COMENTARIO</span>
+                            <span class="headTable">ESTADO</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
-                            (click)="element.comentario !== null ? openDialog(element) : svService.enviarObjeto(element)">
-                            <span class="contentTable" *ngIf="element.comentario" class="coment">
-                                Ver comentario
+                            (click)="svService.enviarObjeto(element)">
+                            <span class="contentTable" [ngClass]="{'primary-bold': element.estado.toUpperCase() === 'PRESENTADO'}">
+                                {{element.estado}}
                             </span>
                         </td>
                     </ng-container>
@@ -110,11 +111,11 @@
                     <!-- Configuración de filas y columnas -->
                     <ng-container>
                         <tr mat-header-row
-                            *matHeaderRowDef="['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']"
+                            *matHeaderRowDef="['cliente', 'tipo', 'vigencia', 'avance', 'estado', 'alertas']"
                             style="background-color: #ffffff;">
                         </tr>
                         <tr mat-row
-                            *matRowDef="let row; columns: ['cliente', 'tipo', 'vigencia', 'avance', 'comentario', 'alertas']; 
+                            *matRowDef="let row; columns: ['cliente', 'tipo', 'vigencia', 'avance', 'estado', 'alertas']; 
                             let element"
                             class="estiloRow" [ngClass]="{'filaDeshabilitada': !enableRow(element)}">
                         </tr>
