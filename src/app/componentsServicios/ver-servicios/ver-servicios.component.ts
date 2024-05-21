@@ -100,11 +100,45 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
+  
+
   // Métododo para filtrar servicios por el buscador
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    // Si el valor del filtro está vacío, restablecer la tabla para mostrar todos los servicios
+    if (filterValue.trim() === "") {
+      this.dataSource.data = this.listServicios;
+      this.updatePaginator();
+      return;
+    }
+
+    // Verificar si el valor es un número
+    const isNumber = !isNaN(Number(filterValue));
+
+    if (isNumber) {
+      // Si es un número, realiza la conversión y filtra por idServicio
+      const idServicio = Number(filterValue);
+      this.applyFilterById(idServicio);
+    } else {
+      // Si no es un número, aplica el filtro de texto
+      this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
   }
+
+  // Método para filtrar servicios por idServicio
+  applyFilterById(id: number) {
+    // Filtrar los servicios que coincidan con el idServicio
+    const filteredServices = this.listServicios.filter(servicio => servicio.idServicio === id);
+
+    // Actualizar la tabla con los servicios filtrados
+    this.dataSource = new MatTableDataSource(filteredServices);
+
+    // Actualizar el paginador con los servicios filtrados
+    this.updatePaginator();
+  }
+
+
 
   // Filtrar servicios por estados, función activada desde el Sidebar
   applyFilterByCheckbox() {
