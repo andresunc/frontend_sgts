@@ -1,48 +1,57 @@
 <ng-container>
   <form [formGroup]="firstFormGroup">
+    
     <mat-form-field>
-      <input type="text" placeholder="Buscar Rubro" aria-label="Buscar Rubro" matInput [formControl]="myControl"
-        [matAutocomplete]="auto" (focus)="onInputFocus()">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-        (optionSelected)="seleccionarRubro($event.option.value)">
-        <mat-option *ngFor="let rubro of filteredOptions | async" [value]="rubro.rubro">
-          {{ rubro?.rubro }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label for="Rubro">Rubro</mat-label>
-      <input matInput placeholder="Nuevo Rubro" formControlName="Rubro" maxlength="45" (input)="checkExistName($event)">
-      <mat-icon matSuffix color="accent" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
-        live_help
+      <mat-label for="Rubro">Nombre del Rubro</mat-label>
+      <input type="text" placeholder="Buscar o crear un Rubro" name="Rubro"
+      formControlName="Rubro" maxlength="50" matInput [matAutocomplete]="auto" 
+      (focus)="onInputFocus()" required (input)="checkExistName($event)">
+      <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
+          backspace
       </mat-icon>
-      <mat-error *ngIf="firstFormGroup.get('Rubro')?.hasError('duplicate')">
-        Ese nombre ya existe.
+      
+      <mat-error *ngIf="firstFormGroup.get('Rubro')!.hasError('maxlength')">
+          Ingresa menos de 50 caracteres.
       </mat-error>
+      <mat-error *ngIf="firstFormGroup.get('Rubro')?.hasError('duplicate')">
+          Ese nombre ya existe.
+      </mat-error>
+
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+          (optionSelected)="seleccionarRubro($event.option.value)">
+          <mat-option *ngFor="let rubro of filteredOptions | async" [value]="rubro.rubro">
+              {{ rubro?.rubro }}
+          </mat-option>
+      </mat-autocomplete>
+
     </mat-form-field>
+    <mat-icon matSuffix color="accent" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+      live_help
+    </mat-icon>
     <div class="btn-abm">
-      <button mat-button (click)="crearRubro()" [disabled]="modificarEliminarHabilitado || equalName">Crear</button>
-      <button mat-button (click)="modificarRubro()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
-      <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+      <button mat-button (click)="crearRubro()" [disabled]="disableBtnCrear || equalName">Crear</button>
+      <button mat-button (click)="modificarRubro()" [disabled]="disableBtnEditDelete">Modificar</button>
+      <button mat-button (click)="checkDelete()" [disabled]="disableBtnEditDelete">Eliminar</button>
+      
     </div>
   </form>
 </ng-container>
 
 <ng-template #rubroHelp>
   <ol>
-    <li><strong>Crear Rubro:</strong> Ingrese el nombre del nuevo rubro en el segundo campo y presione el botón "Crear".
+    <li><strong>Crear Rubro:</strong> Ingrese el nombre del nuevo rubro en el y presione el botón "Crear".
     </li>
     <li><strong>Editar Rubro:</strong>
       <ol type="a">
-        <li>Busque el rubro que desea editar en el primer campo ("Buscar Rubro").</li>
-        <li>Seleccione el rubro encontrado.</li>
+        <li>Busque el rubro que desea editar en la lista desplegable ("Buscar Rubro").</li>
+        <li>Seleccione el rubro deseado.</li>
         <li>Modifique los datos necesarios y presione el botón "Modificar".</li>
       </ol>
     </li>
     <li><strong>Eliminar Rubro:</strong>
       <ol type="a">
-        <li>Busque el rubro que desea eliminar en el primer campo ("Buscar Rubro").</li>
-        <li>Seleccione el rubro encontrado.</li>
+        <li>Busque el rubro que desea eliminar en la lista desplegable ("Buscar Rubro").</li>
+        <li>Seleccione el rubro deseado.</li>
         <li>Presione el botón "Eliminar".</li>
       </ol>
     </li>

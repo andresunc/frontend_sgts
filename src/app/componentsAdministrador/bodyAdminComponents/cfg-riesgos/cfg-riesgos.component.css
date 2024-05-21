@@ -2,14 +2,26 @@
 
 form{
     
-    justify-content:center;
-    align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content:center;
+  align-items: center;
   }
   
   mat-form-field{
-    width: 100%;
+    width: 90%;
   }
 
+  .backspace {
+    cursor: pointer;
+    color: var(--secondary);
+  }
+    
+  .infoSystem{
+  flex: 0.5;
+  margin-left: 1%;
+  margin-bottom: 4%;
+  }
 
   .btn-next{
       display: flex;

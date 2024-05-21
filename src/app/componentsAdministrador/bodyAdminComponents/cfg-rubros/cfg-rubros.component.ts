@@ -24,7 +24,8 @@ export class CfgRubrosComponent implements OnInit {
   initialRubros: Rubro[] = [];
   filteredOptions?: Observable<Rubro[]>;
   displayFn!: ((value: any) => string) | null;
-  modificarEliminarHabilitado: boolean = false;
+  disableBtnEditDelete: boolean = true;
+  disableBtnCrear: boolean = true;
 
   firstFormGroup = new FormGroup({
     BuscarRubro: new FormControl<string>(''),
@@ -49,14 +50,21 @@ export class CfgRubrosComponent implements OnInit {
     // Observar los cambios en el input para detectar si se ha borrado el rubro seleccionado
     this.firstFormGroup.controls.Rubro.valueChanges.subscribe({
       next: (newValue: string | null) => {
-        if (!newValue && this.rubroSeleccionado) {
-          // Restablecer la variable del rubro seleccionado y deshabilitar la modificación
-          this.rubroSeleccionado = undefined;
-          this.modificarEliminarHabilitado = false;
-
+        if (!newValue) {
+          this.disableBtnCrear = true;
+          if (this.rubroSeleccionado) {
+            this.rubroSeleccionado = undefined;
+            this.disableBtnEditDelete = true;
+          }
+        } else {
+          this.disableBtnCrear = true; // Deshabilitado por defecto
+          if (!this.rubroSeleccionado) {
+            this.disableBtnCrear = false; // Habilitar solo si no hay rubro seleccionado
+          }
         }
       }
     });
+
 
 
     this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -81,7 +89,8 @@ export class CfgRubrosComponent implements OnInit {
     this.rubroSeleccionado = this.rubros.find(ru => ru.rubro === value);
 
     if (this.rubroSeleccionado) {
-      this.modificarEliminarHabilitado = true;
+      this.disableBtnEditDelete = false;
+      this.disableBtnCrear = true;
       // Asignar el objeto Rubro directamente
       this.firstFormGroup.patchValue({
         Rubro: this.rubroSeleccionado.rubro
@@ -118,7 +127,7 @@ export class CfgRubrosComponent implements OnInit {
     if (!rubroName && this.rubroSeleccionado) {
       // Restablecer la variable del rubro seleccionado y deshabilitar la modificación
       this.rubroSeleccionado = undefined;
-      this.modificarEliminarHabilitado = false;
+      this.disableBtnEditDelete = false;
       // Limpiar el input
       this.firstFormGroup.controls.Rubro.setValue('');
       return;
@@ -179,7 +188,8 @@ export class CfgRubrosComponent implements OnInit {
     }
 
     this.dataShared.mostrarSpinner();
-    this.modificarEliminarHabilitado = true;
+    this.disableBtnEditDelete = true;
+    this.disableBtnCrear = false;
 
     this.rubroService.updateRubro(idRubroToModified!, rubroToModified)
       .subscribe(
@@ -227,7 +237,7 @@ export class CfgRubrosComponent implements OnInit {
     const idRubroEliminar = this.rubroSeleccionado.idRubro;
 
     this.dataShared.mostrarSpinner();
-    this.modificarEliminarHabilitado = true;
+    this.disableBtnEditDelete = true;
 
     this.rubroService.deleteLogico(idRubroEliminar!)
       .subscribe(
@@ -252,6 +262,12 @@ export class CfgRubrosComponent implements OnInit {
       });
   }
 
+  backspace() {
+    console.log('backspace works');
+    this.disableBtnEditDelete = true;
+    this.firstFormGroup.reset();
+  }
+
   equalName: boolean = false;
   checkExistName(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
@@ -261,15 +277,19 @@ export class CfgRubrosComponent implements OnInit {
 
     if (this.equalName) {
       this.firstFormGroup.get('Rubro')?.setErrors({ duplicate: true });
+      this.disableBtnCrear = true;
     } else {
       const errors = this.firstFormGroup.get('Rubro')?.errors;
       if (errors) {
         delete errors['duplicate'];
         if (Object.keys(errors).length === 0) {
           this.firstFormGroup.get('Rubro')?.setErrors(null);
+          this.disableBtnCrear = false;
         } else {
           this.firstFormGroup.get('Rubro')?.setErrors(errors);
         }
+      } else {
+        this.disableBtnCrear = false;
       }
     }
   }
