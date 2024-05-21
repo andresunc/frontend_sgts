@@ -66,6 +66,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatInputModule,
     MatNativeDateModule,
     MatGridListModule,
+    MatCardModule,
   ],
   exports: [
     CommonModule,
@@ -96,6 +97,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatInputModule,
     MatNativeDateModule,
     MatGridListModule,
+    MatCardModule,
   ]
 })
 export class MaterialModule { }

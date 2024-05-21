@@ -33,19 +33,17 @@ span {
   font-weight: bold;
   color: #464545;
 }
-.coment {
+
+#tipoServicio .coment {
+  font-size: 0.8rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  align-content: center;
-  justify-content: center;
+  transition: font-size 0.1s ease;
 }
 
-.coment:hover {
-  color: #673ab7;
-  text-decoration: underline;
-  cursor: pointer;
+#tipoServicio:hover .coment {
+  font-size: 0.9rem;
 }
+
 /* fin de la zona de estilos para las distintas fuentes   */
 
 .contentTable {
@@ -186,5 +184,10 @@ las tres etiquetas que siguen de la tabla de servicios*/
 .filaDeshabilitada {
   opacity: 0.5; /* Ejemplo de estilo para deshabilitar la fila */
   pointer-events: none; /* Impide eventos de ratón y teclado en la fila */
+}
+
+.primary-bold {
+  color: #673ab7;
+  /*font-weight: bold;*/
 }
 

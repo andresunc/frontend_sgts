@@ -35,7 +35,7 @@ export const MY_FORMATS: MatDateFormats = {
   display: {
     dateInput: 'DD/MM/YYYY',
     monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'DD/MM/YYYY',
+    dateA11yLabel: 'DD/MMM/YYYY',
     monthYearA11yLabel: 'MMMM YYYY',
   },
 }
