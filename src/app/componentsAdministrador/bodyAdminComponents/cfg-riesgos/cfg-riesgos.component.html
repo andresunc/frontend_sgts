@@ -1,27 +1,59 @@
 <ng-container>
   <form [formGroup]="firstFormGroup">
+    
     <mat-form-field>
-      <input type="text" placeholder="Buscar Riesgo" aria-label="Buscar Riesgo" matInput [formControl]="myControl"
-        [matAutocomplete]="auto" (focus)="onInputFocus()">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-        (optionSelected)="seleccionarRiesgo($event.option.value)">
-        <mat-option *ngFor="let riesgo of filteredOptions | async" [value]="riesgo.riesgo">
-          {{ riesgo?.riesgo }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label for="Riesgo">Riesgo</mat-label>
-      <input matInput placeholder="Nuevo Riesgo" formControlName="Riesgo" maxlength="45" [required]="true"
-        (input)="checkExistName($event)">
-      <mat-error *ngIf="firstFormGroup.get('Riesgo')?.hasError('duplicate')">
-        Ese nombre ya existe.
+      <mat-label for="Riesgo">Nombre del Riesgo</mat-label>
+      <input type="text" placeholder="Buscar o crear un Riesgo" name="Riesgo"
+      formControlName="Riesgo" maxlength="50" matInput [matAutocomplete]="auto" 
+      (focus)="onInputFocus()" required (input)="checkExistName($event)">
+      <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
+          backspace
+      </mat-icon>
+      
+      <mat-error *ngIf="firstFormGroup.get('Riesgo')!.hasError('maxlength')">
+          Ingresa menos de 50 caracteres.
       </mat-error>
+      <mat-error *ngIf="firstFormGroup.get('Riesgo')?.hasError('duplicate')">
+          Ese nombre ya existe.
+      </mat-error>
+
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+          (optionSelected)="seleccionarRiesgo($event.option.value)">
+          <mat-option *ngFor="let riesgo of filteredOptions | async" [value]="riesgo.riesgo">
+              {{ riesgo?.riesgo }}
+          </mat-option>
+      </mat-autocomplete>
+
     </mat-form-field>
-    <div class="btn-abm" (click)="formularioTieneErrores()">
-      <button mat-button (click)="crearRiesgo()" [disabled]="modificarEliminarHabilitado || this.equalName">Crear</button>
-      <button mat-button (click)="modificarRiesgo()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
-      <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+    <mat-icon matSuffix color="accent" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+      live_help
+    </mat-icon>
+    <div class="btn-abm">
+      <button mat-button (click)="crearRiesgo()" [disabled]="disableBtnCrear || equalName">Crear</button>
+      <button mat-button (click)="modificarRiesgo()" [disabled]="disableBtnEditDelete">Modificar</button>
+      <button mat-button (click)="checkDelete()" [disabled]="disableBtnEditDelete">Eliminar</button>
+      
     </div>
   </form>
 </ng-container>
+
+<ng-template #riesgoHelp>
+  <ol>
+    <li><strong>Crear Riesgo:</strong> Ingrese el nombre del nuevo riesgo en el campo y presione el botón "Crear".
+    </li>
+    <li><strong>Editar Riesgo:</strong>
+      <ol type="a">
+        <li>Busque el riesgo que desea editar en la lista desplegable ("Buscar Riesgo").</li>
+        <li>Seleccione el riesgo deseado.</li>
+        <li>Modifique los datos necesarios y presione el botón "Modificar".</li>
+      </ol>
+    </li>
+    <li><strong>Eliminar Riesgo:</strong>
+      <ol type="a">
+        <li>Busque el rubro que desea eliminar en la lista desplegable ("Buscar Riesgo").</li>
+        <li>Seleccione el riesgo deseado.</li>
+        <li>Presione el botón "Eliminar".</li>
+      </ol>
+    </li>
+  </ol>
+</ng-template>

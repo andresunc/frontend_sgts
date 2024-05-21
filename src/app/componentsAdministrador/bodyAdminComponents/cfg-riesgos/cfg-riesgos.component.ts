@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { RiesgoService } from 'src/app/services/DomainServices/riesgo.service';
 import { Riesgo } from 'src/app/models/DomainModels/Riesgo';
@@ -24,7 +24,10 @@ export class CfgRiesgosComponent implements OnInit {
   initialRiesgos: Riesgo[] = [];
   filteredOptions?: Observable<Riesgo[]>;
   displayFn!: ((value: any) => string) | null;
-  modificarEliminarHabilitado: boolean = false;
+  disableBtnCrear: boolean = true;
+  disableBtnEditDelete: boolean = true;
+
+  
 
   firstFormGroup = new FormGroup({
     BuscarRiesgo: new FormControl<string>(''),
@@ -49,11 +52,17 @@ export class CfgRiesgosComponent implements OnInit {
     // Observar los cambios en el input para detectar si se ha borrado el riesgo seleccionado
     this.firstFormGroup.controls.Riesgo.valueChanges.subscribe({
       next: (newValue: string | null) => {
-        if (!newValue && this.riesgoSeleccionado) {
-          // Restablecer la variable del riesgo seleccionado y deshabilitar la modificación
-          this.riesgoSeleccionado = undefined;
-          this.modificarEliminarHabilitado = false;
-
+        if (!newValue) {
+          this.disableBtnCrear = true;
+          if (this.riesgoSeleccionado) {
+            this.riesgoSeleccionado = undefined;
+            this.disableBtnEditDelete = true;
+          }
+        } else {
+          this.disableBtnCrear = true; // Deshabilitado por defecto
+          if (!this.riesgoSeleccionado) {
+            this.disableBtnCrear = false; // Habilitar solo si no hay riesgo seleccionado
+          }
         }
       }
     });
@@ -81,7 +90,8 @@ export class CfgRiesgosComponent implements OnInit {
     this.riesgoSeleccionado = this.riesgos.find(ri => ri.riesgo === value);
 
     if (this.riesgoSeleccionado) {
-      this.modificarEliminarHabilitado = true;
+      this.disableBtnEditDelete = false;
+      this.disableBtnCrear = true;
       // Asignar el objeto Riesgo directamente
       this.firstFormGroup.patchValue({
         Riesgo: this.riesgoSeleccionado.riesgo
@@ -95,6 +105,12 @@ export class CfgRiesgosComponent implements OnInit {
     this.myControl.setValue(''); // Limpiar el valor del control para que se dispare el evento de filtro.
     this.matAutocomplete.options.forEach(option => option.deselect());
 
+  }
+
+  @ViewChild('riesgoHelp') riesgoHelpRef!: TemplateRef<HTMLElement>;
+  goInstructor() {
+    const title = 'Como administrar un riesgo';
+    this.dataShared.openInstructor(this.riesgoHelpRef, title);
   }
 
   private _filter(value: string): Riesgo[] {
@@ -112,7 +128,7 @@ export class CfgRiesgosComponent implements OnInit {
     if (!riesgoName && this.riesgoSeleccionado) {
       // Restablecer la variable del riesgo seleccionado y deshabilitar la modificación
       this.riesgoSeleccionado = undefined;
-      this.modificarEliminarHabilitado = false;
+      this.disableBtnEditDelete = false;
       // Limpiar el input
       this.firstFormGroup.controls.Riesgo.setValue('');
       return;
@@ -174,7 +190,8 @@ export class CfgRiesgosComponent implements OnInit {
     }
 
     this.dataShared.mostrarSpinner();
-    this.modificarEliminarHabilitado = true;
+    this.disableBtnEditDelete = true;
+    this.disableBtnCrear = false;
 
     this.riesgoService.updateRiesgo(idRiesgoModificar!, riesgoModificado)
       .subscribe(
@@ -222,7 +239,7 @@ export class CfgRiesgosComponent implements OnInit {
     const idRiesgoEliminar = this.riesgoSeleccionado.idRiesgo;
 
     this.dataShared.mostrarSpinner();
-    this.modificarEliminarHabilitado = true;
+    this.disableBtnEditDelete = true;
 
     this.riesgoService.delete(idRiesgoEliminar!)
       .subscribe(
@@ -254,24 +271,34 @@ export class CfgRiesgosComponent implements OnInit {
     return hayErrores
   }
 
+  backspace() {
+    console.log('backspace works');
+    this.disableBtnEditDelete = true;
+    this.firstFormGroup.reset();
+  }
+
   equalName: boolean = false;
   checkExistName(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const inputData = inputElement.value;
-    this.equalName = this.riesgos.some(ri => ri.riesgo?.toLowerCase() === inputData.toLowerCase());
+    this.equalName = this.riesgos.some(ru => ru.riesgo?.toLowerCase() === inputData.toLowerCase());
     console.log(this.equalName);
 
     if (this.equalName) {
       this.firstFormGroup.get('Riesgo')?.setErrors({ duplicate: true });
+      this.disableBtnCrear = true;
     } else {
       const errors = this.firstFormGroup.get('Riesgo')?.errors;
       if (errors) {
         delete errors['duplicate'];
         if (Object.keys(errors).length === 0) {
           this.firstFormGroup.get('Riesgo')?.setErrors(null);
+          this.disableBtnCrear = false;
         } else {
           this.firstFormGroup.get('Riesgo')?.setErrors(errors);
         }
+      } else {
+        this.disableBtnCrear = false;
       }
     }
   }
