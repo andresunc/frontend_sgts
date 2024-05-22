@@ -86,7 +86,7 @@ export class PrintServicioComponent implements OnInit {
         (data: Servicios) => {
           this.servicioRecibido = data;
           this.dataShared.ocultarSpinner();
-        }, 
+        },
         () => {
           this.dataShared.ocultarSpinner();
         }
@@ -97,6 +97,17 @@ export class PrintServicioComponent implements OnInit {
     this.recurrencia = this.servicioRecibido.recurrencia;
     this.getContactoEmpresa();
     this.getEstados();
+  }
+
+  hayNotificados(): boolean {
+    const notNotify = this.servicioRecibido.itemChecklistDto.some(item => item.notificado);
+    const isPresentado = this.servicioRecibido.estado.toLowerCase() === 'presentado';
+    console.log('Hay notificados ', notNotify, isPresentado, (notNotify && isPresentado))
+    return notNotify && isPresentado;
+  }
+
+  alertaNotificado() {
+    this._snackBar.warnSnackBar('Hay items marcados como nofitificados')
   }
 
   enableMenuEdit(): boolean {
@@ -110,18 +121,6 @@ export class PrintServicioComponent implements OnInit {
   isEditable: boolean = false;
   editarServicio() {
     this.isEditable = this.authService.isAdmin();
-
-    /**
-     *
-    this.dataShared.setSharedObject(this.servicioRecibido);
-    const dialogRef = this.dialog.open(EditorComponent, {
-      data: { servicioRecibido: this.servicioRecibido } //
-    });
-    dialogRef.afterClosed().subscribe(() => {
-      this.getServicioById(this.servicioRecibido.idServicio);
-    });
-     */
-
   }
 
   checkDelete(): void {
@@ -252,7 +251,7 @@ export class PrintServicioComponent implements OnInit {
      */
     const handleComplete = () => {
       requestsCount--;
-      if (requestsCount < 0)  this.dataShared.ocultarSpinner();
+      if (requestsCount < 0) this.dataShared.ocultarSpinner();
       console.log('valor del handleComplete: ', requestsCount);
       if (requestsCount === 0) {
         this.dataShared.ocultarSpinner();
@@ -266,6 +265,7 @@ export class PrintServicioComponent implements OnInit {
 
     if (this.estadoMatch && this.estadoMatch?.idEstado != this.servicioRecibido.idEstado) {
       requestsCount++;
+
       // Armo el objeto historico de estado
       let historicoEstado = new HistoricoEstado();
       historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;

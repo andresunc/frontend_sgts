@@ -25,6 +25,7 @@ export class ChecklistComponent implements OnInit {
   editable: boolean = true;
   servicio: Servicios;
   isAdmin: boolean;
+  updatedNotify: boolean;
 
   constructor(
     private dataShared: DataSharedService,
@@ -38,6 +39,7 @@ export class ChecklistComponent implements OnInit {
     this.servicio = this.dataShared.getSharedObject();
     this.dataSourceItems = this.servicio.itemChecklistDto;
     this.avance = this.svManager.calcularAvance(this.dataSourceItems);
+    this.updatedNotify = this.servicio.estado.toLowerCase() === 'presentado'
   }
 
   ngOnInit(): void {

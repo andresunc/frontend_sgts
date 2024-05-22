@@ -53,6 +53,11 @@ mat-menu, mat-icon {
   font-size: 1.1rem;
 }
 
+.advertIcon {
+  cursor: pointer;
+  color: var(--warn);
+}
+
 #matMenu,
 span {
     font-size: 1rem;
