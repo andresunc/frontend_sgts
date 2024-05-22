@@ -144,7 +144,7 @@ export class PrintServicioComponent implements OnInit {
       .subscribe(
         () => {
           console.log('ServicioEmpresa Eliminado con éxito:'),
-            this._snackBar.errorSnackBar(`Servicio eliminado ID: ${this.servicioRecibido.idServicio}`),
+            this._snackBar.okSnackBar(`Servicio eliminado ID: ${this.servicioRecibido.idServicio}`),
             this.router.navigate(['/home']);
         },
         (error) => console.error('Error al eliminar el ServicioEmpresa:', error)

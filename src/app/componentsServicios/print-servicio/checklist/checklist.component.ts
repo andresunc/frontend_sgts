@@ -4,8 +4,10 @@ import { AddItemComponent } from 'src/app/componentsServicios/print-servicio/add
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
+import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
+import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
@@ -18,6 +20,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 export class ChecklistComponent implements OnInit {
 
   dataSourceItems: ItemChecklistDto[];
+  recursosGG: RecursoDto[] = [];
   avance: number = 0;
   editable: boolean = true;
   servicio: Servicios;
@@ -29,6 +32,7 @@ export class ChecklistComponent implements OnInit {
     private servicioService: ServicioService,
     private itemChecklistService: ItemChecklistService,
     private authService: AuthService,
+    private recursoDtoService: RecursoDtoService,
     public dialog: MatDialog) {
     this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
@@ -40,7 +44,23 @@ export class ChecklistComponent implements OnInit {
     // Escucha los eventos de actualización
     this.dataShared.updateChecklist$.subscribe(() => {
       this.refreshItemsCheckList();
+      this.getRecursos();
     });
+  }
+
+  getRecursos() {
+    this.recursoDtoService.getRecursos()
+    .subscribe(
+      (data) => {
+        this.recursosGG = data;
+        console.log(this.recursosGG)
+      }
+    )
+  }
+
+  getRol(idRecurso: number | null): string {
+    const recursoGG = this.recursosGG.find(re => re.idRecurso === idRecurso)
+    return recursoGG ? recursoGG!.rol! :  '';
   }
 
   refreshItemsCheckList(): void {
