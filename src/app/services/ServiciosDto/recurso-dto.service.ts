@@ -10,7 +10,7 @@ import { AuthService } from '../auth.service';
 })
 export class RecursoDtoService {
 
-  urlBackend = new UrlBackend().getUrlBackend();
+  private urlBackend = new UrlBackend().getUrlBackend();
   private url = this.urlBackend + '/recursoDto/getRecursos';
 
   constructor(private http: HttpClient, private authService: AuthService) { }

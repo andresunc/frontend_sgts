@@ -32,7 +32,7 @@
                                     (click)="$event.stopPropagation()" [disabled]="!itemManagement(item)">
                                 </mat-checkbox>
                                 <span>
-                                    {{item.nombreItem}} &nbsp;
+                                    {{item.nombreItem}} <span style="color: var(--primary);">{{' ('+ getRol(item.idRecurso!)+')'}}</span> &nbsp;
                                     <span style="font-style: oblique; color: #f44336;">
                                         {{item.notificado ? '"Se considera notificado"' : ''}}
                                     </span>
