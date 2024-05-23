@@ -457,7 +457,7 @@ export class CfgClientesComponent implements OnInit {
   checkClienteName(event: Event): void {
 
     const inputElement = event.target as HTMLInputElement;
-    const inputData = inputElement.value;
+    const inputData = inputElement.value.trim();
     this.equalName = this.empresas.some(em => em.cliente?.toLowerCase() === inputData.toLowerCase());
 
     console.log(this.equalName)

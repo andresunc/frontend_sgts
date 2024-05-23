@@ -58,14 +58,11 @@ export class CfgRiesgosComponent implements OnInit {
           // habilitar boton crear solo para nuevos valores sin seleccion previa de riesgo
           this.disableBtnCrear = false;
         }
-        //console.log("valor disableBtnCrear", this.disableBtnCrear)
         // cuando no tengamos valores de riesgo, eliminar posible seleccion
         this.riesgoSeleccionado = newValue ? this.riesgoSeleccionado : undefined;
-        console.log("valor riesgoSeleccionado", this.riesgoSeleccionado)
         // si hay riesgo seleccionado, habilito su modificacion
         this.disableBtnEditDelete = this.riesgoSeleccionado ? false : true;
-        //console.log("valor disableBtnEditDelete", this.disableBtnEditDelete)
-      }
+       }
     });
 
 
@@ -282,7 +279,7 @@ export class CfgRiesgosComponent implements OnInit {
   checkExistName(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const inputData = inputElement.value.trim();
-    this.equalName = this.riesgos.some(ru => ru.riesgo?.toLowerCase() === inputData.toLowerCase());
+    this.equalName = this.riesgos.some(ri => ri.riesgo?.toLowerCase() === inputData.toLowerCase());
     console.log(this.equalName);
 
     if (this.equalName) {

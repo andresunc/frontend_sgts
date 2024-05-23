@@ -92,7 +92,7 @@
     <div class="btn" (click)="formularioTieneErrores()">
         <button mat-button (click)="crearItem()"
             [disabled]="!firstFormGroup.valid || !disableBtnEditDelete">Crear</button>
-        <button mat-button (click)="modificarItem()"
+        <button mat-button matTooltip="Confirmar Cambio" (click)="modificarItem()"
             [disabled]="disableBtnEditDelete || !firstFormGroup.valid">Modificar</button>
         <button mat-button (click)="checkDelete()" [disabled]="disableBtnEditDelete">Eliminar</button>
     </div>

@@ -344,7 +344,7 @@ export class CfgItemsComponent implements OnInit {
   checkRequisitoName(event: Event): void {
     
     const inputElement = event.target as HTMLInputElement;
-    const inputData = inputElement.value;
+    const inputData = inputElement.value.trim();
     this.equalName = this.requisitos.some(re => re.descripcion?.toLowerCase() === inputData.toLowerCase());
 
     console.log(this.equalName)

@@ -30,7 +30,7 @@
     </mat-icon>
     <div class="btn-abm">
       <button mat-button (click)="crearRiesgo()" [disabled]="disableBtnCrear || equalName">Crear</button>
-      <button mat-button (click)="modificarRiesgo()" [disabled]="disableBtnEditDelete">Modificar</button>
+      <button mat-button matTooltip="Confirmar Cambio" (click)="modificarRiesgo()" [disabled]="disableBtnEditDelete">Modificar</button>
       <button mat-button (click)="checkDelete()" [disabled]="disableBtnEditDelete">Eliminar</button>
       
     </div>

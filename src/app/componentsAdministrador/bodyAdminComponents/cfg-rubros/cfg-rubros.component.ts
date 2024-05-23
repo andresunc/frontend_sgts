@@ -47,22 +47,19 @@ export class CfgRubrosComponent implements OnInit {
 
     this.obtenerRubro();
 
-    // Observar los cambios en el input para detectar si se ha borrado el rubro seleccionado
+    // Observar los cambios en el input para detectar si se ha borrado el riesgo seleccionado
     this.firstFormGroup.controls.Rubro.valueChanges.subscribe({
       next: (newValue: string | null) => {
-        if (!newValue) {
-          this.disableBtnCrear = true;
-          if (this.rubroSeleccionado) {
-            this.rubroSeleccionado = undefined;
-            this.disableBtnEditDelete = true;
-          }
-        } else {
-          this.disableBtnCrear = true; // Deshabilitado por defecto
-          if (!this.rubroSeleccionado) {
-            this.disableBtnCrear = false; // Habilitar solo si no hay rubro seleccionado
-          }
+        this.disableBtnCrear = true;
+        if (newValue && !this.rubroSeleccionado){
+          // habilitar boton crear solo para nuevos valores sin seleccion previa de riesgo
+          this.disableBtnCrear = false;
         }
-      }
+        // cuando no tengamos valores de riesgo, eliminar posible seleccion
+        this.rubroSeleccionado = newValue ? this.rubroSeleccionado : undefined;
+        // si hay riesgo seleccionado, habilito su modificacion
+        this.disableBtnEditDelete = this.rubroSeleccionado ? false : true;
+       }
     });
 
 
@@ -271,26 +268,17 @@ export class CfgRubrosComponent implements OnInit {
   equalName: boolean = false;
   checkExistName(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    const inputData = inputElement.value;
+    const inputData = inputElement.value.trim();
     this.equalName = this.rubros.some(ru => ru.rubro?.toLowerCase() === inputData.toLowerCase());
     console.log(this.equalName);
 
     if (this.equalName) {
-      this.firstFormGroup.get('Rubro')?.setErrors({ duplicate: true });
-      this.disableBtnCrear = true;
-    } else {
-      const errors = this.firstFormGroup.get('Rubro')?.errors;
-      if (errors) {
-        delete errors['duplicate'];
-        if (Object.keys(errors).length === 0) {
-          this.firstFormGroup.get('Rubro')?.setErrors(null);
-          this.disableBtnCrear = false;
-        } else {
-          this.firstFormGroup.get('Rubro')?.setErrors(errors);
-        }
-      } else {
-        this.disableBtnCrear = false;
-      }
+      // riesgo existente
+      this.firstFormGroup.get('Rubro')?.setErrors({ duplicated: true});
+      this.disableBtnEditDelete = true;
+    }
+    if (inputData.length >= 50){
+      this.firstFormGroup.get('Rubro')?.setErrors({ maxlength: true});
     }
   }
 
