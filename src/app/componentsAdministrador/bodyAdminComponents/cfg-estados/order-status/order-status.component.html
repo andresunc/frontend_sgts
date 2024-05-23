@@ -1,0 +1,39 @@
+<div class="flexAling" style="align-items: center; justify-content: center;">
+    <mat-label mat-dialog-title class="flexAling"><span>Ordenar estados existentes</span></mat-label>
+</div>
+<mat-dialog-content style="display: flex; flex-direction: column; align-items: center;">
+    <div style="display: flex; max-width: 90%; padding-top: 1.2rem; height: 100%;">
+        <div class="example-container">
+            <h2>Sin Iniciar</h2>
+            <div cdkDropList #sinIniciarList="cdkDropList" [cdkDropListData]="sinIniciar" class="example-list"
+                (cdkDropListDropped)="drop($event, 'sinIniciar')">
+                <div *ngFor="let item of sinIniciar; trackBy: trackByFn" class="example-box" cdkDrag>{{
+                    item.tipoEstado }}</div>
+            </div>
+        </div>
+
+        <div class="example-container">
+            <h2>En Curso</h2>
+            <div cdkDropList #enCursoList="cdkDropList" [cdkDropListData]="enCurso" class="example-list"
+                (cdkDropListDropped)="drop($event, 'enCurso')">
+                <div *ngFor="let item of enCurso; trackBy: trackByFn" class="example-box" cdkDrag>{{ item.tipoEstado
+                    }}</div>
+            </div>
+        </div>
+
+        <div class="example-container">
+            <h2>Finalizado</h2>
+            <div cdkDropList #finalizadoList="cdkDropList" [cdkDropListData]="finalizado" class="example-list"
+                (cdkDropListDropped)="drop($event, 'finalizado')">
+                <div *ngFor="let item of finalizado; trackBy: trackByFn" class="example-box" cdkDrag>{{
+                    item.tipoEstado }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón para guardar el orden -->
+    <button mat-raised-button mat-dialog-close color="primary" (click)="updateOrdenEstados()" [disabled]="stopOrden">Guardar</button>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+    <button mat-button mat-dialog-close>Cerrar menú</button>
+</mat-dialog-actions>
