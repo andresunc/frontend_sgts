@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { CustomSnackbarComponent } from 'src/app/componentsShared/popups/custom-snackbar/custom-snackbar.component';
 
 @Injectable({

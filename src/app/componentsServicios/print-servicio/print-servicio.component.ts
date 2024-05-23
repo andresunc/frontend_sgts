@@ -20,6 +20,7 @@ import { Servicio } from 'src/app/models/DomainModels/Servicio';
 import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
 import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
 import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
+import { MatOption } from '@angular/material/core';
 
 @Component({
   selector: 'app-print-servicio',
@@ -110,6 +111,37 @@ export class PrintServicioComponent implements OnInit {
     const isPresentado = this.servicioRecibido.estado.toLowerCase() === 'presentado';
     console.log('Hay notificados ', notNotify, isPresentado, (notNotify && isPresentado))
     return notNotify && isPresentado;
+  }
+
+  blockLowOrder(estado: Estado): boolean {
+    return estado.orden! < this.estadoMatch?.orden!;
+  }
+
+  blockOrder: boolean = true;
+  warnEnable(option: MatOption): void {
+    if (option.disabled) {
+      this.alertDisblockOrder();
+    }
+  }
+
+  alertDisblockOrder() {
+
+    const dialogRef = this.dialog.open(DeletePopupComponent, {
+      data: { 
+        title: 'Selección de estados pasados',
+        message: `Al volver a un estado anterior podría impactar en los informes y análisis.
+        ¿Desea continuar de todos modos?`,
+        action: 'Revertir',
+       }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.blockOrder = false;
+      } else {
+        console.log('Se canceló la acción');
+      }
+    });
   }
 
   alertaNotificado() {
@@ -287,6 +319,7 @@ export class PrintServicioComponent implements OnInit {
         .subscribe(
           (response) => {
             console.log('Historico Estado actualizado OK:', response);
+            this.blockOrder = true;
           },
           (error) => console.error('Error al agregar HistoricoEstado:', error),
           handleComplete, // Llamar a handleComplete después de completar la solicitud

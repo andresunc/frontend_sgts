@@ -9,10 +9,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class DeletePopupComponent {
 
   message: string;
+  title: string;
+  action: string;
 
   constructor(public dialogRef: MatDialogRef<DeletePopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { message: string }) {
+    @Inject(MAT_DIALOG_DATA) public data: { message: string, title?: string, action?: string }) {
     this.message = data.message;
+    this.title = data.title || 'Confirmación de eliminación';
+    this.action = data.action || 'Sí, Eliminar';
   }
 
   checkDelete(result: boolean): void {
