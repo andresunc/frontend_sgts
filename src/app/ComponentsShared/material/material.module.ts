@@ -28,8 +28,9 @@ import {MatRadioModule} from '@angular/material/radio';
 
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
-import { MatDateFormats, MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule } from '@angular/material/core';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 /**
@@ -67,6 +68,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatNativeDateModule,
     MatGridListModule,
     MatCardModule,
+    DragDropModule,
   ],
   exports: [
     CommonModule,
@@ -98,6 +100,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatNativeDateModule,
     MatGridListModule,
     MatCardModule,
+    DragDropModule,
   ]
 })
 export class MaterialModule { }

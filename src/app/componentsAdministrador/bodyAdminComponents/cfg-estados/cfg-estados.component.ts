@@ -11,6 +11,7 @@ import { CategoriaService } from 'src/app/services/DomainServices/categoria.serv
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { OrderStatusComponent } from './order-status/order-status.component';
 
 @Component({
   selector: 'app-cfg-estados',
@@ -247,6 +248,16 @@ export class CfgEstadosComponent implements OnInit {
         this.estadoDelete();
       } else {
         console.log('Se canceló la eliminación');
+      }
+    });
+  }
+
+  openOrdenEstados() {
+    const dialogRef = this.dialog.open(OrderStatusComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        console.log('Se canceló el pedido de ordenar');
       }
     });
   }

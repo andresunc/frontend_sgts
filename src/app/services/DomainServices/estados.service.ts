@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap, catchError, throwError } from 'rxjs';
 import { Estado } from 'src/app/models/DomainModels/Estado';
@@ -10,11 +10,12 @@ import { AuthService } from '../auth.service';
 })
 export class EstadosService {
 
-  urlBackend = new UrlBackend().getUrlBackend();
-  getStatusNotDeletedUrl = this.urlBackend + '/estado/getAllNotDeleted';
-  createEstadoUrl = this.urlBackend + '/estado/create';
-  upDateEstadoUrl = this.urlBackend + '/estado/update/';
-  deleteEstadoUrl = this.urlBackend + '/estado/delete/';
+  private urlBackend = new UrlBackend().getUrlBackend();
+  private getStatusNotDeletedUrl = this.urlBackend + '/estado/getAllNotDeleted';
+  private createEstadoUrl = this.urlBackend + '/estado/create';
+  private upDateEstadoUrl = this.urlBackend + '/estado/update/';
+  private upDateEstadoOrdenUrl = this.urlBackend + '/estado/actualizarOrdenEstados';
+  private deleteEstadoUrl = this.urlBackend + '/estado/delete/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -55,6 +56,18 @@ export class EstadosService {
         catchError((error) => {
           
           console.error('Error al actualizar el Estado', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  // Método para actualizar el orden de los estados
+  public updateEstadoOrden(estadosOrdenados: Estado[]): Observable<Estado[]> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.put<Estado[]>(this.upDateEstadoOrdenUrl, estadosOrdenados, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('El orden de los estados ha sido actualizado', error);
           return throwError(error);
         })
       );

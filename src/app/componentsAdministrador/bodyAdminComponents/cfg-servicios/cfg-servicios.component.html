@@ -1,2 +1,30 @@
-<!-- Contenedor de la sección ver servicios -->
-<p>ffff</p>
+<div style="display: flex; flex-direction: column; align-items: center;">
+    <div style="display: flex; max-width: 80%;">
+        <div class="example-container">
+            <h2>Sin Iniciar</h2>
+            <div cdkDropList #sinIniciarList="cdkDropList" [cdkDropListData]="sinIniciar" class="example-list"
+                (cdkDropListDropped)="drop($event, 'sinIniciar')">
+                <div *ngFor="let item of sinIniciar; trackBy: trackByFn" class="example-box" cdkDrag>{{ item.tipoEstado }}</div>
+            </div>
+        </div>
+
+        <div class="example-container">
+            <h2>En Curso</h2>
+            <div cdkDropList #enCursoList="cdkDropList" [cdkDropListData]="enCurso" class="example-list"
+                (cdkDropListDropped)="drop($event, 'enCurso')">
+                <div *ngFor="let item of enCurso; trackBy: trackByFn" class="example-box" cdkDrag>{{ item.tipoEstado }}</div>
+            </div>
+        </div>
+
+        <div class="example-container">
+            <h2>Finalizado</h2>
+            <div cdkDropList #finalizadoList="cdkDropList" [cdkDropListData]="finalizado" class="example-list"
+                (cdkDropListDropped)="drop($event, 'finalizado')">
+                <div *ngFor="let item of finalizado; trackBy: trackByFn" class="example-box" cdkDrag>{{ item.tipoEstado }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón para guardar el orden -->
+    <button mat-raised-button color="primary" (click)="updateOrdenEstados()" [disabled]="stopOrden">Ordenar</button>
+</div>

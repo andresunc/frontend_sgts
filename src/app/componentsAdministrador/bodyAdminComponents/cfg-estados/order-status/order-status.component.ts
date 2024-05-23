@@ -1,5 +1,5 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
@@ -8,11 +8,11 @@ import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
 @Component({
-  selector: 'app-cfg-servicioss',
-  templateUrl: './cfg-servicios.component.html',
-  styleUrls: ['./cfg-servicios.component.css']
+  selector: 'app-order-status',
+  templateUrl: './order-status.component.html',
+  styleUrls: ['./order-status.component.css']
 })
-export class CfgServiciosComponent implements OnInit {
+export class OrderStatusComponent {
 
   estados: Estado[] = [];
   sinIniciar: Estado[] = [];
@@ -177,5 +177,5 @@ export class CfgServiciosComponent implements OnInit {
       }
     )
   }
-
+  
 }

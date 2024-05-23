@@ -36,6 +36,7 @@
           [disabled]="modificarEliminarHabilitado || !firstFormGroup.valid">Crear</button>
         <button mat-button (click)="modificarEstado()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
         <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+        <button mat-button (click)="openOrdenEstados()" matTooltip="Ordenar estados" color="primary" style="font-weight: bold;">Ordenar</button>
       </div>
     </div>
   </form>
