@@ -69,24 +69,28 @@ export class PrintServicioComponent implements OnInit {
   ngOnInit() {
     this.setParams();
     this.getServicioById(this.servicioRecibido.idServicio);
+    console.log('PRUEBA de RECURSIVIDAD');
   }
 
   getSvManager() {
+    console.log('PRUEBA de RECURSIVIDAD 2');
     return this.svManager;
   }
 
   getServicioLocalStorage(): Servicios {
+    console.log('PRUEBA de RECURSIVIDAD 3');
     return JSON.parse(localStorage.getItem('servicioRecibido') || '{}');
   }
 
   getServicioById(idServicio: number) {
+    console.log('PRUEBA de RECURSIVIDAD 4');
     this.dataShared.mostrarSpinner();
     this.servicioService.getServicioById(idServicio)
       .subscribe(
         (data: Servicios) => {
           this.servicioRecibido = data;
           this.dataShared.ocultarSpinner();
-        }, 
+        },
         () => {
           this.dataShared.ocultarSpinner();
         }
@@ -94,37 +98,43 @@ export class PrintServicioComponent implements OnInit {
   }
 
   setParams() {
+    console.log('PRUEBA de RECURSIVIDAD 5');
     this.recurrencia = this.servicioRecibido.recurrencia;
     this.getContactoEmpresa();
     this.getEstados();
   }
 
+  hayNotificados(): boolean {
+    console.log('PRUEBA de RECURSIVIDAD 6');
+    const notNotify = this.servicioRecibido.itemChecklistDto.some(item => item.notificado);
+    const isPresentado = this.servicioRecibido.estado.toLowerCase() === 'presentado';
+    console.log('Hay notificados ', notNotify, isPresentado, (notNotify && isPresentado))
+    return notNotify && isPresentado;
+  }
+
+  alertaNotificado() {
+    console.log('PRUEBA de RECURSIVIDAD 7');
+    this._snackBar.warnSnackBar('Hay ítems marcados como nofitificados')
+  }
+
   enableMenuEdit(): boolean {
+    console.log('PRUEBA de RECURSIVIDAD 8');
     return this.authService.isAdmin()
   }
 
   getAvance(): number {
+    console.log('PRUEBA de RECURSIVIDAD 9');
     return this.getSvManager().calcularAvance(this.servicioRecibido.itemChecklistDto)
   }
 
   isEditable: boolean = false;
   editarServicio() {
+    console.log('PRUEBA de RECURSIVIDAD 10');
     this.isEditable = this.authService.isAdmin();
-
-    /**
-     *
-    this.dataShared.setSharedObject(this.servicioRecibido);
-    const dialogRef = this.dialog.open(EditorComponent, {
-      data: { servicioRecibido: this.servicioRecibido } //
-    });
-    dialogRef.afterClosed().subscribe(() => {
-      this.getServicioById(this.servicioRecibido.idServicio);
-    });
-     */
-
   }
 
   checkDelete(): void {
+    console.log('PRUEBA de RECURSIVIDAD 11');
     const dialogRef = this.dialog.open(DeletePopupComponent, {
       data: { message: `¿Borrar el servicio ID: ${this.servicioRecibido.idServicio}?` }
     });
@@ -155,7 +165,7 @@ export class PrintServicioComponent implements OnInit {
     this.printService.getContactoEmpresa(this.servicioRecibido.idCliente).subscribe(
       (data) => {
         this.contactoEmpresa = data;
-        console.log('Contactos de la empresa: ', data);
+        console.log('Contactos de la empresa: 12', data);
       }
     );
   }
@@ -252,7 +262,7 @@ export class PrintServicioComponent implements OnInit {
      */
     const handleComplete = () => {
       requestsCount--;
-      if (requestsCount < 0)  this.dataShared.ocultarSpinner();
+      if (requestsCount < 0) this.dataShared.ocultarSpinner();
       console.log('valor del handleComplete: ', requestsCount);
       if (requestsCount === 0) {
         this.dataShared.ocultarSpinner();
@@ -266,6 +276,7 @@ export class PrintServicioComponent implements OnInit {
 
     if (this.estadoMatch && this.estadoMatch?.idEstado != this.servicioRecibido.idEstado) {
       requestsCount++;
+
       // Armo el objeto historico de estado
       let historicoEstado = new HistoricoEstado();
       historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;

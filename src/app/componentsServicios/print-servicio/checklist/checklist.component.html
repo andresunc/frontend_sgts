@@ -115,7 +115,7 @@
                                     [(ngModel)]="item.urlComprobanteTasa" [disabled]="!incluyeImpuestoStates[item.idItemChecklist!]" (change)="getChange(index+3, item)"/>
                             </fieldset>
 
-                            <fieldset>
+                            <fieldset *ngIf="updatedNotify">
                                 <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
                                     (click)="updateNotificado(item); getChange(index+4, item)">
                                     <span>{{ item.notificado? 'Se ha establecido notificado' : 'Establecer como notificado'}}</span>
