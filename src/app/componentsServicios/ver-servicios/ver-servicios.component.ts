@@ -106,16 +106,8 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
 
-    // Si el valor del filtro está vacío, restablecer la tabla para mostrar todos los servicios
-    if (filterValue.trim() === "") {
-      this.dataSource.data = this.listServicios;
-      this.updatePaginator();
-      return;
-    }
-
     // Verificar si el valor es un número
     const isNumber = !isNaN(Number(filterValue));
-
     if (isNumber) {
       // Si es un número, realiza la conversión y filtra por idServicio
       const idServicio = Number(filterValue);
@@ -123,6 +115,13 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     } else {
       // Si no es un número, aplica el filtro de texto
       this.dataSource.filter = filterValue.trim().toLowerCase();
+    }
+
+    // Si el valor del filtro está vacío, restablecer la tabla para mostrar todos los servicios
+    if (filterValue.trim() === "") {
+      this.dataSource.data = this.listServicios;
+      this.updatePaginator();
+      return;
     }
   }
 

@@ -34,14 +34,10 @@ span {
   color: #464545;
 }
 
-#tipoServicio .coment {
-  font-size: 0.8rem;
+td .coment {
+  font-size: 1rem;
   cursor: pointer;
   transition: font-size 0.1s ease;
-}
-
-#tipoServicio:hover .coment {
-  font-size: 0.9rem;
 }
 
 /* fin de la zona de estilos para las distintas fuentes   */
