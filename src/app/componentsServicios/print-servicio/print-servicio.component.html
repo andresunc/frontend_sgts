@@ -90,7 +90,7 @@
             <mat-form-field>
               <mat-label [style.color]="isEditable ? '#dc3545' : '#673ab7'">Estado</mat-label>
               <input matInput *ngIf="!isEditable" [value]="servicioRecibido.estado" [readonly]="!isEditable">
-              <mat-icon matIconPrefix class="advertIcon" *ngIf="hayNotificados()" (click)="alertaNotificado()">adjust</mat-icon>
+              <mat-icon matIconPrefix class="advertIcon" *ngIf="hayNotificados()" (click)="alertaNotificado()">error</mat-icon>
               <mat-select *ngIf="isEditable" [(ngModel)]="servicioRecibido.estado" (ngModelChange)="onEstadoChange()" [disabled]="hayNotificados()">
                 <mat-option class="option" *ngFor="let estado of estadosList" [value]="estado.tipoEstado" #optionRef
                 [disabled]="blockOrder ? blockLowOrder(estado) : null" (click)="warnEnable(optionRef)">

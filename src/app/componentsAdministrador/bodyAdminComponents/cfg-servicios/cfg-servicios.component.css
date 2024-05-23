@@ -1,54 +1,45 @@
-.example-container {
-  width: 400px;
-  max-width: 100%;
-  margin: 0 25px 25px 0;
-  display: inline-block;
-  vertical-align: top;
+.moduleContainer {
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
 }
 
-.example-list {
-  border: solid 1px #ccc;
-  min-height: 60px;
-  background: white;
-  border-radius: 4px;
-  overflow: hidden;
+.childContainer {
+  display: flex;
+  margin: auto;
+  margin-top: 0.5rem;
+  width: 99%;
+  height: calc(97% - 2.8rem);
+  /* Resta el alto de la barra de título */
+  border-radius: 0.5rem;
+  justify-content: space-between;
+  align-items: center;
+  
+}
+
+/* Descomentar para eliminar el efecto display:flex 
+.childContainer > * {
   display: block;
 }
+*/
+.rendermenu {
+  
+  width: 21%;
+  padding-left: 1.25rem;
+  height: 100%;
+  background-color: #DFEEEE;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
+  margin-right: auto;
+}
 
-.example-box {
-  padding: 20px 10px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
+.menuContent {
+  width: 78%;
+  height: 100%;
+  background-color: #DFEEEE;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
   display: flex;
-  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  cursor: move;
-  background: white;
-  font-size: 14px;
-}
-
-.cdk-drag-preview {
-  box-sizing: border-box;
-  border-radius: 4px;
-  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-              0 8px 10px 1px rgba(0, 0, 0, 0.14),
-              0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-.cdk-drag-placeholder {
-  opacity: 0;
-}
-
-.cdk-drag-animating {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.example-box:last-child {
-  border: none;
-}
-
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
