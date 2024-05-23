@@ -93,10 +93,6 @@ export class OrderStatusComponent {
           break;
       }
     });
-    // Reordenar los elementos dentro de cada lista según su número de orden
-    this.sinIniciar.sort((a, b) => (a.orden && b.orden) ? a.orden - b.orden : 0);
-    this.enCurso.sort((a, b) => (a.orden && b.orden) ? a.orden - b.orden : 0);
-    this.finalizado.sort((a, b) => (a.orden && b.orden) ? a.orden - b.orden : 0);
   }
 
   drop(event: CdkDragDrop<Estado[]>, estado: string) {

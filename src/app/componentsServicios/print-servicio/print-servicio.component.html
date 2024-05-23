@@ -92,7 +92,8 @@
               <input matInput *ngIf="!isEditable" [value]="servicioRecibido.estado" [readonly]="!isEditable">
               <mat-icon matIconPrefix class="advertIcon" *ngIf="hayNotificados()" (click)="alertaNotificado()">adjust</mat-icon>
               <mat-select *ngIf="isEditable" [(ngModel)]="servicioRecibido.estado" (ngModelChange)="onEstadoChange()" [disabled]="hayNotificados()">
-                <mat-option *ngFor="let estado of estadosList" [value]="estado.tipoEstado">
+                <mat-option class="option" *ngFor="let estado of estadosList" [value]="estado.tipoEstado" #optionRef
+                [disabled]="blockOrder ? blockLowOrder(estado) : null" (click)="warnEnable(optionRef)">
                   {{ estado.tipoEstado }}
                 </mat-option>
               </mat-select>
