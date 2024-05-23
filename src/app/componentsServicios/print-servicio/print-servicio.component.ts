@@ -129,8 +129,8 @@ export class PrintServicioComponent implements OnInit {
     const dialogRef = this.dialog.open(DeletePopupComponent, {
       data: { 
         title: 'Selección de estados pasados',
-        message: `Al volver a un estado anterior podría impactar en los informes y análisis.
-        ¿Desea continuar de todos modos?`,
+        message: `Revertir la seleccion a un estado anterior impactará en los informes y análisis.
+        ¿Deseas revertir?`,
         action: 'Revertir',
        }
     });
