@@ -11,9 +11,9 @@
       </mat-icon>
       
       <mat-error *ngIf="firstFormGroup.get('Riesgo')!.hasError('maxlength')">
-          Ingresa menos de 50 caracteres.
+          Máximo de 50 caracteres.
       </mat-error>
-      <mat-error *ngIf="firstFormGroup.get('Riesgo')?.hasError('duplicate')">
+      <mat-error *ngIf="firstFormGroup.get('Riesgo')?.hasError('duplicated')">
           Ese nombre ya existe.
       </mat-error>
 
