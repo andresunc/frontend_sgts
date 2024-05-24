@@ -93,8 +93,9 @@
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
                             (click)="svService.enviarObjeto(element)" matTooltip="Contiene elementos notificados">
-                            <span class="contentTable" [ngClass]="{'primary-bold': element.estado.toUpperCase() === 'PRESENTADO'}">
-                                {{element.estado}}
+                            <span class="contentTable"
+                            [ngClass]="element.estado ? {'primary-bold': element.estado.toUpperCase() === 'PRESENTADO'} : null">
+                                {{element.estado ? element.estado.toUpperCase() : ''}}
                             </span>
                             <mat-icon class="coment" *ngIf="svService.checkNotificaciones(element)" color="warn">error</mat-icon>
                         </td>
@@ -107,7 +108,7 @@
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center">
                             <span class="contentTable">
-                                {{element.categoria.toUpperCase()}}
+                                {{element.categoria ? element.categoria.toUpperCase() : ''}}
                             </span>
                         </td>
                     </ng-container>
