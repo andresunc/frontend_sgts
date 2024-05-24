@@ -10,8 +10,9 @@ import { AuthService } from '../auth.service';
 })
 export class HistoricoEstadoService {
 
-  urlBackend = new UrlBackend().getUrlBackend();
-  addNewHistoricoEstadoUrl = this.urlBackend + '/historicoestado/create';
+  private urlBackend = new UrlBackend().getUrlBackend();
+  private addNewHistoricoEstadoUrl = this.urlBackend + '/historicoestado/create';
+  private revertirHsEstadoUrl = this.urlBackend + '/historicoestado/revertir';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -26,4 +27,18 @@ export class HistoricoEstadoService {
         })
       );
   }
+
+  // Método para crear un nuevo HistoricoEstado
+  revertirHsEstado(addHistoricoEstado: HistoricoEstado): Observable<HistoricoEstado> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.post<HistoricoEstado>(this.revertirHsEstadoUrl, addHistoricoEstado, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error al revertir el estado', error);
+          return throwError(error);
+        })
+      );
+  }
+
+
 }

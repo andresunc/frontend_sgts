@@ -108,7 +108,7 @@ export class PrintServicioComponent implements OnInit {
   hayNotificados(): boolean {
     console.log('PRUEBA de RECURSIVIDAD 6');
     const notNotify = this.servicioRecibido.itemChecklistDto.some(item => item.notificado);
-    const isPresentado = this.servicioRecibido.estado.toLowerCase() === 'presentado';
+    const isPresentado = this.servicioRecibido.estado?.toLowerCase() === 'presentado';
     console.log('Hay notificados ', notNotify, isPresentado, (notNotify && isPresentado))
     return notNotify && isPresentado;
   }
@@ -127,12 +127,12 @@ export class PrintServicioComponent implements OnInit {
   alertDisblockOrder() {
 
     const dialogRef = this.dialog.open(DeletePopupComponent, {
-      data: { 
+      data: {
         title: 'Selección de estados pasados',
         message: `Revertir la seleccion a un estado anterior impactará en los informes y análisis.
         ¿Deseas revertir?`,
         action: 'Revertir',
-       }
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -143,6 +143,11 @@ export class PrintServicioComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Si this.blockOrder, es decir, el orden de los estados esta desbloqueado.
+   * Los insert de los nuevos registros para los estados se harán por el método "Revertir" en el backend
+   */
 
   alertaNotificado() {
     console.log('PRUEBA de RECURSIVIDAD 7');
@@ -309,21 +314,41 @@ export class PrintServicioComponent implements OnInit {
     if (this.estadoMatch && this.estadoMatch?.idEstado != this.servicioRecibido.idEstado) {
       requestsCount++;
 
-      // Armo el objeto historico de estado
-      let historicoEstado = new HistoricoEstado();
-      historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;
-      historicoEstado.servicioIdServicio = this.servicioRecibido.idServicio;
-      this.dataShared.setSharedObject(this.servicioRecibido) //
-      // Suscripción al servicio Historico Estado para agregar el último estado a la bd
-      this.historicoEstado.addHistoricoEstado(historicoEstado)
-        .subscribe(
-          (response) => {
-            console.log('Historico Estado actualizado OK:', response);
-            this.blockOrder = true;
-          },
-          (error) => console.error('Error al agregar HistoricoEstado:', error),
-          handleComplete, // Llamar a handleComplete después de completar la solicitud
-        );
+      try {
+        // Armo el objeto historico de estado
+        let historicoEstado = new HistoricoEstado();
+        historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;
+        historicoEstado.servicioIdServicio = this.servicioRecibido.idServicio;
+        this.dataShared.setSharedObject(this.servicioRecibido)
+
+        if (this.blockOrder) {
+          // Agregar estado si blockOrder es true
+          this.historicoEstado.addHistoricoEstado(historicoEstado)
+            .subscribe(
+              (response) => {
+                console.log('Historico con blockOrder = true:', response);
+                this.blockOrder = true;
+              },
+              (error) => console.error('Error al agregar HistoricoEstado:', error),
+              handleComplete, // Llamar a handleComplete después de completar la solicitud
+            );
+        } else {
+          // Agregar estado si blockOrder es false, ingresa por el método revertirHsEstado
+          this.historicoEstado.revertirHsEstado(historicoEstado)
+            .subscribe(
+              (response) => {
+                console.log('Historico con blockOrder = false:', response);
+                this.blockOrder = true;
+              },
+              (error) => console.error('Error al agregar HistoricoEstado:', error),
+              handleComplete, // Llamar a handleComplete después de completar la solicitud
+            );
+        }
+
+      } catch (error) {
+        console.log('Error en el try-catch en el insert Histórico Estado')
+      }
+
     } else {
       console.log('No hay cambios en el estado de servicio')
     }
