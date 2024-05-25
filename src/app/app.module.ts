@@ -18,7 +18,6 @@ import { TitleBarModule } from './componentsShared/title-bar/title-bar.module';
 
 // Componentes pertenecientes a éste módulo
 import { SidebarComponent } from 'src/app/componentsShared/sidebar/sidebar.component';
-import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
 import { PrintServicioComponent } from './componentsServicios/print-servicio/print-servicio.component';
 import { SpinnerComponent } from './componentsShared/spinner/spinner/spinner.component';
 import { CustomSnackbarComponent } from './componentsShared/popups/custom-snackbar/custom-snackbar.component';
@@ -28,6 +27,10 @@ import { DeletePopupComponent } from './componentsShared/delete-popup/delete-pop
 import { ErrorInterceptor } from './ErrorInterceptor/error.interceptor';
 import { InstructorComponent } from './componentsShared/instructor/instructor.component';
 import { OrderStatusComponent } from './componentsAdministrador/bodyAdminComponents/cfg-estados/order-status/order-status.component';
+import { DiferenciaFechasPipe } from './componentsShared/pipes/diferenciaFechas';
+import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
+import { CalcularAvancePipe } from './componentsShared/pipes/calcularAvance';
+import { HayNotificadosPipe } from './componentsShared/pipes/hayNotificados';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -55,6 +58,9 @@ export const MY_FORMATS: MatDateFormats = {
     DeletePopupComponent,
     InstructorComponent,
     OrderStatusComponent,
+    DiferenciaFechasPipe,
+    CalcularAvancePipe,
+    HayNotificadosPipe,
           ],
   imports: [
     BrowserModule,
@@ -67,6 +73,11 @@ export const MY_FORMATS: MatDateFormats = {
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+  ],
+  exports: [
+    DiferenciaFechasPipe,
+    CalcularAvancePipe,
+    HayNotificadosPipe,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

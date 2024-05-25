@@ -5,6 +5,7 @@ import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
+import { Params } from 'src/app/models/Params';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
@@ -26,6 +27,7 @@ export class ChecklistComponent implements OnInit {
   servicio: Servicios;
   isAdmin: boolean;
   updatedNotify: boolean;
+  params: Params = new Params();
 
   constructor(
     private dataShared: DataSharedService,
@@ -38,8 +40,8 @@ export class ChecklistComponent implements OnInit {
     this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
     this.dataSourceItems = this.servicio.itemChecklistDto;
-    this.avance = this.svManager.calcularAvance(this.dataSourceItems);
-    this.updatedNotify = this.servicio.estado.toLowerCase() === 'presentado'
+    this.avance = this.calcularAvance(this.dataSourceItems);
+    this.updatedNotify = this.servicio.estado === this.params.PRESENTADO;
   }
 
   ngOnInit(): void {
@@ -48,6 +50,14 @@ export class ChecklistComponent implements OnInit {
       this.refreshItemsCheckList();
       this.getRecursos();
     });
+  }
+
+  calcularAvance(itemsChecklist: ItemChecklistDto[]): number {
+    const totalItems = itemsChecklist.length;
+    // 1 Si el total de items es mayor a 0 hacer, sino retornar 0
+    // 2 Filtrar los completos? y contarlos
+    // 3 Calcular y retornar el porcentaje de items completados (Completos/Total) * 100
+    return itemsChecklist.filter(item => item.completo).length / totalItems * 100 | 0;
   }
 
   getRecursos() {
@@ -71,7 +81,7 @@ export class ChecklistComponent implements OnInit {
       .subscribe(
         (data) => {
           this.dataSourceItems = data;
-          this.avance = this.svManager.calcularAvance(this.dataSourceItems);
+          this.avance = this.calcularAvance(this.dataSourceItems);
           this.dataShared.setSharedObject(this.servicio);
           this.dataShared.ocultarSpinner();
         }).add(
@@ -95,7 +105,7 @@ export class ChecklistComponent implements OnInit {
       this.dataShared.setSharedObject(this.dataShared.getSharedObject());
 
       // Calcula el nuevo avance
-      this.avance = this.svManager.calcularAvance(this.dataShared.getSharedObject().itemChecklistDto);
+      this.avance = this.calcularAvance(this.dataShared.getSharedObject().itemChecklistDto);
     } else {
       // Maneja el caso en que el elemento no se encuentre o sea undefined
       console.error('No se encontró el elemento con ID:', item.idItemChecklist);

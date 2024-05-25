@@ -21,15 +21,19 @@ import { ServicioEmpresa } from 'src/app/models/DomainModels/ServicioEmpresa';
 import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
 import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
 import { MatOption } from '@angular/material/core';
+import { Params } from 'src/app/models/Params';
+import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
+import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvance';
+import { memoize } from 'src/app/componentsShared/pipes/memoize';
 
 @Component({
   selector: 'app-print-servicio',
   templateUrl: './print-servicio.component.html',
-  styleUrls: ['./print-servicio.component.css']
+  styleUrls: ['./print-servicio.component.css'],
+  providers: [CalcularAvancePipe] // Proveer el pipe aquí
 })
 export class PrintServicioComponent implements OnInit {
 
-  servicioRecibido!: Servicios;
   title: string = 'Detalle del servicio';
   recurrencia: number = 0;
   contactoEmpresa: ContactoEmpresa[] = [];
@@ -37,11 +41,14 @@ export class PrintServicioComponent implements OnInit {
   selectedEstado: string = '';
   minDate: Date;
   maxDate: Date;
+  menuEditable!: boolean;
 
   presupuestOriginal!: number;
   recordatoriOriginal!: any;
   idEstadOriginal!: string;
   comentariOriginal!: string;
+  params: Params = new Params();
+  onServicio: Servicios;
 
   constructor(
     private dataShared: DataSharedService,
@@ -55,43 +62,43 @@ export class PrintServicioComponent implements OnInit {
     private servicioService: ServicioService,
     private estadoService: EstadosService,
     private historicoEstado: HistoricoEstadoService,
+    private avancePipe: CalcularAvancePipe
   ) {
-    this.servicioRecibido = this.getServicioLocalStorage();
     this.minDate = new Date();
     this.maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 6, this.minDate.getDate());
-
-    // this.selectedEstado = this.servicioRecibido.estado; Borrar ?
-    this.presupuestOriginal = this.servicioRecibido.total_presupuestado;
-    this.recordatoriOriginal = this.servicioRecibido.fecha_notificacion;
-    this.comentariOriginal = this.servicioRecibido.comentario;
-    this.idEstadOriginal = this.servicioRecibido.estado;
+    this.onServicio = this.getServicioLocalStorage();
+    this.dataShared.setSharedObject(this.onServicio);
+    this.menuEditable = this.enableMenuEdit();
   }
 
   ngOnInit() {
+
+    const servicio = this.getServicio(); 
     this.setParams();
-    this.getServicioById(this.servicioRecibido.idServicio);
-    console.log('PRUEBA de RECURSIVIDAD');
+    this.getServicioById(servicio.idServicio);
+
+    this.presupuestOriginal = servicio.total_presupuestado;
+    this.recordatoriOriginal = servicio.fecha_notificacion;
+    this.comentariOriginal = servicio.comentario;
+    this.idEstadOriginal = servicio.estado;
+    this.recurrencia = servicio.recurrencia; 
+
   }
 
-  getSvManager() {
-    console.log('PRUEBA de RECURSIVIDAD 2');
-    return this.svManager;
-  }
 
   getServicioLocalStorage(): Servicios {
-    console.log('PRUEBA de RECURSIVIDAD 3');
     return JSON.parse(localStorage.getItem('servicioRecibido') || '{}');
   }
 
   getServicioById(idServicio: number) {
-    console.log('PRUEBA de RECURSIVIDAD 4');
     this.dataShared.mostrarSpinner();
     this.servicioService.getServicioById(idServicio)
       .subscribe(
         (data: Servicios) => {
-          this.servicioRecibido = data;
+          this.dataShared.setSharedObject(data);
           this.dataShared.ocultarSpinner();
         },
+      ).add(
         () => {
           this.dataShared.ocultarSpinner();
         }
@@ -99,19 +106,17 @@ export class PrintServicioComponent implements OnInit {
   }
 
   setParams() {
-    console.log('PRUEBA de RECURSIVIDAD 5');
-    this.recurrencia = this.servicioRecibido.recurrencia;
     this.getContactoEmpresa();
     this.getEstados();
+    this.getServicio();
   }
 
-  hayNotificados(): boolean {
-    console.log('PRUEBA de RECURSIVIDAD 6');
-    const notNotify = this.servicioRecibido.itemChecklistDto.some(item => item.notificado);
-    const isPresentado = this.servicioRecibido.estado?.toLowerCase() === 'presentado';
-    console.log('Hay notificados ', notNotify, isPresentado, (notNotify && isPresentado))
-    return notNotify && isPresentado;
+
+  getServicio(): Servicios {
+    return this.dataShared.getSharedObject();
   }
+
+  
 
   blockLowOrder(estado: Estado): boolean {
     return estado.orden! < this.estadoMatch?.orden!;
@@ -150,30 +155,28 @@ export class PrintServicioComponent implements OnInit {
    */
 
   alertaNotificado() {
-    console.log('PRUEBA de RECURSIVIDAD 7');
     this._snackBar.warnSnackBar('Hay ítems marcados como nofitificados')
   }
 
+ 
   enableMenuEdit(): boolean {
-    console.log('PRUEBA de RECURSIVIDAD 8');
     return this.authService.isAdmin()
   }
 
+
   getAvance(): number {
-    console.log('PRUEBA de RECURSIVIDAD 9');
-    return this.getSvManager().calcularAvance(this.servicioRecibido.itemChecklistDto)
+    return this.avancePipe.transform(this.getServicio().itemChecklistDto);
   }
 
   isEditable: boolean = false;
   editarServicio() {
-    console.log('PRUEBA de RECURSIVIDAD 10');
     this.isEditable = this.authService.isAdmin();
   }
 
   checkDelete(): void {
-    console.log('PRUEBA de RECURSIVIDAD 11');
+    const servicio = this.getServicio();
     const dialogRef = this.dialog.open(DeletePopupComponent, {
-      data: { message: `¿Borrar el servicio ID: ${this.servicioRecibido.idServicio}?` }
+      data: { message: `¿Borrar el servicio ID: ${servicio.idServicio}?` }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -187,11 +190,12 @@ export class PrintServicioComponent implements OnInit {
 
   eliminarServicio() {
     // Suscripción a Servicio Empresa para eliminar de manera lógica de la bd
-    this.servicioEmpresa.deleteLogico(this.servicioRecibido.idServicio)
+    const servicio = this.getServicio();
+    this.servicioEmpresa.deleteLogico(servicio.idServicio)
       .subscribe(
         () => {
           console.log('ServicioEmpresa Eliminado con éxito:'),
-            this._snackBar.okSnackBar(`Servicio eliminado ID: ${this.servicioRecibido.idServicio}`),
+            this._snackBar.okSnackBar(`Servicio eliminado ID: ${servicio.idServicio}`),
             this.router.navigate(['/home']);
         },
         (error) => console.error('Error al eliminar el ServicioEmpresa:', error)
@@ -199,7 +203,8 @@ export class PrintServicioComponent implements OnInit {
   }
 
   private getContactoEmpresa() {
-    this.printService.getContactoEmpresa(this.servicioRecibido.idCliente).subscribe(
+    const servicio = this.getServicio();
+    this.printService.getContactoEmpresa(servicio.idCliente).subscribe(
       (data) => {
         this.contactoEmpresa = data;
         console.log('Contactos de la empresa: 12', data);
@@ -215,28 +220,29 @@ export class PrintServicioComponent implements OnInit {
 
   openChecklistPopUp() {
     // si no está finalizado
-    if (this.servicioRecibido.idCategoria != 3) {
-      this.dataShared.setSharedObject(this.servicioRecibido);
+    const servicio = this.getServicio();
+    if (servicio.categoria != this.params.FINALIZADO) {
+      this.dataShared.setSharedObject(servicio);
       const dialogRef = this.dialog.open(ChecklistComponent);
 
       dialogRef.afterClosed().subscribe(() => {
         // Se ejecutará cuando se cierre el modal del checklist
-        this.dataShared.setSharedObject(this.servicioRecibido);
-        this.getServicioById(this.servicioRecibido.idServicio);
+        this.getServicioById(servicio.idServicio);
       });
     } else {
-      this._snackBar.warnSnackBar(`El servicio ha ${this.servicioRecibido.categoria.toLowerCase()}`)
+      this._snackBar.warnSnackBar(`El servicio ha ${servicio.categoria.toLowerCase()}`)
     }
   }
 
   // Lógica para los estados
   getEstados() {
     if (this.authService.isAdmin()) {
+      const servicio = this.getServicio();
       this.dataShared.mostrarSpinner();
       this.estadoService.getStatusNotDeleted().subscribe(
         (data) => {
           this.estadosList = data;
-          this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.servicioRecibido.estado);
+          this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === servicio.estado);
           //this.checkEditable();
           console.log('Estados cargados OK');
           this.dataShared.ocultarSpinner();
@@ -252,7 +258,7 @@ export class PrintServicioComponent implements OnInit {
    */
   estadoMatch: Estado | undefined;
   onEstadoChange() {
-    this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.servicioRecibido.estado);
+    this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.getServicio().estado);
     this.checkEditable();
   }
 
@@ -288,6 +294,7 @@ export class PrintServicioComponent implements OnInit {
    */
   loadChanges() {
 
+    const servicio = this.getServicio();
     this.dataShared.mostrarSpinner();
     this.isEditable = !this.isEditable; // Cambiar estado booleano de isEditable
     let requestsCount = 0; // Inicializamos un contador de solicitudes
@@ -303,7 +310,8 @@ export class PrintServicioComponent implements OnInit {
       console.log('valor del handleComplete: ', requestsCount);
       if (requestsCount === 0) {
         this.dataShared.ocultarSpinner();
-        this.getServicioById(this.servicioRecibido.idServicio);
+
+        this.getServicioById(servicio.idServicio);
         console.log('ACTUALIZACIONES FINALIZADAS OK')
       }
     };
@@ -311,15 +319,15 @@ export class PrintServicioComponent implements OnInit {
     // Si estadoMatch no es nulo y los id no coinciden entonces hay cambios y ejecutar el addHistorico
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
 
-    if (this.estadoMatch && this.estadoMatch?.idEstado != this.servicioRecibido.idEstado) {
+    if (this.estadoMatch && this.estadoMatch?.idEstado != servicio.idEstado) {
       requestsCount++;
 
       try {
         // Armo el objeto historico de estado
         let historicoEstado = new HistoricoEstado();
         historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;
-        historicoEstado.servicioIdServicio = this.servicioRecibido.idServicio;
-        this.dataShared.setSharedObject(this.servicioRecibido)
+        historicoEstado.servicioIdServicio = servicio.idServicio;
+        this.dataShared.setSharedObject(servicio)
 
         if (this.blockOrder) {
           // Agregar estado si blockOrder es true
@@ -355,18 +363,18 @@ export class PrintServicioComponent implements OnInit {
 
     // Verificar si hay cambios en el presupuesto y ejecutar
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
-    if (this.presupuestOriginal != this.servicioRecibido.total_presupuestado) {
+    if (this.presupuestOriginal != servicio.total_presupuestado) {
 
       requestsCount++;
       let servicioEmpresa = new ServicioEmpresa();
-      servicioEmpresa.costoServicio = this.servicioRecibido.total_presupuestado;
+      servicioEmpresa.costoServicio = servicio.total_presupuestado;
 
       // Suscripción a Servicio Empresa para agregar el último estado a la bd
-      this.servicioEmpresa.update(this.servicioRecibido.idServicio, servicioEmpresa)
+      this.servicioEmpresa.update(servicio.idServicio, servicioEmpresa)
         .subscribe(
           (response) => {
             console.log('Presupuesto actualizado OK:', response);
-            this.dataShared.setSharedObject(this.servicioRecibido);
+            this.dataShared.setSharedObject(servicio);
           },
           (error) => console.error('Error al actualizar ServicioEmpresa:', error),
           handleComplete // Llamar a handleComplete después de completar la solicitud
@@ -379,20 +387,20 @@ export class PrintServicioComponent implements OnInit {
     // Verificar si hay cambios en el servicio y ejecutar (Recordatorio, comentario)
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
 
-    if (this.recordatoriOriginal != this.servicioRecibido.fecha_notificacion ||
-      this.comentariOriginal != this.servicioRecibido.comentario) {
+    if (this.recordatoriOriginal != servicio.fecha_notificacion ||
+      this.comentariOriginal != servicio.comentario) {
 
       requestsCount++;
-      let servicio: Servicio = new Servicio();
-      servicio.fechaHoraAlertaVenc = this.servicioRecibido.fecha_notificacion ? new Date(this.servicioRecibido.fecha_notificacion) : undefined;
-      servicio.comentario = this.servicioRecibido.comentario;
+      let servicix: Servicio = new Servicio();
+      servicix.fechaHoraAlertaVenc = servicio.fecha_notificacion ? new Date(servicio.fecha_notificacion) : undefined;
+      servicix.comentario = servicio.comentario;
       //servicio.tipoServicioIdTipoServicio = this.servicioRecibido.idTipoServicio;
 
-      this.servicioService.update(this.servicioRecibido.idServicio, servicio)
+      this.servicioService.update(servicio.idServicio, servicix)
         .subscribe(
           (response) => {
             console.log('Se actualizó el comentario o recordatorio OK:', response);
-            this.dataShared.setSharedObject(this.servicioRecibido);
+            this.dataShared.setSharedObject(servicio);
           },
           (error) => console.error('Error al actualizar el Servicio:', error),
           handleComplete // Llamar a handleComplete después de completar la solicitud

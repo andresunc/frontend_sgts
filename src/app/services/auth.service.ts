@@ -6,14 +6,16 @@ import { UrlBackend } from '../models/Url';
 import { LoginData } from '../models/SupportModels/LoginData';
 import { AuthUser } from '../models/SupportModels/AuthUser';
 import { Servicios } from '../models/DomainModels/Servicios';
+import { Params } from '../models/Params';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService implements OnInit {
 
-  urlBackend = new UrlBackend().getUrlBackend();
+  private urlBackend = new UrlBackend().getUrlBackend();
   private loginUrl = this.urlBackend + '/auth/login';
+  params: Params = new Params();
 
   private isLoggedIn: boolean = false;
 
@@ -104,7 +106,7 @@ export class AuthService implements OnInit {
       const currentUser: AuthUser = JSON.parse(currentUserString);
       if (currentUser.roles) {
         // Verifica si el usuario tiene el rol ADMIN y RRHH
-        const isAdmin: boolean = currentUser.roles.some(role => role.rol === 'ADMIN');
+        const isAdmin: boolean = currentUser.roles.some(role => role.rol === this.params.ADMIN);
         return isAdmin;
       } else {
         return false; // Si no hay roles, devuelve false
@@ -123,7 +125,7 @@ export class AuthService implements OnInit {
       let isAdmin: boolean = false;
       let matchIdRol = serv.itemChecklistDto.some(item => item.idRecurso === currentUser.id_recurso);
       if (currentUser.roles) {
-        isAdmin = currentUser.roles.some(role => role.rol === 'ADMIN');
+        isAdmin = currentUser.roles.some(role => role.rol === this.params.ADMIN);
       }
       return matchIdRol || isAdmin
     } else {

@@ -1,3 +1,4 @@
+import ManagerService from "src/app/services/SupportServices/ManagerService";
 import { ItemChecklistDto } from "../ModelsDto/IItemChecklistDto";
 
 /**
@@ -25,6 +26,7 @@ export class Servicios {
     fullname_responsable: string;
     comentario: string;
     itemChecklistDto: ItemChecklistDto[];
+    svManager!: ManagerService;
 
     constructor(idServicio: number, idTipoServicio: number, fecha_alta: string, tipo: string, idCliente: number,
         cliente: string, idEstado: number, estado: string, idCategoria: number, categoria: string,
@@ -52,4 +54,5 @@ export class Servicios {
         this.comentario = comentario;
         this.itemChecklistDto = itemChecklistDto;
     }
+
 }

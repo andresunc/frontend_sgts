@@ -13,7 +13,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Responsable general</mat-label>
-              <input matInput [value]="servicioRecibido.fullname_responsable" [readonly]="true">
+              <input matInput [value]="onServicio.fullname_responsable" [readonly]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -21,9 +21,9 @@
           <mat-grid-tile [colspan]="2" [rowspan]="1" [style.background]="''">
 
             <button mat-flat-button color="accent" style="width: 100%;"
-              [matMenuTriggerFor]="enableMenuEdit() ? menu : null">
-              SERVICIO N° {{ servicioRecibido.idServicio }}
-              <mat-icon *ngIf="enableMenuEdit()" class="mat-icon">tune</mat-icon>
+              [matMenuTriggerFor]="menuEditable ? menu : null">
+              SERVICIO N° {{ onServicio.idServicio }}
+              <mat-icon *ngIf="menuEditable" class="mat-icon">tune</mat-icon>
             </button>
             <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
               <button mat-menu-item (click)="editarServicio()" class="editMenu">
@@ -48,7 +48,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Cliente</mat-label>
-              <input matInput [value]="servicioRecibido.cliente" [readonly]="true">
+              <input matInput [value]="onServicio.cliente" [readonly]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -57,7 +57,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Rubro</mat-label>
-              <input matInput [value]="servicioRecibido.rubro" [readonly]="true">
+              <input matInput [value]="onServicio.rubro" [readonly]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -80,7 +80,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Tipo de servicio</mat-label>
-              <input matInput [value]="servicioRecibido.tipo" [readonly]="true">
+              <input matInput [value]="onServicio.tipo" [readonly]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -89,11 +89,13 @@
 
             <mat-form-field>
               <mat-label [style.color]="isEditable ? '#dc3545' : '#673ab7'">Estado</mat-label>
-              <input matInput *ngIf="!isEditable" [value]="servicioRecibido.estado" [readonly]="!isEditable">
-              <mat-icon matIconPrefix class="advertIcon" *ngIf="hayNotificados()" (click)="alertaNotificado()">error</mat-icon>
-              <mat-select *ngIf="isEditable" [(ngModel)]="servicioRecibido.estado" (ngModelChange)="onEstadoChange()" [disabled]="hayNotificados()">
+              <input matInput *ngIf="!isEditable" [value]="getServicio().estado" [readonly]="!isEditable">
+              <mat-icon matIconPrefix class="advertIcon" *ngIf="getServicio() | hayNotificados"
+                (click)="alertaNotificado()">error</mat-icon>
+              <mat-select *ngIf="isEditable" [(ngModel)]="getServicio().estado" (ngModelChange)="onEstadoChange()"
+                [disabled]="getServicio() | hayNotificados">
                 <mat-option class="option" *ngFor="let estado of estadosList" [value]="estado.tipoEstado" #optionRef
-                [disabled]="blockOrder ? blockLowOrder(estado) : null" (click)="warnEnable(optionRef)">
+                  [disabled]="blockOrder ? blockLowOrder(estado) : null" (click)="warnEnable(optionRef)">
                   {{ estado.tipoEstado }}
                 </mat-option>
               </mat-select>
@@ -106,7 +108,8 @@
             <mat-form-field>
               <mat-label [style.color]="isEditable ? '#dc3545' : ''">Fecha de recordatorio</mat-label>
               <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
-              [(ngModel)]="servicioRecibido.fecha_notificacion" [value]="servicioRecibido.fecha_notificacion" [readonly]="true">
+                [(ngModel)]="getServicio().fecha_notificacion" [value]="getServicio().fecha_notificacion"
+                [readonly]="true">
               <mat-hint>DD/MM//YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker [disabled]="!isEditable || checkEditable()"></mat-datepicker>
@@ -120,13 +123,13 @@
               <mat-card-content style="max-height: 3.74rem; padding-top: 0.74rem;">
                 <div>
                   <mat-label style="font-size: 1rem;">
-                    {{ getAvance() === 0 ? 'Sin ítems completos' : getAvance() === 100 ? 'ítems 100% completos' :
+                    {{ (getServicio().itemChecklistDto| calcularAvance) === 0 ? 'Sin ítems completos' : (getServicio().itemChecklistDto| calcularAvance)  === 100 ? 'ítems 100% completos' :
                     'Avance' }}
                   </mat-label>
-                  <div class="progress" role="progressbar" [attr.aria-valuenow]="getAvance()" aria-valuemin="0"
+                  <div class="progress" role="progressbar" [attr.aria-valuenow]="(getServicio().itemChecklistDto| calcularAvance) " aria-valuemin="0"
                     aria-valuemax="100">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="getAvance()">
-                      <span>{{ getAvance() === 100 ? 'Completo' : getAvance() + '%' }}</span>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="(getServicio().itemChecklistDto| calcularAvance) ">
+                      <span>{{ (getServicio().itemChecklistDto| calcularAvance)  === 100 ? 'Completo' : (getServicio().itemChecklistDto| calcularAvance)  + '%' }}</span>
                     </div>
                   </div>
                 </div>
@@ -146,7 +149,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Renovaciones y referencia</mat-label>
-              <input matInput [value]="'Cantidad: ' +recurrencia + ' Ref-ID: ' + servicioRecibido.referencia"
+              <input matInput [value]="'Cantidad: ' +recurrencia + ' Ref-ID: ' + onServicio.referencia"
                 [readonly]="true">
             </mat-form-field>
 
@@ -167,8 +170,9 @@
 
             <mat-form-field floatLabel="always">
               <mat-label [style.color]="isEditable ? '#dc3545' : ''">Presupuesto</mat-label>
-              <input matInput type="number" style="text-align: center;" [(ngModel)]="servicioRecibido.total_presupuestado" 
-                placeholder="0" [readonly]="!isEditable" [disabled]="checkEditable()" (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
+              <input matInput type="number" style="text-align: center;" [(ngModel)]="getServicio().total_presupuestado"
+                placeholder="0" [readonly]="!isEditable" [disabled]="checkEditable()" (blur)="validarPresupuesto()"
+                (input)="limitarLongitud($event)" #presupuestoInput>
               <span matTextPrefix>$&nbsp;</span>
             </mat-form-field>
 
@@ -182,13 +186,14 @@
           <!-- Pop up del checklist -->
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
-            <button style="width: 100%;" mat-flat-button color="primary" 
-            (click)="openChecklistPopUp()" *ngIf="!isEditable" [disabled]="checkEditable()">
+            <button style="width: 100%;" mat-flat-button color="primary" (click)="openChecklistPopUp()"
+              *ngIf="!isEditable" [disabled]="checkEditable()">
               <mat-icon class="mat-icon">checklist</mat-icon>
               ABRIR CHECKLIST
             </button>
 
-            <button style="width: 100%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="isEditable" [disabled]="!isEditable">
+            <button style="width: 100%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="isEditable"
+              [disabled]="!isEditable">
               <mat-icon class="mat-icon">save</mat-icon>
               GUARDAR CAMBIOS
             </button>
@@ -198,22 +203,22 @@
         </mat-grid-list>
 
         <mat-grid-list cols="12" rowHeight="6rem">
-        
+
           <mat-grid-tile [colspan]="12" [rowspan]="1" [style.background]="''">
-        
+
             <mat-form-field appearance="fill">
               <mat-label [style.color]="isEditable ? '#dc3545' : ''">Comentario</mat-label>
-              <textarea style="font-style: oblique; padding: 0;" class="card-text" [(ngModel)]="servicioRecibido.comentario"
+              <textarea style="font-style: oblique; padding: 0;" class="" [(ngModel)]="getServicio().comentario"
                 matInput [readonly]="!isEditable" [disabled]="checkEditable()" maxlength="500">
-                {{servicioRecibido.comentario}}
+                {{getServicio().comentario}}
               </textarea>
-              <mat-error *ngIf="servicioRecibido.comentario && servicioRecibido.comentario.length >= 500">
+              <mat-error *ngIf="getServicio().comentario && getServicio().comentario.length >= 500">
                 El comentario no puede tener más de 500 caracteres.
               </mat-error>
             </mat-form-field>
-        
+
           </mat-grid-tile>
-        
+
         </mat-grid-list>
 
       </div>

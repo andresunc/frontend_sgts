@@ -2,6 +2,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component } from '@angular/core';
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { Estado } from 'src/app/models/DomainModels/Estado';
+import { Params } from 'src/app/models/Params';
 import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
@@ -23,6 +24,7 @@ export class OrderStatusComponent {
   idFinalizado: number | undefined = 0;
   cargandoEstados = false; // Inicia la carga
   cargandoCategorias = false; // Inicia la carga
+  params: Params = new Params();
 
   categorias: Categoria[] = [];
 
@@ -57,9 +59,9 @@ export class OrderStatusComponent {
       (data: Categoria[]) => {
         this.cargandoCategorias = false; // Inicia la carga
         this.categorias = data;
-        this.idSinIniciar = this.categorias.find(cat => cat.categoria === 'Sin iniciar')?.idCategoria;
-        this.idEnCurso = this.categorias.find(cat => cat.categoria === 'En Curso')?.idCategoria;
-        this.idFinalizado = this.categorias.find(cat => cat.categoria === 'Finalizado')?.idCategoria;
+        this.idSinIniciar = this.categorias.find(cat => cat.categoria === this.params.SIN_INICIAR)?.idCategoria;
+        this.idEnCurso = this.categorias.find(cat => cat.categoria === this.params.EN_CURSO)?.idCategoria;
+        this.idFinalizado = this.categorias.find(cat => cat.categoria === this.params.FINALIZADO)?.idCategoria;
         this.cargarEstadosEnCategorias();
         console.log('Categorias cargadas: ', this.idSinIniciar, this.idEnCurso, this.idFinalizado);
       }
