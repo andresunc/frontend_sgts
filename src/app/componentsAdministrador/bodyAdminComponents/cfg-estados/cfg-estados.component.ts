@@ -116,7 +116,7 @@ export class CfgEstadosComponent implements OnInit {
   }
 
   private _filter(value: string): Estado[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value.toLowerCase() || '';
     return this.estados.filter(estado => estado.tipoEstado?.toLowerCase().startsWith(filterValue));
   }
 
@@ -300,7 +300,7 @@ export class CfgEstadosComponent implements OnInit {
   equalName: boolean = false;
   checkExistName(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    const inputData = inputElement.value;
+    const inputData = inputElement.value || '';
     this.equalName = this.estados.some(es => es.tipoEstado?.toLowerCase() === inputData.toLowerCase());
     console.log(this.equalName);
 

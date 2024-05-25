@@ -230,7 +230,7 @@ export class PrintServicioComponent implements OnInit {
         this.getServicioById(servicio.idServicio);
       });
     } else {
-      this._snackBar.warnSnackBar(`El servicio ha ${servicio.categoria.toLowerCase()}`)
+      this._snackBar.warnSnackBar(`El servicio ha ${servicio.categoria.toLowerCase() || undefined}`)
     }
   }
 
