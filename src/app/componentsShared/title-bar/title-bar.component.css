@@ -96,3 +96,27 @@ mat-icon {
 .accMenu:hover mat-icon {
     color: #673ab7;
 }
+
+@media screen and (max-width: 700px) {
+
+    mat-toolbar {
+    
+        height: 2.5rem;
+        justify-content:left;
+        
+    }
+
+    .primaryBtn {
+
+        width: 2rem;
+        height: 2rem;
+    
+    }
+
+    .titulo {
+        font-size:small;
+        margin-left: 0.5rem;
+        margin-right: 0.8rem;
+    }
+
+}

@@ -1,1 +1,142 @@
-<p>cfg-usuarios works!</p>
+
+<div class="container">
+    <form [formGroup]="firstFormGroup">
+        <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+            live_help
+        </mat-icon>
+        
+        <h6>Buscá un usuario para modificar / eliminar sus datos o completá todos los campos para crear uno nuevo.</h6><br>
+        
+        <div class="user">
+            <mat-form-field class="buscar">
+
+                <mat-label for="usuario">Usuario</mat-label>
+                <input type="text" placeholder="Buscar o crear un usuario" name="usuario"
+                formControlName="usuario" matInput [matAutocomplete]="auto" 
+                (focus)="onInputFocus()" [maxlength]="10" required (input)="checkUsuarioName($event)">
+                <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
+                    backspace
+                </mat-icon>
+                <mat-error *ngIf="firstFormGroup.get('usuario')!.hasError('maxlength')">
+                    Ingresa menos de 10 caracteres.
+                </mat-error>
+                <mat-error *ngIf="firstFormGroup.get('usuario')?.hasError('duplicate')">
+                    Ese nombre ya existe.
+                </mat-error>
+                <mat-error
+                  *ngIf="firstFormGroup.get('usuario')?.invalid && (firstFormGroup.get('usuario')?.dirty || firstFormGroup.get('usuario')?.touched)">
+                  Dato obligatorio.
+                </mat-error>
+
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+                    (optionSelected)="seleccionarUsuario($event.option.value)">
+                    <mat-option *ngFor="let usuario of filteredOptions | async" [value]="usuario?.username">
+                        {{ usuario?.username }}
+                    </mat-option>
+                </mat-autocomplete>
+
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Contraseña</mat-label>
+                <input matInput formControlName="contraseña" placeholder="Ejemplo19" required maxlength="10">
+                <mat-error
+                  *ngIf="firstFormGroup.get('contraseña')?.invalid && (firstFormGroup.get('contraseña')?.dirty || firstFormGroup.get('contraseña')?.touched)">
+                  Dato obligatorio.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label for="rol">Rol</mat-label>
+                <mat-select name="rol" formControlName="rol">
+                  <mat-option value="Admin">Admin</mat-option>
+                  <mat-option value="OperadorInterno ">Operador Interno</mat-option>
+                  <mat-option value="OperadorExterno">Operador Externo</mat-option>
+                </mat-select>
+              </mat-form-field>
+        </div>
+        
+        <div class="persona">
+            <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="nombre" placeholder="Nombre" required maxlength="44">
+                <mat-error
+                  *ngIf="firstFormGroup.get('nombre')?.invalid && (firstFormGroup.get('nombre')?.dirty || firstFormGroup.get('nombre')?.touched)">
+                  Dato obligatorio.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Apellido</mat-label>
+                <input matInput formControlName="apellido" placeholder="Apellido" required maxlength="44">
+                <mat-error
+                  *ngIf="firstFormGroup.get('apellido')?.invalid && (firstFormGroup.get('apellido')?.dirty || firstFormGroup.get('apellido')?.touched)">
+                  Dato obligatorio.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>DNI</mat-label>
+                <input matInput formControlName="dni" placeholder="" maxlength="8" required>
+                <mat-error
+                  *ngIf="firstFormGroup.get('dni')?.invalid && (firstFormGroup.get('dni')?.dirty || firstFormGroup.get('dni')?.touched)">
+                  Dato obligatorio.
+                </mat-error>
+            </mat-form-field>
+            
+            <mat-form-field>
+                <mat-label>Teléfono</mat-label>
+                <input matInput formControlName="telefono" placeholder="+54 351 xxxxxxxxx" maxlength="44" required>
+                <mat-error
+                  *ngIf="firstFormGroup.get('telefono')?.invalid && (firstFormGroup.get('telefono')?.dirty || firstFormGroup.get('telefono')?.touched)">
+                  Dato obligatorio.
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Email</mat-label>
+                <input matInput type="email" formControlName="email" placeholder="ejemplo@gmail.com" maxlength="99">
+                <mat-error
+                  *ngIf="firstFormGroup?.get('email')?.hasError('email') && !firstFormGroup.get('email')?.hasError('required')">
+                  Por favor ingrese un e-mail válido.
+                </mat-error>
+                <mat-error *ngIf="firstFormGroup?.get('email')?.hasError('required')">
+                  El e-mail es <strong>necesario</strong>
+                </mat-error>
+              </mat-form-field>
+              
+        </div>
+        
+    </form>
+
+    <div class="btn" (click)="formularioTieneErrores()">
+        <button mat-button (click)="crearItem()"
+            [disabled]="!firstFormGroup.valid || !disableBtnEditDelete">Crear</button>
+        <button mat-button matTooltip="Confirmar Cambio" (click)="modificarItem()"
+            [disabled]="disableBtnEditDelete || !firstFormGroup.valid">Modificar</button>
+        <button mat-button (click)="checkDelete()" [disabled]="disableBtnEditDelete">Eliminar</button>
+    </div>
+</div>
+
+<ng-template #usuarioHelp>
+    <ol>
+      <li><strong>Crear Usuario:</strong> Complete todos los campos obligatorios en el formulario.
+        * Usuario: Máximo 10 caracteres.
+        * Contraseña: Al menos una mayúscula y un número.
+      </li>
+      <li><strong>Editar Usuario:</strong>
+        <ol type="a">
+          <li>Busque el usuario que desea editar en la lista desplegable ("Buscar Usuario").</li>
+          <li>Seleccione el usuario deseado.</li>
+          <li>Modifique los datos necesarios y presione el botón "Modificar".</li>
+        </ol>
+      </li>
+      <li><strong>Eliminar Usuario:</strong>
+        <ol type="a">
+          <li>Busque el usuario que desea eliminar en la lista desplegable ("Buscar Usuario").</li>
+          <li>Seleccione el usuario deseado.</li>
+          <li>Presione el botón "Eliminar".</li>
+        </ol>
+      </li>
+    </ol>
+  </ng-template>
