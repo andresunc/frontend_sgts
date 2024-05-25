@@ -45,6 +45,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 
   @memoize
   enableRow(serv: Servicios): boolean {
+    console.log('ENABLE ROW')
     return this.authService.canEditServicio(serv);
   }
 
@@ -75,7 +76,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  
+
 
   // Métododo para filtrar servicios por el buscador
   applyFilter(event: Event) {

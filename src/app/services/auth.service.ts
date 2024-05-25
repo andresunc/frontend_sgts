@@ -42,6 +42,7 @@ export class AuthService implements OnInit {
 
   // deslogearse
   logout(): void {
+    window.location.reload();
     this.isLoggedIn = false;
     localStorage.removeItem('currentUser'); // Eliminar del localStorage al cerrar sesión
     this.router.navigate(['']);
