@@ -157,7 +157,7 @@
                 <h6>Contacto {{ i + 1 }}:</h6>
                 <div>
                   <div *ngFor="let key of ['Nombre', 'Apellido', 'Telefono', 'Email']">
-                    <p>{{ key }}: {{ contacto[key.toLowerCase()] }}</p>
+                    <p>{{ key }}: {{ contacto[key | lowercase ] }}</p>
                   </div>
                 </div>
               </div>

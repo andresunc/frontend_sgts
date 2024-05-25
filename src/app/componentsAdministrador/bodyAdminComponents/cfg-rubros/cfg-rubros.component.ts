@@ -110,7 +110,7 @@ export class CfgRubrosComponent implements OnInit {
   }
 
   private _filter(value: string): Rubro[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value.toLowerCase() || '';
     return this.rubros.filter(rubro => rubro.rubro?.toLowerCase().startsWith(filterValue));
   }
 
@@ -268,7 +268,7 @@ export class CfgRubrosComponent implements OnInit {
   equalName: boolean = false;
   checkExistName(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    const inputData = inputElement.value.trim();
+    const inputData = inputElement.value.trim() || '';
     this.equalName = this.rubros.some(ru => ru.rubro?.toLowerCase() === inputData.toLowerCase());
     console.log(this.equalName);
 

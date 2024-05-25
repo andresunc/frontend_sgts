@@ -112,7 +112,7 @@ export class CfgRiesgosComponent implements OnInit {
   }
 
   private _filter(value: string): Riesgo[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value.toLowerCase() || '';
     return this.riesgos.filter(riesgo => riesgo.riesgo?.toLowerCase().startsWith(filterValue));
   }
 
@@ -278,7 +278,7 @@ export class CfgRiesgosComponent implements OnInit {
   equalName: boolean = false;
   checkExistName(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
-    const inputData = inputElement.value.trim();
+    const inputData = inputElement.value.trim() || '';
     this.equalName = this.riesgos.some(ri => ri.riesgo?.toLowerCase() === inputData.toLowerCase());
     console.log(this.equalName);
 

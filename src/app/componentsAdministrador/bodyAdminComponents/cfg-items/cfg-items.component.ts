@@ -207,7 +207,7 @@ export class CfgItemsComponent implements OnInit {
   }
 
   private _filter(value: string): Requisito[] {
-    const filterValue = value.toLowerCase();
+    const filterValue = value.toLowerCase() || '';
     return this.requisitos.filter(requisito => requisito.descripcion?.toLowerCase().startsWith(filterValue));
   }
 
@@ -344,7 +344,7 @@ export class CfgItemsComponent implements OnInit {
   checkRequisitoName(event: Event): void {
     
     const inputElement = event.target as HTMLInputElement;
-    const inputData = inputElement.value.trim();
+    const inputData = inputElement.value.trim() || '';
     this.equalName = this.requisitos.some(re => re.descripcion?.toLowerCase() === inputData.toLowerCase());
 
     console.log(this.equalName)
