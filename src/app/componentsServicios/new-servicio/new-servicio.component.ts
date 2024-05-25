@@ -8,6 +8,7 @@ import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
+import { Params } from 'src/app/models/Params';
 import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
@@ -35,6 +36,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
   recursoSelected?: RecursoDto;
   empresaSelected?: EmpresaDto;
   presupuestoSelected?: number;
+  params: Params = new Params();
 
   constructor(private fb: FormBuilder, private dataNewServ: NewServicioService,
     private dataShared: DataSharedService,
@@ -241,7 +243,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     /**
      * Categoria permitida "Sin iniciar"
      */
-    const categoriaPermitida = this.categorias.find(ca => ca.categoria === 'Sin iniciar');
+    const categoriaPermitida = this.categorias.find(ca => ca.categoria === this.params.SIN_INICIAR);
     this.estadosPermitidos = this.estadoList.filter(est => est.idCategoria === categoriaPermitida?.idCategoria);
   }
 

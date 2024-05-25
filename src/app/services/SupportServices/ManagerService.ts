@@ -26,7 +26,6 @@ export default class ManagerService implements OnDestroy {
   }
 
   calcularAvance(itemsChecklist: ItemChecklistDto[]): number {
-
     const totalItems = itemsChecklist.length;
     // 1 Si el total de items es mayor a 0 hacer, sino retornar 0
     // 2 Filtrar los completos? y contarlos
@@ -36,6 +35,7 @@ export default class ManagerService implements OnDestroy {
 
   // Establece la alerta de un servicio cuando esta en estado presentado.
   checkPresentado(servicio: Servicios): boolean {
+    console.log('pongoww')
     return servicio.idEstado === 5;
   }
 

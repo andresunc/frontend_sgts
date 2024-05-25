@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -12,6 +12,9 @@ import { Subject } from 'rxjs';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Params } from 'src/app/models/Params';
+import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
+import { memoize } from 'src/app/componentsShared/pipes/memoize';
 
 @Component({
   selector: 'app-ver-servicios',
@@ -24,6 +27,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   listServicios!: Servicios[];
   svService: ManagerService; // Trabaja para calcular algunos valores de los servicios
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
+  params: Params = new Params();
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
     private servicioService: ServicioService, private svManager: ManagerService,
@@ -39,6 +43,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     this.loadServicios(this.defaultSelected); // Cargar los servicios con limite de cantidad
   }
 
+  @memoize
   enableRow(serv: Servicios): boolean {
     return this.authService.canEditServicio(serv);
   }
@@ -60,36 +65,6 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
           */
         }
       ).add(() => this.dataShared.ocultarSpinner());
-  }
-
-  calcularDiferencia(fecha_alta: string): string {
-    const fechaActual = new Date();
-    const fechaAlta = new Date(fecha_alta);
-    const diffTiempo = Math.abs(fechaActual.getTime() - fechaAlta.getTime());
-    const diffSegundos = Math.floor(diffTiempo / 1000);
-    const diffMinutos = Math.floor(diffSegundos / 60);
-    const diffHoras = Math.floor(diffMinutos / 60);
-    const diffDias = Math.floor(diffHoras / 24);
-
-    if (diffDias === 0 && diffHoras === 0 && diffMinutos < 1) {
-      return 'hace unos segundos';
-    } else if (diffDias === 0 && diffHoras === 0) {
-      return `hace ${diffMinutos} minuto${diffMinutos !== 1 ? 's' : ''}`;
-    } else if (diffDias === 0) {
-      return `hace ${diffHoras} hora${diffHoras !== 1 ? 's' : ''}`;
-    } else if (diffDias === 1) {
-      return 'hace 1 día';
-    } else if (diffDias < 30) {
-      return `hace ${diffDias} día${diffDias !== 1 ? 's' : ''}`;
-    } else {
-      const diffMeses = Math.floor(diffDias / 30);
-      const diasAdicionales = diffDias % 30;
-      if (diasAdicionales === 0) {
-        return `hace ${diffMeses} mes${diffMeses !== 1 ? 'es' : ''}`;
-      } else {
-        return `hace ${diffMeses} mes${diffMeses !== 1 ? 'es' : ''} y ${diasAdicionales} día${diasAdicionales !== 1 ? 's' : ''}`;
-      }
-    }
   }
 
 

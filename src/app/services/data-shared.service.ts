@@ -16,6 +16,7 @@ export class DataSharedService {
   private filterByCheckbox: EventEmitter<void> = new EventEmitter<void>();
   private ControlAccess: EventEmitter<void> = new EventEmitter<void>();
   private upDateSideBar: EventEmitter<void> = new EventEmitter<void>();
+
   private spinner = new BehaviorSubject<boolean>(false);
   goSpinner = this.spinner.asObservable();
 
@@ -39,10 +40,10 @@ export class DataSharedService {
     } else {
       console.log('No se actualizó el servicio en localstorage')
     }
-    
+
   }
 
-  getSharedObject() {
+  getSharedObject(): Servicios {
     return this.sharedObject;
   }
 
@@ -105,12 +106,12 @@ export class DataSharedService {
 
   openInstructor(data: TemplateRef<HTMLElement>, title: string): void {
     const dialogRef = this.dialog.open(InstructorComponent, {
-      data: { 
+      data: {
         templateRef: data,
         title: title
       }
     });
-  
+
     dialogRef.afterClosed().subscribe(() => {
       console.log('Instructor cerrado correctamente');
     });
