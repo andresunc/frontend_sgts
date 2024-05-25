@@ -16,6 +16,10 @@ mat-form-field{
   color: var(--secondary)
 }
 
+.backspace:hover {
+  color: var(--warn);
+  transition: color 0.3s ease;
+}
 
 .infoSystem{
 flex: 0.5;

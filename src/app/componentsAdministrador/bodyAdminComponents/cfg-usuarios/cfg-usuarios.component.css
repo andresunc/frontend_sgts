@@ -1,0 +1,60 @@
+.container {
+    text-align: center;
+  }
+
+.backspace {
+    cursor: pointer;
+    color: var(--secondary)
+  }
+  
+  .backspace:hover {
+    color: var(--warn);
+    transition: color 0.3s ease;
+  }
+
+  .user{
+    display: inline-flex;
+    width: 98%;
+  }
+
+
+  .user mat-form-field{
+    padding: 0.5%;
+    width: 40%;
+  }
+
+  .persona{
+    display: inline;
+    width: 98%;
+  }
+
+  .persona mat-form-field{
+    padding: 0.5%;
+    width: 32.7%;
+  }
+
+  @media screen and (max-width: 700px) {
+
+    .infoSystem{
+        margin-top: 4%;
+        }
+
+    .user{
+    display: inline;
+
+    }
+
+    .user mat-form-field{
+        padding: 0.5%;
+        width: 50%;
+      }
+
+    .persona{
+        display: inline-block;
+    }
+
+    .persona mat-form-field{
+        padding: 0.5%;
+        width: 50%;
+      }
+  }
