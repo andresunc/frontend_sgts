@@ -117,10 +117,10 @@ export class PrintServicioComponent implements OnInit {
   }
   
   blockLowOrder(estado: Estado): boolean {
-    if(estado && this.estadoServicio) {
-      estado.orden! < this.estadoServicio!.orden!;
+    if (this.estadoServicio === undefined) {
+      this.estadoServicio = this.estadosList[0];
     }
-    return false;
+    return estado.orden! < this.estadoServicio!.orden!;
   }
 
   blockOrder: boolean = true;
