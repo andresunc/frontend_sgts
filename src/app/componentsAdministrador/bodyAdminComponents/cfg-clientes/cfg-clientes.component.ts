@@ -451,6 +451,7 @@ export class CfgClientesComponent implements OnInit {
     console.log('backspace works');
     this.disableBtnEditDelete = true;
     this.firstFormGroup.reset();
+    this.secondFormGroup.reset();
   }
 
   equalName: boolean = true;

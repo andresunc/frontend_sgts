@@ -22,9 +22,7 @@ import { HistoricoEstadoService } from 'src/app/services/DomainServices/historic
 import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio-empresa.service';
 import { MatOption } from '@angular/material/core';
 import { Params } from 'src/app/models/Params';
-import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvance';
-import { memoize } from 'src/app/componentsShared/pipes/memoize';
 
 @Component({
   selector: 'app-print-servicio',
@@ -49,6 +47,7 @@ export class PrintServicioComponent implements OnInit {
   comentariOriginal!: string;
   params: Params = new Params();
   onServicio: Servicios;
+  estadoServicio!: Estado | undefined;
 
   constructor(
     private dataShared: DataSharedService,
@@ -96,6 +95,7 @@ export class PrintServicioComponent implements OnInit {
       .subscribe(
         (data: Servicios) => {
           this.dataShared.setSharedObject(data);
+          this.estadoServicio = this.estadosList.find(estado => estado.tipoEstado === data.estado);
           this.dataShared.ocultarSpinner();
         },
       ).add(
@@ -115,11 +115,12 @@ export class PrintServicioComponent implements OnInit {
   getServicio(): Servicios {
     return this.dataShared.getSharedObject();
   }
-
   
-
   blockLowOrder(estado: Estado): boolean {
-    return estado.orden! < this.estadoMatch?.orden!;
+    if(estado && this.estadoServicio) {
+      estado.orden! < this.estadoServicio!.orden!;
+    }
+    return false;
   }
 
   blockOrder: boolean = true;
@@ -242,7 +243,7 @@ export class PrintServicioComponent implements OnInit {
       this.estadoService.getStatusNotDeleted().subscribe(
         (data) => {
           this.estadosList = data;
-          this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === servicio.estado);
+          this.estadoServicio = this.estadosList.find(estado => estado.tipoEstado === servicio.estado);
           //this.checkEditable();
           console.log('Estados cargados OK');
           this.dataShared.ocultarSpinner();
@@ -310,7 +311,6 @@ export class PrintServicioComponent implements OnInit {
       console.log('valor del handleComplete: ', requestsCount);
       if (requestsCount === 0) {
         this.dataShared.ocultarSpinner();
-
         this.getServicioById(servicio.idServicio);
         console.log('ACTUALIZACIONES FINALIZADAS OK')
       }
@@ -327,7 +327,6 @@ export class PrintServicioComponent implements OnInit {
         let historicoEstado = new HistoricoEstado();
         historicoEstado.estadoIdEstado = this.estadoMatch?.idEstado;
         historicoEstado.servicioIdServicio = servicio.idServicio;
-        this.dataShared.setSharedObject(servicio)
 
         if (this.blockOrder) {
           // Agregar estado si blockOrder es true
@@ -345,6 +344,7 @@ export class PrintServicioComponent implements OnInit {
           this.historicoEstado.revertirHsEstado(historicoEstado)
             .subscribe(
               (response) => {
+                this.dataShared.setSharedObject(servicio)
                 console.log('Historico con blockOrder = false:', response);
                 this.blockOrder = true;
               },
