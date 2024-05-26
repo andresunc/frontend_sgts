@@ -192,11 +192,16 @@
               ABRIR CHECKLIST
             </button>
 
-            <button style="width: 100%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="isEditable"
+            <div style="display: flex; justify-content: space-between;">
+              <button style="width: 48%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="isEditable"
               [disabled]="!isEditable">
-              <mat-icon class="mat-icon">save</mat-icon>
-              GUARDAR CAMBIOS
+              GUARDAR
             </button>
+            <button style="width: 48%;" (click)="loadChanges()" mat-flat-button *ngIf="isEditable"
+              [disabled]="!isEditable">
+              CANCELAR
+            </button>
+            </div>
 
           </mat-grid-tile>
 
