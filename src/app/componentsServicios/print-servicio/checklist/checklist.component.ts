@@ -77,9 +77,7 @@ export class ChecklistComponent implements OnInit {
 
   saveDatabtn: boolean = true;
   saveDataImpuestos(item: ItemChecklistDto) {
-
     this.formChecklist.markAllAsTouched();
-
     if (this.formChecklist.invalid || this.formChecklist.pending) return;
     
     const itemTemp = this.dataSourceItems.find(x => x.idItemChecklist === item.idItemChecklist);
