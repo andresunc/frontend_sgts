@@ -448,11 +448,33 @@ export class CfgClientesComponent implements OnInit {
   }
 
   backspace() {
-    console.log('backspace works');
-    this.disableBtnEditDelete = true;
+  
+    // Resetear formularios
     this.firstFormGroup.reset();
     this.secondFormGroup.reset();
+  
+    // Resetear listas y variables
+    this.contactos = [];
+    this.initialContacts = [];
+    this.empresaSeleccionada = undefined;
+    this.modificarEliminarHabilitado = false;
+    this.resumenDatos = {};
+    this.initialEmpresa = new Empresa();
+    this.disableBtnEditDelete = true;
+    this.controlEdit = false;
+    this.equalName = true;
+  
+    // Otras acciones necesarias para restablecer el estado del componente
+    this.actualizarResumen();
+  
+    // Restablecer el control de RazonSocial y sus validaciones
+    this.RazonSocial.reset();
+    this.RazonSocial.setErrors(null);
+  
+    // Re-obtener empresas (si es necesario)
+    this.obtenerEmpresas();
   }
+  
 
   equalName: boolean = true;
   checkClienteName(event: Event): void {
