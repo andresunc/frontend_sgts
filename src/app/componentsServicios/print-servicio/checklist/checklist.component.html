@@ -175,7 +175,11 @@
                 <button *ngIf="isAdmin" mat-raised-button color="primary" (click)="openAddItemComponent()">
                     <span matTooltip="Agregar al checklist">+ Nuevo Ítem</span>
                 </button>
-                <button mat-raised-button color="accent" [disabled]="!modified" [mat-dialog-close]="true" type="button"
+                <button mat-raised-button color="accent" [disabled]="!modified || formChecklist.invalid" [mat-dialog-close]="true" type="button"
+                    (click)="managElement()">
+                    <span>Guardar</span>
+                </button>
+                <button mat-raised-button color="accent" [disabled]="!modified || formChecklist.invalid" [mat-dialog-close]="true" type="button"
                     (click)="managElement()">
                     <span>Guardar</span>
                 </button>
