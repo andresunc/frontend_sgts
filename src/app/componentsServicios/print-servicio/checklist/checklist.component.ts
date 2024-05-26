@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsServicios/print-servicio/add-item/add-item.component';
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
@@ -20,6 +21,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 })
 export class ChecklistComponent implements OnInit {
 
+  formChecklist!: FormGroup;
   dataSourceItems: ItemChecklistDto[];
   recursosGG: RecursoDto[] = [];
   avance: number = 0;
@@ -50,6 +52,57 @@ export class ChecklistComponent implements OnInit {
       this.refreshItemsCheckList();
       this.getRecursos();
     });
+    this.setForm();
+  }
+
+  setForm() {
+    this.formChecklist = new FormGroup({
+      valorTasa: new FormControl(null, [Validators.pattern(/^\d{1,9}$/)]),
+      hojas: new FormControl(null, [Validators.min(0), Validators.max(999)]),
+      urlComprobante: new FormControl(null, [Validators.pattern('https://.*')])
+    });
+  }
+
+  incluyeImpuestoStates: boolean = false;
+  isReadOnly: boolean = true;
+  updateCheckTasa() {
+    this.incluyeImpuestoStates = !this.incluyeImpuestoStates;
+    const state = this.incluyeImpuestoStates;
+    if (state) {
+      this.enableData();
+    } else {
+      this.disableData();
+    }
+  }
+
+  saveDatabtn!: boolean;
+  saveDataImpuestos(item: ItemChecklistDto) {
+    const itemTemp = this.dataSourceItems.find(x => x.idItemChecklist === item.idItemChecklist);
+    if (itemTemp) {
+      itemTemp.tasaValor = this.formChecklist.get('valorTasa')?.value;
+      itemTemp.tasaCantidadHojas = this.formChecklist.get('hojas')?.value;
+      itemTemp.urlComprobanteTasa = this.formChecklist.get('urlComprobante')?.value;
+      this.incluyeImpuestoStates = false;
+      this.disableData();
+    }
+  }
+
+  enableData() {
+    this.isReadOnly = false;
+    this.saveDatabtn = false;
+    this.updateValidation();
+  }
+
+  disableData() {
+    this.isReadOnly = true;
+    this.saveDatabtn = true;
+    this.updateValidation();
+  }
+
+  updateValidation() {
+    this.formChecklist.get('valorTasa')?.updateValueAndValidity();
+    this.formChecklist.get('hojas')?.updateValueAndValidity();
+    this.formChecklist.get('urlComprobante')?.updateValueAndValidity();
   }
 
   calcularAvance(itemsChecklist: ItemChecklistDto[]): number {
@@ -62,17 +115,17 @@ export class ChecklistComponent implements OnInit {
 
   getRecursos() {
     this.recursoDtoService.getRecursos()
-    .subscribe(
-      (data) => {
-        this.recursosGG = data;
-        console.log(this.recursosGG)
-      }
-    )
+      .subscribe(
+        (data) => {
+          this.recursosGG = data;
+          console.log(this.recursosGG)
+        }
+      )
   }
 
   getRol(idRecurso: number | null): string {
     const recursoGG = this.recursosGG.find(re => re.idRecurso === idRecurso)
-    return recursoGG ? recursoGG!.rol! :  '';
+    return recursoGG ? recursoGG!.rol! : '';
   }
 
   refreshItemsCheckList(): void {
@@ -87,8 +140,6 @@ export class ChecklistComponent implements OnInit {
         }).add(
           this.dataShared.ocultarSpinner()
         );
-
-
   }
 
   completo: boolean = false;
@@ -185,12 +236,14 @@ export class ChecklistComponent implements OnInit {
     return this.isAdmin || item.idRecurso === this.authService.getCurrentUser()?.id_recurso;
   }
 
-  // Declara un objeto para mantener el estado de incluyeImpuesto para cada ítem del acordeón
+  /**
+   * // Declara un objeto para mantener el estado de incluyeImpuesto para cada ítem del acordeón
   incluyeImpuestoStates: { [idItemChecklist: number]: boolean } = {};
   updateCheckTasa(item: ItemChecklistDto) {
     // Cambia el estado de incluyeImpuesto para el ítem específico del acordeón
     this.incluyeImpuestoStates[item.idItemChecklist!] = !this.incluyeImpuestoStates[item.idItemChecklist!];
   }
+   */
 
   managElement() {
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
