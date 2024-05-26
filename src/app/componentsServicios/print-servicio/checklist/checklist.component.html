@@ -25,7 +25,7 @@
                     [attr.id]="'accordion-header-' + index" [attr.aria-expanded]="accordionItem.expanded"
                     [attr.aria-controls]="'accordion-body-' + index" [disabled]="!itemManagement(item)">
 
-                    <div id="accordionItem" (click)="accordionItem.toggle()">
+                    <div id="accordionItem" (click)="isReadOnly ? accordionItem.toggle() : null">
                         <!-- Rotulo del item del checklist -->
                         <div
                             class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
@@ -95,41 +95,71 @@
                           
                             <div class="row" style="display: flex; justify-content:flex-start; align-items: flex-start;">
 
-                              <div class="col-md-6">
+                            <div class="col-md-6">
                                 <mat-form-field floatLabel="always" style="width: 100%;">
-                                  <mat-label>Valor de impuestos/tasas</mat-label>
-                                  <input *ngIf="!isReadOnly" matInput type="number" id="valorTasa" formControlName="valorTasa" 
-                                 (change)="getChange(index+1, item)" [readonly]="isReadOnly" placeholder="{{item.tasaValor}}">
-                                 <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.tasaValor">
-                                 <span matTextPrefix>$&nbsp;</span>
+                                    <mat-label>Valor de impuestos/tasas</mat-label>
+                                    <input *ngIf="!isReadOnly" matInput type="number" id="valorTasa" formControlName="valorTasa"
+                                        (change)="getChange(index+1, item)" [readonly]="isReadOnly" placeholder="{{item.tasaValor}}">
+                            
+                                    <mat-error *ngIf="(formChecklist.get('valorTasa')!.hasError('pattern')) && !isReadOnly">
+                                        Digitos máximos 9
+                                    </mat-error>
+                            
+                                    <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.tasaValor || 0">
+                                    <span matTextPrefix>$&nbsp;</span>
                                 </mat-form-field>
-                              </div>
+                            </div>
                           
                               <div class="col-md-6">
                                 <mat-form-field floatLabel="always" style="width: 100%;">
                                   <mat-label>Cantidad de hojas</mat-label>
                                   <input *ngIf="!isReadOnly" matInput type="number" id="hojas" formControlName="hojas"
                                  (change)="getChange(index+2, item)" [readonly]="isReadOnly" placeholder="{{item.tasaCantidadHojas}}">
-                                 <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.tasaCantidadHojas">
+
+                                <mat-error *ngIf="(formChecklist.get('hojas')!.hasError('max')) && !isReadOnly">
+                                    Máximo permitido 999
+                                </mat-error>
+
+                                 <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.tasaCantidadHojas || 0">
                                 </mat-form-field>
                               </div>
                             </div>
                           
                             <mat-form-field floatLabel="always" style="width: 100%;">
+
                               <mat-label>URL Comprobante</mat-label>
-                              <input *ngIf="!isReadOnly" matInput type="url" id="urlComprobante" formControlName="urlComprobante" placeholder="https://repo-gg.com"
-                                pattern="https://.*" (change)="getChange(index+3, item)" [readonly]="isReadOnly" placeholder="{{item.urlComprobanteTasa}}">
-                                <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.urlComprobanteTasa">
+                              <input *ngIf="!isReadOnly" matInput type="url" id="urlComprobante" formControlName="urlComprobante"
+                               (change)="getChange(index+3, item)" [readonly]="isReadOnly" placeholder="{{item.urlComprobanteTasa ? item.urlComprobanteTasa : 'https://repo-gg.com'}}"
+                               (onchange)="formChecklist.markAllAsTouched()">
+
+                                <mat-error *ngIf="(formChecklist.get('urlComprobante')!.hasError('pattern')) && !isReadOnly">
+                                    URL inválida. Debe comenzar con https://
+                                </mat-error>
+
+                                <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.urlComprobanteTasa ? item.urlComprobanteTasa : 'https://repo-gg.com'">
+
                             </mat-form-field>
                           
-                            <fieldset *ngIf="updatedNotify">
-                              <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
-                                (click)="updateNotificado(item); getChange(index+4, item)">
-                                <span>{{ item.notificado ? 'Se ha establecido notificado' : 'Establecer como notificado' }}</span>
-                              </mat-chip-option>
-                            </fieldset>
+                            <div class="row" style="display: flex; justify-content:flex-start; align-items: flex-start;">
 
-                            <button (click)="saveDataImpuestos(item)" [disabled]="saveDatabtn">cusifai</button>
+                                <div class="col-md-6">
+                                    <fieldset *ngIf="updatedNotify">
+                                        <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
+                                          (click)="updateNotificado(item); getChange(index+4, item)">
+                                          <span>{{ item.notificado ? 'Se ha establecido notificado' : 'Establecer como notificado' }}</span>
+                                        </mat-chip-option>
+                                      </fieldset>
+                                </div>
+                                <div class="col-md-6" style="display: flex; justify-content: end; align-items: flex-end;">
+                                    <button mat-raised-button color="primary" [disabled]="saveDatabtn" type="button"
+                                        (click)="saveDataImpuestos(item)">
+                                        <span>Establecer Cambios</span>
+                                    </button>
+                                </div>
+                                
+                            </div>
+
+                            
                         </form>
                           
 

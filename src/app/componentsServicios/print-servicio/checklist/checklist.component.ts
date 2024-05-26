@@ -75,8 +75,13 @@ export class ChecklistComponent implements OnInit {
     }
   }
 
-  saveDatabtn!: boolean;
+  saveDatabtn: boolean = true;
   saveDataImpuestos(item: ItemChecklistDto) {
+
+    this.formChecklist.markAllAsTouched();
+
+    if (this.formChecklist.invalid || this.formChecklist.pending) return;
+    
     const itemTemp = this.dataSourceItems.find(x => x.idItemChecklist === item.idItemChecklist);
     if (itemTemp) {
       itemTemp.tasaValor = this.formChecklist.get('valorTasa')?.value;
@@ -90,19 +95,11 @@ export class ChecklistComponent implements OnInit {
   enableData() {
     this.isReadOnly = false;
     this.saveDatabtn = false;
-    this.updateValidation();
   }
 
   disableData() {
     this.isReadOnly = true;
     this.saveDatabtn = true;
-    this.updateValidation();
-  }
-
-  updateValidation() {
-    this.formChecklist.get('valorTasa')?.updateValueAndValidity();
-    this.formChecklist.get('hojas')?.updateValueAndValidity();
-    this.formChecklist.get('urlComprobante')?.updateValueAndValidity();
   }
 
   calcularAvance(itemsChecklist: ItemChecklistDto[]): number {
