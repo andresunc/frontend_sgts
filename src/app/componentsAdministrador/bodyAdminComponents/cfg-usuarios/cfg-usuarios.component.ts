@@ -21,8 +21,10 @@ export class CfgUsuariosComponent implements OnInit {
   firstFormGroup = new FormGroup({
     usuario:new FormControl<string>('', [Validators.maxLength(10)]),
     contraseña:new FormControl<string>('', [Validators.maxLength(10)]),
+    rol: new FormControl<string>('', [Validators.required]),
     nombre: new FormControl<string>('', [Validators.maxLength(45)]),
     apellido: new FormControl<string>('', [Validators.maxLength(45)]),
+    dni: new FormControl<string>('', [Validators.pattern('^[0-9]{6,}$')]),
     telefono: new FormControl<string>('', [Validators.pattern('^[0-9]{6,}$')]),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')])
 

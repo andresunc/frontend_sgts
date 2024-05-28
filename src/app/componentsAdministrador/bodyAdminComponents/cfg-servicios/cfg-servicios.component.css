@@ -1,45 +1,77 @@
-.moduleContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 0.5rem;
-}
 
-.childContainer {
+
+form{
   display: flex;
-  margin: auto;
-  margin-top: 0.5rem;
-  width: 99%;
-  height: calc(97% - 2.8rem);
-  /* Resta el alto de la barra de título */
-  border-radius: 0.5rem;
-  justify-content: space-between;
-  align-items: center;
-  
-}
-
-/* Descomentar para eliminar el efecto display:flex 
-.childContainer > * {
-  display: block;
-}
-*/
-.rendermenu {
-  
-  width: 21%;
-  padding-left: 1.25rem;
-  height: 100%;
-  background-color: #DFEEEE;
-  border-radius: 0.5rem;
-  box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
-  margin-right: auto;
-}
-
-.menuContent {
-  width: 78%;
-  height: 100%;
-  background-color: #DFEEEE;
-  border-radius: 0.5rem;
-  box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
-  display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content:center;
   align-items: center;
 }
+
+mat-form-field{
+  width: 90%;
+}
+
+.backspace {
+  cursor: pointer;
+  color: var(--secondary)
+}
+
+.backspace:hover {
+  color: var(--warn);
+  transition: color 0.3s ease;
+}
+
+.infoSystem{
+flex: 0.5;
+margin-left: 1%;
+margin-bottom: 4%;
+
+}
+
+
+.btn-next{
+    display: flex;
+    justify-content: center;
+    border-color: transparent;
+   
+  }
+
+  .btn-buscar, .btn-editar{
+    cursor: pointer;
+    background-color: #5f5e5e;
+    box-shadow: 2px 0.2rem 0.2rem rgba(111, 110, 110, 0.468);
+    border-width:2px;
+    border-color: aliceblue;
+    color: rgb(250, 250, 250);
+    margin-left: 3%;
+    margin-bottom: 1rem;
+  }
+  
+  .btn-buscar:hover{ 
+    background-color:#673ab7;
+    border-style: solid;
+    color: #fefefe;
+    transform: scale(1.05);
+  }
+  
+  .btn-editar{
+    position: absolute;
+    top: 5px; /* Ajusta según sea necesario para la distancia desde la parte superior */
+    right: 5px; /* Ajusta según sea necesario para la distancia desde el lado derecho */
+    z-index: 1;
+    height: 24px; /* Altura */
+    width: 24px;
+    bottom: 0px;
+  }
+  
+  .btn-editar mat-icon{
+    line-height: 22px;
+    font-size:small;
+  }
+  
+  .btn-editar:hover{ 
+    background-color:#673ab7;
+    border-style: solid;
+    color: #fefefe;
+    transform: scale(1.05);
+  }

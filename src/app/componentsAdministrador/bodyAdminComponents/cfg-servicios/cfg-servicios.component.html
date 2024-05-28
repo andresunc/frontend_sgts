@@ -1,2 +1,60 @@
 <!-- Contenedor de la sección ver servicios -->
-<iframe title="reporte_1" width="600" height="373.5" src="https://app.powerbi.com/view?r=eyJrIjoiN2YzNDVjYjktM2Q4My00N2FlLTk2YjAtYzY0N2Q0YmRlNWRkIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>
+<ng-container>
+    <form [formGroup]="firstFormGroup">
+      
+      <mat-form-field>
+        <mat-label for="Servicio">Tipo de Servicio</mat-label>
+        <input type="text" placeholder="Buscar o crear un Tipo de Servicio" name="Servicio"
+        formControlName="Servicio" maxlength="45" matInput [matAutocomplete]="auto" 
+        (focus)="onInputFocus()" required (input)="checkExistName($event)">
+        <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
+            backspace
+        </mat-icon>
+        
+        <mat-error *ngIf="firstFormGroup.get('Servicio')!.hasError('maxlength')">
+            Ingresa menos de 45 caracteres.
+        </mat-error>
+        <mat-error *ngIf="firstFormGroup.get('Servicio')?.hasError('duplicate')">
+            Ese Tipo de Sericio ya existe.
+        </mat-error>
+  
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+            (optionSelected)="seleccionarServicio($event.option.value)">
+            <mat-option *ngFor="let tipoServicio of filteredOptions | async" [value]="tipoServicio?.tipoServicio">
+                {{ tipoServicio?.tipoServicio }}
+            </mat-option>
+        </mat-autocomplete>
+  
+      </mat-form-field>
+      <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+        live_help
+      </mat-icon>
+      <div class="btn-abm">
+        <button mat-button (click)="crearTipoServicio()" [disabled]="disableBtnCrear || equalName">Crear</button>
+        <button mat-button matTooltip="Confirmar Cambio" (click)="crearTipoServicio()" [disabled]="disableBtnEditDelete">Modificar</button>
+        <button mat-button (click)="checkDelete()" [disabled]="disableBtnEditDelete">Eliminar</button>
+        
+      </div>
+    </form>
+  </ng-container>
+  
+  <ng-template #tipoServicioHelp>
+    <ol>
+      <li><strong>Crear Tipo de Servicio:</strong> Ingrese el nombre del nuevo Tipo de Servicio en el campo correspondiente y presione el botón "Crear".
+      </li>
+      <li><strong>Editar Tipo de Servicio:</strong>
+        <ol type="a">
+          <li>Busque el Tipo de Servicio que desea editar en la lista desplegable ("Buscar Tipo de Servicio").</li>
+          <li>Seleccione el Tipo de Servicio deseado.</li>
+          <li>Modifique los datos necesarios y presione el botón "Modificar".</li>
+        </ol>
+      </li>
+      <li><strong>Eliminar Tipo de Servicio:</strong>
+        <ol type="a">
+          <li>Busque el Tipo de Servicio que desea eliminar en la lista desplegable ("Tipo de Servicio").</li>
+          <li>Seleccione el Tipo de Servicio deseado.</li>
+          <li>Presione el botón "Eliminar".</li>
+        </ol>
+      </li>
+    </ol>
+  </ng-template>
