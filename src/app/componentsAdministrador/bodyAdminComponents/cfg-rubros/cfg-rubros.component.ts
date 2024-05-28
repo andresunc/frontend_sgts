@@ -276,7 +276,7 @@ export class CfgRubrosComponent implements OnInit {
       this.firstFormGroup.get('Rubro')?.setErrors({ duplicated: true});
       this.disableBtnEditDelete = true;
     }
-    if (inputData.length >= 50){
+    if (inputData.length >= 45){
       this.firstFormGroup.get('Rubro')?.setErrors({ maxlength: true});
     }
   }

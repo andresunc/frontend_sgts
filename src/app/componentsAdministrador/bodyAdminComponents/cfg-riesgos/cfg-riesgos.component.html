@@ -4,14 +4,14 @@
     <mat-form-field>
       <mat-label for="Riesgo">Nombre del Riesgo</mat-label>
       <input type="text" placeholder="Buscar o crear un Riesgo" name="Riesgo"
-      formControlName="Riesgo" maxlength="50" matInput [matAutocomplete]="auto" 
+      formControlName="Riesgo" maxlength="45" matInput [matAutocomplete]="auto" 
       (focus)="onInputFocus()" required (input)="checkExistName($event)">
       <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
           backspace
       </mat-icon>
       
       <mat-error *ngIf="firstFormGroup.get('Riesgo')!.hasError('maxlength')">
-          Máximo de 50 caracteres.
+          Máximo de 45 caracteres.
       </mat-error>
       <mat-error *ngIf="firstFormGroup.get('Riesgo')?.hasError('duplicated')">
           Ese nombre ya existe.

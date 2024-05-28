@@ -4,14 +4,14 @@
     <mat-form-field>
       <mat-label for="Rubro">Nombre del Rubro</mat-label>
       <input type="text" placeholder="Buscar o crear un Rubro" name="Rubro"
-      formControlName="Rubro" maxlength="50" matInput [matAutocomplete]="auto" 
+      formControlName="Rubro" maxlength="45" matInput [matAutocomplete]="auto" 
       (focus)="onInputFocus()" required (input)="checkExistName($event)">
       <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
           backspace
       </mat-icon>
       
       <mat-error *ngIf="firstFormGroup.get('Rubro')!.hasError('maxlength')">
-          Ingresa menos de 50 caracteres.
+          Ingresa menos de 45 caracteres.
       </mat-error>
       <mat-error *ngIf="firstFormGroup.get('Rubro')?.hasError('duplicate')">
           Ese nombre ya existe.
