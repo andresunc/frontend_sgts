@@ -30,7 +30,6 @@ export class CfgRiesgosComponent implements OnInit {
   
 
   firstFormGroup = new FormGroup({
-    BuscarRiesgo: new FormControl<string>(''),
     Riesgo: new FormControl<string>(''),
 
   })
@@ -287,7 +286,7 @@ export class CfgRiesgosComponent implements OnInit {
       this.firstFormGroup.get('Riesgo')?.setErrors({ duplicated: true});
       this.disableBtnEditDelete = true;
     }
-    if (inputData.length >= 50){
+    if (inputData.length >= 45){
       this.firstFormGroup.get('Riesgo')?.setErrors({ maxlength: true});
     }
   }

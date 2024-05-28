@@ -23,6 +23,7 @@ myControl = new FormControl();
 
 filteredOptions?: Observable<TipoServicio[]>;
 tipoServicios: TipoServicio[] = [];
+initialTipoServicios: TipoServicio[] = [];
 displayFn!: ((value: any) => string) | null;
 disableBtnCrear: boolean = true;
 disableBtnEditDelete: boolean = true;
@@ -30,7 +31,7 @@ disableBtnEditDelete: boolean = true;
 firstFormGroup = new FormGroup({
     Servicio: new FormControl<string>(''),
 })
-  servicioSeleccionado: any;
+
 
 
 constructor(
@@ -44,6 +45,8 @@ constructor(
 }
 
 ngOnInit() {
+
+  this.obtenerTipoServicio();
 
   // Observar los cambios en el input para detectar si se ha borrado el riesgo seleccionado
   this.firstFormGroup.controls.Servicio.valueChanges.subscribe({
@@ -65,37 +68,169 @@ ngOnInit() {
   );
 
 }
-  private _filter(value: any): any {
-    throw new Error('Method not implemented.');
+  private _filter(value: string): TipoServicio[]{
+    const filterValue = value.toLowerCase() || '';
+    return this.tipoServicios.filter(se => se.tipoServicio?.toLowerCase().startsWith(filterValue));
   }
 
 
+obtenerTipoServicio() {
 
+  this.TipoServicioService.getTipoServicesNotDeleted().subscribe((data: TipoServicio[]) => {
+  this.tipoServicios = data;
+  this.initialTipoServicios = JSON.parse(JSON.stringify(data));
+   console.log("Tipo de Servicios obtenidos:", this.tipoServicios);
+  });
+ }
+
+
+servicioSeleccionado: TipoServicio | undefined;
+seleccionarServicio(value: any) {
+  this.servicioSeleccionado = this.tipoServicios.find(se => se.tipoServicio === value);
+
+  if (this.servicioSeleccionado) {
+    this.disableBtnEditDelete = false;
+    this.disableBtnCrear = true;
+    // Asignar el objeto tipo servicio directamente
+    this.firstFormGroup.patchValue({
+      Servicio: this.servicioSeleccionado.tipoServicio
+    });
+  } else {
+    console.error('No se encontró el Tipo de Servicio');
+  }
+  }
+    
 
 crearTipoServicio() {
-throw new Error('Method not implemented.');
-}
-goInstructor() {
-throw new Error('Method not implemented.');
+  const tipoServicioName = this.firstFormGroup.controls.Servicio.value;
+  if (tipoServicioName === '' || tipoServicioName === null || this.equalName) return;
+
+
+  if (!tipoServicioName && this.servicioSeleccionado) {
+    // Restablecer la variable del tipo de servicio seleccionado y deshabilitar la modificación
+    this.servicioSeleccionado = undefined;
+    this.disableBtnEditDelete = false;
+    // Limpiar el input
+    this.firstFormGroup.controls.Servicio.setValue('');
+    return;
+  }
+
+  this.dataShared.mostrarSpinner();
+
+  const servicio: TipoServicio = new TipoServicio();
+  tipoServicioName ? servicio.tipoServicio = tipoServicioName : undefined;
+
+  this.TipoServicioService.createTipoServices(servicio)
+    .subscribe(
+      (data) => {
+        console.log('Tipo de Servicio creado: ', data);
+
+        this._snackBar.okSnackBar('El Tipo de Servicio se creó correctamente');
+        // Recargar el componente navegando a la misma ruta
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['administrador/servicios']);
+        });
+
+      },
+      (error) => {
+        this._snackBar.warnSnackBar('Error al crear el tipo de servicio');
+        console.error('Error al crear el tipo de servicio:', error);
+      }
+    )
+    .add(() => {
+      this.dataShared.ocultarSpinner();
+    });
 }
 
-seleccionarServicio(arg0: any) {
-throw new Error('Method not implemented.');
+@ViewChild('tipoServicioHelp') tipoServicioHelpRef!: TemplateRef<HTMLElement>;
+goInstructor() {
+  const title = 'Como administrar un Tipo de Servicio';
+  this.dataShared.openInstructor(this.tipoServicioHelpRef, title);
 }
+
 
 backspace() {
-throw new Error('Method not implemented.');
+  console.log('backspace works');
+    this.disableBtnEditDelete = true;
+    this.firstFormGroup.reset();
 }
 
 equalName: boolean = false;
-checkExistName($event: Event) {
-throw new Error('Method not implemented.');
+checkExistName(event: Event): void {
+  const inputElement = event.target as HTMLInputElement;
+  const inputData = inputElement.value.trim() || '';
+  this.equalName = this.tipoServicios.some(se => se.tipoServicio?.toLowerCase() === inputData.toLowerCase());
+  console.log(this.equalName);
+
+  if (this.equalName) {
+    // tipo de servicio existente
+    this.firstFormGroup.get('Servicio')?.setErrors({ duplicated: true});
+    this.disableBtnEditDelete = true;
+  }
+  if (inputData.length >= 45){
+    this.firstFormGroup.get('Servicio')?.setErrors({ maxlength: true});
+  }
 }
+
 onInputFocus() {
-throw new Error('Method not implemented.');
+  this.myControl.setValue(''); 
+  this.matAutocomplete.options.forEach(option => option.deselect());
+
+}
+
+tipoServicioDelete() {
+  if (!this.servicioSeleccionado) {
+    console.error('No se ha seleccionado ningún servicio para eliminar.');
+    return;
+  }
+
+  const idTipoServicioEliminar = this.servicioSeleccionado.idTipoServicio;
+
+  this.dataShared.mostrarSpinner();
+  this.disableBtnEditDelete = true;
+
+  this.TipoServicioService.deleteTipoServices(idTipoServicioEliminar!)
+    .subscribe(
+      () => {
+        console.log('Tipo de Servicio eliminado correctamente');
+
+        this._snackBar.okSnackBar('El Tipo de Servicio se eliminó correctamente');
+
+
+      },
+      () => {
+        this._snackBar.warnSnackBar('Error al eliminar el Tipo de Servicio');
+      }
+    )
+    .add(() => {
+      this.dataShared.ocultarSpinner();
+      // Recargar el componente navegando a la misma ruta
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['administrador/servicios']);
+      });
+
+    });
 }
 
 checkDelete() {
-  throw new Error('Method not implemented.');
+  const dialogRef = this.dialog.open(DeletePopupComponent, {
+    data: { message: `¿Eliminar Tipo de Servicio ${this.servicioSeleccionado?.tipoServicio}?` }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      this.tipoServicioDelete();
+    } else {
+      console.log('Se canceló la eliminación');
+    }
+  });
   }  
+
+  formularioTieneErrores(): boolean {
+    this.firstFormGroup.markAllAsTouched();
+    const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
+    console.log('Datos erroneos en el formulario: ', hayErrores)
+    return hayErrores
+  }
+
 }
