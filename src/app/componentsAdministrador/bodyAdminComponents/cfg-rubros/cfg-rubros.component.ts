@@ -28,7 +28,6 @@ export class CfgRubrosComponent implements OnInit {
   disableBtnCrear: boolean = true;
 
   firstFormGroup = new FormGroup({
-    BuscarRubro: new FormControl<string>(''),
     Rubro: new FormControl<string>(''),
 
   })
