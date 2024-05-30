@@ -174,9 +174,9 @@ export class CfgRiesgosComponent implements OnInit {
     const idRiesgoModificar = this.riesgoSeleccionado.idRiesgo;
     const riesgoModificado: Riesgo = { ...this.riesgoSeleccionado, riesgo: nuevoNombreRiesgo };
 
-    const rubroInitial = this.initialRiesgos.find(ri => ri.idRiesgo === idRiesgoModificar);
+    const riesgoInitial = this.initialRiesgos.find(ri => ri.idRiesgo === idRiesgoModificar);
 
-    const sameRiesgo = JSON.stringify(rubroInitial) === JSON.stringify(riesgoModificado);
+    const sameRiesgo = JSON.stringify(riesgoInitial) === JSON.stringify(riesgoModificado);
 
     console.log(sameRiesgo)
 
