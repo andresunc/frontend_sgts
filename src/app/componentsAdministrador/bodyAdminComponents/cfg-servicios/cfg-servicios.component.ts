@@ -48,7 +48,7 @@ ngOnInit() {
 
   this.obtenerTipoServicio();
 
-  // Observar los cambios en el input para detectar si se ha borrado el riesgo seleccionado
+  // Observar los cambios en el input para detectar si se ha borrado el tiop de servicio seleccionado
   this.firstFormGroup.controls.Servicio.valueChanges.subscribe({
     next: (newValue: string | null) => {
       this.disableBtnCrear = true;
@@ -225,6 +225,60 @@ checkDelete() {
     }
   });
   }  
+
+  modificarTipoServicio() {
+
+    if (!this.servicioSeleccionado) {
+      console.error('No se ha seleccionado ningún servicio para modificar.');
+      return;
+    }
+
+    const nuevoNombreServicio = this.firstFormGroup.controls.Servicio.value;
+    if (!nuevoNombreServicio || nuevoNombreServicio.trim() === '') {
+      console.error('El nuevo nombre del tipo de servicio no puede estar vacío.');
+      return;
+    }
+
+    const idTipoServicioModificar = this.servicioSeleccionado.idTipoServicio;
+    const servicioModificado: TipoServicio = { ...this.servicioSeleccionado, tipoServicio: nuevoNombreServicio };
+
+    const servicioInitial = this.initialTipoServicios.find(se => se.idTipoServicio === idTipoServicioModificar);
+
+    const sameServicio = JSON.stringify(servicioInitial) === JSON.stringify(servicioModificado);
+
+    console.log(sameServicio)
+
+    if (sameServicio) {
+      console.log('No hay cambios que hacer :/')
+      this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
+      return;
+    }
+
+    this.dataShared.mostrarSpinner();
+    this.disableBtnEditDelete = true;
+    this.disableBtnCrear = false;
+
+    this.TipoServicioService.updateTipoServices(idTipoServicioModificar!, servicioModificado)
+      .subscribe(
+        (data) => {
+          console.log('Servicio modificado: ', data);
+
+          this._snackBar.okSnackBar('El Tipo de servicio se modificó correctamente');
+          // Recargar el componente navegando a la misma ruta
+          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+            this.router.navigate(['administrador/servicios']);
+          });
+
+        },
+        () => {
+          this._snackBar.warnSnackBar('Error al modificar el tipo de servicio');
+        }
+      )
+      .add(() => {
+        this.dataShared.ocultarSpinner();
+      });
+
+  }
 
   formularioTieneErrores(): boolean {
     this.firstFormGroup.markAllAsTouched();
