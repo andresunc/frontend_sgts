@@ -1,6 +1,8 @@
 <ng-container>
   <form [formGroup]="firstFormGroup">
-    
+    <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+      live_help
+    </mat-icon>
     <mat-form-field>
       <mat-label for="Rubro">Nombre del Rubro</mat-label>
       <input type="text" placeholder="Buscar o crear un Rubro" name="Rubro"
@@ -25,9 +27,7 @@
       </mat-autocomplete>
 
     </mat-form-field>
-    <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
-      live_help
-    </mat-icon>
+    
     <div class="btn-abm">
       <button mat-button (click)="crearRubro()" [disabled]="disableBtnCrear || equalName">Crear</button>
       <button mat-button matTooltip="Confirmar Cambio" (click)="modificarRubro()" [disabled]="disableBtnEditDelete">Modificar</button>

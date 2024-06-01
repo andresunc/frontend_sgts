@@ -12,6 +12,12 @@
   transition: color 0.3s ease;
 }
 
+.infoSystem{
+  width: 100%;
+  margin-bottom: 4%;
+  
+  }
+
 .principal {
   display: flex;
   justify-content: center;
@@ -114,4 +120,9 @@
     margin-bottom: 0.1rem;
 
   }
+
+  .infoSystem{
+    width: 100%;
+    margin-top: 4%;
+      }
 }

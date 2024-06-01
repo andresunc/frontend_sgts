@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -333,6 +333,12 @@ export class CfgItemsComponent implements OnInit {
       this.router.navigate(['administrador/items']);
     });
   }
+
+  @ViewChild('itemHelp') estadoHelpRef!: TemplateRef<HTMLElement>;
+  goInstructor() {
+  const title = 'Como administrar un Item';
+  this.dataShared.openInstructor(this.estadoHelpRef, title);
+}
 
   backspace() {
     console.log('backspace works');

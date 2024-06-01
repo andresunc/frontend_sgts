@@ -10,6 +10,9 @@
     <mat-stepper class="example-stepper" [orientation]="orientation" [ngStyle]="getStepperStyles()" linear>
       <mat-step [stepControl]="firstFormGroup" label="Datos del Cliente">
         <form [formGroup]="firstFormGroup">
+          <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+            live_help
+          </mat-icon>
           <mat-form-field class="buscar">
 
             <mat-label for="cliente">Razon Social</mat-label>
@@ -175,3 +178,49 @@
     </mat-stepper>
   </ng-container>
 </ng-container>
+
+<ng-template #clientesHelp>
+  <ol>
+    <li><strong>Crear Cliente:</strong>
+      <ol type="a">
+        <li>Complete en la solapa "Datos del cliente" todos los campos obligatorios.</li>
+        <li>Presione el boton "Siguiente". </li>
+        <li><strong>Crear Contacto:</strong>
+          <ol type="1">
+        <li>Complete en la solapa Crear Agenda todos los campos para crear contactos. </li>
+        <li>Agregue el contacto presionando el boton "Más". </li>
+        <li>Repita el paso 1 y 2 para agregar más contactos. </li>
+        <li>Presione el boton "Siguiente". </li>
+        </ol>
+        <li>Revise en la solapa resumen que todos los campos ingresados sean correctos.</li>
+        <li>Presione el botón "Crear".</li>
+      </ol>
+    </li>
+    <li><strong>Editar Cliente:</strong>
+      <ol type="a">
+        <li>Busque el Cliente que desea editar en la lista desplegable ("Razon Social").</li>
+        <li>Seleccione el Cliente deseado.</li>
+        <li>Modifique los datos necesarios.</li>
+        <li>Presione el boton "Siguiente". </li>
+        <li><strong>Editar Contactos:</strong>
+          <ol type="1">
+            <li>Presiona la tarjeta del contacto que desea Editar.</li>
+            <li>Modifique los datos deseados.</li>
+            <li>Presione el botón "Más".</li>
+            <li>Repita los pasos anteriores para editar más contactos. </li>
+            <li>Presione el boton "Siguiente". </li>
+          </ol>
+      <li>Revise en la solapa resumen que todos los campos editados sean correctos.</li>
+      <li>Presione el botón "Modificar".</li>
+      </ol>
+    </li>
+    <li><strong>Eliminar Cliente:</strong>
+      <ol type="a">
+        <li>Busque el Cliente que desea eliminar en la lista desplegable.</li>
+        <li>Dirijase a la solapa Resumen en el paso 3.</li>
+        <li>Presione el botón "Eliminar".</li>
+      </ol>
+    </li>
+  </ol>
+</ng-template>
+

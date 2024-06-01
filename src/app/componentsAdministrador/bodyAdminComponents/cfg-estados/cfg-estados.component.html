@@ -1,23 +1,33 @@
 <ng-container>
   <form [formGroup]="firstFormGroup">
+   
+    <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+      live_help
+    </mat-icon>
+    
     <mat-form-field>
-      <input type="text" placeholder="Buscar Estado" aria-label="Buscar Estado para modificar o eliminar" matInput
-        [formControl]="myControl" [matAutocomplete]="auto" (focus)="onInputFocus()">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
-        (optionSelected)="seleccionarEstado($event.option.value)">
-        <mat-option *ngFor="let estado of filteredOptions | async" [value]="estado.tipoEstado">
-          {{ estado.tipoEstado }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
 
-    <mat-form-field>
       <mat-label for="Estado">Estado</mat-label>
-      <input matInput placeholder="Nuevo Estado" formControlName="Estado" maxlength="99"
-        [value]="estadoSeleccionado?.tipoEstado" (input)="checkExistName($event)" [required]="true">
-      <mat-error *ngIf="firstFormGroup.get('Estado')?.hasError('duplicate')">
-        Ese nombre ya existe.
+      <input type="text" placeholder="Buscar Estado" name="Estado"
+      formControlName="Estado" maxlength="99" matInput [matAutocomplete]="auto" 
+      (focus)="onInputFocus()" required (input)="checkExistName($event)">
+      <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
+          backspace
+      </mat-icon>
+      
+      <mat-error *ngIf="firstFormGroup.get('Estado')!.hasError('maxlength')">
+          Ingresa menos de 100 caracteres.
       </mat-error>
+      <mat-error *ngIf="firstFormGroup.get('Estado')?.hasError('duplicate')">
+          Ese Estado ya existe.
+      </mat-error>
+
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
+          (optionSelected)="seleccionarEstado($event.option.value)">
+          <mat-option *ngFor="let estado of filteredOptions | async" [value]="estado.tipoEstado">
+            {{ estado.tipoEstado }}
+          </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
     
@@ -33,11 +43,38 @@
     <div (click)="formularioTieneErrores()">
       <div class="btn-abm">
         <button mat-button (click)="crearEstado()"
-          [disabled]="modificarEliminarHabilitado || !firstFormGroup.valid">Crear</button>
-        <button mat-button (click)="modificarEstado()" [disabled]="!modificarEliminarHabilitado">Modificar</button>
-        <button mat-button (click)="checkDelete()" [disabled]="!modificarEliminarHabilitado">Eliminar</button>
+        [disabled]="disableBtnCrear || equalName || !firstFormGroup.valid">Crear</button>
+        <button mat-button (click)="modificarEstado()" [disabled]="disableBtnEditDelete">Modificar</button>
+        <button mat-button (click)="checkDelete()"  [disabled]="disableBtnEditDelete">Eliminar</button>
         <button mat-button (click)="openOrdenEstados()" matTooltip="Ordenar estados" color="primary" style="font-weight: bold;">Ordenar</button>
       </div>
     </div>
   </form>
 </ng-container>
+
+<ng-template #estadoHelp>
+  <ol>
+    <li><strong>Crear Estado:</strong>
+      <ol type="a">
+        <li>Ingrese el nombre del Estado en el campo correspondiente.</li>
+        <li>Seleccione la categoria apropiada para ese Estado. </li>
+        <li>Presione el botón "Crear".</li>
+      </ol>
+    </li>
+    <li><strong>Editar Estado:</strong>
+      <ol type="a">
+        <li>Busque el Estado que desea editar en la lista desplegable ("Buscar Estado").</li>
+        <li>Seleccione el Estado deseado.</li>
+        <li>Modifique los datos necesarios.</li>
+        <li>Presione el botón "Modificar".</li>
+      </ol>
+    </li>
+    <li><strong>Eliminar Estado:</strong>
+      <ol type="a">
+        <li>Busque el Estado que desea eliminar en la lista desplegable.</li>
+        <li>Seleccione el Estado deseado.</li>
+        <li>Presione el botón "Eliminar".</li>
+      </ol>
+    </li>
+  </ol>
+</ng-template>
