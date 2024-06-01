@@ -4,12 +4,24 @@ form{
   display: flex;
   flex-wrap: wrap;
   justify-content:center;
-  align-items: center;
+  align-items: left;
 }
 
 mat-form-field{
-  width: 90%;
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
 }
+
+form>mat-icon{
+  text-align: center;
+  }
+
+.infoSystem{
+  width: 100%;
+  margin-bottom: 6%;
+  }
+ 
 
 .backspace {
   cursor: pointer;
@@ -20,14 +32,6 @@ mat-form-field{
   color: var(--warn);
   transition: color 0.3s ease;
 }
-
-.infoSystem{
-flex: 0.5;
-margin-left: 1%;
-margin-bottom: 4%;
-
-}
-
 
 .btn-next{
     display: flex;

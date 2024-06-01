@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
 import { Estado } from 'src/app/models/DomainModels/Estado';
@@ -28,7 +28,8 @@ export class CfgEstadosComponent implements OnInit {
   categorias: Categoria[] = [];
   filteredOptions?: Observable<Estado[]>;
   displayFn!: ((value: any) => string) | null;
-  modificarEliminarHabilitado: boolean = false;
+  disableBtnCrear: boolean = true;
+  disableBtnEditDelete: boolean = true;
 
   firstFormGroup = new FormGroup({
     BuscarEstado: new FormControl<string>(''),
@@ -56,12 +57,12 @@ export class CfgEstadosComponent implements OnInit {
     // Observar los cambios en el input para detectar si se ha borrado el estado seleccionado
     this.firstFormGroup.controls.Estado.valueChanges.subscribe({
       next: (newValue: string | null) => {
-        if (!newValue && this.estadoSeleccionado) {
-          // Restablecer la variable del estado seleccionado y deshabilitar la modificación
-          this.estadoSeleccionado = undefined;
-          this.modificarEliminarHabilitado = false;
-
+        this.disableBtnCrear = true;
+        if (newValue && !this.estadoSeleccionado) {
+          this.disableBtnCrear = false;
         }
+       this.estadoSeleccionado = newValue ? this.estadoSeleccionado : undefined;
+       this.disableBtnEditDelete = this.estadoSeleccionado ? false : true;
       }
     });
 
@@ -96,10 +97,11 @@ export class CfgEstadosComponent implements OnInit {
 
   estadoSeleccionado: Estado | undefined;
   seleccionarEstado(value: any) {
-    this.estadoSeleccionado = this.estados.find(estado => estado.tipoEstado === value);
+    this.estadoSeleccionado = this.estados.find(es => es.tipoEstado === value);
     console.log(this.estadoSeleccionado)
     if (this.estadoSeleccionado) {
-      this.modificarEliminarHabilitado = true;
+      this.disableBtnEditDelete = false;
+      this.disableBtnCrear = true;
       // Asignar el objeto Estado directamente
       this.firstFormGroup.patchValue({
         Estado: this.estadoSeleccionado.tipoEstado,
@@ -137,7 +139,7 @@ export class CfgEstadosComponent implements OnInit {
     if (!estadoName && this.estadoSeleccionado) {
       // Restablecer la variable del estado seleccionado y deshabilitar la modificación
       this.estadoSeleccionado = undefined;
-      this.modificarEliminarHabilitado = false;
+      this.disableBtnEditDelete = false;
       // Limpiar el input
       this.firstFormGroup.controls.Estado.setValue('');
       return;
@@ -213,7 +215,8 @@ export class CfgEstadosComponent implements OnInit {
     }
 
     this.dataShared.mostrarSpinner();
-    this.modificarEliminarHabilitado = true;
+    this.disableBtnEditDelete = true;
+    this.disableBtnCrear = false;
 
     this.estadosService.updateEstado(idEstadoModificar!, estadoModificado)
       .subscribe(
@@ -272,7 +275,7 @@ export class CfgEstadosComponent implements OnInit {
     const idEstadoEliminar = this.estadoSeleccionado.idEstado;
 
     this.dataShared.mostrarSpinner();
-    this.modificarEliminarHabilitado = true;
+    this.disableBtnEditDelete = true;
 
     this.estadosService.deleteLogico(idEstadoEliminar!)
       .subscribe(
@@ -325,5 +328,18 @@ export class CfgEstadosComponent implements OnInit {
     console.log('Datos erroneos en el formulario: ', hayErrores)
     return hayErrores
   }
+
+  @ViewChild('estadoHelp') estadoHelpRef!: TemplateRef<HTMLElement>;
+  goInstructor() {
+  const title = 'Como administrar un Estado';
+  this.dataShared.openInstructor(this.estadoHelpRef, title);
+}
+
+
+backspace() {
+  console.log('backspace works');
+    this.disableBtnEditDelete = true;
+    this.firstFormGroup.reset();
+}
 
 }

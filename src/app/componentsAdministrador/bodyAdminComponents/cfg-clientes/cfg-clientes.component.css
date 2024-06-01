@@ -236,6 +236,15 @@ mat-card-title{
   color: var(--secondary)
 }
 
+.infoSystem{
+  width: 100%;
+  margin-bottom: 2%;
+  
+  }
+
+  form>mat-icon{
+    text-align: center;
+    }
 
 
 @media screen and (max-width: 800px) {
@@ -299,6 +308,12 @@ mat-card-title{
     width: 100%;
     margin: 0px;
   }
+
+  mat-form-field,
+      mat-option,
+      mat-label {
+        font-size: small;
+      }
 
 }
 

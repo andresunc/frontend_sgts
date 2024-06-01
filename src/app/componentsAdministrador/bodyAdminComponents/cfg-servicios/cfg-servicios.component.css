@@ -8,7 +8,9 @@ form{
 }
 
 mat-form-field{
-  width: 90%;
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 
 .backspace {
@@ -22,12 +24,13 @@ mat-form-field{
 }
 
 .infoSystem{
-flex: 0.5;
-margin-left: 1%;
-margin-bottom: 4%;
-
+  width: 100%;
+  margin-bottom: 6%;
 }
 
+form>mat-icon{
+  text-align: center;
+  }
 
 .btn-next{
     display: flex;

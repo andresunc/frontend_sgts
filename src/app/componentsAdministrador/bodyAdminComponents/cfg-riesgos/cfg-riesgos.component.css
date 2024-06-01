@@ -1,17 +1,25 @@
-
-
-form{
-    
+form{ 
   display: flex;
   flex-wrap: wrap;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   }
-  
-  mat-form-field{
-    width: 90%;
+
+mat-form-field{
+  width: 100%;
+  padding-left: 10%;
+  padding-right: 10%;
   }
 
+  form>mat-icon{
+    text-align: center;
+    }
+
+ .infoSystem{
+   width: 100%;
+   margin-bottom: 6%;
+   }
+  
   .backspace {
     cursor: pointer;
     color: var(--secondary);
@@ -22,12 +30,7 @@ form{
     transition: color 0.3s ease;
   }
 
-  .infoSystem{
-  flex: 0.5;
-  margin-left: 1%;
-  margin-bottom: 4%;
-  }
-
+  
   .btn-next{
       display: flex;
       justify-content: center;

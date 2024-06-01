@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { StepperOrientation } from '@angular/material/stepper';
@@ -446,6 +446,12 @@ export class CfgClientesComponent implements OnInit {
       this.router.navigate(['administrador/clientes']);
     });
   }
+
+  @ViewChild('clientesHelp') clientesHelpRef!: TemplateRef<HTMLElement>;
+  goInstructor() {
+  const title = 'Como administrar un Estado';
+  this.dataShared.openInstructor(this.clientesHelpRef, title);
+}
 
   backspace() {
   

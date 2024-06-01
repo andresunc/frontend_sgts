@@ -1,7 +1,9 @@
 <!-- Contenedor de la sección ver servicios -->
 <ng-container>
     <form [formGroup]="firstFormGroup">
-      
+      <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+        live_help
+      </mat-icon>
       <mat-form-field>
         <mat-label for="Servicio">Tipo de Servicio</mat-label>
         <input type="text" placeholder="Buscar o crear un Tipo de Servicio" name="Servicio"
@@ -26,9 +28,7 @@
         </mat-autocomplete>
   
       </mat-form-field>
-      <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
-        live_help
-      </mat-icon>
+      
       <div class="btn-abm">
         <button mat-button (click)="crearTipoServicio()" [disabled]="disableBtnCrear || equalName">Crear</button>
         <button mat-button matTooltip="Confirmar Cambio" (click)="modificarTipoServicio()" [disabled]="disableBtnEditDelete">Modificar</button>

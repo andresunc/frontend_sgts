@@ -12,7 +12,7 @@ import { Subject, filter, takeUntil } from 'rxjs';
 })
 export class AdministradorComponent implements OnInit {
 
-  title: string = "Configuración General";
+  title = "";
   constructor(public dialog: MatDialog, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {

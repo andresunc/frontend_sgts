@@ -33,10 +33,16 @@
     width: 32.7%;
   }
 
+  .infoSystem{
+    width: 100%;
+    margin-bottom: 4%;
+    }
+
   @media screen and (max-width: 700px) {
 
     .infoSystem{
-        margin-top: 4%;
+      width: 100%;
+      margin-top: 4%;
         }
 
     .user{
@@ -56,5 +62,11 @@
     .persona mat-form-field{
         padding: 0.5%;
         width: 50%;
+      }
+
+      mat-form-field,
+      mat-option,
+      mat-label {
+        font-size: small;
       }
   }
