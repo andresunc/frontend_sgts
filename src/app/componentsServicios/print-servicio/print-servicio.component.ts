@@ -52,7 +52,6 @@ export class PrintServicioComponent implements OnInit {
   constructor(
     private dataShared: DataSharedService,
     public dialog: MatDialog,
-    private svManager: ManagerService,
     private printService: PrintService,
     private servicioEmpresa: ServicioEmpresaService,
     private router: Router,
