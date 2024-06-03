@@ -7,6 +7,15 @@ mat-toolbar {
     justify-content: space-between;
 }
 
+.mat-mdc-menu-item {
+   min-height: 30px; 
+}
+
+.mat-mdc-menu-item .mat-icon {
+    margin-right: 5px;
+}
+
+
 .primaryBtn {
     font-size: 1.2rem;
     width: 2.25rem;

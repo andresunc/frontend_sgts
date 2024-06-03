@@ -33,7 +33,7 @@ export class AdministradorComponent implements OnInit {
           this.title = 'Configuración Clientes';
           break;
         case 'servicios':
-          this.title = 'Configuración Servicios';
+          this.title = 'Configuración Tipo de Servicios';
           break;
         case 'rubros':
           this.title = 'Configuración Rubros';
