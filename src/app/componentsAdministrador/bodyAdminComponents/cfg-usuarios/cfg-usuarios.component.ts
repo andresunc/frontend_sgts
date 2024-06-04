@@ -1,8 +1,7 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
 import { Observable, Subscribable } from 'rxjs';
-import { UsuarioService } from 'src/app/services/DomainServices/usuario.service';
-import { Usuario } from 'src/app/models/DomainModels/Usuario';
+
 
 
 @Component({
@@ -17,6 +16,7 @@ export class CfgUsuariosComponent implements OnInit {
   rol: any;
   displayFn!: ((value: any) => string);
   disableBtnEditDelete: any;
+  isChecked: true | undefined;
 
   firstFormGroup = new FormGroup({
     usuario:new FormControl<string>('', [Validators.maxLength(10)]),
@@ -31,7 +31,8 @@ export class CfgUsuariosComponent implements OnInit {
   });
   dataShared: any;
 
-  constructor(
+
+   constructor(
     
   ) { }
 
