@@ -32,6 +32,7 @@ import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-s
 import { CalcularAvancePipe } from './componentsShared/pipes/calcularAvance';
 import { HayNotificadosPipe } from './componentsShared/pipes/hayNotificados';
 import { DiferenciaFechasPipe } from './componentsShared/pipes/diferenciaFechas';
+import { Params } from './models/Params';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -83,7 +84,8 @@ export const MY_FORMATS: MatDateFormats = {
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
-    CalcularAvancePipe
+    CalcularAvancePipe,
+    Params,
   ],
   bootstrap: [AppComponent]
 })

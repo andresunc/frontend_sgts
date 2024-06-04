@@ -193,7 +193,7 @@ export class AddItemComponent implements OnInit {
   idResponsable: string = '';
   montoTasa: number = 0;
   cantidadHojas: number = 0;
-  urlComprobante: string = '';
+  urlComprobanteTasa: string = '';
   haSidoNotificado: boolean = false;
   incluyeTasa: boolean = false;
   // Función para guardar los datos del formulario
@@ -208,7 +208,7 @@ export class AddItemComponent implements OnInit {
     addItemToCheckList.recursoGgIdRecursoGg = parseInt(this.idResponsable);
     addItemToCheckList.tasaValor = this.montoTasa;
     addItemToCheckList.tasaCantidadHojas = this.cantidadHojas;
-    addItemToCheckList.urlComprobanteTasa = this.urlComprobante;
+    addItemToCheckList.urlComprobanteTasa = this.urlComprobanteTasa;
     addItemToCheckList.notificado = this.haSidoNotificado;
 
     // Actualzar lista de items del checklist
