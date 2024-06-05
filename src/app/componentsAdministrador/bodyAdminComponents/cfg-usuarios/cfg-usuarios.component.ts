@@ -1,12 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
-<<<<<<< confGral
-import { Observable, Subscribable } from 'rxjs';
-
-=======
 import { Observable } from 'rxjs';
->>>>>>> master
-
 
 @Component({
   selector: 'app-cfg-usuarios',
