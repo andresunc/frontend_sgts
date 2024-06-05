@@ -12,4 +12,7 @@ export class Params {
   ADMIN = 'ADMIN';
   OPE_EXT = 'OPE_EXT';
   OPE_INT = 'OPE_INT';
+
+  //
+  DEFAULT_PASS = '1234'
 };
