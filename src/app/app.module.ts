@@ -27,10 +27,12 @@ import { DeletePopupComponent } from './componentsShared/delete-popup/delete-pop
 import { ErrorInterceptor } from './ErrorInterceptor/error.interceptor';
 import { InstructorComponent } from './componentsShared/instructor/instructor.component';
 import { OrderStatusComponent } from './componentsAdministrador/bodyAdminComponents/cfg-estados/order-status/order-status.component';
-import { DiferenciaFechasPipe } from './componentsShared/pipes/diferenciaFechas';
+
 import { VerServiciosComponent } from './componentsServicios/ver-servicios/ver-servicios.component';
 import { CalcularAvancePipe } from './componentsShared/pipes/calcularAvance';
 import { HayNotificadosPipe } from './componentsShared/pipes/hayNotificados';
+import { DiferenciaFechasPipe } from './componentsShared/pipes/diferenciaFechas';
+import { Params } from './models/Params';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -82,6 +84,8 @@ export const MY_FORMATS: MatDateFormats = {
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
+    CalcularAvancePipe,
+    Params,
   ],
   bootstrap: [AppComponent]
 })

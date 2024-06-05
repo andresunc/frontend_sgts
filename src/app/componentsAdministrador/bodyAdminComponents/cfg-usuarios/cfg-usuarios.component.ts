@@ -1,8 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup,Validators } from '@angular/forms';
-import { Observable, Subscribable } from 'rxjs';
-import { UsuarioService } from 'src/app/services/DomainServices/usuario.service';
-import { Usuario } from 'src/app/models/DomainModels/Usuario';
+import { Observable } from 'rxjs';
 
 
 @Component({

@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsServicios/print-servicio/add-item/add-item.component';
+import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvance';
+
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
-import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { Params } from 'src/app/models/Params';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
-import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
-import ManagerService from 'src/app/services/SupportServices/ManagerService';
+import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -21,106 +21,54 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 })
 export class ChecklistComponent implements OnInit {
 
-  formChecklist!: FormGroup;
   dataSourceItems: ItemChecklistDto[];
-  recursosGG: RecursoDto[] = [];
+  initDataSourceItems: ItemChecklistDto[];
   avance: number = 0;
   editable: boolean = true;
   servicio: Servicios;
   isAdmin: boolean;
-  updatedNotify: boolean;
-  params: Params = new Params();
+  form!: FormGroup;
 
   constructor(
     private dataShared: DataSharedService,
-    private svManager: ManagerService,
+    private popupService: PopupService,
     private servicioService: ServicioService,
     private itemChecklistService: ItemChecklistService,
     private authService: AuthService,
-    private recursoDtoService: RecursoDtoService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private calcularAvancePipe: CalcularAvancePipe,
+    private fb: FormBuilder,
+    public params: Params,
+    public dialogRef: MatDialogRef<ChecklistComponent>
+  ) {
     this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
     this.dataSourceItems = this.servicio.itemChecklistDto;
-    this.avance = this.calcularAvance(this.dataSourceItems);
-    this.updatedNotify = this.servicio.estado === this.params.PRESENTADO;
+    this.initDataSourceItems = this.servicio.itemChecklistDto;
+    this.avance = this.calcularAvancePipe.transform(this.dataSourceItems);
+    this.formInit();
   }
 
   ngOnInit(): void {
     // Escucha los eventos de actualización
     this.dataShared.updateChecklist$.subscribe(() => {
       this.refreshItemsCheckList();
-      this.getRecursos();
     });
-    this.setForm();
+    this.disableItemsTasa();
+    this.canNotify();
   }
 
-  setForm() {
-    this.formChecklist = new FormGroup({
-      valorTasa: new FormControl(null, [Validators.pattern(/^\d{1,9}$/)]),
-      hojas: new FormControl(null, [Validators.min(0), Validators.max(999)]),
-      urlComprobante: new FormControl(null, [Validators.pattern('https://.*')])
+  notifyIsVisible: boolean = false;
+  canNotify() {
+    this.notifyIsVisible = (this.servicio.estado === this.params.PRESENTADO)
+  }
+
+  formInit() {
+    this.form = this.fb.group({
+      tasaValor: ['', [Validators.required, Validators.min(0), Validators.maxLength(9)]],
+      tasaCantidadHojas: ['', [Validators.required, Validators.min(0), Validators.max(999)]],
+      urlComprobanteTasa: ['', [Validators.required, Validators.pattern('https://.*')]]
     });
-  }
-
-  incluyeImpuestoStates: boolean = false;
-  isReadOnly: boolean = true;
-  updateCheckTasa() {
-    this.incluyeImpuestoStates = !this.incluyeImpuestoStates;
-    const state = this.incluyeImpuestoStates;
-    if (state) {
-      this.enableData();
-    } else {
-      this.disableData();
-    }
-  }
-
-  saveDatabtn: boolean = true;
-  saveDataImpuestos(item: ItemChecklistDto) {
-    this.formChecklist.markAllAsTouched();
-    if (this.formChecklist.invalid || this.formChecklist.pending) return;
-    
-    const itemTemp = this.dataSourceItems.find(x => x.idItemChecklist === item.idItemChecklist);
-    if (itemTemp) {
-      itemTemp.tasaValor = this.formChecklist.get('valorTasa')?.value;
-      itemTemp.tasaCantidadHojas = this.formChecklist.get('hojas')?.value;
-      itemTemp.urlComprobanteTasa = this.formChecklist.get('urlComprobante')?.value;
-      this.incluyeImpuestoStates = false;
-      this.disableData();
-    }
-  }
-
-  enableData() {
-    this.isReadOnly = false;
-    this.saveDatabtn = false;
-  }
-
-  disableData() {
-    this.isReadOnly = true;
-    this.saveDatabtn = true;
-  }
-
-  calcularAvance(itemsChecklist: ItemChecklistDto[]): number {
-    const totalItems = itemsChecklist.length;
-    // 1 Si el total de items es mayor a 0 hacer, sino retornar 0
-    // 2 Filtrar los completos? y contarlos
-    // 3 Calcular y retornar el porcentaje de items completados (Completos/Total) * 100
-    return itemsChecklist.filter(item => item.completo).length / totalItems * 100 | 0;
-  }
-
-  getRecursos() {
-    this.recursoDtoService.getRecursos()
-      .subscribe(
-        (data) => {
-          this.recursosGG = data;
-          console.log(this.recursosGG)
-        }
-      )
-  }
-
-  getRol(idRecurso: number | null): string {
-    const recursoGG = this.recursosGG.find(re => re.idRecurso === idRecurso)
-    return recursoGG ? recursoGG!.rol! : '';
   }
 
   refreshItemsCheckList(): void {
@@ -129,7 +77,7 @@ export class ChecklistComponent implements OnInit {
       .subscribe(
         (data) => {
           this.dataSourceItems = data;
-          this.avance = this.calcularAvance(this.dataSourceItems);
+          this.avance = this.calcularAvancePipe.transform(this.dataSourceItems);
           this.dataShared.setSharedObject(this.servicio);
           this.dataShared.ocultarSpinner();
         }).add(
@@ -151,36 +99,22 @@ export class ChecklistComponent implements OnInit {
       this.dataShared.setSharedObject(this.dataShared.getSharedObject());
 
       // Calcula el nuevo avance
-      this.avance = this.calcularAvance(this.dataShared.getSharedObject().itemChecklistDto);
+      this.avance = this.calcularAvancePipe.transform(this.dataShared.getSharedObject().itemChecklistDto);
     } else {
       // Maneja el caso en que el elemento no se encuentre o sea undefined
       console.error('No se encontró el elemento con ID:', item.idItemChecklist);
     }
   }
 
-
-  // Función para detectar cambios en el listado de items
-  modified: boolean = false;
-  indicesCambiados: number[] = [];
-  getChange(index: number, item: ItemChecklist) {
-
-    // Buscar el índice del elemento existente en dataSourceItems
-    const indexItemExistente = this.dataSourceItems.findIndex(element => element.idItemChecklist === item.idItemChecklist);
-
-    // Verificar si el elemento existe en dataSourceItems, o sea si el resultado es distinto de -1
-    if (indexItemExistente !== -1) {
-      // Reemplazar el elemento existente con el nuevo item
-      this.dataSourceItems[indexItemExistente] = item;
-      // Verifica si el índice ya está en el array
-      const indexEncontrado = this.indicesCambiados.indexOf(index);
-      indexEncontrado === -1 ? this.indicesCambiados.push(index) : this.indicesCambiados.splice(indexEncontrado, 1);
-      // Verificar si hay cambios finalmente
-      this.modified = this.indicesCambiados.length > 0;
-    } else {
-      // Manejar el caso donde el elemento no está en dataSourceItems
-      alert('Ocorrió un error con un aspecto en el cambio de información del ítem.');
+  getChange(controlName: string, item: any): void {
+    const control = this.form.get(controlName);
+    if (control) {
+      const value = control.value;
+      // Aquí puedes hacer algo con el valor cambiado, como actualizar un estado o llamar a un servicio
+      console.log(`Changed ${controlName}:`, value);
+      // Por ejemplo, puedes actualizar `item` con el nuevo valor
+      item[controlName] = value;
     }
-
   }
 
   /* Lógica para los ítems eliminados */
@@ -231,25 +165,52 @@ export class ChecklistComponent implements OnInit {
     return this.isAdmin || item.idRecurso === this.authService.getCurrentUser()?.id_recurso;
   }
 
-  /**
-   * // Declara un objeto para mantener el estado de incluyeImpuesto para cada ítem del acordeón
+  // Declara un objeto para mantener el estado de incluyeImpuesto para cada ítem del acordeón
   incluyeImpuestoStates: { [idItemChecklist: number]: boolean } = {};
   updateCheckTasa(item: ItemChecklistDto) {
     // Cambia el estado de incluyeImpuesto para el ítem específico del acordeón
-    this.incluyeImpuestoStates[item.idItemChecklist!] = !this.incluyeImpuestoStates[item.idItemChecklist!];
+    const currentState = this.incluyeImpuestoStates[item.idItemChecklist!] || false;
+    this.incluyeImpuestoStates[item.idItemChecklist!] = !currentState;
+
+    if (this.incluyeImpuestoStates[item.idItemChecklist!]) {
+      this.enableItemsTasa();
+    } else {
+      this.disableItemsTasa();
+    }
   }
-   */
+
+  enableItemsTasa() {
+    this.form.get('tasaValor')!.enable();
+    this.form.get('tasaCantidadHojas')!.enable();
+    this.form.get('urlComprobanteTasa')!.enable();
+  }
+
+  disableItemsTasa() {
+    this.form.get('tasaValor')!.disable();
+    this.form.get('tasaCantidadHojas')!.disable();
+    this.form.get('urlComprobanteTasa')!.disable();
+  }
 
   managElement() {
+
+    /*
+    const sameChange = JSON.stringify(this.initDataSourceItems) === JSON.stringify(this.dataSourceItems);
+    if (sameChange) {
+      console.log('No hay cambios que hacer :/')
+      this.popupService.warnSnackBar('No hay cambios que hacer', 'Ok');
+      return;
+    }
+    */
+
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
     this.dataShared.mostrarSpinner();
-    this.modified = false;
     if (this.dataSourceItems) {
       this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
         (data: ItemChecklistDto[]) => {
           this.servicio.itemChecklistDto = data;
           this.dataShared.setSharedObject(this.servicio);
           console.log('Items Actualizados', data);
+          this.dialogRef.close();
           this.dataShared.ocultarSpinner();
         }
       ).add(

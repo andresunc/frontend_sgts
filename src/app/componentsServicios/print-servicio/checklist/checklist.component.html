@@ -25,18 +25,16 @@
                     [attr.id]="'accordion-header-' + index" [attr.aria-expanded]="accordionItem.expanded"
                     [attr.aria-controls]="'accordion-body-' + index" [disabled]="!itemManagement(item)">
 
-                    <div id="accordionItem" (click)="isReadOnly ? accordionItem.toggle() : null">
+                    <div id="accordionItem" (click)="accordionItem.toggle()">
                         <!-- Rotulo del item del checklist -->
                         <div
                             class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
                             <span>
-                                <mat-checkbox [checked]="item.completo"
-                                    (change)="updateAvance(item); getChange(index, item)"
+                                <mat-checkbox [checked]="item.completo" (change)="updateAvance(item)"
                                     (click)="$event.stopPropagation()" [disabled]="!itemManagement(item)">
                                 </mat-checkbox>
                                 <span>
-                                    {{item.nombreItem}} <span style="color: var(--primary);">{{' ('+
-                                        getRol(item.idRecurso!)+')'}}</span> &nbsp;
+                                    {{item.nombreItem}} &nbsp;
                                     <span style="font-style: oblique; color: #f44336;">
                                         {{item.notificado ? '"Se considera notificado"' : ''}}
                                     </span>
@@ -85,83 +83,86 @@
                         <mat-divider style="margin: 0.5rem 0;"></mat-divider>
 
                         <!-- Datos editables -->
-                        <form [formGroup]="formChecklist">
+                        <form [formGroup]="form">
                             <fieldset>
-                              <mat-chip-option [selected]="incluyeImpuestoStates"
-                                style="height: 50%;" color="primary" (click)="updateCheckTasa()">
-                                <span>{{ incluyeImpuestoStates ? 'Establecer impuestos/tasas' : 'Editar impuestos/tasas'}}</span>
-                              </mat-chip-option>
+                                <mat-chip-option [selected]="incluyeImpuestoStates[item.idItemChecklist!]"
+                                    style="height: 50%;" color="warn" (click)="updateCheckTasa(item)">
+                                    <span>{{ incluyeImpuestoStates[item.idItemChecklist!] ? 'Establecer impuestos/tasas': 'Editar impuestos/tasas'}}</span>
+                                </mat-chip-option>
                             </fieldset>
-                          
-                            <div class="row" style="display: flex; justify-content:flex-start; align-items: flex-start;">
 
-                            <div class="col-md-6">
-                                <mat-form-field floatLabel="always" style="width: 100%;">
-                                    <mat-label>Valor de impuestos/tasas</mat-label>
-                                    <input *ngIf="!isReadOnly" matInput type="number" id="valorTasa" formControlName="valorTasa"
-                                        (change)="getChange(index+1, item)" [readonly]="isReadOnly" placeholder="{{item.tasaValor}}">
-                            
-                                    <mat-error *ngIf="(formChecklist.get('valorTasa')!.hasError('pattern')) && !isReadOnly">
-                                        Digitos máximos 9
-                                    </mat-error>
-                            
-                                    <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.tasaValor || 0">
-                                    <span matTextPrefix>$&nbsp;</span>
-                                </mat-form-field>
-                            </div>
-                          
-                              <div class="col-md-6">
-                                <mat-form-field floatLabel="always" style="width: 100%;">
-                                  <mat-label>Cantidad de hojas</mat-label>
-                                  <input *ngIf="!isReadOnly" matInput type="number" id="hojas" formControlName="hojas"
-                                 (change)="getChange(index+2, item)" [readonly]="isReadOnly" placeholder="{{item.tasaCantidadHojas}}">
-
-                                <mat-error *ngIf="(formChecklist.get('hojas')!.hasError('max')) && !isReadOnly">
-                                    Máximo permitido 999
-                                </mat-error>
-
-                                 <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.tasaCantidadHojas || 0">
-                                </mat-form-field>
-                              </div>
-                            </div>
-                          
-                            <mat-form-field floatLabel="always" style="width: 100%;">
-
-                              <mat-label>URL Comprobante</mat-label>
-                              <input *ngIf="!isReadOnly" matInput type="url" id="urlComprobante" formControlName="urlComprobante"
-                               (change)="getChange(index+3, item)" [readonly]="isReadOnly" placeholder="{{item.urlComprobanteTasa ? item.urlComprobanteTasa : 'https://repo-gg.com'}}"
-                               (onchange)="formChecklist.markAllAsTouched()">
-
-                                <mat-error *ngIf="(formChecklist.get('urlComprobante')!.hasError('pattern')) && !isReadOnly">
-                                    URL inválida. Debe comenzar con https://
-                                </mat-error>
-
-                                <input *ngIf="isReadOnly" matInput [readonly]="isReadOnly" [value]="item.urlComprobanteTasa ? item.urlComprobanteTasa : 'https://repo-gg.com'">
-
-                            </mat-form-field>
-                          
-                            <div class="row" style="display: flex; justify-content:flex-start; align-items: flex-start;">
-
-                                <div class="col-md-6">
-                                    <fieldset *ngIf="updatedNotify">
-                                        <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
-                                          (click)="updateNotificado(item); getChange(index+4, item)">
-                                          <span>{{ item.notificado ? 'Se ha establecido notificado' : 'Establecer como notificado' }}</span>
-                                        </mat-chip-option>
-                                      </fieldset>
+                            <div class="row"
+                                style="display: flex; justify-content:flex-start; align-items: flex-start;">
+                                <div class="col-md-4">
+                                    <fieldset class="form-group">
+                                        <label for="tasaValor" style="margin-right: 0.5rem;">Valor de
+                                            impuestos/tasas</label>
+                                        <div style="display: flex; align-items: center;">
+                                            <span style="margin-right: 0.5rem;">$</span>
+                                            <input type="number" id="tasaValor" formControlName="tasaValor"
+                                                (change)="getChange('tasaValor', item)">
+                                        </div>
+                                        <div
+                                            *ngIf="form.get('tasaValor')?.invalid && (form.get('tasaValor')?.dirty || form.get('tasaValor')?.touched)">
+                                            <div class="text-danger"
+                                                *ngIf="form.get('tasaValor')?.errors?.['required']">Valor de
+                                                impuestos/tasas es requerido.</div>
+                                            <div class="text-danger"
+                                                *ngIf="form.get('tasaValor')?.errors?.['maxlength']">El valor de
+                                                impuestos/tasas no puede exceder 9 dígitos.
+                                            </div>
+                                            <div class="text-danger" *ngIf="form.get('tasaValor')?.errors?.['min']">No
+                                                se adminiten números negativos.</div>
+                                        </div>
+                                    </fieldset>
                                 </div>
-                                <div class="col-md-6" style="display: flex; justify-content: end; align-items: flex-end;">
-                                    <button mat-raised-button color="primary" [disabled]="saveDatabtn" type="button"
-                                        (click)="saveDataImpuestos(item)">
-                                        <span>Establecer Cambios</span>
-                                    </button>
+
+                                <div class="col-md-3">
+                                    <fieldset class="form-group">
+                                        <label for="hojas">Cantidad de hojas </label>
+                                        <input type="number" id="hojas" formControlName="tasaCantidadHojas"
+                                            (change)="getChange('tasaCantidadHojas', item)">
+                                        <div
+                                            *ngIf="form.get('tasaCantidadHojas')?.invalid && (form.get('tasaCantidadHojas')?.dirty || form.get('tasaCantidadHojas')?.touched)">
+                                            <div class="text-danger"
+                                                *ngIf="form.get('tasaCantidadHojas')?.errors?.['required']">Cantidad de
+                                                hojas es requerido.</div>
+                                            <div class="text-danger"
+                                                *ngIf="form.get('tasaCantidadHojas')?.errors?.['max']">La cantidad de
+                                                hojas no puede exceder 999.</div>
+                                            <div class="text-danger"
+                                                *ngIf="form.get('tasaCantidadHojas')?.errors?.['min']">No se adminiten
+                                                números negativos.
+                                            </div>
+                                        </div>
+                                    </fieldset>
                                 </div>
-                                
                             </div>
 
-                            
+                            <fieldset class="form-group">
+                                <label for="urlComprobanteTasa">URL Comprobante:</label>
+                                <input type="url" id="urlComprobanteTasa" formControlName="urlComprobanteTasa"
+                                    placeholder="https://repo-gg.com" pattern="https://.*" style="width: 100%;"
+                                    (change)="getChange('urlComprobanteTasa', item)" />
+                                <div
+                                    *ngIf="form.get('urlComprobanteTasa')?.invalid && (form.get('urlComprobanteTasa')?.dirty || form.get('urlComprobanteTasa')?.touched)">
+                                    <div class="text-danger" *ngIf="form.get('urlComprobanteTasa')?.errors?.['required']">
+                                        URL Comprobante es requerido.</div>
+                                    <div class="text-danger" *ngIf="form.get('urlComprobanteTasa')?.errors?.['pattern']">La
+                                        URL debe empezar con "https://".</div>
+                                </div>
+                            </fieldset>
+
+                            <div *ngIf="notifyIsVisible">
+                                <fieldset>
+                                    <mat-chip-option [selected]="item.notificado" style="height: 50%;" color="warn"
+                                        (click)="updateNotificado(item); getChange('notificado', item)">
+                                        <span>{{ item.notificado ? 'Se ha establecido notificado' : 'Establecer como notificado'}}</span>
+                                    </mat-chip-option>
+                                </fieldset>
+                            </div>
+
                         </form>
-                          
 
                         <mat-divider style="margin: 0.5rem 0;"></mat-divider>
 
@@ -175,8 +176,7 @@
                 <button *ngIf="isAdmin" mat-raised-button color="primary" (click)="openAddItemComponent()">
                     <span matTooltip="Agregar al checklist">+ Nuevo Ítem</span>
                 </button>
-                <button mat-raised-button color="accent" [disabled]="!modified || formChecklist.invalid" [mat-dialog-close]="true" type="button"
-                    (click)="managElement()">
+                <button mat-raised-button color="accent" type="button" (click)="managElement()">
                     <span>Guardar</span>
                 </button>
             </div>
