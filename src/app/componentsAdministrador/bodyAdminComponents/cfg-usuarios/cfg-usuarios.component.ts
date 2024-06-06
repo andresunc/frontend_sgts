@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Observable, finalize } from 'rxjs';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { UsuarioDto } from 'src/app/models/ModelsDto/UsuarioDto';
+import { Params } from 'src/app/models/Params';
 import { UsuarioService } from 'src/app/services/DomainServices/usuario.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
@@ -22,9 +23,11 @@ export class CfgUsuariosComponent implements OnInit {
   rol: any;
   usuarios: UsuarioDto[] = [];
   displayFn!: ((value: any) => string);
-  disableBtnEditDelete: any;
+  disableBtnEditDelete: boolean = true;
+  disableBtnCreate: boolean = true;
   isChecked: true | undefined;
   myControl = new FormControl();
+  params: Params = new Params();
 
   firstFormGroup = new FormGroup({
     usuario:new FormControl<string>('', [Validators.maxLength(10)]),
@@ -39,7 +42,6 @@ export class CfgUsuariosComponent implements OnInit {
   });
  
    constructor(
-    private usuarioDto: UsuarioDto,
     private usuarioService: UsuarioService,
     private dataShared: DataSharedService,
     private dialog: MatDialog,
@@ -95,6 +97,9 @@ export class CfgUsuariosComponent implements OnInit {
   crearUsuario() {
     this.dataShared.mostrarSpinner();
 
+    this.disableBtnCreate = true;
+    this.disableBtnEditDelete = true;
+
     const usuario = this.firstFormGroup.controls.usuario.value;
     const contraseña = this.firstFormGroup.controls.contraseña.value;
     const rol = this.firstFormGroup.controls.rol.value;
@@ -106,14 +111,14 @@ export class CfgUsuariosComponent implements OnInit {
     
     const usuarios: UsuarioDto = new UsuarioDto();
 
-    /*usuarios.username = usuario;
+    usuarios.username = usuario;
     usuarios.password = contraseña;
     usuarios.rol = rol;
     usuarios.nombre = nombre;
     usuarios.apellido = apellido;
     usuarios.dni = dni;
     usuarios.telefono = telefono;
-    usuarios.email = email;*/
+    usuarios.email = email;
 
 
     this.usuarioService.createUser(usuarios)

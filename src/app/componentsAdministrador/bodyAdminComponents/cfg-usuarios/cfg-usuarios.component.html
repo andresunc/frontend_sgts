@@ -11,7 +11,7 @@
                 <mat-label for="usuario">Usuario</mat-label>
                 <input type="text" placeholder="Buscar o crear un usuario" name="usuario"
                 formControlName="usuario" matInput [matAutocomplete]="auto" 
-                (focus)="onInputFocus()" [maxlength]="10" required (input)="checkUsuarioName($event)">
+                (focus)="onInputFocus()" [maxlength]="10" required >
                 <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
                     backspace
                 </mat-icon>
@@ -47,14 +47,14 @@
             <mat-form-field>
                 <mat-label for="rol">Rol</mat-label>
                 <mat-select name="rol" formControlName="rol">
-                  <mat-option value="Admin">Admin</mat-option>
-                  <mat-option value="OperadorInterno ">Operador Interno</mat-option>
-                  <mat-option value="OperadorExterno">Operador Externo</mat-option>
+                  <mat-option [value]="params.ADMIN">Admin</mat-option>
+                  <mat-option [value]="params.OPE_INT ">Operador Interno</mat-option>
+                  <mat-option [value]="params.OPE_EXT">Operador Externo</mat-option>
                 </mat-select>
               </mat-form-field>
               <div class="slide">
                 <label for="slide-toggle">Inhabilitar Usuario</label>
-                <mat-slide-toggle id="slide-toggle" color="primary" [(ngModel)]="isChecked"></mat-slide-toggle>
+                <mat-slide-toggle id="slide-toggle" color="primary" ></mat-slide-toggle>
               </div>
             </div>
         
