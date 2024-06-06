@@ -39,6 +39,9 @@ export class CfgItemsComponent implements OnInit {
   requisitos: Requisito[] = [];
   itemLists: Item[] = [];
   disableBtnEditDelete: boolean = true;
+  itemMatch: Item | undefined = undefined;
+  initialItem: Item | undefined = undefined;
+  requisitoSelected: string = '';
 
   firstFormGroup = new FormGroup({
     nombreItem: new FormControl<string>('', [Validators.maxLength(60)]),
@@ -162,9 +165,7 @@ export class CfgItemsComponent implements OnInit {
     this.myControl.setValue('');
   }
 
-  itemMatch: Item | undefined = undefined;
-  initialItem: Item | undefined = undefined;
-  requisitoSelected: string = '';
+ 
   seleccionarRequisito(nombreRequisito: string) {
 
     try {
