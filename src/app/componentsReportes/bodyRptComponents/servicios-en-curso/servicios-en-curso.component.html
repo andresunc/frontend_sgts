@@ -1,39 +1,52 @@
 <body class="rpt0Container">
-    <div class="container">
-        <div class="scrollable-table mat-elevation-z3">
-            <table>
-                <thead style="position: sticky; top:0;">
-                    <tr>
-                        <th>ID</th>
-                        <th>Empresa</th>
-                        <th>Rubro</th>
-                        <th>Tipo de servicio</th>
-                        <th>Dependencia</th>
-                        <th>Estado</th>
-                        <th>Avance</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let element of serviciosEnCurso">
-                        <td>{{ element.idServicio }}</td>
-                        <td>{{ element.empresa }}</td>
-                        <td>{{ element.rubro }}</td>
-                        <td>{{ element.tipoServicio }}</td>
-                        <td>{{ element.dependenciaInvolucrada }}</td>
-                        <td>{{ element.estado }}</td>
-                        <td>{{ element.porcentajeAvance+'%'}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <div class="chart-wrapper" style= "padding:1rem;">
-        <div>
-            <h1 style="text-align: center;">Servicios en curso</h1>
-        </div>
-        <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="pie" [data]="lineChartData">
-        </canvas>
-    </div>
-    
+    <mat-card>
+        <mat-card-content>
+            <div class="chart-wrapper" style="padding:1rem;">
+                <div>
+                    <h1 style="text-align: center;">Servicios en curso</h1>
+                </div>
+                <canvas style="margin-top: 2rem;" baseChart width="350" height="350" type="pie" [data]="lineChartData">
+                </canvas>
+            </div>
+            <p style="width: 350px;">
+                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+                bred for hunting.
+            </p>
+        </mat-card-content>
+        <mat-card-actions align="start">
+            <button mat-button color="primary" (click)="openDataSource()">FUENTE DE DATOS</button>
+        </mat-card-actions>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-content>
+            <div class="chart-wrapper" style="padding:1rem;">
+                <div>
+                    <h1 style="text-align: center;">Gráfico de Dependencias</h1>
+                </div>
+                <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="pie"
+                    [data]="pieChartDataDependencias">
+                </canvas>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+
+    <mat-card>
+        <mat-card-content>
+            <div class="chart-wrapper" style="padding:1rem;">
+                <div>
+                    <h1 style="text-align: center;">Gráfico de Tipos de Servicios</h1>
+                </div>
+                <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="pie"
+                    [data]="pieChartDataTipos">
+                </canvas>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <button (click)="actualizarDatosTorta()">Visualizar data</button>
+
 </body>

@@ -1,76 +1,130 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChartData } from 'chart.js';
-import { Subject, takeUntil } from 'rxjs';
 import { ServicioEnCurso } from 'src/app/models/RptModels/ServicioEnCurso';
 import { ServiciosEnCursoService } from 'src/app/services/RptServices/servicios-en-curso.service';
+import { ChangeDetectorRef } from '@angular/core';
+import { RptService } from 'src/app/services/SupportServices/rpt.service';
+import { Dialog } from '@angular/cdk/dialog';
+import { MatDialog } from '@angular/material/dialog';
+import { DataSourceComponent } from './data-source/data-source.component';
 
 @Component({
   selector: 'app-servicios-en-curso',
   templateUrl: './servicios-en-curso.component.html',
   styleUrls: ['./servicios-en-curso.component.css']
 })
-export class ServiciosEnCursoComponent implements OnDestroy, OnInit {
+export class ServiciosEnCursoComponent implements OnInit {
 
   serviciosEnCurso: ServicioEnCurso[] = [];
 
-  pieChartData: ChartData<"pie", number[], string> = {
+  // Gráfico para dependencias
+  pieChartDataDependencias: ChartData<'pie'> = {
     labels: [],
     datasets: [{
-      data: []
+      data: [],
+      backgroundColor: [] // Puedes agregar colores aquí
     }]
   };
 
-  lineChartData = {
+  // Gráfico para tipos de servicios
+  pieChartDataTipos: ChartData<'pie'> = {
+    labels: [],
+    datasets: [{
+      data: [],
+      backgroundColor: [] // Puedes agregar colores aquí
+    }]
+  };
+
+  // Gráfico lineal
+  lineChartData: ChartData<'line'> = {
     labels: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
     datasets: [
       {
-        data: [60, 50, 30, 70, 50, 60, 70]
+        data: [60, 50, 130, 70, 50, 60, 70]
       },
     ],
   };
 
-  constructor(private getRpt: ServiciosEnCursoService) { }
+  constructor(
+    private getRpt: ServiciosEnCursoService,
+    private rptService: RptService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.getRpt.getServiciosEnCurso().pipe(takeUntil(this.unsubscribe$))
-      .subscribe((data: ServicioEnCurso[]) => {
-        this.serviciosEnCurso = data;
-      });
-      this.actualizarDatosTorta();
+    this.setRpt();
   }
 
-  private actualizarDatosTorta() {
-    // Limpiar datos anteriores
-    this.pieChartData.labels = [];
-    this.pieChartData.datasets[0].data = [];
-    this.pieChartData.datasets[0].backgroundColor = [];
+  setRpt() {
+    this.getRpt.getServiciosEnCurso()
+      .subscribe((data: ServicioEnCurso[]) => {
+        this.serviciosEnCurso = data;
+        this.actualizarDatosTorta(); // Actualizar datos de la torta después de obtener los servicios
+      });
+  }
 
-    // Agrupar por dependenciaInvolucrada y calcular el total de porcentajes de avance para cada grupo
+  actualizarDatosTorta() {
+    // Limpiar datos anteriores
+    this.pieChartDataDependencias.labels = [];
+    this.pieChartDataDependencias.datasets[0].data = [];
+    this.pieChartDataTipos.labels = [];
+    this.pieChartDataTipos.datasets[0].data = [];
+
+    // Variables para almacenar los conteos
+    const tiposDeServicios: { [tipo: string]: number } = {};
     const grupos: { [dependencia: string]: number } = {};
+
+    // Agrupar por dependenciaInvolucrada y tipos de servicios
     this.serviciosEnCurso.forEach(servicio => {
       const dependencia = servicio.dependenciaInvolucrada;
+      const tipoServicio = servicio.tipoServicio;
+
+      // Contar tipos de servicios
+      if (!tiposDeServicios[tipoServicio]) {
+        tiposDeServicios[tipoServicio] = 0;
+      }
+      tiposDeServicios[tipoServicio]++;
+
+      // Contar dependencias
       if (!grupos[dependencia]) {
         grupos[dependencia] = 0;
       }
       grupos[dependencia] += servicio.porcentajeAvance;
     });
 
-    // Agregar datos a los arrays del gráfico de torta
+    // Agregar datos al gráfico de dependencias
     for (const dependencia in grupos) {
       if (grupos.hasOwnProperty(dependencia)) {
-        this.pieChartData.labels.push(dependencia);
-        this.pieChartData.datasets[0].data.push(grupos[dependencia]);
-        // Puedes definir un color para cada sector si lo deseas
-        // this.pieChartData.datasets[0].backgroundColor.push(....);
+        this.pieChartDataDependencias.labels.push(dependencia);
+        this.pieChartDataDependencias.datasets[0].data.push(grupos[dependencia]);
       }
     }
+
+    this.pieChartDataDependencias = {
+      labels: Object.keys(grupos),
+      datasets: [{
+        data: Object.values(grupos),
+        backgroundColor: Object.keys(grupos).map(() => this.rptService.getRandomPastelColor())
+      }]
+    };
+
+    this.pieChartDataTipos = {
+      labels: Object.keys(tiposDeServicios),
+      datasets: [{
+        data: Object.values(tiposDeServicios),
+        backgroundColor: Object.keys(tiposDeServicios).map(() => this.rptService.getRandomPastelColor())
+      }]
+    };
+
   }
 
-  // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
-  private unsubscribe$ = new Subject<void>();
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
+  openDataSource() {
+    const dialogRef = this.dialog.open(DataSourceComponent, {
+      data: { dataSorce: this.serviciosEnCurso }
+    });
+
+    dialogRef.afterClosed().subscribe(() =>
+      this.actualizarDatosTorta()
+    );
   }
 
 }

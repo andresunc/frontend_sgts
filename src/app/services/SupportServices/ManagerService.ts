@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { ServicioService } from '../ServiciosDto/ServicioService';
 import { Subject, takeUntil } from 'rxjs';
-import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 
 @Injectable({
   providedIn: 'root'
