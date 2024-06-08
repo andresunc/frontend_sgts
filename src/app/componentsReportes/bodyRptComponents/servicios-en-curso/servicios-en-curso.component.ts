@@ -35,14 +35,13 @@ export class ServiciosEnCursoComponent implements OnInit {
     }]
   };
 
-  // Gráfico lineal
-  lineChartData: ChartData<'line'> = {
-    labels: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"],
-    datasets: [
-      {
-        data: [60, 50, 130, 70, 50, 60, 70]
-      },
-    ],
+  // Gráfico para los rubros
+  pieChartDataRubros: ChartData<'pie'> = {
+    labels: [],
+    datasets: [{
+      data: [],
+      backgroundColor: []
+    }]
   };
 
   constructor(
@@ -63,6 +62,7 @@ export class ServiciosEnCursoComponent implements OnInit {
   }
 
   actualizarDatosTorta() {
+
     // Limpiar datos anteriores
     this.pieChartDataDependencias.labels = [];
     this.pieChartDataDependencias.datasets[0].data = [];
@@ -71,12 +71,20 @@ export class ServiciosEnCursoComponent implements OnInit {
 
     // Variables para almacenar los conteos
     const tiposDeServicios: { [tipo: string]: number } = {};
-    const grupos: { [dependencia: string]: number } = {};
+    const dependencias: { [dependencia: string]: number } = {};
+    const rubros: { [rubro: string]: number } = {};
 
     // Agrupar por dependenciaInvolucrada y tipos de servicios
     this.serviciosEnCurso.forEach(servicio => {
       const dependencia = servicio.dependenciaInvolucrada;
       const tipoServicio = servicio.tipoServicio;
+      const rubro = servicio.rubro;
+
+      // Contar rubros
+      if (!rubros[rubro]) {
+        rubros[rubro] = 0;
+      }
+      rubros[rubro]++;
 
       // Contar tipos de servicios
       if (!tiposDeServicios[tipoServicio]) {
@@ -85,33 +93,44 @@ export class ServiciosEnCursoComponent implements OnInit {
       tiposDeServicios[tipoServicio]++;
 
       // Contar dependencias
-      if (!grupos[dependencia]) {
-        grupos[dependencia] = 0;
+      if (!dependencias[dependencia] && dependencia != 'N/A') {
+        dependencias[dependencia] = 0;
       }
-      grupos[dependencia] += servicio.porcentajeAvance;
+      dependencias[dependencia]++;
     });
 
     // Agregar datos al gráfico de dependencias
-    for (const dependencia in grupos) {
-      if (grupos.hasOwnProperty(dependencia)) {
+    for (const dependencia in dependencias) {
+      if (dependencias.hasOwnProperty(dependencia)) {
         this.pieChartDataDependencias.labels.push(dependencia);
-        this.pieChartDataDependencias.datasets[0].data.push(grupos[dependencia]);
+        this.pieChartDataDependencias.datasets[0].data.push(dependencias[dependencia]);
       }
     }
 
+    // Actualizar gráfico de dependencias y filtrar etiquetas y datos para excluir "N/A"
     this.pieChartDataDependencias = {
-      labels: Object.keys(grupos),
+      labels: Object.keys(dependencias).filter(dependencia => dependencia !== 'N/A'),
       datasets: [{
-        data: Object.values(grupos),
-        backgroundColor: Object.keys(grupos).map(() => this.rptService.getRandomPastelColor())
+        data: Object.values(dependencias),
+        backgroundColor: Object.keys(dependencias).map(() => this.rptService.getRandomPastelColor())
       }]
     };
 
+    // Actualizar gráfico de tipos de servicios
     this.pieChartDataTipos = {
       labels: Object.keys(tiposDeServicios),
       datasets: [{
         data: Object.values(tiposDeServicios),
         backgroundColor: Object.keys(tiposDeServicios).map(() => this.rptService.getRandomPastelColor())
+      }]
+    };
+
+    // Actualizar gráfico de rubros
+    this.pieChartDataRubros = {
+      labels: Object.keys(rubros),
+      datasets: [{
+        data: Object.values(rubros),
+        backgroundColor: Object.keys(rubros).map(() => this.rptService.getRandomPastelColor())
       }]
     };
 

@@ -1,52 +1,56 @@
-<body class="rpt0Container">
+<body class="rpt0Container" style="align-items: center; align-content: center; justify-content: center;">
 
-    <mat-card>
-        <mat-card-content>
-            <div class="chart-wrapper" style="padding:1rem;">
-                <div>
-                    <h1 style="text-align: center;">Servicios en curso</h1>
-                </div>
-                <canvas style="margin-top: 2rem;" baseChart width="350" height="350" type="pie" [data]="lineChartData">
-                </canvas>
-            </div>
-            <p style="width: 350px;">
-                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-                bred for hunting.
+    <div style="display: flex;">
+        <div>
+            <h1>Servicios en curso</h1>
+            <p>
+                Recuento y porcentajes de avance respecto a los Rubros, tipos de servicios y Dependencias involucradas
             </p>
-        </mat-card-content>
-        <mat-card-actions align="start">
-            <button mat-button color="primary" (click)="openDataSource()">FUENTE DE DATOS</button>
-        </mat-card-actions>
-    </mat-card>
+        </div>
+    </div>
 
-    <mat-card>
-        <mat-card-content>
-            <div class="chart-wrapper" style="padding:1rem;">
-                <div>
-                    <h1 style="text-align: center;">Gráfico de Dependencias</h1>
+    <div style="display: flex;">
+        <mat-card>
+            <mat-card-content>
+                <div class="chart-wrapper" style="padding:1rem;">
+                    <div>
+                        <h1 style="text-align: center;">Rubros</h1>
+                    </div>
+                    <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="doughnut"
+                        [data]="pieChartDataRubros">
+                    </canvas>
                 </div>
-                <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="pie"
-                    [data]="pieChartDataDependencias">
-                </canvas>
-            </div>
-        </mat-card-content>
-    </mat-card>
+            </mat-card-content>
+            <mat-card-actions align="start">
+                <button mat-button color="primary" (click)="openDataSource()">FUENTE DE DATOS</button>
+            </mat-card-actions>
+        </mat-card>
 
-
-    <mat-card>
-        <mat-card-content>
-            <div class="chart-wrapper" style="padding:1rem;">
-                <div>
-                    <h1 style="text-align: center;">Gráfico de Tipos de Servicios</h1>
+        <mat-card>
+            <mat-card-content>
+                <div class="chart-wrapper" style="padding:1rem;">
+                    <div>
+                        <h1 style="text-align: center;">Dependencias</h1>
+                    </div>
+                    <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="doughnut"
+                        [data]="pieChartDataDependencias">
+                    </canvas>
                 </div>
-                <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="pie"
-                    [data]="pieChartDataTipos">
-                </canvas>
-            </div>
-        </mat-card-content>
-    </mat-card>
+            </mat-card-content>
+        </mat-card>
 
-    <button (click)="actualizarDatosTorta()">Visualizar data</button>
+        <mat-card>
+            <mat-card-content>
+                <div class="chart-wrapper" style="padding:1rem;">
+                    <div>
+                        <h1 style="text-align: center;">Tipos de Servicios</h1>
+                    </div>
+                    <canvas style="margin-top: 2rem;" baseChart width="300" height="300" type="doughnut"
+                        [data]="pieChartDataTipos">
+                    </canvas>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
 
 </body>
