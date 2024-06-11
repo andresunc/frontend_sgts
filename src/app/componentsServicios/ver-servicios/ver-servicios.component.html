@@ -27,11 +27,11 @@
 
             <!-- Indicadores -->
             <div>
-                <div class="card" style="padding-left: 1rem;">
+                <div class="card" style="padding-left: 1rem;" id="indicadorContainer">
                     <div>
                         <p>Indicadores deficiencia en la prestación de servicios</p>
                     </div>
-                    <div style="display: flex;" id="indicadorContainer">
+                    <div style="display: flex;">
                         <mat-form-field>
                             <mat-label class="filerLabel"><span>Rango máximo 2 meses</span></mat-label>
                             <mat-date-range-input [rangePicker]="rangePicker" [min]="minDate" [max]="maxDate"
@@ -53,19 +53,19 @@
                         <mat-form-field>
                             <mat-label>AMBI</mat-label>
                             <input matInput [value]="efiAMBI | eficiencia" [readonly]="true">
-                            <mat-icon color="primary" matSuffix *ngIf="resultAMBI > 0">arrow_upward</mat-icon>
+                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="resultAMBI > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultAMBI < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>HYS</mat-label>
                             <input matInput [value]="efiHYS | eficiencia" [readonly]="true">
-                            <mat-icon color="primary" matSuffix *ngIf="resultHYS > 0">arrow_upward</mat-icon>
+                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="resultHYS > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultHYS < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>HOL</mat-label>
                             <input matInput [value]="efiHOL | eficiencia" [readonly]="true">
-                            <mat-icon color="primary" matSuffix *ngIf="resultHOL > 0">arrow_upward</mat-icon>
+                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="resultHOL > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultHOL < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                     </div>

@@ -204,3 +204,7 @@ las tres etiquetas que siguen de la tabla de servicios*/
 #indicadorContainer mat-form-field {
   margin: 0 0.5rem;
 }
+
+mat-label {
+  color: var(--primary);
+}
