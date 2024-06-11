@@ -36,10 +36,10 @@
                             <mat-label class="filerLabel"><span>Rango máximo 2 meses</span></mat-label>
                             <mat-date-range-input [rangePicker]="rangePicker" [min]="minDate" [max]="maxDate"
                                 (dateChange)="onDateChange($event)">
-                                <input matStartDate placeholder="Start date" [(ngModel)]="startDate">
-                                <input matEndDate placeholder="End date" [(ngModel)]="endDate">
+                                <input matStartDate placeholder="Start date" [(ngModel)]="startDate" [readonly]="true">
+                                <input matEndDate placeholder="End date" [(ngModel)]="endDate" [readonly]="true">
                             </mat-date-range-input>
-                            
+
                             <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
                             <mat-date-range-picker #rangePicker>
                                 <mat-date-range-picker-actions>
@@ -49,22 +49,22 @@
                                 </mat-date-range-picker-actions>
                             </mat-date-range-picker>
                         </mat-form-field>
-    
+
                         <mat-form-field>
                             <mat-label>AMBI</mat-label>
-                            <input matInput [value]="efiAMBI | eficiencia">
+                            <input matInput [value]="efiAMBI | eficiencia" [readonly]="true">
                             <mat-icon color="primary" matSuffix *ngIf="resultAMBI > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultAMBI < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>HYS</mat-label>
-                            <input matInput [value]="efiHYS | eficiencia">
+                            <input matInput [value]="efiHYS | eficiencia" [readonly]="true">
                             <mat-icon color="primary" matSuffix *ngIf="resultHYS > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultHYS < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>HOL</mat-label>
-                            <input matInput [value]="efiHOL | eficiencia">
+                            <input matInput [value]="efiHOL | eficiencia" [readonly]="true">
                             <mat-icon color="primary" matSuffix *ngIf="resultHOL > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultHOL < 0">arrow_downward</mat-icon>
                         </mat-form-field>
