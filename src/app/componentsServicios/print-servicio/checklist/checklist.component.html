@@ -21,7 +21,7 @@
             <cdk-accordion>
 
                 <cdk-accordion-item #accordionItem="cdkAccordionItem" role="button" tabindex="0"
-                    *ngFor="let item of this.dataSourceItems; let index = index;"
+                    *ngFor="let item of this.dataSourceItems; let index = index;" (opened)="accordionItemOpened(item)"
                     [attr.id]="'accordion-header-' + index" [attr.aria-expanded]="accordionItem.expanded"
                     [attr.aria-controls]="'accordion-body-' + index" [disabled]="!itemManagement(item)">
 
@@ -99,8 +99,8 @@
                                             impuestos/tasas</label>
                                         <div style="display: flex; align-items: center;">
                                             <span style="margin-right: 0.5rem;">$</span>
-                                            <input type="number" id="tasaValor" formControlName="tasaValor"
-                                                (change)="getChange('tasaValor', item)">
+                                            <input *ngIf="true" type="number" id="tasaValor" 
+                                            formControlName="tasaValor" (change)="getChange('tasaValor', item)" [value]="item.tasaValor">
                                         </div>
                                         <div
                                             *ngIf="form.get('tasaValor')?.invalid && (form.get('tasaValor')?.dirty || form.get('tasaValor')?.touched)">
@@ -121,7 +121,7 @@
                                     <fieldset class="form-group">
                                         <label for="hojas">Cantidad de hojas </label>
                                         <input type="number" id="hojas" formControlName="tasaCantidadHojas"
-                                            (change)="getChange('tasaCantidadHojas', item)">
+                                            (change)="getChange('tasaCantidadHojas', item)" value="10">
                                         <div
                                             *ngIf="form.get('tasaCantidadHojas')?.invalid && (form.get('tasaCantidadHojas')?.dirty || form.get('tasaCantidadHojas')?.touched)">
                                             <div class="text-danger"

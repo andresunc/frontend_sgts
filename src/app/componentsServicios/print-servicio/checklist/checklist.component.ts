@@ -117,6 +117,14 @@ export class ChecklistComponent implements OnInit {
     }
   }
 
+  accordionItemOpened(item: ItemChecklistDto) {
+    this.form.patchValue({
+      tasaValor: item.tasaValor,
+      tasaCantidadHojas: item.tasaCantidadHojas,
+      urlComprobanteTasa: item.urlComprobanteTasa
+   });
+  }
+
   /* Lógica para los ítems eliminados */
   itemsToDelete: ItemChecklistDto[] = [];
   goDelete(item: ItemChecklistDto) {
@@ -223,7 +231,9 @@ export class ChecklistComponent implements OnInit {
     const dialogRef = this.dialog.open(AddItemComponent);
 
     dialogRef.afterClosed().subscribe(() => {
+      this.dialog.closeAll();
       this.refreshItemsCheckList();
+      this.dialog.open(ChecklistComponent);
     });
   }
 }
