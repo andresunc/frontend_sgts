@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ChartData } from 'chart.js';
 import { ServicioEnCurso } from 'src/app/models/RptModels/ServicioEnCurso';
 import { ServiciosEnCursoService } from 'src/app/services/RptServices/servicios-en-curso.service';
-import { ChangeDetectorRef } from '@angular/core';
 import { RptService } from 'src/app/services/SupportServices/rpt.service';
-import { Dialog } from '@angular/cdk/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { DataSourceComponent } from './data-source/data-source.component';
+import { RptRebote } from 'src/app/models/RptModels/RptRebote';
+import { ReboteService } from 'src/app/services/RptServices/rebote.service';
 
 @Component({
   selector: 'app-servicios-en-curso',
@@ -16,6 +16,7 @@ import { DataSourceComponent } from './data-source/data-source.component';
 export class ServiciosEnCursoComponent implements OnInit {
 
   serviciosEnCurso: ServicioEnCurso[] = [];
+  reboteList: RptRebote[] = [];
 
   // Gráfico para dependencias
   pieChartDataDependencias: ChartData<'pie'> = {
@@ -46,6 +47,7 @@ export class ServiciosEnCursoComponent implements OnInit {
 
   constructor(
     private getRpt: ServiciosEnCursoService,
+    private rptRebote: ReboteService,
     private rptService: RptService,
     private dialog: MatDialog) { }
 
@@ -59,6 +61,50 @@ export class ServiciosEnCursoComponent implements OnInit {
         this.serviciosEnCurso = data;
         this.actualizarDatosTorta(); // Actualizar datos de la torta después de obtener los servicios
       });
+
+    this.rptRebote.getRebotes()
+      .subscribe(data => {
+        this.reboteList = data;
+        this.ordenarListado();
+        this.getMinDateAndMaxDate();
+      })
+  }
+
+  calcularEficiencia(reboteA: RptRebote, ReboteB: RptRebote) {
+
+    /**
+        1 Calcular la diferencia absoluta (DA) entre la fecha A y la fecha B. Es decir: DA = A-B
+        2 Aumento relativo: (DA/B)*1
+    */
+    console.log('Fecha A: ', reboteA.fecha)
+    console.log('Fecha B: ', ReboteB.fecha)
+
+    const difAbsAMBI = (reboteA.reboteAmbiente! - ReboteB.reboteAmbiente!);
+    const difAbsHYS = (reboteA.reboteHys! - ReboteB.reboteHys!);
+    const difAbsHOL = (reboteA.reboteHabilitaciones! - ReboteB.reboteHabilitaciones!);
+
+    const vRelativoAMBI = (100 * ( difAbsAMBI / ReboteB.reboteAmbiente!)).toFixed(2);
+    const vRelativoHYS = (100 * ( difAbsHYS /ReboteB.reboteHys!)).toFixed(2);
+    const vRelativoHOL = (100 * ( difAbsHOL /ReboteB.reboteHabilitaciones!)).toFixed(2);
+
+    console.log(vRelativoAMBI, 'ambiente')
+    console.log(vRelativoHYS, 'hys')
+    console.log(vRelativoHOL, 'habilitaciones')
+
+  }
+
+  getMinDateAndMaxDate() {
+    const minDateRebote = this.reboteList.reduce((min, rebote) => new Date(rebote.fecha!) < new Date(min.fecha!) ? rebote : min, this.reboteList[0]);
+    const maxDateRebote = this.reboteList.reduce((max, rebote) => new Date(rebote.fecha!) > new Date(max.fecha!) ? rebote : max, this.reboteList[0]);
+
+    this.calcularEficiencia(minDateRebote, maxDateRebote);
+
+  }
+
+  ordenarListado() {
+    // Ordenar por fecha ascendente
+    this.reboteList.sort((a, b) => new Date(a.fecha!).getTime() - new Date(b.fecha!).getTime());
+    console.log('Rebotes: ', this.reboteList)
   }
 
   actualizarDatosTorta() {

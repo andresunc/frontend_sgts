@@ -15,6 +15,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Params } from 'src/app/models/Params';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { memoize } from 'src/app/componentsShared/pipes/memoize';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ReboteService } from 'src/app/services/RptServices/rebote.service';
+import { RptRebote } from 'src/app/models/RptModels/RptRebote';
 
 @Component({
   selector: 'app-ver-servicios',
@@ -29,9 +32,16 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
   params: Params = new Params();
 
+  reboteList: RptRebote[] = [];
+  minDate!: Date;
+  maxDate!: Date;
+  startDate!: Date | null;
+  endDate!: Date | null;
+
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
     private servicioService: ServicioService, private svManager: ManagerService,
-    private _snackBar: PopupService, private authService: AuthService) {
+    private _snackBar: PopupService, private authService: AuthService,
+    private rptRebote: ReboteService,) {
     this.svService = svManager;
   }
 
@@ -41,6 +51,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
       this.applyFilterByCheckbox();
     });
     this.loadServicios(this.defaultSelected); // Cargar los servicios con limite de cantidad
+    this.getRebotes();
   }
 
   @memoize
@@ -165,6 +176,77 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     { value: 0, label: "Todos" }
   ];
   defaultSelected = this.verUltimos[3].value;
+
+  /**
+   * Zona para la lógica de los indicadores
+   */
+
+  /* Captura el cambio de fechas */
+  getRebotes() {
+    this.rptRebote.getRebotes()
+      .subscribe(data => {
+        this.reboteList = data;
+        this.setMinMaxDate();
+      })
+  }
+
+
+  onDateChange(event: any) {
+    this.startDate = event.value?.start;
+    this.endDate = event.value?.end;
+  }
+
+
+  setMinMaxDate() {
+    const reboteMinDate = this.reboteList.reduce((min, rebote) => new Date(rebote.fecha!) < new Date(min.fecha!) ? rebote : min, this.reboteList[0]);
+    const reboteMaxDate = this.reboteList.reduce((max, rebote) => new Date(rebote.fecha!) > new Date(max.fecha!) ? rebote : max, this.reboteList[0]);
+
+    // Convertir las fechas a objetos Date
+    const minDate = new Date(reboteMinDate.fecha!);
+    const maxDate = new Date(reboteMaxDate.fecha!);
+
+    // Sumar un día a la fecha mínima y máxima
+    minDate.setDate(minDate.getDate() + 1);
+    maxDate.setDate(maxDate.getDate() + 1);
+
+    // Asignar las fechas modificadas a las propiedades minDate y maxDate
+    this.minDate = minDate;
+    this.maxDate = maxDate;
+  }
+
+
+
+  efiAMBI: string = '';
+  efiHYS: string = '';
+  efiHOL: string = '';
+  resultAMBI: number = 0;
+  resultHYS: number = 0;
+  resultHOL: number = 0;
+  calcularEficiencia() {
+
+    /**
+        1 Calcular la diferencia absoluta (DA) entre la fecha A y la fecha B. Es decir: DA = A-B
+        2 Aumento relativo: (DA/B)*1
+    */
+
+    const reboteA = this.reboteList.find(rb => new Date(rb.fecha!).toISOString().substring(0, 10) === this.startDate!.toISOString().substring(0, 10));
+    const reboteB = this.reboteList.find(rb => new Date(rb.fecha!).toISOString().substring(0, 10) === this.endDate!.toISOString().substring(0, 10));
+
+    const difAbsAMBI = (reboteA!.reboteAmbiente! - reboteB!.reboteAmbiente!);
+    const difAbsHYS = (reboteA!.reboteHys! - reboteB!.reboteHys!);
+    const difAbsHOL = (reboteA!.reboteHabilitaciones! - reboteB!.reboteHabilitaciones!);
+
+    this.efiAMBI = (100 * (difAbsAMBI / reboteB!.reboteAmbiente!)).toFixed(2);
+    this.resultAMBI = parseFloat(this.efiAMBI);
+
+    this.efiHYS = (100 * (difAbsHYS / reboteB!.reboteHys!)).toFixed(2);
+    this.resultHYS = parseFloat(this.efiHYS);
+
+    this.efiHOL = (100 * (difAbsHOL / reboteB!.reboteHabilitaciones!)).toFixed(2);
+    this.resultHOL = parseFloat(this.efiHOL);
+
+  }
+
 }
 
 /**

@@ -4,7 +4,7 @@
         <div class="tablaContainer">
 
             <!-- Barra de filtrado por input de texto y selector de cantidad a mostrar -->
-            <section class="gestor-svs">
+            <div class="gestor-svs">
                 <div class="buscador">
                     <mat-form-field class="buscador-field">
                         <mat-label><span class="filerLabel">Buscar...</span></mat-label>
@@ -23,10 +23,51 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-            </section>
+            </div>
+
+            <!-- Indicadores -->
+            <div>
+                <div style="display: flex;">
+                    <mat-form-field>
+                        <mat-label class="filerLabel"><span>Rango máximo 2 meses</span></mat-label>
+                        <mat-date-range-input [rangePicker]="rangePicker" [min]="minDate" [max]="maxDate"
+                            (dateChange)="onDateChange($event)">
+                            <input matStartDate placeholder="Start date" [(ngModel)]="startDate">
+                            <input matEndDate placeholder="End date" [(ngModel)]="endDate">
+                        </mat-date-range-input>
+                        <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #rangePicker>
+                            <mat-date-range-picker-actions>
+                                <button mat-button matDateRangePickerCancel>Cancelar</button>
+                                <button mat-raised-button color="primary" matDateRangePickerApply
+                                    (click)="calcularEficiencia()">Aplicar</button>
+                            </mat-date-range-picker-actions>
+                        </mat-date-range-picker>
+                    </mat-form-field>
+
+                    <mat-form-field style="margin-left: 1rem;">
+                        <mat-label>AMBI</mat-label>
+                        <input matInput [value]="efiAMBI | eficiencia">
+                        <mat-icon color="primary" matSuffix *ngIf="resultAMBI > 0">arrow_upward</mat-icon>
+                        <mat-icon color="warn" matSuffix *ngIf="resultAMBI < 0">arrow_downward</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field style="margin-left: 1rem;">
+                        <mat-label>HYS</mat-label>
+                        <input matInput [value]="efiHYS | eficiencia">
+                        <mat-icon color="primary" matSuffix *ngIf="resultHYS > 0">arrow_upward</mat-icon>
+                        <mat-icon color="warn" matSuffix *ngIf="resultHYS < 0">arrow_downward</mat-icon>
+                    </mat-form-field>
+                    <mat-form-field style="margin-left: 1rem;">
+                        <mat-label>HOL</mat-label>
+                        <input matInput [value]="efiHOL | eficiencia">
+                        <mat-icon color="primary" matSuffix *ngIf="resultHOL > 0">arrow_upward</mat-icon>
+                        <mat-icon color="warn" matSuffix *ngIf="resultHOL < 0">arrow_downward</mat-icon>
+                    </mat-form-field>
+                </div>
+            </div>
 
             <!-- Tabla de servicios -->
-
             <div class="mat-elevation-z0 dataTable">
                 <table mat-table [dataSource]="dataSource">
 
@@ -85,7 +126,8 @@
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
                             (click)="svService.enviarObjeto(element)">
-                            <span class="contentTable">{{ element.itemChecklistDto ? (element.itemChecklistDto | calcularAvance) + '%' : '' }}</span>
+                            <span class="contentTable">{{ element.itemChecklistDto ? (element.itemChecklistDto |
+                                calcularAvance) + '%' : '' }}</span>
                         </td>
                     </ng-container>
 
@@ -95,7 +137,8 @@
                             <span class="headTable">ESTADO</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center"
-                            (click)="svService.enviarObjeto(element)" matTooltip="{{ svService.checkNotificaciones(element) ? 'Contiene elementos notificado' : ''}}">
+                            (click)="svService.enviarObjeto(element)"
+                            matTooltip="{{ svService.checkNotificaciones(element) ? 'Contiene elementos notificado' : ''}}">
                             <span class="contentTable"
                                 [ngClass]="element.estado ? {'primary-bold': (element.estado | uppercase) === this.params.PRESENTADO} : null">
                                 {{element.estado | uppercase }}
