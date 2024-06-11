@@ -189,6 +189,18 @@ las tres etiquetas que siguen de la tabla de servicios*/
 
 #servicioRow div{
   display: flex;
-  background-color: red;
 }
 
+.card {
+  background-image: url('src\assets\img\porcelana2.jpg');
+  background-size: cover;
+  background-position: bottom;
+  align-items: center;
+  align-content: center;
+  margin-bottom: -0.6rem;
+  margin-top: -0.8rem;
+}
+
+#indicadorContainer mat-form-field {
+  margin: 0 0.5rem;
+}

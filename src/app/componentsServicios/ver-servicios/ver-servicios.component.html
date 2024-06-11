@@ -27,46 +27,48 @@
 
             <!-- Indicadores -->
             <div>
-                <div style="display: flex;">
-                    <mat-form-field>
-                        <mat-label class="filerLabel"><span>Rango máximo 2 meses</span></mat-label>
-                        <mat-date-range-input [rangePicker]="rangePicker" [min]="minDate" [max]="maxDate"
-                            (dateChange)="onDateChange($event)">
-                            <input matStartDate placeholder="Start date" [(ngModel)]="startDate">
-                            <input matEndDate placeholder="End date" [(ngModel)]="endDate">
-                        </mat-date-range-input>
-                        <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
-                        <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #rangePicker>
-                            <mat-date-range-picker-actions>
-                                <button mat-button matDateRangePickerCancel>Cancelar</button>
-                                <button mat-raised-button color="primary" matDateRangePickerApply
-                                    (click)="calcularEficiencia()">Aplicar</button>
-                            </mat-date-range-picker-actions>
-                        </mat-date-range-picker>
-                    </mat-form-field>
-
-                    <mat-form-field style="margin-left: 1rem;">
-                        <mat-label>AMBI</mat-label>
-                        <input matInput [value]="efiAMBI | eficiencia">
-                        <mat-hint>Eficiencia Ambiente</mat-hint>
-                        <mat-icon color="primary" matSuffix *ngIf="resultAMBI > 0">arrow_upward</mat-icon>
-                        <mat-icon color="warn" matSuffix *ngIf="resultAMBI < 0">arrow_downward</mat-icon>
-                    </mat-form-field>
-                    <mat-form-field style="margin-left: 1rem;">
-                        <mat-label>HYS</mat-label>
-                        <input matInput [value]="efiHYS | eficiencia">
-                        <mat-hint>Eficiencia Higiene y seguridad</mat-hint>
-                        <mat-icon color="primary" matSuffix *ngIf="resultHYS > 0">arrow_upward</mat-icon>
-                        <mat-icon color="warn" matSuffix *ngIf="resultHYS < 0">arrow_downward</mat-icon>
-                    </mat-form-field>
-                    <mat-form-field style="margin-left: 1rem;">
-                        <mat-label>HOL</mat-label>
-                        <mat-hint>Eficiencia Habilitaciones</mat-hint>
-                        <input matInput [value]="efiHOL | eficiencia">
-                        <mat-icon color="primary" matSuffix *ngIf="resultHOL > 0">arrow_upward</mat-icon>
-                        <mat-icon color="warn" matSuffix *ngIf="resultHOL < 0">arrow_downward</mat-icon>
-                    </mat-form-field>
+                <div class="card" style="padding-left: 1rem;">
+                    <div>
+                        <p>Indicadores deficiencia en la prestación de servicios</p>
+                    </div>
+                    <div style="display: flex;" id="indicadorContainer">
+                        <mat-form-field>
+                            <mat-label class="filerLabel"><span>Rango máximo 2 meses</span></mat-label>
+                            <mat-date-range-input [rangePicker]="rangePicker" [min]="minDate" [max]="maxDate"
+                                (dateChange)="onDateChange($event)">
+                                <input matStartDate placeholder="Start date" [(ngModel)]="startDate">
+                                <input matEndDate placeholder="End date" [(ngModel)]="endDate">
+                            </mat-date-range-input>
+                            
+                            <mat-datepicker-toggle matIconSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #rangePicker>
+                                <mat-date-range-picker-actions>
+                                    <button mat-button matDateRangePickerCancel>Cancelar</button>
+                                    <button mat-raised-button color="primary" matDateRangePickerApply
+                                        (click)="calcularEficiencia()">Aplicar</button>
+                                </mat-date-range-picker-actions>
+                            </mat-date-range-picker>
+                        </mat-form-field>
+    
+                        <mat-form-field>
+                            <mat-label>AMBI</mat-label>
+                            <input matInput [value]="efiAMBI | eficiencia">
+                            <mat-icon color="primary" matSuffix *ngIf="resultAMBI > 0">arrow_upward</mat-icon>
+                            <mat-icon color="warn" matSuffix *ngIf="resultAMBI < 0">arrow_downward</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>HYS</mat-label>
+                            <input matInput [value]="efiHYS | eficiencia">
+                            <mat-icon color="primary" matSuffix *ngIf="resultHYS > 0">arrow_upward</mat-icon>
+                            <mat-icon color="warn" matSuffix *ngIf="resultHYS < 0">arrow_downward</mat-icon>
+                        </mat-form-field>
+                        <mat-form-field>
+                            <mat-label>HOL</mat-label>
+                            <input matInput [value]="efiHOL | eficiencia">
+                            <mat-icon color="primary" matSuffix *ngIf="resultHOL > 0">arrow_upward</mat-icon>
+                            <mat-icon color="warn" matSuffix *ngIf="resultHOL < 0">arrow_downward</mat-icon>
+                        </mat-form-field>
+                    </div>
                 </div>
             </div>
 
