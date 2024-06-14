@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
@@ -9,6 +9,7 @@ import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.ser
 import { SelectItemService } from 'src/app/services/ServiciosDto/select-item.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
+import { ChecklistComponent } from '../checklist/checklist.component';
 
 @Component({
   selector: 'app-add-item',
@@ -42,8 +43,9 @@ export class AddItemComponent implements OnInit {
     private selectItemService: SelectItemService,
     private recursoDtoService: RecursoDtoService,
     private itemChecklistService: ItemChecklistService,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog,
+    public dialogRef: MatDialogRef<AddItemComponent>
+  ) {}
 
   ngOnInit(): void {
     this.setDateTime();
@@ -220,9 +222,11 @@ export class AddItemComponent implements OnInit {
       (data: ItemChecklist) => {
         addItemToCheckList = data;
         console.log('ItemChecklist persistido: ', addItemToCheckList);
+        this.dialogRef.close(true);
         this.dataShared.ocultarSpinner();
       }, ()=> {
         this.dataShared.ocultarSpinner();
+        this.dialogRef.close(false);
       }
     )
 

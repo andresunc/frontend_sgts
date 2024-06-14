@@ -122,7 +122,7 @@ export class ChecklistComponent implements OnInit {
       tasaValor: item.tasaValor,
       tasaCantidadHojas: item.tasaCantidadHojas,
       urlComprobanteTasa: item.urlComprobanteTasa
-   });
+    });
   }
 
   /* Lógica para los ítems eliminados */
@@ -144,7 +144,7 @@ export class ChecklistComponent implements OnInit {
             .subscribe(
               (data) => {
                 console.log('ID del itemChecklist eliminado: ', data);
-                this.dataSourceItems.splice(indexToDelete, 1);
+                this.refreshItemsCheckList();
               }, () => {
                 this.itemsToDelete.splice(indexToDelete, 1);
               }
@@ -200,16 +200,12 @@ export class ChecklistComponent implements OnInit {
   }
 
   managElement() {
-
-    /*
-    const sameChange = JSON.stringify(this.initDataSourceItems) === JSON.stringify(this.dataSourceItems);
+    /* const sameChange = JSON.stringify(this.initDataSourceItems) === JSON.stringify(this.dataSourceItems);
     if (sameChange) {
       console.log('No hay cambios que hacer :/')
       this.popupService.warnSnackBar('No hay cambios que hacer', 'Ok');
       return;
-    }
-    */
-
+    }*/
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
     this.dataShared.mostrarSpinner();
     if (this.dataSourceItems) {
@@ -225,15 +221,23 @@ export class ChecklistComponent implements OnInit {
         this.dataShared.ocultarSpinner()
       )
     }
+
   }
 
   openAddItemComponent() {
     const dialogRef = this.dialog.open(AddItemComponent);
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.dialog.closeAll();
-      this.refreshItemsCheckList();
-      this.dialog.open(ChecklistComponent);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('cambios guardados Ok')
+        this.dialog.closeAll();
+        this.refreshItemsCheckList();
+        setTimeout(() => {
+          this.dialog.open(ChecklistComponent);
+        }, 750);
+      } else {
+        console.log('No se guardaron los cambios')
+      }
     });
   }
 }
