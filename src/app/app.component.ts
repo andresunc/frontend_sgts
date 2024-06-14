@@ -60,18 +60,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }
   }
 
-  openRptList() {
-    if (this.authService.isAdmin()) {
-      this.dialog.open(ConfigMenuComponent, {
-        data: {
-          menuTitle: reporteMenuTitle,
-          menuItems: reporteMenuItems
-        }
-      });
-    } else {
-      this._snackBar.warnSnackBar('Permisos insuficientes');
-    }
-  }
+  
 
   goNuevo() {
     if (this.authService.isAdmin()) {
