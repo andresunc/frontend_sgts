@@ -20,7 +20,7 @@
 
   .user mat-form-field{
     padding: 0.5%;
-    width: 28%;
+    width: 32.7%;
   }
 
   .slide{
@@ -37,7 +37,7 @@
     margin-bottom: 0.3rem; /* Adjust spacing as needed */
   }
   
-  .persona{
+  .persona {
     display: inline;
     width: 98%;
   }

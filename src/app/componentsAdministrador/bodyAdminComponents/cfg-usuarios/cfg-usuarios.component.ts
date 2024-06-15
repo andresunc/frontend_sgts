@@ -1,13 +1,15 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup,Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Observable, finalize } from 'rxjs';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { UsuarioDto } from 'src/app/models/ModelsDto/UsuarioDto';
 import { Params } from 'src/app/models/Params';
+import { AuthUser } from 'src/app/models/SupportModels/AuthUser';
 import { UsuarioService } from 'src/app/services/DomainServices/usuario.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
 
@@ -28,10 +30,11 @@ export class CfgUsuariosComponent implements OnInit {
   isChecked: true | undefined;
   myControl = new FormControl();
   params: Params = new Params();
+  isAdmin: boolean = false;
 
   firstFormGroup = new FormGroup({
-    usuario:new FormControl<string>('', [Validators.maxLength(10)]),
-    contraseña:new FormControl<string>('', [Validators.maxLength(10)]),
+    usuario: new FormControl<string>('', [Validators.maxLength(10)]),
+    contraseña: new FormControl<string>('', [Validators.maxLength(10)]),
     rol: new FormControl<string>('', [Validators.required]),
     nombre: new FormControl<string>('', [Validators.maxLength(45)]),
     apellido: new FormControl<string>('', [Validators.maxLength(45)]),
@@ -40,23 +43,36 @@ export class CfgUsuariosComponent implements OnInit {
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')])
 
   });
- 
-   constructor(
+
+  constructor(
     private usuarioService: UsuarioService,
     private dataShared: DataSharedService,
     private dialog: MatDialog,
     private _snackBar: PopupService,
     private router: Router,
+    private authService: AuthService,
   ) { }
 
   ngOnInit(): void {
     this.setParams();
-
   }
 
   setParams() {
-    throw new Error('Method not implemented.');
-    //falta el metodo get para esto
+    this.checkCurrentUser();
+    this.getUsuariosDto();
+  }
+
+  getUsuariosDto() {
+    this.usuarioService.getUsersDto()
+      .subscribe(
+        (data) => {
+          console.log(data)
+        }
+      )
+  }
+
+  checkCurrentUser() {
+    this.isAdmin = this.authService.isAdmin();
   }
 
   eliminarUsuario() {
@@ -65,7 +81,7 @@ export class CfgUsuariosComponent implements OnInit {
 
   checkDelete() {
     if (!this.formularioTieneErrores()) {
-      
+
       const nombreUsuario = this.firstFormGroup.get('usuario')?.value;
       const dialogRef = this.dialog.open(DeletePopupComponent, {
         data: { message: `¿Eliminar el usuario ${nombreUsuario}?` }
@@ -83,17 +99,17 @@ export class CfgUsuariosComponent implements OnInit {
       this.firstFormGroup.markAllAsTouched();
     }
   }
-  
+
   modificarUsuario() {
-  throw new Error('Method not implemented.');
+    throw new Error('Method not implemented.');
   }
-  
-  formularioTieneErrores() : boolean {
+
+  formularioTieneErrores(): boolean {
     this.firstFormGroup.markAllAsTouched();
     const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
     return hayErrores
   }
-  
+
   crearUsuario() {
     this.dataShared.mostrarSpinner();
 
@@ -108,23 +124,23 @@ export class CfgUsuariosComponent implements OnInit {
     const dni = this.firstFormGroup.controls.dni.value;
     const telefono = this.firstFormGroup.controls.telefono.value;
     const email = this.firstFormGroup.controls.email.value;
-    
-    const usuarios: UsuarioDto = new UsuarioDto();
 
-    usuarios.username = usuario;
-    usuarios.password = contraseña;
-    usuarios.rol = rol;
-    usuarios.nombre = nombre;
-    usuarios.apellido = apellido;
-    usuarios.dni = dni;
-    usuarios.telefono = telefono;
-    usuarios.email = email;
+    const newUser: UsuarioDto = new UsuarioDto();
+
+    newUser.username = usuario;
+    newUser.password = contraseña;
+    newUser.rol = rol;
+    newUser.nombre = nombre;
+    newUser.apellido = apellido;
+    newUser.dni = dni;
+    newUser.telefono = telefono;
+    newUser.email = email;
 
 
-    this.usuarioService.createUser(usuarios)
-    .pipe(
-      finalize(() => this.dataShared.ocultarSpinner())
-    )
+    this.usuarioService.createUser(newUser)
+      .pipe(
+        finalize(() => this.dataShared.ocultarSpinner())
+      )
       .subscribe(
         (data) => {
           console.log('Creación ok', data);
@@ -136,22 +152,20 @@ export class CfgUsuariosComponent implements OnInit {
           this._snackBar.errorSnackBar('Error al crear usuario');
         }
       );
-
-    console.log(UsuarioDto)
   }
 
   seleccionarUsuario(arg0: any) {
-  throw new Error('Method not implemented.');
+    throw new Error('Method not implemented.');
   }
-    
+
   backspace() {
     console.log('backspace works');
     this.disableBtnEditDelete = true;
     this.firstFormGroup.reset();
   }
-  
-  equalName : boolean = true;
-  checkUsuarioName(event: Event) : void {
+
+  equalName: boolean = true;
+  checkUsuarioName(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     const inputData = inputElement.value.trim() || '';
     this.equalName = this.usuarios.some(us => us.username?.toLowerCase() === inputData.toLowerCase());
@@ -172,7 +186,7 @@ export class CfgUsuariosComponent implements OnInit {
       }
     }
   }
-  
+
   onInputFocus() {
     this.myControl.setValue('');
   }
