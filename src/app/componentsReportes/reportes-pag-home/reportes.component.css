@@ -23,20 +23,50 @@
 }
 
 .cardContainer{
- 
-    display: inline-flex;
-    height: 50%;
-    overflow-x:hidden;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* Dos columnas */
+    gap: 5px; /* Espacio entre tarjetas */
+    height: 100%;
+    width: 100%;
+    overflow-x:scroll;
    
 }
 
 mat-card{
     
-    min-height: 30%;
-    min-width: 30%;
-    padding: 1%;
-    margin: 1%;
+    height: 90%;
+    width: 100%;
+    padding: 0.5%;
+    margin: 0.5%;
+    border-radius: 20px;
+    border-width: 0.2rem;
+    border-color: rgba(112, 112, 113, 0.313);
+    
 }
+
+mat-card-content{
+    
+    height: 70%;
+    width: 100%;
+    padding: 1rem;
+    
+}
+
+
+.mat-mdc-button, .mat-mdc-outlined-button {
+    border-radius: 20px;
+    --mat-mdc-button-persistent-ripple-color: rgb(115, 0, 255);
+    --mat-mdc-button-ripple-color: rgba(115, 0, 255, 0.461);
+    
+}
+
+mat-card-header{
+    background-color: rgba(179, 180, 180, 0.127);
+    border-radius: 18px;
+}
+
+
+
 
 
 
