@@ -8,7 +8,6 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PreferenciasService } from 'src/app/services/preferencias.service';
 import { ConfigMenuComponent } from '../config-menu/config-menu.component';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
-import { reporteMenuTitle, reporteMenuItems } from 'src/app/componentsReportes/reportescfg/reporteMenuItems';
 import { adminMenuTitle, adminMenuItems } from 'src/app/componentsAdministrador/administradorcfg/adminMenuItems';
 
 @Component({
@@ -114,19 +113,6 @@ export class SidebarComponent implements OnInit {
           menuItems: adminMenuItems
         }
       });
-    }
-  }
-
-  openRptMenu() {
-    if (this.authService.isAdmin()) {
-      this.dialog.open(ConfigMenuComponent, {
-        data: {
-          menuTitle: reporteMenuTitle,
-          menuItems: reporteMenuItems
-        }
-      });
-    } else {
-      this._snackBar.warnSnackBar('Permisos insuficientes');
     }
   }
 
