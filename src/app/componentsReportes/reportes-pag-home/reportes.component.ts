@@ -10,7 +10,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 })
 export class ReportesComponent implements OnInit {
 
-  title: string = "Sección De Reportes";
+  title: string = "Reportes";
 
   constructor(public dialog: MatDialog,
     private dataShared: DataSharedService) { }

@@ -6,12 +6,12 @@ import { ReportesRoutingModule } from './reportes-routing.module';
 import { ReportesComponent } from '../reportes-pag-home/reportes.component';
 import { TitleBarModule } from 'src/app/componentsShared/title-bar/title-bar.module';
 import { MaterialModule } from 'src/app/componentsShared/material/material.module';
-import { ServiciosEnCursoComponent } from '../bodyRptComponents/servicios-en-curso/servicios-en-curso.component';
+
 
 @NgModule({
   declarations: [
     ReportesComponent,
-    ServiciosEnCursoComponent,
+    
   ],
   imports: [
     CommonModule,

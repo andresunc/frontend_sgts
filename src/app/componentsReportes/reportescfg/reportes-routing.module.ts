@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ReportesComponent } from '../reportes-pag-home/reportes.component';
-import { ServiciosEnCursoComponent } from '../bodyRptComponents/servicios-en-curso/servicios-en-curso.component';
+
 
 const routes: Routes = [
   { 
     path: '', 
     component: ReportesComponent,
     children: [
-      { path: 'servicios-en-curso', component: ServiciosEnCursoComponent }
+      
     ]
   },
   

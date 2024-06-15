@@ -8,7 +8,6 @@ import { PopupService } from './services/SupportServices/popup.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfigMenuComponent } from './componentsShared/config-menu/config-menu.component';
 import { adminMenuItems, adminMenuTitle } from './componentsAdministrador/administradorcfg/adminMenuItems';
-import { reporteMenuItems, reporteMenuTitle } from './componentsReportes/reportescfg/reporteMenuItems';
 import { SidebarComponent } from './componentsShared/sidebar/sidebar.component';
 
 
