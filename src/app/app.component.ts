@@ -56,6 +56,9 @@ export class AppComponent implements OnInit, OnDestroy {
           menuItems: adminMenuItems
         }
       });
+      this.router.navigate(['administrador']);
+    } else {
+      this._snackBar.warnSnackBar('Permisos insuficientes');
     }
   }
 

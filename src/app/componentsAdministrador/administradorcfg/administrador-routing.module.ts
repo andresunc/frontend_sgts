@@ -20,13 +20,13 @@ const routes: Routes = [
     { path: 'riesgos', component: CfgRiesgosComponent,canActivate: [AuthGuard] },
     { path: 'estados', component: CfgEstadosComponent, canActivate: [AuthGuard]},
     { path: 'items', component: CfgItemsComponent, canActivate: [AuthGuard]},
-    { path: 'usuarios', component: CfgUsuariosComponent, canActivate: [AuthGuard]},
+    { path: 'usuarios', component: CfgUsuariosComponent, /*canActivate: [AuthGuard]*/},
   ]
 },
   
   
   // uso ** evitar error 400 (Éste objeto redirect siempre va al último)
-  { path: '**', redirectTo: '', pathMatch: 'full'}
+  { path: '**', redirectTo: 'usuarios', pathMatch: 'full'}
 ];
 
 @NgModule({

@@ -11,7 +11,7 @@ import { UsuarioDto } from 'src/app/models/ModelsDto/UsuarioDto';
 export class UsuarioService {
 
   private urlBackend = new UrlBackend().getUrlBackend();
-  private getUsuarioNotDeleteUrl = this.urlBackend + '/usuario/getAllNotDeleted';
+  private getUsersDtoUrl = this.urlBackend + '/usuario/getUsersDto';
   private createUserUrl = this.urlBackend + '/usuario/registro';
   private updateUsuarioUrl = this.urlBackend + '/usuario/update';
   private deleteUsuarioUrl = this.urlBackend + '/usuario/delete/';
@@ -24,6 +24,18 @@ export class UsuarioService {
       .pipe(
         catchError((error) => {
           console.error('Error al agregar un nuevo usuario', error);
+          return throwError(error);
+        })
+      );
+  }
+
+  getUsersDto(): Observable<UsuarioDto[]> {
+    const headers: HttpHeaders = this.authService.getHeader();
+
+    return this.http.get<UsuarioDto[]>(this.getUsersDtoUrl, {headers})
+      .pipe(
+        catchError((error) => {
+          console.error('Error en la solicitud cargar usuarios dto', error);
           return throwError(error);
         })
       );

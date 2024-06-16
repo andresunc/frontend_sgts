@@ -12,23 +12,46 @@
     margin-top: 0.4rem;
     width: 99%;
     height: calc(97% - 2.8rem);
-    /* Resta el alto de la barra de título */
-    background-color: #DFEEEE;
+    background-image: url('src/assets/img/porcelana2.jpg');
+    background-size: cover;
+    background-position: center;
     border-radius: 0.5rem;
     box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     justify-content: center;
     align-items: center;
     overflow-y: auto;
     overflow-x: auto;
-   }
+    z-index: 0; /* Ensure the background layer is below other content */
+  }
+  
+  .childContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(3px); /* Adjust the blur level as needed */
+    border-radius: inherit; /* Ensure the border radius matches the parent */
+    z-index: -2; /* Place the overlay above the background but below content */
+  }
+  
+  /* Ensure child elements are above the overlay */
+  .childContainer > * {
+    position: relative;
+    z-index: -1;
+  }
+  
 
 .childContainer::-webkit-scrollbar {
-    width: 3px; /* Cambia el ancho del scrollbar vertical */
+    width: 3px;
+    /* Cambia el ancho del scrollbar vertical */
     height: 3px;
-  
+
 }
 
 .childContainer::-webkit-scrollbar-thumb {
-    background: #6d6d6d; 
-    border-radius: 5px; 
+    background: #6d6d6d;
+    border-radius: 5px;
 }
