@@ -43,8 +43,8 @@
       </mat-form-field>
 
       <div class="slide" *ngIf="isAdmin">
-        <label for="slide-toggle">Inhabilitar Usuario</label>
-        <mat-slide-toggle id="slide-toggle" color="primary"></mat-slide-toggle>
+        <label for="slide">Inhabilitar Usuario</label>
+        <mat-slide-toggle formControlName="isEnabled" [checked]="usuarioSeleccionado?.isEnabled" id="slide" color="primary"></mat-slide-toggle>
       </div>
 
     </div>

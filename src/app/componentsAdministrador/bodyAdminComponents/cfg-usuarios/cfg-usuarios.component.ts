@@ -2,11 +2,10 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Observable, finalize } from 'rxjs';
+import { Observable, finalize, map, startWith } from 'rxjs';
 import { DeletePopupComponent } from 'src/app/componentsShared/delete-popup/delete-popup.component';
 import { UsuarioDto } from 'src/app/models/ModelsDto/UsuarioDto';
 import { Params } from 'src/app/models/Params';
-import { AuthUser } from 'src/app/models/SupportModels/AuthUser';
 import { UsuarioService } from 'src/app/services/DomainServices/usuario.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -20,7 +19,7 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 })
 export class CfgUsuariosComponent implements OnInit {
 
-  filteredOptions?: Observable<undefined>;
+  filteredOptions?: Observable<UsuarioDto[]>;
   roles: any;
   rol: any;
   usuarios: UsuarioDto[] = [];
@@ -31,6 +30,7 @@ export class CfgUsuariosComponent implements OnInit {
   myControl = new FormControl();
   params: Params = new Params();
   isAdmin: boolean = false;
+  onOff: boolean | undefined | null = false;
 
   firstFormGroup = new FormGroup({
     usuario: new FormControl<string>('', [Validators.maxLength(10)]),
@@ -40,8 +40,8 @@ export class CfgUsuariosComponent implements OnInit {
     apellido: new FormControl<string>('', [Validators.maxLength(45)]),
     dni: new FormControl<string>('', [Validators.pattern('^[0-9]{6,}$')]),
     telefono: new FormControl<string>('', [Validators.pattern('^[0-9]{6,}$')]),
-    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')])
-
+    email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]),
+    isEnabled: new FormControl(false)
   });
 
   constructor(
@@ -55,6 +55,18 @@ export class CfgUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.setParams();
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        return value ? this._filter(value) : this.usuarios.slice();
+      })
+    )
+  }
+
+  private _filter(value: string): UsuarioDto[] {
+    const filterValue = value.toLowerCase() || '';
+    return this.usuarios.filter(u => u.username?.toLowerCase().startsWith(filterValue));
   }
 
   setParams() {
@@ -66,6 +78,7 @@ export class CfgUsuariosComponent implements OnInit {
     this.usuarioService.getUsersDto()
       .subscribe(
         (data) => {
+          this.usuarios = data;
           console.log(data)
         }
       )
@@ -154,8 +167,26 @@ export class CfgUsuariosComponent implements OnInit {
       );
   }
 
-  seleccionarUsuario(arg0: any) {
-    throw new Error('Method not implemented.');
+  usuarioSeleccionado: UsuarioDto | undefined;
+  seleccionarUsuario(value: any) {
+    this.usuarioSeleccionado = this.usuarios.find( u => u.username === value);
+    if (this.usuarioSeleccionado) {
+      this.firstFormGroup.patchValue({
+        usuario: this.usuarioSeleccionado.username,
+        contraseña: this.usuarioSeleccionado.password,
+        rol: this.usuarioSeleccionado.rol,
+        nombre: this.usuarioSeleccionado.nombre,
+        apellido: this.usuarioSeleccionado.apellido,
+        dni: this.usuarioSeleccionado.dni,
+        telefono: this.usuarioSeleccionado.telefono,
+        email: this.usuarioSeleccionado.email,
+        isEnabled: this.usuarioSeleccionado.isEnabled
+      })
+    }
+  }
+
+  cons() {
+    console.log(this.onOff)
   }
 
   backspace() {
