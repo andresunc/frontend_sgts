@@ -18,8 +18,22 @@
     box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
     justify-content: center;
     align-items: center;
+    background-image: url('src/assets/img/porcelana2.jpg');
+    background-size: cover;
+    
+}
 
-  
+.childContainer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.7); /* Cambia el valor de la opacidad según sea necesario */
+    pointer-events: none; /* Permite que los elementos debajo del pseudo-elemento sean interactuables */
+    border-radius: 0.5rem;
+    
 }
 
 .cardContainer{
@@ -41,7 +55,13 @@ mat-card{
     border-radius: 20px;
     border-width: 0.2rem;
     border-color: rgba(112, 112, 113, 0.313);
-    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra inicial */
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Transición suave para la sombra y el movimiento */
+}
+
+mat-card:hover {
+    box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada al pasar el ratón */
+    transform: translateY(-10px); /* Elevar ligeramente la tarjeta */
 }
 
 mat-card-content{
@@ -49,6 +69,10 @@ mat-card-content{
     height: 70%;
     width: 100%;
     padding: 1rem;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    overflow:hidden;
+    overflow-y: scroll;
     
 }
 
@@ -61,11 +85,40 @@ mat-card-content{
 }
 
 mat-card-header{
+    
     background-color: rgba(179, 180, 180, 0.127);
     border-radius: 18px;
+    padding: 5px 10px 0;
+    display: flex; 
+    overflow: hidden; 
+    
 }
 
 
+
+*::-webkit-scrollbar {
+    width: 3px;
+    /* Cambia el ancho del scrollbar vertical */
+    height: 3px;
+
+}
+
+
+@media screen and (max-width: 700px) {
+
+    .cardContainer{
+        display: inline;
+        padding: 1%;
+    }
+
+    mat-card{
+        height: 40%;
+        width: 99%;
+        margin-bottom: 1rem;
+        word-break: keep-all;
+     }
+    
+}
 
 
 

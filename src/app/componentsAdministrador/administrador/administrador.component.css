@@ -25,10 +25,8 @@
   /* Ensure the background layer is below other content */
 }
 
-
-
 .childContainer::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -38,12 +36,6 @@
   backdrop-filter: blur(0px);
   border-radius: inherit;
   z-index: -2;
-  background-color: rgba(255, 255, 255, 0.7);
-  /* Cambia el valor de la opacidad según sea necesario */
-  pointer-events: none;
-  /* Permite que los elementos debajo del pseudo-elemento sean interactuables */
-  border-radius: 0.5rem;
-  z-index: -1;
 }
 
 /* Ensure child elements are above the overlay */
