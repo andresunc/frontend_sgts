@@ -1,57 +1,58 @@
 .moduleContainer {
-    height: 100%;
-    width: 100%;
-    border-radius: 0.5rem;
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
 }
 
 .childContainer {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap-reverse;
-    left: 0.5%;
-    margin-top: 0.4rem;
-    width: 99%;
-    height: calc(97% - 2.8rem);
-    background-image: url('src/assets/img/porcelana2.jpg');
-    background-size: cover;
-    background-position: center;
-    border-radius: 0.5rem;
-    box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    overflow-x: auto;
-    z-index: 0; /* Ensure the background layer is below other content */
-  }
-  
-  .childContainer::before {
-     content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.7); /* Cambia el valor de la opacidad según sea necesario */
-    pointer-events: none; /* Permite que los elementos debajo del pseudo-elemento sean interactuables */
-    border-radius: 0.5rem;
-    z-index: -1;
-  }
-  
-  /* Ensure child elements are above the overlay */
-  .childContainer > * {
-    position: relative;
-    z-index: -1;
-  }
-  
+  position: relative;
+  display: flex;
+  flex-wrap: wrap-reverse;
+  left: 0.5%;
+  margin-top: 0.4rem;
+  width: 99%;
+  height: calc(97% - 2.8rem);
+  background-image: url('src/assets/img/porcelana2.jpg');
+  background-size: auto;
+  background-position: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0.1rem 0.2rem rgba(0, 0, 2, 0.3);
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: auto;
+  z-index: 0;
+  /* Ensure the background layer is below other content */
+}
+
+.childContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.082);
+  backdrop-filter: blur(0px);
+  border-radius: inherit;
+  z-index: -2;
+}
+
+/* Ensure child elements are above the overlay */
+.childContainer>* {
+  position: relative;
+  z-index: -1;
+}
+
 
 .childContainer::-webkit-scrollbar {
-    width: 3px;
-    /* Cambia el ancho del scrollbar vertical */
-    height: 3px;
+  width: 3px;
+  /* Cambia el ancho del scrollbar vertical */
+  height: 3px;
 
 }
 
 .childContainer::-webkit-scrollbar-thumb {
-    background: #6d6d6d;
-    border-radius: 5px;
+  background: #6d6d6d;
+  border-radius: 5px;
 }
