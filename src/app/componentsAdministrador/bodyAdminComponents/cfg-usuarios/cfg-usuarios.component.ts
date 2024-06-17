@@ -10,6 +10,7 @@ import { UsuarioService } from 'src/app/services/DomainServices/usuario.service'
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
+import { ChangePassComponent } from './change-pass/change-pass.component';
 
 
 @Component({
@@ -29,8 +30,8 @@ export class CfgUsuariosComponent implements OnInit {
   isChecked: true | undefined;
   myControl = new FormControl();
   params: Params = new Params();
-  isAdmin: boolean = false;
   onOff: boolean | undefined | null = false;
+  formBlank = false;
 
   firstFormGroup = new FormGroup({
     usuario: new FormControl<string>('', [Validators.maxLength(10)]),
@@ -55,7 +56,40 @@ export class CfgUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.setParams();
+  }
 
+
+  setParams() {
+    this.checkCurrentUser();
+    this.getUsuariosDto();
+    this.setFilterOption();
+  }
+
+  getUsuariosDto() {
+    this.usuarioService.getUsersDto()
+      .subscribe(
+        (data) => {
+          this.usuarios = data;
+          this.getCurrentUsername();
+          console.log(data)
+        }
+      )
+  }
+
+  isAdmin: boolean = false;
+  checkCurrentUser() {
+    this.isAdmin = this.authService.isAdmin();
+    if (!this.isAdmin)  this.firstFormGroup.controls.rol.disable();
+  }
+
+  currentUsername: string | undefined = '';
+  getCurrentUsername() {
+    const currentUser = this.authService.getCurrentUser();
+    this.currentUsername = currentUser?.username;
+    this.seleccionarUsuario(this.currentUsername);
+  }
+
+  setFilterOption() {
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -67,25 +101,6 @@ export class CfgUsuariosComponent implements OnInit {
   private _filter(value: string): UsuarioDto[] {
     const filterValue = value.toLowerCase() || '';
     return this.usuarios.filter(u => u.username?.toLowerCase().startsWith(filterValue));
-  }
-
-  setParams() {
-    this.checkCurrentUser();
-    this.getUsuariosDto();
-  }
-
-  getUsuariosDto() {
-    this.usuarioService.getUsersDto()
-      .subscribe(
-        (data) => {
-          this.usuarios = data;
-          console.log(data)
-        }
-      )
-  }
-
-  checkCurrentUser() {
-    this.isAdmin = this.authService.isAdmin();
   }
 
   eliminarUsuario() {
@@ -168,12 +183,22 @@ export class CfgUsuariosComponent implements OnInit {
   }
 
   usuarioSeleccionado: UsuarioDto | undefined;
+  selected: boolean = false;
+  isMyuser: boolean = false;
   seleccionarUsuario(value: any) {
-    this.usuarioSeleccionado = this.usuarios.find( u => u.username === value);
+    this.selected = true;
+    this.formBlank = false;
+    this.usuarioSeleccionado = this.usuarios.find(u => u.username === value);
+
+    if (this.usuarioSeleccionado?.username === this.currentUsername) {
+      this.isMyuser = true;
+    } else {
+      this.isMyuser = false;
+    }
+
     if (this.usuarioSeleccionado) {
       this.firstFormGroup.patchValue({
         usuario: this.usuarioSeleccionado.username,
-        contraseña: this.usuarioSeleccionado.password,
         rol: this.usuarioSeleccionado.rol,
         nombre: this.usuarioSeleccionado.nombre,
         apellido: this.usuarioSeleccionado.apellido,
@@ -193,6 +218,9 @@ export class CfgUsuariosComponent implements OnInit {
     console.log('backspace works');
     this.disableBtnEditDelete = true;
     this.firstFormGroup.reset();
+    this.selected = false;
+    this.firstFormGroup.enable();
+    this.formBlank = true;
   }
 
   equalName: boolean = true;
@@ -234,6 +262,22 @@ export class CfgUsuariosComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['administrador/usuarios']);
     });
+  }
+
+  changePassword() {
+
+    const dialogRef = this.dialog.open(ChangePassComponent, {
+      data: { user: this.usuarioSeleccionado }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Se procede a cambiar la password');
+      } else {
+        console.log('Se canceló la acción');
+      }
+    });
+
   }
 
 }
