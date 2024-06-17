@@ -25,16 +25,16 @@
   }
   
   .childContainer::before {
-    content: '';
+     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(3px); /* Adjust the blur level as needed */
-    border-radius: inherit; /* Ensure the border radius matches the parent */
-    z-index: -2; /* Place the overlay above the background but below content */
+    background-color: rgba(255, 255, 255, 0.7); /* Cambia el valor de la opacidad según sea necesario */
+    pointer-events: none; /* Permite que los elementos debajo del pseudo-elemento sean interactuables */
+    border-radius: 0.5rem;
+    z-index: -1;
   }
   
   /* Ensure child elements are above the overlay */
