@@ -1,6 +1,7 @@
 <div class="container">
   <form [formGroup]="firstFormGroup">
-    <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()">
+    <mat-icon matSuffix color="primary" class="infoSystem" matTooltip="Instructivo" (click)="goInstructor()"
+      *ngIf="isAdmin">
       live_help
     </mat-icon>
 
@@ -9,8 +10,9 @@
 
         <mat-label for="usuario">Usuario</mat-label>
         <input type="text" placeholder="Buscar o crear un usuario" name="usuario" formControlName="usuario" matInput
-          [matAutocomplete]="auto" (focus)="onInputFocus()" [maxlength]="10" required>
-        <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()">
+          [matAutocomplete]="auto" (focus)="onInputFocus()" [maxlength]="10" [readonly]="selected" required>
+
+        <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()" *ngIf="isAdmin">
           backspace
         </mat-icon>
         <mat-error *ngIf="firstFormGroup.get('usuario')!.hasError('maxlength')">
@@ -30,10 +32,14 @@
             {{ usuario?.username }}
           </mat-option>
         </mat-autocomplete>
-
       </mat-form-field>
 
-      <mat-form-field>
+      <!-- Seccion no es mi usuario -->
+      <div class="btn" *ngIf="isAdmin && !isMyuser && !formBlank">
+        <button mat-button>Reestablecer contraseña</button>
+      </div>
+
+      <mat-form-field *ngIf="formBlank">
         <mat-label>Contraseña</mat-label>
         <input type="password" matInput formControlName="contraseña" placeholder="Ej: gg123!!#AJy" required maxlength="10">
         <mat-error
@@ -42,9 +48,15 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="slide" *ngIf="isAdmin">
-        <label for="slide">Inhabilitar Usuario</label>
-        <mat-slide-toggle formControlName="isEnabled" [checked]="usuarioSeleccionado?.isEnabled" id="slide" color="primary"></mat-slide-toggle>
+      <div class="slide" *ngIf="isAdmin && !isMyuser && !formBlank">
+        <label for="slide">Habilitar / Deshabilitar</label>
+        <mat-slide-toggle formControlName="isEnabled" [checked]="usuarioSeleccionado?.isEnabled" id="slide"
+          color="primary"></mat-slide-toggle>
+      </div>
+
+      <!-- Seccion es mi usuario -->
+      <div class="btn" *ngIf="isMyuser && !formBlank">
+        <button mat-button (click)="changePassword()">Cambiar contraseña</button>
       </div>
 
     </div>

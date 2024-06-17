@@ -34,6 +34,7 @@ import { HayNotificadosPipe } from './componentsShared/pipes/hayNotificados';
 import { DiferenciaFechasPipe } from './componentsShared/pipes/diferenciaFechas';
 import { Params } from './models/Params';
 import { EficienciaPipe } from './componentsShared/pipes/EficienciaPipe';
+import { ChangePassComponent } from './componentsAdministrador/bodyAdminComponents/cfg-usuarios/change-pass/change-pass.component';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -65,6 +66,7 @@ export const MY_FORMATS: MatDateFormats = {
     CalcularAvancePipe,
     HayNotificadosPipe,
     EficienciaPipe,
+    ChangePassComponent,
           ],
   imports: [
     BrowserModule,
