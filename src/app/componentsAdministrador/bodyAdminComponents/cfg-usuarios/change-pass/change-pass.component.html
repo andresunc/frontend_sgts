@@ -5,6 +5,16 @@
 <mat-dialog-content>
 
     <form [formGroup]="changePass">
+
+        <mat-tab-group>
+
+            <mat-tab>
+                <ng-template mat-tab-label>asd</ng-template>
+                content
+            </mat-tab>
+
+        </mat-tab-group>
+
         <mat-form-field>
             <mat-label>Contraseña</mat-label>
             <input type="password" matInput formControlName="oldPassword" placeholder="anterior" required
