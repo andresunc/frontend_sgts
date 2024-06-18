@@ -30,8 +30,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.7); /* Cambia el valor de la opacidad según sea necesario */
-    pointer-events: none; /* Permite que los elementos debajo del pseudo-elemento sean interactuables */
+    background-color: rgba(255, 255, 255, 0.7); 
+    pointer-events: none; 
     border-radius: 0.5rem;
     
 }
@@ -39,6 +39,7 @@
 .cardContainer{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 1rem;
     gap: 5px;
     height: 100%;
     width: 100%;
@@ -53,15 +54,15 @@ mat-card{
     padding: 0.5%;
     margin: 0.5%;
     border-radius: 20px;
-    border-width: 0.2rem;
-    border-color: rgba(112, 112, 113, 0.313);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra inicial */
-    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Transición suave para la sombra y el movimiento */
+    border-width: 0.15rem;
+    border-color: rgba(112, 112, 113, 0.242);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease , transform 0.3s ease; 
 }
 
 mat-card:hover {
-    box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada al pasar el ratón */
-    transform: translateY(-10px); /* Elevar ligeramente la tarjeta */
+    box-shadow: 0 16px 24px rgba(0, 0, 0, 0.3); 
+    transform: translateY(10px); 
 }
 
 mat-card-content{
