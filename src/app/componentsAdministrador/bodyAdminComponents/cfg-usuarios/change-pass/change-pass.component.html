@@ -1,49 +1,46 @@
 <div class="container">
     <div class="flexAling">
-        <mat-icon style="width: 10%;">key</mat-icon>
-        <mat-label mat-dialog-title class="flexAling" style="width: 90%;">
+        <mat-label mat-dialog-title class="flexAling" style="width: 100%;">
             <span>Cambiar contraseña</span>
         </mat-label>
     </div>
     <mat-dialog-content>
-        <form [formGroup]="changePass" style="width: 40rem; height: 10rem;">
+        <form [formGroup]="changePass" style="width: 40rem; height: 16rem;">
             <mat-tab-group [(selectedIndex)]="selectedIndex">
-                
-                <div>
-                    <mat-tab label="Validá tu contraseña" [disabled]="isOldPasswordValid">
-                        <mat-form-field>
-                            <mat-label>Contraseña actual</mat-label>
-                            <input type="password" matInput formControlName="oldPassword" placeholder="ingresar password"
-                                required maxlength="10">
-                            <mat-error
-                                *ngIf="changePass.get('oldPassword')?.invalid && (changePass.get('oldPassword')?.dirty || changePass.get('oldPassword')?.touched)">
-                                Dato obligatorio.
-                            </mat-error>
-                        </mat-form-field>
-                    </mat-tab>
 
-                    <mat-tab label="Nueva contraseña" [disabled]="!isOldPasswordValid">
-                        <mat-form-field>
-                            <mat-label>Nueva contraseña</mat-label>
-                            <input type="password" matInput formControlName="newPassword" placeholder="Nueva contraseña"
-                                required maxlength="10">
-                            <mat-error
-                                *ngIf="changePass.get('newPassword')?.invalid && (changePass.get('newPassword')?.dirty || changePass.get('newPassword')?.touched)">
-                                Dato obligatorio.
-                            </mat-error>
-                        </mat-form-field>
-                        <mat-form-field>
-                            <mat-label>Repetir contraseña</mat-label>
-                            <input type="password" matInput formControlName="passwordRepit" placeholder="Nueva contraseña"
-                                required maxlength="10">
-                            <mat-error
-                                *ngIf="changePass.get('passwordRepit')?.invalid && (changePass.get('passwordRepit')?.dirty || changePass.get('passwordRepit')?.touched)">
-                                Dato obligatorio.
-                            </mat-error>
-                        </mat-form-field>
-                    </mat-tab>
-                </div>
-                
+                <mat-tab label="Validá tu contraseña" [disabled]="isOldPasswordValid">
+                    <mat-form-field style="padding-top: 1rem; width: 100%;">
+                        <mat-label>Contraseña actual</mat-label>
+                        <input type="password" matInput formControlName="oldPassword" placeholder="ingresar password"
+                            required maxlength="10">
+                        <mat-error
+                            *ngIf="changePass.get('oldPassword')?.invalid && (changePass.get('oldPassword')?.dirty || changePass.get('oldPassword')?.touched)">
+                            Dato obligatorio.
+                        </mat-error>
+                    </mat-form-field>
+                </mat-tab>
+
+                <mat-tab label="Nueva contraseña" [disabled]="!isOldPasswordValid" style="width: 100%; display: flex; justify-content: space-between;">
+                    <mat-form-field style="padding-top: 1rem; width: 100%;">
+                        <mat-label>Nueva contraseña</mat-label>
+                        <input type="password" matInput formControlName="newPassword" placeholder="Nueva contraseña"
+                            required maxlength="10">
+                        <mat-error
+                            *ngIf="changePass.get('newPassword')?.invalid && (changePass.get('newPassword')?.dirty || changePass.get('newPassword')?.touched)">
+                            Dato obligatorio.
+                        </mat-error>
+                    </mat-form-field>
+                    <mat-form-field style="padding-top: 1rem; width: 100%;">
+                        <mat-label>Repetir contraseña</mat-label>
+                        <input type="password" matInput formControlName="passwordRepit" placeholder="Nueva contraseña"
+                            required maxlength="10">
+                        <mat-error
+                            *ngIf="changePass.get('passwordRepit')?.invalid && (changePass.get('passwordRepit')?.dirty || changePass.get('passwordRepit')?.touched)">
+                            Dato obligatorio.
+                        </mat-error>
+                    </mat-form-field>
+                </mat-tab>
+
             </mat-tab-group>
         </form>
     </mat-dialog-content>
