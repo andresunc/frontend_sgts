@@ -1,7 +1,11 @@
+.container{
+  background-color: var(--secondary-color);
+}
+
 .flexAling {
     display: flex;
     align-items: center;
-  
+    justify-content: center;
     mat-label,
     mat-icon {
       margin: 0;
@@ -31,4 +35,5 @@
     background-image: url('src\assets\img\porcelana2.jpg');
     background-size: auto;
     background-position: top;
+    border-radius: 5px;
   }
