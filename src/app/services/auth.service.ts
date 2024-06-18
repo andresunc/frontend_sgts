@@ -40,6 +40,10 @@ export class AuthService implements OnInit {
       );
   }
 
+  checkPass(loginData: LoginData): Observable<AuthUser> {
+    return this.http.post<AuthUser>(this.loginUrl, loginData)
+  }
+
   // deslogearse
   logout(): void {
     window.location.reload();

@@ -267,7 +267,7 @@ export class CfgUsuariosComponent implements OnInit {
   changePassword() {
 
     const dialogRef = this.dialog.open(ChangePassComponent, {
-      data: { user: this.usuarioSeleccionado }
+      data: this.usuarioSeleccionado
     });
 
     dialogRef.afterClosed().subscribe(result => {
