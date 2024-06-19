@@ -2,29 +2,36 @@
   <app-title-bar [titulo]="title"></app-title-bar>
   <div class="childContainer">
     <div class="cardContainer">
-      
-      <mat-dialog-content>
-        <mat-card appearance="raised">
+
+        <mat-card appearance="outlined" (click)="openReporte(1)">
           <mat-card-header>
-            <mat-card-title>Poodle</mat-card-title>
+            <mat-card-title>Trámites con mayor desvío</mat-card-title>
             <img mat-card-avatar src="\assets\img\barra.png">
           </mat-card-header>
-          <mat-card-content>explicacion del reporte</mat-card-content>
+          <mat-card-content>Se basa en el listado de los últimos 20 trámites que presentaron mayor desvío respecto a
+            las fechas estándares de inicio y finalización estimados.</mat-card-content>
         </mat-card>
-      </mat-dialog-content>
+        <ng-template #reporte1>
+          <iframe title="Trámites con mayor desvío" width="100%" height="100%" 
+          src="https://app.powerbi.com/view?r=eyJrIjoiYWM1YmRmNmEtZjUwYi00MTE0LTgzYTctM2UxMzFmYzhiOWQzIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
+          frameborder="0" allowFullScreen="true"></iframe>
+        </ng-template>
+      
 
-      <mat-dialog-content>
-        <mat-card appearance="outlined">
+        <mat-card appearance="outlined" (click)="openReporte(2)">
           <mat-card-header>
-            <mat-card-title>Analisis de Rebote </mat-card-title>
+            <mat-card-title>Análisis de Rebote </mat-card-title>
             <img mat-card-avatar src="\assets\img\dispersion.png">
           </mat-card-header>
           <mat-card-content>Porcentaje de servicios notificados según el tipo de servicio</mat-card-content>
         </mat-card>
-      </mat-dialog-content>
+        <ng-template #reporte2>
+          <iframe title="Análisis de rebote" width="100%" height="100%" 
+          src="https://app.powerbi.com/view?r=eyJrIjoiNDM0YmE5NzctMmExMC00NDFiLWFhMDAtOTY5ODU5MTdhM2M3IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
+          frameborder="0" allowFullScreen="true"></iframe>
+        </ng-template>
 
-      <mat-dialog-content>
-        <mat-card appearance="outlined">
+        <mat-card appearance="outlined" (click)="openReporte(3)">
           <mat-card-header>
             <mat-card-title>Rubros con mayor desvío</mat-card-title>
             <img mat-card-avatar src="\assets\img\linea.webp">
@@ -32,27 +39,24 @@
           <mat-card-content>Se basa en el listado de los últimos 20 servicios que presentaron mayor desvío respecto a
             las fechas estándares de inicio y finalización estimados.</mat-card-content>
         </mat-card>
-      </mat-dialog-content>
+        <ng-template #reporte3>
+          <iframe title="Rubros con mayor desvío" width="100%" height="100%"
+           src="https://app.powerbi.com/view?r=eyJrIjoiODY3MGQyNTMtODA3MS00ODhhLWI5ZWEtMzdlMDhmNGExOTY0IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+            frameborder="0" allowFullScreen="true"></iframe>
+        </ng-template>
 
-      <mat-dialog-content>
-        <mat-card appearance="outlined">
+        <mat-card appearance="outlined" (click)="openReporte(4)">
           <mat-card-header>
-            <mat-card-title>Poodle</mat-card-title>
+            <mat-card-title>Asignación por tipo de rol</mat-card-title>
             <img mat-card-avatar src="\assets\img\torta.png">
           </mat-card-header>
           <mat-card-content>explicacion del reporte</mat-card-content>
         </mat-card>
-      </mat-dialog-content>
-
-      <mat-dialog-content>
-        <mat-card appearance="outlined">
-          <mat-card-header>
-            <mat-card-title>Poodle</mat-card-title>
-            <img mat-card-avatar src="\assets\img\barra.png">
-          </mat-card-header>
-          <mat-card-content>explicacion del reporte</mat-card-content>
-        </mat-card>
-      </mat-dialog-content>
+        <ng-template #reporte4>
+          <iframe title="Asignación por tipo de rol" width="100%" height="100%" 
+          src="https://app.powerbi.com/view?r=eyJrIjoiMTIzYjNkYTUtODA3OC00YTI0LTgxNjEtZGE3NThkMTU0NDVmIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
+          frameborder="0" allowFullScreen="true"></iframe>
+        </ng-template>
 
     </div>
   </div>

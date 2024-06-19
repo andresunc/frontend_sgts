@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Servicios } from '../models/DomainModels/Servicios';
 import { MatDialog } from '@angular/material/dialog';
 import { InstructorComponent } from '../componentsShared/instructor/instructor.component';
+import { ReportDialogComponent } from '../componentsReportes/report-dialog/report-dialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -114,6 +115,19 @@ export class DataSharedService {
 
     dialogRef.afterClosed().subscribe(() => {
       console.log('Instructor cerrado correctamente');
+    });
+  }
+
+  openDialog(data: TemplateRef<HTMLElement>, title: string): void {
+    const dialogRef = this.dialog.open(ReportDialogComponent, {
+      data: {
+        templateRef: data,
+        title: title
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Reporte cerrado correctamente');
     });
   }
 
