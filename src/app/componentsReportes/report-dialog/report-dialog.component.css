@@ -1,0 +1,46 @@
+/* Estilos generales para el popup */
+.mat-dialog-container {
+    display: flex;
+    max-height: 85vh;
+    margin: 0.5rem;
+    /* Fuente formal y legible */
+    background-color: #f5f5f5;
+    /* Fondo gris claro */
+    border: 0 1px solid #ddd;
+    /* Borde sutil */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+  }
+  
+    
+  /* Contenido del popup */
+  mat-dialog-content {
+    max-height: 100%;
+    max-width: 100%;
+    width: 850px;
+    height: 1200px;
+    padding: 0.1rem !important;
+    font-size: 0.9rem;
+    /* Tamaño de letra más pequeño */
+    line-height: 1.5;
+    /* Interlineado para mejor legibilidad */
+    color: #363636;
+    /* Color de texto gris medio */
+  }
+  
+      
+  
+  /* Botón de cerrar */
+  .mat-dialog-actions button {
+    background-color: #e0e0e0;
+    /* Fondo gris claro */
+    color: #333;
+    /* Color de texto oscuro */
+    border: none;
+    /* Sin borde */
+    padding: 0.5rem 0.5rem;
+    /* Espaciado interno */
+    border-radius: 0.25rem;
+    /* Bordes redondeados */
+    cursor: pointer;
+  }
