@@ -20,7 +20,8 @@
                     </mat-form-field>
                 </mat-tab>
 
-                <mat-tab label="Nueva contraseña" [disabled]="!isOldPasswordValid" style="width: 100%; display: flex; justify-content: space-between;">
+                <mat-tab label="Nueva contraseña" [disabled]="!isOldPasswordValid"
+                    style="width: 100%; display: flex; justify-content: space-between;">
                     <mat-form-field style="padding-top: 1rem; width: 100%;">
                         <mat-label>Nueva contraseña</mat-label>
                         <input type="password" matInput formControlName="newPassword" placeholder="Nueva contraseña"
@@ -37,6 +38,10 @@
                         <mat-error
                             *ngIf="changePass.get('passwordRepit')?.invalid && (changePass.get('passwordRepit')?.dirty || changePass.get('passwordRepit')?.touched)">
                             Dato obligatorio.
+                        </mat-error>
+                        <mat-error
+                            *ngIf="changePass.hasError('mismatch') && (changePass.get('passwordRepit')?.dirty || changePass.get('passwordRepit')?.touched)">
+                            Las contraseñas no coinciden.
                         </mat-error>
                     </mat-form-field>
                 </mat-tab>

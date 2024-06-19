@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { NewPassword } from 'src/app/models/ModelsDto/NewPassword';
 import { UsuarioDto } from 'src/app/models/ModelsDto/UsuarioDto';
 import { AuthUser } from 'src/app/models/SupportModels/AuthUser';
 import { LoginData } from 'src/app/models/SupportModels/LoginData';
@@ -26,7 +25,13 @@ export class ChangePassComponent implements OnInit {
     oldPassword: new FormControl<string>('', [Validators.required, Validators.maxLength(10)]),
     newPassword: new FormControl<string>('', [Validators.required, Validators.maxLength(10)]),
     passwordRepit: new FormControl<string>('', [Validators.required, Validators.maxLength(10)]),
-  });
+  }, { validators: this.passwordMatchValidator });
+
+  passwordMatchValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    const newPassword = control.get('newPassword')?.value;
+    const passwordRepit = control.get('passwordRepit')?.value;
+    return newPassword === passwordRepit ? null : { mismatch: true };
+  }
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -70,8 +75,16 @@ export class ChangePassComponent implements OnInit {
   }
 
   setNewPassword() {
+    
     const id = this.user.idUsuario ?? 0;
     const newPassword = this.changePass.get('newPassword')?.value ?? '';
+    const passwordRepit = this.changePass.get('passwordRepit')?.value;
+
+    if (newPassword !== passwordRepit) {
+      this._snackBar.errorSnackBar('Las contraseñas no coinciden');
+      return
+    }
+    
     const passwordObject = { password: newPassword };
 
     this.usuarioService.setNewPassword(id, passwordObject)
