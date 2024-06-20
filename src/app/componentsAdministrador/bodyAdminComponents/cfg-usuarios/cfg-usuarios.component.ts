@@ -221,6 +221,7 @@ export class CfgUsuariosComponent implements OnInit {
     this.selected = false;
     this.firstFormGroup.enable();
     this.formBlank = true;
+    this.alredyReset = false;
   }
 
   equalName: boolean = true;
@@ -274,10 +275,29 @@ export class CfgUsuariosComponent implements OnInit {
       if (result) {
         console.log('Se procede a cambiar la password');
       } else {
-        console.log('Se canceló la acción');
+        console.log('Se terminó la acción');
       }
     });
 
+  }
+
+  alredyReset: boolean = false;
+  resetPass() {
+    const id = this.usuarioSeleccionado?.idUsuario ?? 0;
+    const newPassword = this.params.DEFAULT_PASS;
+
+    const passwordObject = { password: newPassword };
+
+    this.usuarioService.resetPassword(id, passwordObject)
+      .subscribe(
+        (data) => {
+          this._snackBar.okSnackBar('Contraseña reseteada');
+          this.alredyReset = true;
+        },
+        (error) => {
+          console.error('Error al resetear el password:', error);
+        }
+      );
   }
 
 }
