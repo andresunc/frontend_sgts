@@ -14,6 +14,7 @@ export class UsuarioService {
   private getUsersDtoUrl = this.urlBackend + '/usuario/getUsersDto';
   private createUserUrl = this.urlBackend + '/usuario/registro';
   private changePasswordUrl = this.urlBackend +  '/usuario/changepassword/';
+  private resetPasswordUrl = this.urlBackend +  '/usuario/resetpassword/';
   private updateUsuarioUrl = this.urlBackend + '/usuario/update';
   private deleteUsuarioUrl = this.urlBackend + '/usuario/delete/';
 
@@ -33,6 +34,12 @@ export class UsuarioService {
   changePassword(id: number, passwordObject: { password: string }): Observable<any> {
     const headers: HttpHeaders = this.authService.getHeader();
     const url = this.changePasswordUrl + id;
+    return this.http.put<any>(url, passwordObject, { headers });
+  }
+
+  resetPassword(id: number, passwordObject: { password: string }): Observable<any> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    const url = this.resetPasswordUrl + id;
     return this.http.put<any>(url, passwordObject, { headers });
   }
 

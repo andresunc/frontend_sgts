@@ -36,7 +36,7 @@
 
       <!-- Seccion no es mi usuario -->
       <div class="btn" *ngIf="isAdmin && !isMyuser && !formBlank">
-        <button mat-button>Reestablecer contraseña</button>
+        <button (click)="resetPass()" mat-button [disabled]="alredyReset">Reestablecer contraseña</button>
       </div>
 
       <mat-form-field *ngIf="formBlank">
