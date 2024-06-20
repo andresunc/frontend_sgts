@@ -87,7 +87,7 @@ export class ChangePassComponent implements OnInit {
     
     const passwordObject = { password: newPassword };
 
-    this.usuarioService.setNewPassword(id, passwordObject)
+    this.usuarioService.changePassword(id, passwordObject)
       .subscribe(
         (data) => {
           // Verifica si el mensaje es "OK"
