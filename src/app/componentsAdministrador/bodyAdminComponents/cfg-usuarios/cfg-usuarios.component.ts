@@ -25,7 +25,8 @@ export class CfgUsuariosComponent implements OnInit {
   rol: any;
   usuarios: UsuarioDto[] = [];
   displayFn!: ((value: any) => string);
-  disableBtnEditDelete: boolean = true;
+  disableBtnDelete: boolean = true;
+  disableBtnEdit: boolean = true;
   disableBtnCreate: boolean = true;
   isChecked: true | undefined;
   myControl = new FormControl();
@@ -35,14 +36,14 @@ export class CfgUsuariosComponent implements OnInit {
 
   firstFormGroup = new FormGroup({
     usuario: new FormControl<string>('', [Validators.maxLength(10)]),
-    contraseña: new FormControl<string>('', [Validators.maxLength(10)]),
+    contraseña: new FormControl<string>('', [Validators.maxLength(10), Validators.required]),
     rol: new FormControl<string>('', [Validators.required]),
     nombre: new FormControl<string>('', [Validators.maxLength(45)]),
     apellido: new FormControl<string>('', [Validators.maxLength(45)]),
     dni: new FormControl<string>('', [Validators.pattern('^[0-9.]{6,}$')]),
     telefono: new FormControl<string>('', [Validators.pattern('^[0-9]{6,}$')]),
     email: new FormControl<string>('', [Validators.required, Validators.email, Validators.pattern('[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')]),
-    isEnabled: new FormControl(false)
+    isEnabled: new FormControl(true)
   });
 
   constructor(
@@ -56,13 +57,18 @@ export class CfgUsuariosComponent implements OnInit {
 
   ngOnInit(): void {
     this.setParams();
+    //this.onChangeIsEnable();
   }
-
 
   setParams() {
     this.checkCurrentUser();
     this.getUsuariosDto();
     this.setFilterOption();
+  }
+
+  onChangeIsEnable() {
+    this.usuarioSeleccionado!.isEnabled = !this.usuarioSeleccionado!.isEnabled
+    console.log('Nuevo valor de isEnabled: ', this.usuarioSeleccionado!.isEnabled);
   }
 
   getUsuariosDto() {
@@ -79,7 +85,7 @@ export class CfgUsuariosComponent implements OnInit {
   isAdmin: boolean = false;
   checkCurrentUser() {
     this.isAdmin = this.authService.isAdmin();
-    if (!this.isAdmin)  this.firstFormGroup.controls.rol.disable();
+    if (!this.isAdmin) this.firstFormGroup.controls.rol.disable();
   }
 
   currentUsername: string | undefined = '';
@@ -108,11 +114,18 @@ export class CfgUsuariosComponent implements OnInit {
   }
 
   checkDelete() {
+    let messageToSend = '';
     if (!this.formularioTieneErrores()) {
 
       const nombreUsuario = this.firstFormGroup.get('usuario')?.value;
+
+      if (nombreUsuario === this.currentUsername) {
+        messageToSend = `¿Eliminar tu propia cuenta?`
+      } else {
+        messageToSend = `¿Eliminar el usuario ${nombreUsuario}?`
+      }
       const dialogRef = this.dialog.open(DeletePopupComponent, {
-        data: { message: `¿Eliminar el usuario ${nombreUsuario}?` }
+        data: { message: messageToSend }
       });
 
       dialogRef.afterClosed()
@@ -135,6 +148,7 @@ export class CfgUsuariosComponent implements OnInit {
   formularioTieneErrores(): boolean {
     this.firstFormGroup.markAllAsTouched();
     const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
+    console.log(this.usuarioSeleccionado)
     return hayErrores
   }
 
@@ -142,7 +156,8 @@ export class CfgUsuariosComponent implements OnInit {
     this.dataShared.mostrarSpinner();
 
     this.disableBtnCreate = true;
-    this.disableBtnEditDelete = true;
+    this.disableBtnEdit = true;
+    this.disableBtnDelete = true;
 
     const usuario = this.firstFormGroup.controls.usuario.value;
     const contraseña = this.firstFormGroup.controls.contraseña.value;
@@ -186,15 +201,21 @@ export class CfgUsuariosComponent implements OnInit {
   selected: boolean = false;
   isMyuser: boolean = false;
   seleccionarUsuario(value: any) {
+
     this.selected = true;
     this.formBlank = false;
+    this.firstFormGroup.get('contraseña')?.removeValidators(Validators.required);
+    this.firstFormGroup.get('contraseña')?.updateValueAndValidity();
+
     this.usuarioSeleccionado = this.usuarios.find(u => u.username === value);
 
     if (this.usuarioSeleccionado?.username === this.currentUsername) {
       this.isMyuser = true;
-    } else {
-      this.isMyuser = false;
-    }
+    } 
+
+    this.disableBtnDelete = false;
+    this.disableBtnEdit = false;
+    this.disableBtnCreate = false;
 
     if (this.usuarioSeleccionado) {
       this.firstFormGroup.patchValue({
@@ -210,18 +231,20 @@ export class CfgUsuariosComponent implements OnInit {
     }
   }
 
-  cons() {
-    console.log(this.onOff)
-  }
-
   backspace() {
     console.log('backspace works');
-    this.disableBtnEditDelete = true;
+    this.isMyuser = false;
+    this.disableBtnCreate = true;
+    this.disableBtnDelete = true;
+    this.disableBtnEdit = true;
     this.firstFormGroup.reset();
     this.selected = false;
     this.firstFormGroup.enable();
     this.formBlank = true;
     this.alredyReset = false;
+    this.firstFormGroup.get('contraseña')?.setValidators(Validators.required);
+    this.firstFormGroup.get('contraseña')?.updateValueAndValidity();
+    this.usuarioSeleccionado = undefined;
   }
 
   equalName: boolean = true;
