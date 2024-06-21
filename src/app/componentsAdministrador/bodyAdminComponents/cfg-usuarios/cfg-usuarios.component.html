@@ -41,7 +41,7 @@
 
       <mat-form-field *ngIf="formBlank">
         <mat-label>Contraseña</mat-label>
-        <input type="password" matInput formControlName="contraseña" placeholder="Ej: gg123!!#AJy" required maxlength="10">
+        <input type="password" matInput formControlName="contraseña" placeholder="Ej: gg123!!#AJy" maxlength="10">
         <mat-error
           *ngIf="firstFormGroup.get('contraseña')?.invalid && (firstFormGroup.get('contraseña')?.dirty || firstFormGroup.get('contraseña')?.touched)">
           Dato obligatorio.
@@ -51,7 +51,8 @@
       <div class="slide" *ngIf="isAdmin && !isMyuser && !formBlank">
         <label for="slide">Habilitar / Deshabilitar</label>
         <mat-slide-toggle formControlName="isEnabled" [checked]="usuarioSeleccionado?.isEnabled" id="slide"
-          color="primary"></mat-slide-toggle>
+          color="primary" (toggleChange)="onChangeIsEnable()">
+        </mat-slide-toggle>
       </div>
 
       <!-- Seccion es mi usuario -->
@@ -125,10 +126,10 @@
 
   <div class="btn" (click)="formularioTieneErrores()">
     <button mat-button (click)="crearUsuario()"
-      [disabled]="!firstFormGroup.valid || !disableBtnEditDelete">Crear</button>
+      [disabled]="!firstFormGroup.valid || !disableBtnCreate">Crear</button>
     <button mat-button matTooltip="Confirmar Cambio" (click)="modificarUsuario()"
-      [disabled]="disableBtnEditDelete || !firstFormGroup.valid">Modificar</button>
-    <button mat-button (click)="checkDelete()" [disabled]="disableBtnEditDelete">Eliminar</button>
+      [disabled]="disableBtnEdit || !firstFormGroup.valid">Modificar</button>
+    <button mat-button (click)="checkDelete()" [disabled]="disableBtnDelete || isMyuser">Eliminar</button>
   </div>
 </div>
 
