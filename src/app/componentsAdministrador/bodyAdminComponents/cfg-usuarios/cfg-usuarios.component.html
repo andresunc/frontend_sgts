@@ -41,7 +41,7 @@
 
       <mat-form-field *ngIf="formBlank">
         <mat-label>Contraseña</mat-label>
-        <input type="password" matInput formControlName="contraseña" placeholder="Ej: gg123!!#AJy" maxlength="10">
+        <input type="password" matInput formControlName="contraseña" placeholder="Ej: gg123!!#AJy" maxlength="10" autocomplete="off">
         <mat-error
           *ngIf="firstFormGroup.get('contraseña')?.invalid && (firstFormGroup.get('contraseña')?.dirty || firstFormGroup.get('contraseña')?.touched)">
           Dato obligatorio.

@@ -11,6 +11,7 @@ import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { ChangePassComponent } from './change-pass/change-pass.component';
+import { AuthUser } from 'src/app/models/SupportModels/AuthUser';
 
 
 @Component({
@@ -142,13 +143,49 @@ export class CfgUsuariosComponent implements OnInit {
   }
 
   modificarUsuario() {
-    throw new Error('Method not implemented.');
+    if (!this.formularioTieneErrores() && this.usuarioSeleccionado) {
+      this.dataShared.mostrarSpinner();
+  
+      // Crea un nuevo objeto UsuarioDto con los valores actualizados del formulario
+      const usuarioActualizado: UsuarioDto = {
+        idUsuario: this.usuarioSeleccionado.idUsuario,
+        idPersona: this.usuarioSeleccionado.idPersona,
+        username: this.firstFormGroup.controls.usuario.value,
+        rol: this.firstFormGroup.controls.rol.value,
+        nombre: this.firstFormGroup.controls.nombre.value,
+        apellido: this.firstFormGroup.controls.apellido.value,
+        dni: this.firstFormGroup.controls.dni.value,
+        telefono: this.firstFormGroup.controls.telefono.value,
+        email: this.firstFormGroup.controls.email.value,
+        isEnabled: this.firstFormGroup.controls.isEnabled.value
+      };
+  
+      // Llama al servicio para actualizar el usuario
+      this.usuarioService.modificarUsuario(usuarioActualizado)
+        .pipe(
+          finalize(() => this.dataShared.ocultarSpinner())
+        )
+        .subscribe(
+          (data: AuthUser) => {
+            console.log('Modificación ok', data);
+            this.refresh();
+            this._snackBar.okSnackBar('Usuario modificado correctamente');
+          },
+          (error) => {
+            console.error('Error al modificar usuario', error);
+            this._snackBar.errorSnackBar('Error al modificar usuario');
+          }
+        );
+    } else {
+      // Si el formulario tiene errores, márcalo como tocado para mostrar los mensajes de error
+      this.firstFormGroup.markAllAsTouched();
+    }
   }
+  
 
   formularioTieneErrores(): boolean {
     this.firstFormGroup.markAllAsTouched();
     const hayErrores = this.firstFormGroup.invalid || this.firstFormGroup.pending;
-    console.log(this.usuarioSeleccionado)
     return hayErrores
   }
 
