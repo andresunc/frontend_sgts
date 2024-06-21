@@ -13,8 +13,8 @@ export class UsuarioService {
   private urlBackend = new UrlBackend().getUrlBackend();
   private getUsersDtoUrl = this.urlBackend + '/usuario/getUsersDto';
   private createUserUrl = this.urlBackend + '/usuario/registro';
-  private changePasswordUrl = this.urlBackend +  '/usuario/changepassword/';
-  private resetPasswordUrl = this.urlBackend +  '/usuario/resetpassword/';
+  private changePasswordUrl = this.urlBackend + '/usuario/changepassword/';
+  private resetPasswordUrl = this.urlBackend + '/usuario/resetpassword/';
   private updateUsuarioUrl = this.urlBackend + '/usuario/update';
   private deleteUsuarioUrl = this.urlBackend + '/usuario/delete/';
 
@@ -29,6 +29,12 @@ export class UsuarioService {
           return throwError(error);
         })
       );
+  }
+
+  modificarUsuario(usuarioActualizado: UsuarioDto): Observable<any> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    // Crear un objeto de solicitud con la estructura esperada por el endpoint
+    return this.http.put<any>(this.updateUsuarioUrl, usuarioActualizado, { headers });
   }
 
   changePassword(id: number, passwordObject: { password: string }): Observable<any> {
@@ -46,7 +52,7 @@ export class UsuarioService {
   getUsersDto(): Observable<UsuarioDto[]> {
     const headers: HttpHeaders = this.authService.getHeader();
 
-    return this.http.get<UsuarioDto[]>(this.getUsersDtoUrl, {headers})
+    return this.http.get<UsuarioDto[]>(this.getUsersDtoUrl, { headers })
       .pipe(
         catchError((error) => {
           console.error('Error en la solicitud cargar usuarios dto', error);
