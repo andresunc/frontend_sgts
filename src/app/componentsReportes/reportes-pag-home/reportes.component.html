@@ -5,10 +5,10 @@
 
         <mat-card appearance="outlined" (click)="openReporte(1)">
           <mat-card-header>
-            <mat-card-title>Trámites con mayor desvío</mat-card-title>
+            <mat-card-title>Trámites con mayores desvío</mat-card-title>
             <img mat-card-avatar src="\assets\img\barra.png">
           </mat-card-header>
-          <mat-card-content>Se basa en el listado de los últimos 20 trámites que presentaron mayor desvío respecto a
+          <mat-card-content>Se basa en el listado de los trámites que presentaron desvíos respecto a
             las fechas estándares de inicio y finalización estimados.</mat-card-content>
         </mat-card>
         <ng-template #reporte1>
@@ -23,7 +23,7 @@
             <mat-card-title>Análisis de Rebote </mat-card-title>
             <img mat-card-avatar src="\assets\img\dispersion.png">
           </mat-card-header>
-          <mat-card-content>Porcentaje de servicios notificados según el tipo de servicio</mat-card-content>
+          <mat-card-content>Se basa en los últimos 30 registros de las veces en que se presentó documentación, ante una entidad reguladora, y no fué aprobada debido a documentación incorrecta o insuficiente.</mat-card-content>
         </mat-card>
         <ng-template #reporte2>
           <iframe title="Análisis de rebote" width="100%" height="100%" 
@@ -33,10 +33,10 @@
 
         <mat-card appearance="outlined" (click)="openReporte(3)">
           <mat-card-header>
-            <mat-card-title>Rubros con mayor desvío</mat-card-title>
+            <mat-card-title>Rubros con mayores desvío</mat-card-title>
             <img mat-card-avatar src="\assets\img\linea.webp">
           </mat-card-header>
-          <mat-card-content>Se basa en el listado de los últimos 20 servicios que presentaron mayor desvío respecto a
+          <mat-card-content>Se basa en el listado de los trámites que presentaron desvíos y que están agrupados por rubros, respecto a
             las fechas estándares de inicio y finalización estimados.</mat-card-content>
         </mat-card>
         <ng-template #reporte3>
@@ -47,10 +47,10 @@
 
         <mat-card appearance="outlined" (click)="openReporte(4)">
           <mat-card-header>
-            <mat-card-title>Asignación por tipo de rol</mat-card-title>
+            <mat-card-title>Distribución de Tareas por Tipo de Rol</mat-card-title>
             <img mat-card-avatar src="\assets\img\torta.png">
           </mat-card-header>
-          <mat-card-content>explicacion del reporte</mat-card-content>
+          <mat-card-content>Se basa en la asignación de tareas o ítems a usuarios según sus roles para visualizar y analizar cómo se distribuyen las tareas entre los distintos roles e identificar posibles desbalances en la carga de trabajo.</mat-card-content>
         </mat-card>
         <ng-template #reporte4>
           <iframe title="Asignación por tipo de rol" width="100%" height="100%" 
