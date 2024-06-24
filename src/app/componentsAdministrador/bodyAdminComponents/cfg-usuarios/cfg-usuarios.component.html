@@ -10,19 +10,22 @@
 
         <mat-label for="usuario">Usuario</mat-label>
         <input type="text" placeholder="Buscar o crear un usuario" name="usuario" formControlName="usuario" matInput
-          [matAutocomplete]="auto" (focus)="onInputFocus()" [maxlength]="10" [readonly]="selected" required>
+          [matAutocomplete]="auto" (focus)="onInputFocus()" [maxlength]="10" [readonly]="selected" required
+          (input)="checkUsuarioName($event)">
+
 
         <mat-icon matSuffix class="backspace" matTooltip="Limpiar formulario" (click)="backspace()" *ngIf="isAdmin">
           backspace
         </mat-icon>
+
         <mat-error *ngIf="firstFormGroup.get('usuario')!.hasError('maxlength')">
           Ingresa menos de 10 caracteres.
         </mat-error>
         <mat-error *ngIf="firstFormGroup.get('usuario')?.hasError('duplicate')">
           Ese nombre ya existe.
         </mat-error>
-        <mat-error
-          *ngIf="firstFormGroup.get('usuario')?.invalid && (firstFormGroup.get('usuario')?.dirty || firstFormGroup.get('usuario')?.touched)">
+        <mat-error *ngIf="firstFormGroup.get('usuario')?.invalid && !firstFormGroup.get('usuario')?.hasError('duplicate') && 
+            (firstFormGroup.get('usuario')?.dirty || firstFormGroup.get('usuario')?.touched)">
           Dato obligatorio.
         </mat-error>
 
@@ -41,7 +44,8 @@
 
       <mat-form-field *ngIf="formBlank">
         <mat-label>Contraseña</mat-label>
-        <input type="password" matInput formControlName="contraseña" placeholder="Ej: gg123!!#AJy" maxlength="10" autocomplete="off">
+        <input type="password" matInput formControlName="contraseña" placeholder="Ej: gg123!!#AJy" maxlength="10"
+          autocomplete="off">
         <mat-error
           *ngIf="firstFormGroup.get('contraseña')?.invalid && (firstFormGroup.get('contraseña')?.dirty || firstFormGroup.get('contraseña')?.touched)">
           Dato obligatorio.
@@ -125,11 +129,10 @@
   </form>
 
   <div class="btn" (click)="formularioTieneErrores()">
-    <button mat-button (click)="crearUsuario()"
-      [disabled]="!firstFormGroup.valid || !disableBtnCreate">Crear</button>
+    <button mat-button (click)="crearUsuario()" [disabled]="!firstFormGroup.valid || !disableBtnCreate">Crear</button>
     <button mat-button matTooltip="Confirmar Cambio" (click)="modificarUsuario()"
       [disabled]="disableBtnEdit || !firstFormGroup.valid">Modificar</button>
-    <button mat-button (click)="checkDelete()" [disabled]="disableBtnDelete || isMyuser">Eliminar</button>
+    <button mat-button (click)="checkDelete()" [disabled]="disableBtnDelete || isMyuser && !isAdmin">Eliminar</button>
   </div>
 </div>
 

@@ -111,7 +111,18 @@ export class CfgUsuariosComponent implements OnInit {
   }
 
   eliminarUsuario() {
-    throw new Error('Method not implemented.');
+    const id = this.usuarioSeleccionado?.idUsuario ?? 0;
+    this.usuarioService.delete(id)
+    .subscribe(
+      ()=> {
+        this._snackBar.okSnackBar('Usuario eliminado correctamente');
+        // Recargar el componente navegando a la misma ruta
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['administrador/usuarios']);
+        });
+      },
+      () => this._snackBar.warnSnackBar('Error al eliminar el usuario', 'OK')
+    )
   }
 
   checkDelete() {

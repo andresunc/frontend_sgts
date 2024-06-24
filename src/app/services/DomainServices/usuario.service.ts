@@ -61,4 +61,16 @@ export class UsuarioService {
       );
   }
 
+   // deleteLogico Tipo de Servicio por ID
+   public delete(id: number): Observable<void> {
+    const headers: HttpHeaders = this.authService.getHeader();
+    return this.http.delete<void>(this.deleteUsuarioUrl + id, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error al eliminar el usuario', error);
+          return throwError(error);
+        })
+      );
+  }
+
 }
