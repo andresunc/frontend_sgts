@@ -5,42 +5,42 @@
 
         <mat-card appearance="outlined" (click)="openReporte(1)">
           <mat-card-header>
-            <mat-card-title>Trámites con Mayor Desvío</mat-card-title>
+            <mat-card-title>Desvío por Trámite</mat-card-title>
             <img mat-card-avatar src="\assets\img\barra.png">
           </mat-card-header>
           <mat-card-content>Se basa en el listado de los trámites que presentaron desvíos respecto a
             las fechas estándares de inicio y finalización estimados.</mat-card-content>
         </mat-card>
         <ng-template #reporte1>
-          <iframe title="Trámites con Mayor Desvío" width="100%" height="100%" 
-          src="https://app.powerbi.com/view?r=eyJrIjoiYWM1YmRmNmEtZjUwYi00MTE0LTgzYTctM2UxMzFmYzhiOWQzIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          <iframe title="Desvío por Trámite" width="100%" height="100%" 
+          src="https://app.powerbi.com/view?r=eyJrIjoiYWM1YmRmNmEtZjUwYi00MTE0LTgzYTctM2UxMzFmYzhiOWQzIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
           frameborder="0" allowFullScreen="true"></iframe>
         </ng-template>
       
 
         <mat-card appearance="outlined" (click)="openReporte(2)">
           <mat-card-header>
-            <mat-card-title>Análisis de Rebote </mat-card-title>
+            <mat-card-title>Análisis de Rebote</mat-card-title>
             <img mat-card-avatar src="\assets\img\dispersion.png">
           </mat-card-header>
           <mat-card-content>Se basa en los últimos 30 registros de las veces en que se presentó documentación, ante una entidad reguladora, y no fué aprobada debido a documentación incorrecta o insuficiente.</mat-card-content>
         </mat-card>
         <ng-template #reporte2>
-          <iframe title="Análisis de Rebote" width="100%" height="100%" 
+          <iframe title="Análisis de rebote" width="100%" height="100%" 
           src="https://app.powerbi.com/view?r=eyJrIjoiNDM0YmE5NzctMmExMC00NDFiLWFhMDAtOTY5ODU5MTdhM2M3IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
           frameborder="0" allowFullScreen="true"></iframe>
         </ng-template>
 
         <mat-card appearance="outlined" (click)="openReporte(3)">
           <mat-card-header>
-            <mat-card-title>Rubros con Mayor Desvío</mat-card-title>
+            <mat-card-title>Desvío por Rubro</mat-card-title>
             <img mat-card-avatar src="\assets\img\linea.webp">
           </mat-card-header>
           <mat-card-content>Se basa en el listado de los trámites que presentaron desvíos y que están agrupados por rubros, respecto a
             las fechas estándares de inicio y finalización estimados.</mat-card-content>
         </mat-card>
         <ng-template #reporte3>
-          <iframe title="Rubros con Mayor Desvío" width="100%" height="100%"
+          <iframe title="Desvío por Rubro" width="100%" height="100%"
            src="https://app.powerbi.com/view?r=eyJrIjoiODY3MGQyNTMtODA3MS00ODhhLWI5ZWEtMzdlMDhmNGExOTY0IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
             frameborder="0" allowFullScreen="true"></iframe>
         </ng-template>
@@ -53,7 +53,7 @@
           <mat-card-content>Se basa en la asignación de tareas o ítems a usuarios según sus roles para visualizar y analizar cómo se distribuyen las tareas entre los distintos roles e identificar posibles desbalances en la carga de trabajo.</mat-card-content>
         </mat-card>
         <ng-template #reporte4>
-          <iframe title="Distribución de Tareas por Tipo de Rol" width="100%" height="100%" 
+          <iframe title="Asignación por tipo de rol" width="100%" height="100%" 
           src="https://app.powerbi.com/view?r=eyJrIjoiMTIzYjNkYTUtODA3OC00YTI0LTgxNjEtZGE3NThkMTU0NDVmIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
           frameborder="0" allowFullScreen="true"></iframe>
         </ng-template>
