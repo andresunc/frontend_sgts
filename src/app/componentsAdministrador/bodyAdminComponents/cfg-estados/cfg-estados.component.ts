@@ -157,7 +157,6 @@ export class CfgEstadosComponent implements OnInit {
           this.dataShared.triggerUpDateSideBar(); // Actualiza la SideBar
           console.log('Estado creado: ', data);
 
-
           this._snackBar.okSnackBar('El estado se creó correctamente');
           this.obtenerEstado();
 

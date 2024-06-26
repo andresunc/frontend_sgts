@@ -32,8 +32,8 @@
     </div>
 
     <!-- Botón para guardar el orden -->
-    <button mat-raised-button mat-dialog-close color="primary" (click)="updateOrdenEstados()" [disabled]="stopOrden">Guardar</button>
 </mat-dialog-content>
 <mat-dialog-actions align="center">
     <button mat-button mat-dialog-close>Cerrar menú</button>
+    <button mat-button mat-dialog-close (click)="updateOrdenEstados()" [disabled]="stopOrden">Guardar</button>
 </mat-dialog-actions>
