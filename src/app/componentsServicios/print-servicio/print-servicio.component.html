@@ -13,7 +13,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Responsable general</mat-label>
-              <input matInput [value]="onServicio.fullname_responsable" [readonly]="true">
+              <input matInput [value]="onServicio.fullname_responsable" [readonly]="true" [disabled]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -48,7 +48,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Cliente</mat-label>
-              <input matInput [value]="onServicio.cliente" [readonly]="true">
+              <input matInput [value]="onServicio.cliente" [readonly]="true" [disabled]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -57,7 +57,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Rubro</mat-label>
-              <input matInput [value]="onServicio.rubro" [readonly]="true">
+              <input matInput [value]="onServicio.rubro" [readonly]="true" [disabled]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -80,7 +80,7 @@
 
             <mat-form-field appearance="fill">
               <mat-label>Tipo de servicio</mat-label>
-              <input matInput [value]="onServicio.tipo" [readonly]="true">
+              <input matInput [value]="onServicio.tipo" [readonly]="true" [disabled]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -150,7 +150,7 @@
             <mat-form-field appearance="fill">
               <mat-label>Renovaciones y referencia</mat-label>
               <input matInput [value]="'Cantidad: ' +recurrencia + ' Ref-ID: ' + onServicio.referencia"
-                [readonly]="true">
+                [readonly]="true" [disabled]="true">
             </mat-form-field>
 
           </mat-grid-tile>
@@ -169,9 +169,9 @@
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
             <mat-form-field floatLabel="always">
-              <mat-label [style.color]="isEditable ? '#dc3545' : ''">Presupuesto</mat-label>
+              <mat-label>Presupuesto</mat-label>
               <input matInput type="number" style="text-align: center;" [(ngModel)]="getServicio().total_presupuestado"
-                placeholder="0" [readonly]="!isEditable" [disabled]="checkEditable()" (blur)="validarPresupuesto()"
+                placeholder="0" [disabled]="true" (blur)="validarPresupuesto()"
                 (input)="limitarLongitud($event)" #presupuestoInput>
               <span matTextPrefix>$&nbsp;</span>
             </mat-form-field>
