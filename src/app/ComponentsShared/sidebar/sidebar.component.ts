@@ -9,6 +9,7 @@ import { PreferenciasService } from 'src/app/services/preferencias.service';
 import { ConfigMenuComponent } from '../config-menu/config-menu.component';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { adminMenuTitle, adminMenuItems } from 'src/app/componentsAdministrador/administradorcfg/adminMenuItems';
+import { ReportesComponent } from 'src/app/componentsReportes/reportes-pag-home/reportes.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -113,10 +114,19 @@ export class SidebarComponent implements OnInit {
           menuItems: adminMenuItems
         }
       });
+      this.shouldShowSidebar = false;
     }
   }
 
+  openReportes() {
+    if (this.authService.isAdmin()) {
+      this.router.navigate(['/reportes']);
+      this.shouldShowSidebar = false;
+  }
 }
+}
+
+
 function ngOnInit() {
   throw new Error('Function not implemented.');
 }
