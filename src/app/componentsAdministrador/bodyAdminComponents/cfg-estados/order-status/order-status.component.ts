@@ -1,5 +1,6 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { Params } from 'src/app/models/Params';
@@ -32,7 +33,8 @@ export class OrderStatusComponent {
     private estadosService: EstadosService, 
     private categoriaService: CategoriaService,
     private _snackBar: PopupService,
-    private dataShared: DataSharedService,) { }
+    private dataShared: DataSharedService,
+    public dialogRef: MatDialogRef<OrderStatusComponent>) { }
 
   ngOnInit() {
     this.obtenerEstado();
@@ -167,6 +169,8 @@ export class OrderStatusComponent {
     .subscribe(
       (data) => {
         console.log('Actualización orden estados Data: ', data);
+        this.dialogRef.close(); // Cierra el diálogo
+        this._snackBar.okSnackBar('Orden actualizado')
       }
     ).add(
       () => {
