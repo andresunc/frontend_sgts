@@ -174,7 +174,7 @@ export class AddItemComponent implements OnInit {
       let fechaRecomendada: string = objetoFiltrado.fechaHoraRealizacionRecomendada;
 
       // Formatear la fecha para que coincida con el formato esperado
-      let fechaFormateada: string = fechaRecomendada.split(".")[0]; // Eliminar los milisegundos
+      let fechaFormateada: string = fechaRecomendada.split("T")[0]; // Eliminar los milisegundos
       this.fechaHoraRealizacion = fechaFormateada;
     } else {
       console.error("El objeto seleccionado no se encontró en la lista de selectItems o no tiene una fecha recomendada definida.");
