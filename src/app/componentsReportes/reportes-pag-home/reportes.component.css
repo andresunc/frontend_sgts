@@ -20,7 +20,7 @@
     align-items: center;
     background-image: url('src/assets/img/porcelana2.jpg');
     background-size: cover;
-    
+    overflow: hidden;
 }
 
 .childContainer::before {
