@@ -38,7 +38,7 @@ export class ServicioService {
 
     return this.http.get<Servicios[]>(this.getTopServicesUrl, { headers, params })
       .pipe(
-        tap((data) => {
+        tap((data: Servicios[]) => {
           console.log('getTopServices: ', data);
           return data;
         }),

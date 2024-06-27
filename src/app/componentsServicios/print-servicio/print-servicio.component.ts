@@ -43,6 +43,7 @@ export class PrintServicioComponent implements OnInit {
 
   presupuestOriginal!: number;
   recordatoriOriginal!: any;
+  expedienteOriginal!: string;
   idEstadOriginal!: string;
   comentariOriginal!: string;
   params: Params = new Params();
@@ -71,7 +72,7 @@ export class PrintServicioComponent implements OnInit {
 
   ngOnInit() {
 
-    const servicio = this.getServicio(); 
+    const servicio = this.getServicio();
     this.setParams();
     this.getServicioById(servicio.idServicio);
 
@@ -79,7 +80,8 @@ export class PrintServicioComponent implements OnInit {
     this.recordatoriOriginal = servicio.fecha_notificacion;
     this.comentariOriginal = servicio.comentario;
     this.idEstadOriginal = servicio.estado;
-    this.recurrencia = servicio.recurrencia; 
+    this.recurrencia = servicio.recurrencia;
+    this.expedienteOriginal = servicio.expediente;
 
   }
 
@@ -114,7 +116,7 @@ export class PrintServicioComponent implements OnInit {
   getServicio(): Servicios {
     return this.dataShared.getSharedObject();
   }
-  
+
   blockLowOrder(estado: Estado): boolean {
     if (this.estadoServicio === undefined) {
       this.estadoServicio = this.estadosList[0];
@@ -158,7 +160,7 @@ export class PrintServicioComponent implements OnInit {
     this._snackBar.warnSnackBar('Hay ítems marcados como nofitificados')
   }
 
- 
+
   enableMenuEdit(): boolean {
     return this.authService.isAdmin()
   }
@@ -383,22 +385,24 @@ export class PrintServicioComponent implements OnInit {
       console.log('No hay cambios en el presupuesto')
     }
 
-    // Verificar si hay cambios en el servicio y ejecutar (Recordatorio, comentario)
+    // Verificar si hay cambios en el servicio y ejecutar (Recordatorio, comentario, expediente)
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
 
     if (this.recordatoriOriginal != servicio.fecha_notificacion ||
-      this.comentariOriginal != servicio.comentario) {
+      this.comentariOriginal != servicio.comentario ||
+      this.expedienteOriginal != servicio.expediente) {
 
       requestsCount++;
       let servicix: Servicio = new Servicio();
       servicix.fechaHoraAlertaVenc = servicio.fecha_notificacion ? new Date(servicio.fecha_notificacion) : undefined;
       servicix.comentario = servicio.comentario;
+      servicix.expediente = servicio.expediente;
       //servicio.tipoServicioIdTipoServicio = this.servicioRecibido.idTipoServicio;
 
       this.servicioService.update(servicio.idServicio, servicix)
         .subscribe(
           (response) => {
-            console.log('Se actualizó el comentario o recordatorio OK:', response);
+            console.log('Comentario, Recordatorio, Expediente OK:', response);
             this.dataShared.setSharedObject(servicio);
           },
           (error) => console.error('Error al actualizar el Servicio:', error),
