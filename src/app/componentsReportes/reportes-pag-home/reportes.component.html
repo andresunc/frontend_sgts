@@ -3,6 +3,19 @@
   <div class="childContainer">
     <div class="cardContainer">
 
+      <mat-card appearance="outlined" (click)="openReporte(0)">
+        <mat-card-header>
+          <mat-card-title>Servicios por Estado</mat-card-title>
+          <img mat-card-avatar src="\assets\img\barra.png">
+        </mat-card-header>
+        <mat-card-content>Muestra el listado de servicios activos, clasificados por estado y rubros.</mat-card-content>
+      </mat-card>
+      <ng-template #reporte0>
+        <iframe title="Servicios por Estado" width="100%" height="100%" 
+        src="https://app.powerbi.com/view?r=eyJrIjoiNjgzMDRiZjktYTcwNy00ZWExLWJkNWQtNDg0NjU1NzhlNWQ2IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
+        frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
         <mat-card appearance="outlined" (click)="openReporte(1)">
           <mat-card-header>
             <mat-card-title>Desvío por Trámite</mat-card-title>

@@ -22,6 +22,7 @@ export class ReportesComponent implements OnInit {
     
   }
 
+  @ViewChild('reporte0') Reporte0!: TemplateRef<HTMLElement>;
   @ViewChild('reporte1') Reporte1!: TemplateRef<HTMLElement>;
   @ViewChild('reporte2') Reporte2!: TemplateRef<HTMLElement>;
   @ViewChild('reporte3') Reporte3!: TemplateRef<HTMLElement>;
@@ -31,6 +32,9 @@ export class ReportesComponent implements OnInit {
     let selectedTemplate: TemplateRef<HTMLElement>;
 
     switch (reportIndex) {
+      case 0:
+        selectedTemplate = this.Reporte0;
+        break;
       case 1:
         selectedTemplate = this.Reporte1;
         break;
