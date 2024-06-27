@@ -105,14 +105,12 @@
 
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
-            <mat-form-field>
-              <mat-label [style.color]="isEditable ? '#dc3545' : ''">Fecha de recordatorio</mat-label>
-              <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
-                [(ngModel)]="getServicio().fecha_notificacion" [value]="getServicio().fecha_notificacion"
-                [readonly]="true">
-              <mat-hint>DD/MM//YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker [disabled]="!isEditable || checkEditable()"></mat-datepicker>
+            <mat-form-field floatLabel="always">
+              <mat-label>Presupuesto</mat-label>
+              <input matInput type="number" style="text-align: start; padding-left: 0.2rem;"
+                [(ngModel)]="getServicio().total_presupuestado" placeholder="0" [disabled]="true"
+                (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
+              <span matTextPrefix>$</span>
             </mat-form-field>
 
           </mat-grid-tile>
@@ -123,13 +121,17 @@
               <mat-card-content style="max-height: 3.74rem; padding-top: 0.74rem;">
                 <div>
                   <mat-label style="font-size: 1rem;">
-                    {{ (getServicio().itemChecklistDto| calcularAvance) === 0 ? 'Sin ítems completos' : (getServicio().itemChecklistDto| calcularAvance)  === 100 ? 'ítems 100% completos' :
+                    {{ (getServicio().itemChecklistDto| calcularAvance) === 0 ? 'Sin ítems completos' :
+                    (getServicio().itemChecklistDto| calcularAvance) === 100 ? 'ítems 100% completos' :
                     'Avance' }}
                   </mat-label>
-                  <div class="progress" role="progressbar" [attr.aria-valuenow]="(getServicio().itemChecklistDto| calcularAvance) " aria-valuemin="0"
+                  <div class="progress" role="progressbar"
+                    [attr.aria-valuenow]="(getServicio().itemChecklistDto| calcularAvance) " aria-valuemin="0"
                     aria-valuemax="100">
-                    <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="(getServicio().itemChecklistDto| calcularAvance) ">
-                      <span>{{ (getServicio().itemChecklistDto| calcularAvance)  === 100 ? 'Completo' : (getServicio().itemChecklistDto| calcularAvance)  + '%' }}</span>
+                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                      [style.width.%]="(getServicio().itemChecklistDto| calcularAvance) ">
+                      <span>{{ (getServicio().itemChecklistDto| calcularAvance) === 100 ? 'Completo' :
+                        (getServicio().itemChecklistDto| calcularAvance) + '%' }}</span>
                     </div>
                   </div>
                 </div>
@@ -144,10 +146,38 @@
 
         <mat-grid-list cols="12" rowHeight="6rem">
 
-          <!-- Hay renovaciones -->
-          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia === 0">
+          <!-- Expediente -->
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
             <mat-form-field appearance="fill">
+              <mat-label [style.color]="isEditable && checkEditable() ? '#dc3545' : ''">Expediente</mat-label>
+              <input matInput [value]="getServicio().expediente && getServicio().expediente !== '' ?
+              getServicio().expediente : 'Sin establecer'" [(ngModel)]="getServicio().expediente" 
+              [readonly]="!isEditable || !checkEditable()" [disabled]="!isEditable || !checkEditable()">
+
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+          <!-- Fecha de recordatorio -->
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
+
+            <mat-form-field>
+              <mat-label [style.color]="isEditable && checkEditable() ? '#dc3545' : ''">Fecha de recordatorio</mat-label>
+              <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
+                [(ngModel)]="getServicio().fecha_notificacion" [value]="getServicio().fecha_notificacion"
+                [readonly]="true" [disabled]="!isEditable || !checkEditable()">
+              <mat-hint>DD/MM//YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker [disabled]="!isEditable || !checkEditable()"></mat-datepicker>
+            </mat-form-field>
+
+          </mat-grid-tile>
+
+          <!-- Hay renovaciones -->
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia > 0">
+
+            <mat-form-field appearance="fill" *ngIf="false">
               <mat-label>Renovaciones y referencia</mat-label>
               <input matInput [value]="'Cantidad: ' +recurrencia + ' Ref-ID: ' + onServicio.referencia"
                 [readonly]="true" [disabled]="true">
@@ -156,30 +186,12 @@
           </mat-grid-tile>
 
           <!-- No hay renovaciones -->
-          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia > 0">
+          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''" *ngIf="recurrencia === 0">
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" *ngIf="false">
               <mat-label>Renovaciones</mat-label>
               <input matInput value="Sin renovaciones" [readonly]="true">
             </mat-form-field>
-
-          </mat-grid-tile>
-
-          <!-- Presupuesto -->
-          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
-
-            <mat-form-field floatLabel="always">
-              <mat-label>Presupuesto</mat-label>
-              <input matInput type="number" style="text-align: center;" [(ngModel)]="getServicio().total_presupuestado"
-                placeholder="0" [disabled]="true" (blur)="validarPresupuesto()"
-                (input)="limitarLongitud($event)" #presupuestoInput>
-              <span matTextPrefix>$&nbsp;</span>
-            </mat-form-field>
-
-          </mat-grid-tile>
-
-          <!-- Disponible para editar el expediente -->
-          <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
           </mat-grid-tile>
 
@@ -194,13 +206,13 @@
 
             <div style="display: flex; justify-content: space-between;">
               <button style="width: 48%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="isEditable"
-              [disabled]="!isEditable">
-              GUARDAR
-            </button>
-            <button style="width: 48%;" (click)="loadChanges()" mat-flat-button *ngIf="isEditable"
-              [disabled]="!isEditable">
-              CANCELAR
-            </button>
+                [disabled]="!isEditable">
+                GUARDAR
+              </button>
+              <button style="width: 48%;" (click)="loadChanges()" mat-flat-button *ngIf="isEditable"
+                [disabled]="!isEditable">
+                CANCELAR
+              </button>
             </div>
 
           </mat-grid-tile>
@@ -212,7 +224,7 @@
           <mat-grid-tile [colspan]="12" [rowspan]="1" [style.background]="''">
 
             <mat-form-field appearance="fill">
-              <mat-label [style.color]="isEditable ? '#dc3545' : ''">Comentario</mat-label>
+              <mat-label [style.color]="isEditable ? '#dc3545' : '#673ab7'">Comentario</mat-label>
               <textarea style="font-style: oblique; padding: 0;" class="" [(ngModel)]="getServicio().comentario"
                 matInput [readonly]="!isEditable" [disabled]="checkEditable()" maxlength="500">
                 {{getServicio().comentario}}

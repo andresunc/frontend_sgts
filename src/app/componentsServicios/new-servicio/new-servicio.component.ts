@@ -72,10 +72,10 @@ export class NewServicioComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribe$)
       ) // este pipe es para agregaer la desuscripción
       .subscribe(
-        (response) => {
+        (response: NuevoServicioDto) => {
+          // Enviar info a la tracking
           this.svManager.castNewServicio(response);
           console.log('Servicio creado exitosamente:', response);
-
           this._snackBar.okSnackBar('Servicio creado exitosamente');
           this.servicioForm.reset();
           this.goToNextTab(0);
