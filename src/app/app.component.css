@@ -6,8 +6,8 @@
     margin-left: auto; /* Establece el margen izquierdo como automático para que ocupe el espacio restante a la derecha */
     border-radius: 0.5rem;
     border: 0.15rem solid #46454575;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
     padding-right:0.1rem;
     display: flex; /* Agrega un contenedor flexible */
     flex-wrap: wrap-reverse;
@@ -20,7 +20,7 @@
 .rutaSubContainer {
     background-color: #4DBDEB;
     height: 98%;
-    width: 97%;
+    width: 98%;
     margin: auto;
     border-radius: 0.5rem;
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.5); /* Agrega una sombra con desplazamiento horizontal 0, desplazamiento vertical 0, desenfoque 0.5rem y opacidad 0.5 */
