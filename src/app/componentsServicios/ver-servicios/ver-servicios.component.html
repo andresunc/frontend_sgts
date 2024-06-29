@@ -27,13 +27,13 @@
 
             <!-- Indicadores -->
             <div>
-                <div class="card" style="padding-left: 1rem;" id="indicadorContainer">
+                <div class="card" id="indicadorContainer">
                     <div>
                         <p>Indicadores de eficiencia en la prestación de servicios</p>
                     </div>
                     <div style="display: flex;">
                         <mat-form-field>
-                            <mat-label class="filerLabel"><span>Comparativa fecha A/B</span></mat-label>
+                            <mat-label class="filerLabel"><span>Periodo</span></mat-label>
                             <mat-date-range-input [rangePicker]="rangePicker" [min]="minDate" [max]="maxDate"
                                 (dateChange)="onDateChange($event)">
                                 <input matStartDate placeholder="Start date" [(ngModel)]="startDate" [readonly]="true">
@@ -179,7 +179,7 @@
             </div>
 
             <!-- divider -->
-            <mat-divider style="margin-top: 1rem;"></mat-divider>
+            <mat-divider style="margin-top: 0.5rem;"></mat-divider>
 
             <!-- Paginador -->
             <mat-paginator [pageSizeOptions]="[30]" showFirstLastButtons aria-label="Seleccionar página">
