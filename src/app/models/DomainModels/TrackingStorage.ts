@@ -7,6 +7,7 @@ export class TrackingStorage {
     dataResponsable?: string;
     rol?: string;
     timestamp?: string;
+    action?: string;
 
     constructor() {}
 

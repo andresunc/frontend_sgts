@@ -23,6 +23,8 @@ import { ServicioEmpresaService } from 'src/app/services/DomainServices/servicio
 import { MatOption } from '@angular/material/core';
 import { Params } from 'src/app/models/Params';
 import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvance';
+import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
+import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 
 @Component({
   selector: 'app-print-servicio',
@@ -61,7 +63,9 @@ export class PrintServicioComponent implements OnInit {
     private servicioService: ServicioService,
     private estadoService: EstadosService,
     private historicoEstado: HistoricoEstadoService,
-    private avancePipe: CalcularAvancePipe
+    private avancePipe: CalcularAvancePipe,
+    private authSerice: AuthService,
+    private trackingService: TrackingStorageService,
   ) {
     this.minDate = new Date();
     this.maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 6, this.minDate.getDate());
@@ -191,11 +195,24 @@ export class PrintServicioComponent implements OnInit {
   }
 
   eliminarServicio() {
+
+    // Set tracking storage
+    let trackingStorage = new TrackingStorage();
+    trackingStorage = this.getRecursoTrackingStorage();
+    trackingStorage.action = this.params.DELETE;
+    trackingStorage.eventLog = 'Se eliminó de manera lógica en la tabla servicio_empresa';
+    trackingStorage.data = 'Sin datos adicionales';
+
     // Suscripción a Servicio Empresa para eliminar de manera lógica de la bd
     const servicio = this.getServicio();
     this.servicioEmpresa.deleteLogico(servicio.idServicio)
       .subscribe(
         () => {
+
+          // Enviar info a la tracking
+          trackingStorage.idServicio = servicio.idServicio;
+          this.suscribeTracking(trackingStorage);
+
           console.log('ServicioEmpresa Eliminado con éxito:'),
             this._snackBar.okSnackBar(`Servicio eliminado ID: ${servicio.idServicio}`),
             this.router.navigate(['/home']);
@@ -301,6 +318,11 @@ export class PrintServicioComponent implements OnInit {
     this.isEditable = !this.isEditable; // Cambiar estado booleano de isEditable
     let requestsCount = 0; // Inicializamos un contador de solicitudes
 
+    // Set tracking storage
+    let trackingStorage = new TrackingStorage();
+    trackingStorage = this.getRecursoTrackingStorage();
+    trackingStorage.idServicio = servicio.idServicio;
+
     /**
      * 1 - Ocultar el spinner
      * 2 - Actuazlizar obj cuando no haya más solicitudes en curso
@@ -319,7 +341,6 @@ export class PrintServicioComponent implements OnInit {
 
     // Si estadoMatch no es nulo y los id no coinciden entonces hay cambios y ejecutar el addHistorico
     // Incrementar el contador de solicitudes antes de realizar cada solicitud
-
     if (this.estadoMatch && this.estadoMatch?.idEstado != servicio.idEstado) {
       requestsCount++;
 
@@ -334,6 +355,12 @@ export class PrintServicioComponent implements OnInit {
           this.historicoEstado.addHistoricoEstado(historicoEstado)
             .subscribe(
               (response) => {
+                // data para el primer tracking storages
+                trackingStorage.eventLog = 'Estado del servicio actualizado';
+                trackingStorage.data = `Establecido a: ${this.estadoMatch?.tipoEstado}`;
+                trackingStorage.action = this.params.UPDATE;
+                this.suscribeTracking(trackingStorage);
+
                 console.log('Historico con blockOrder = true:', response);
                 this.blockOrder = true;
               },
@@ -345,6 +372,12 @@ export class PrintServicioComponent implements OnInit {
           this.historicoEstado.revertirHsEstado(historicoEstado)
             .subscribe(
               (response) => {
+                // data para el primer tracking storage
+                trackingStorage.eventLog = 'Estado del servicio revertido';
+                trackingStorage.data = `Establecido a: ${this.estadoMatch?.tipoEstado}`;
+                trackingStorage.action = this.params.DELETE;
+                this.suscribeTracking(trackingStorage);
+
                 this.dataShared.setSharedObject(servicio)
                 console.log('Historico con blockOrder = false:', response);
                 this.blockOrder = true;
@@ -374,6 +407,12 @@ export class PrintServicioComponent implements OnInit {
       this.servicioEmpresa.update(servicio.idServicio, servicioEmpresa)
         .subscribe(
           (response) => {
+            // data para el segundo tracking storage
+            trackingStorage.eventLog = 'Presupuesto del servicio actualizado';
+            trackingStorage.data =  `$${servicio.total_presupuestado}`;
+            trackingStorage.action = this.params.UPDATE;
+            this.suscribeTracking(trackingStorage);
+
             console.log('Presupuesto actualizado OK:', response);
             this.dataShared.setSharedObject(servicio);
           },
@@ -392,12 +431,39 @@ export class PrintServicioComponent implements OnInit {
       this.comentariOriginal != servicio.comentario ||
       this.expedienteOriginal != servicio.expediente) {
 
+      const recordatorioCambiado = (this.recordatoriOriginal != servicio.fecha_notificacion);
+      const cometarioCambiado = (this.comentariOriginal != servicio.comentario);
+      const expedienteCambiado = (this.expedienteOriginal != servicio.expediente);
+
       requestsCount++;
       let servicix: Servicio = new Servicio();
       servicix.fechaHoraAlertaVenc = servicio.fecha_notificacion ? new Date(servicio.fecha_notificacion) : undefined;
       servicix.comentario = servicio.comentario;
       servicix.expediente = servicio.expediente;
-      //servicio.tipoServicioIdTipoServicio = this.servicioRecibido.idTipoServicio;
+
+      if (recordatorioCambiado) {
+        // data para el tercer tracking storage
+        trackingStorage.eventLog = 'Recordatorio del servicio actualizado';
+        trackingStorage.data =  this.extractDateFromISO(servicio.fecha_notificacion);
+        trackingStorage.action = this.params.UPDATE;
+        this.suscribeTracking(trackingStorage);
+      }
+
+      if (expedienteCambiado) {
+        // data para el tercer tracking storage
+        trackingStorage.eventLog = 'Expediente del servicio actualizado';
+        trackingStorage.data =  servicix.expediente;
+        trackingStorage.action = this.params.UPDATE;
+        this.suscribeTracking(trackingStorage);
+      }
+
+      if (cometarioCambiado) {
+        // data para el tercer tracking storage
+        trackingStorage.eventLog = 'Comentario del servicio actualizado';
+        trackingStorage.data =  servicio.comentario;
+        trackingStorage.action = this.params.UPDATE;
+        this.suscribeTracking(trackingStorage);
+      }
 
       this.servicioService.update(servicio.idServicio, servicix)
         .subscribe(
@@ -419,6 +485,35 @@ export class PrintServicioComponent implements OnInit {
     }
 
   }
+
+  suscribeTracking(trackingStorage: TrackingStorage) {
+    this.trackingService.createTrackingStorage(trackingStorage)
+      .subscribe(
+        (trackingData) => {
+          console.log('log registrado: ', trackingData);
+        },
+        () => {
+          console.log('Error al crear el log de la trackingstorage')
+        }
+      );
+  }
+
+  getRecursoTrackingStorage(): TrackingStorage {
+
+    const trackingStorage = new TrackingStorage();
+    const currentUser = this.authSerice.getCurrentUser();
+    trackingStorage.idRecurso = currentUser?.id_recurso;
+    trackingStorage.rol = currentUser?.roles?.[0]?.rol ?? 'Sin especificar';
+    return trackingStorage;
+  }
+
+  extractDateFromISO(isoString: string): string {
+    const date = new Date(isoString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Los meses van de 0 a 11
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`; 
+  }  
 
 }
 

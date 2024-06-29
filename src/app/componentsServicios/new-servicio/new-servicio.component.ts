@@ -5,13 +5,16 @@ import { Subject, delay, retryWhen, scan, takeUntil } from 'rxjs';
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
+import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { Params } from 'src/app/models/Params';
 import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
+import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { NewServicioService } from 'src/app/services/new-servicio.service';
 
@@ -42,7 +45,9 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     private dataShared: DataSharedService,
     private categoriaService: CategoriaService,
     private _snackBar: PopupService,
-    private svManager: ManagerService) {
+    private svManager: ManagerService,
+    private trackingService: TrackingStorageService,
+    private authSerice: AuthService) {
   }
 
   sending: boolean = false;
@@ -66,6 +71,17 @@ export class NewServicioComponent implements OnInit, OnDestroy {
 
     console.log('Se solicita crear el servicio: ' + nuevoServicioDto)
 
+    // Set tracking storage
+    const trackingStorage = new TrackingStorage();
+    const currentUser = this.authSerice.getCurrentUser();
+    const tipoEstado = estado.tipoEstado;
+
+    trackingStorage.idRecurso = currentUser?.id_recurso;
+    trackingStorage.rol = currentUser?.roles?.[0]?.rol ?? 'Sin especificar';
+    trackingStorage.eventLog = `Servicio creado con estado inicial: ${tipoEstado}`;
+    trackingStorage.data = `Presupuesto inicial $ ${this.servicioForm.get('monto')?.value}`;
+    trackingStorage.action = this.params.CREATE;
+
     this.dataShared.mostrarSpinner();
     this.dataNewServ.addServicio(nuevoServicioDto)
       .pipe(
@@ -73,7 +89,19 @@ export class NewServicioComponent implements OnInit, OnDestroy {
       ) // este pipe es para agregaer la desuscripción
       .subscribe(
         (response: NuevoServicioDto) => {
+
           // Enviar info a la tracking
+          trackingStorage.idServicio = response.servicio.idServicio;
+          this.trackingService.createTrackingStorage(trackingStorage)
+          .subscribe(
+            (trackingData) => {
+              console.log('log registrado: ', trackingData);
+            },
+            () => {
+              console.log('Error al crear el log de la trackingstorage')
+            }
+          );
+
           this.svManager.castNewServicio(response);
           console.log('Servicio creado exitosamente:', response);
           this._snackBar.okSnackBar('Servicio creado exitosamente');
@@ -124,11 +152,11 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     try {
       // 0 Obtener las categorias
       this.categoriaService.getAllCategorias()
-      .subscribe(
-        (data) => {
-          this.categorias = data;
-        }
-      )
+        .subscribe(
+          (data) => {
+            this.categorias = data;
+          }
+        )
       // 1 Obtener los tipos de servicios
       this.dataNewServ.getTipoServicesNotDeleted().pipe(
         retryWhen(errors =>
@@ -244,7 +272,9 @@ export class NewServicioComponent implements OnInit, OnDestroy {
      * Categoria permitida "Sin iniciar"
      */
     const categoriaPermitida = this.categorias.find(ca => ca.categoria === this.params.SIN_INICIAR);
-    this.estadosPermitidos = this.estadoList.filter(est => est.idCategoria === categoriaPermitida?.idCategoria);
+    this.estadosPermitidos = this.estadoList.filter(
+      est => est.idCategoria === categoriaPermitida?.idCategoria &&
+        est.tipoEstado !== this.params.PRESUPUESTO_RECHAZADO);
   }
 
 }
