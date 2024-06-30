@@ -153,7 +153,7 @@
               <mat-label [style.color]="isEditable && checkEditable() ? '#dc3545' : ''">Expediente</mat-label>
               <input matInput [value]="getServicio().expediente && getServicio().expediente !== '' ?
               getServicio().expediente : 'Sin establecer'" [(ngModel)]="getServicio().expediente" 
-              [readonly]="!isEditable || !checkEditable()" [disabled]="!isEditable || !checkEditable()">
+              [readonly]="!isEditable || !checkEditable()" [disabled]="!isEditable || !checkEditable()" maxlength="40">
 
             </mat-form-field>
 
