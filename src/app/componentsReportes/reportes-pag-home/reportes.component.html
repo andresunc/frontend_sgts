@@ -34,7 +34,7 @@
         <mat-card appearance="outlined" (click)="openReporte(2)">
           <mat-card-header>
             <mat-card-title>Análisis de Rebote</mat-card-title>
-            <img mat-card-avatar src="\assets\img\dispersion.png">
+            <img mat-card-avatar src="\assets\img\linea.webp">
           </mat-card-header>
           <mat-card-content>Se basa en los últimos 30 registros de las veces en que se presentó documentación, ante una entidad reguladora, y no fué aprobada debido a documentación incorrecta o insuficiente.</mat-card-content>
         </mat-card>
@@ -68,6 +68,19 @@
         <ng-template #reporte4>
           <iframe title="Asignación por tipo de rol" width="100%" height="100%" 
           src="https://app.powerbi.com/view?r=eyJrIjoiMTIzYjNkYTUtODA3OC00YTI0LTgxNjEtZGE3NThkMTU0NDVmIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
+          frameborder="0" allowFullScreen="true"></iframe>
+        </ng-template>
+
+        <mat-card appearance="outlined" (click)="openReporte(5)">
+          <mat-card-header>
+            <mat-card-title>Items por Dependencia</mat-card-title>
+            <img mat-card-avatar src="\assets\img\torta.png">
+          </mat-card-header>
+          <mat-card-content>Muestra el total de items activos por dependencia</mat-card-content>
+        </mat-card>
+        <ng-template #reporte5>
+          <iframe title="Items por Dependencia" width="100%" height="100%" 
+          src="" 
           frameborder="0" allowFullScreen="true"></iframe>
         </ng-template>
 
