@@ -27,6 +27,7 @@ export class ReportesComponent implements OnInit {
   @ViewChild('reporte2') Reporte2!: TemplateRef<HTMLElement>;
   @ViewChild('reporte3') Reporte3!: TemplateRef<HTMLElement>;
   @ViewChild('reporte4') Reporte4!: TemplateRef<HTMLElement>;
+  @ViewChild('reporte5') Reporte5!: TemplateRef<HTMLElement>;
 
   openReporte(reportIndex: number) {
     let selectedTemplate: TemplateRef<HTMLElement>;
@@ -47,6 +48,9 @@ export class ReportesComponent implements OnInit {
       case 4:
         selectedTemplate = this.Reporte4;
         break;
+        case 5:
+        selectedTemplate = this.Reporte5;
+        break;
       default:
         console.error("Reporte no válido");
         return;
@@ -58,6 +62,8 @@ export class ReportesComponent implements OnInit {
 
   getReportTitle(reportIndex: number): string {
     switch (reportIndex) {
+      case 0:
+        return 'Servicios por Estado';
       case 1:
         return 'Trámites con mayor desvío';
       case 2:
@@ -66,6 +72,8 @@ export class ReportesComponent implements OnInit {
         return 'Rubros con mayor desvío';
       case 4:
         return 'Asignación por tipo de rol';
+      case 5:
+        return 'Items por Dependencia';
       default:
         return '';
     }
