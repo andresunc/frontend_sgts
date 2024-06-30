@@ -10,6 +10,10 @@ import { SelectItemService } from 'src/app/services/ServiciosDto/select-item.ser
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { ChecklistComponent } from '../checklist/checklist.component';
+import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
+import { AuthService } from 'src/app/services/auth.service';
+import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
+import { Params } from 'src/app/models/Params';
 
 @Component({
   selector: 'app-add-item',
@@ -44,8 +48,11 @@ export class AddItemComponent implements OnInit {
     private recursoDtoService: RecursoDtoService,
     private itemChecklistService: ItemChecklistService,
     public dialog: MatDialog,
-    public dialogRef: MatDialogRef<AddItemComponent>
-  ) {}
+    public dialogRef: MatDialogRef<AddItemComponent>,
+    private authSerice: AuthService,
+    public params: Params,
+    private trackingService: TrackingStorageService,
+  ) { }
 
   ngOnInit(): void {
     this.setDateTime();
@@ -108,20 +115,20 @@ export class AddItemComponent implements OnInit {
 
   filterItems() {
     // Aplicar filtro
-  
+
     this.filteredItems = this.selectItemList.filter(item => {
-        // Verificar si tipoServicio ha sido seleccionado o si idTipoServicio es null
-        const tipoServicioMatch = !this.selectedTipoServicio || item.tipoServicio === this.selectedTipoServicio || item.tipoServicio === null;
-        // Verificar si dependencia ha sido seleccionada o si coincide
-        const dependenciaMatch = !this.selectedDependencia || item.dependencia === this.selectedDependencia;
-        // Verificar si rubro ha sido seleccionado o si coincide
-        const rubroMatch = !this.selectedRubro || item.rubro === this.selectedRubro;
-        // Verificar si tipoItem ha sido seleccionado o si coincide
-        const tipoItemMatch = !this.selectedTipoItem || item.tipoItem === this.selectedTipoItem;
-        // Comprobar si el ID del elemento no está presente en itemChecklistDto
-        const idNotInDto = !this.servicioRecibido.itemChecklistDto.some(dtoItem => dtoItem.nombreItem === item.descripcion);
-        // Retornar true solo si todas las condiciones coinciden
-        return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch && idNotInDto;
+      // Verificar si tipoServicio ha sido seleccionado o si idTipoServicio es null
+      const tipoServicioMatch = !this.selectedTipoServicio || item.tipoServicio === this.selectedTipoServicio || item.tipoServicio === null;
+      // Verificar si dependencia ha sido seleccionada o si coincide
+      const dependenciaMatch = !this.selectedDependencia || item.dependencia === this.selectedDependencia;
+      // Verificar si rubro ha sido seleccionado o si coincide
+      const rubroMatch = !this.selectedRubro || item.rubro === this.selectedRubro;
+      // Verificar si tipoItem ha sido seleccionado o si coincide
+      const tipoItemMatch = !this.selectedTipoItem || item.tipoItem === this.selectedTipoItem;
+      // Comprobar si el ID del elemento no está presente en itemChecklistDto
+      const idNotInDto = !this.servicioRecibido.itemChecklistDto.some(dtoItem => dtoItem.nombreItem === item.descripcion);
+      // Retornar true solo si todas las condiciones coinciden
+      return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch && idNotInDto;
     });
     console.log('asdasd', this.filteredItems)
 
@@ -220,16 +227,52 @@ export class AddItemComponent implements OnInit {
     // Persistir item del checklist
     this.itemChecklistService.addItemCheckList(addItemToCheckList).subscribe(
       (data: ItemChecklist) => {
+
+        let trackingStorage = new TrackingStorage();
+        trackingStorage = this.getRecursoTrackingStorage();
+        trackingStorage.action = this.params.CREATE;
+        const recurso = this.recursoList.find( r => r.idRecurso === addItemToCheckList.recursoGgIdRecursoGg);
+        trackingStorage.eventLog = `Se agregó el requisito: ${this.requisito}, Asignado a: ${recurso?.nombre} ${recurso?.apellido}`;
+        const idItem = data.idItemChecklist;
+        const tasa = addItemToCheckList.tasaValor;
+        const hojas = addItemToCheckList.tasaCantidadHojas;
+        const url = addItemToCheckList.urlComprobanteTasa;
+        trackingStorage.data = `ID: ${idItem}, Valor de tasa $${tasa}, Hojas: ${hojas}, Repositorio: ${url}`;
+        this.suscribeTracking(trackingStorage);
+
+        const requisito = this.requisito
         addItemToCheckList = data;
         console.log('ItemChecklist persistido: ', addItemToCheckList);
         this.dialogRef.close(true);
         this.dataShared.ocultarSpinner();
-      }, ()=> {
+      }, () => {
         this.dataShared.ocultarSpinner();
         this.dialogRef.close(false);
       }
     )
 
+  }
+
+  suscribeTracking(trackingStorage: TrackingStorage) {
+    this.trackingService.createTrackingStorage(trackingStorage)
+      .subscribe(
+        (trackingData) => {
+          console.log('log registrado: ', trackingData);
+        },
+        () => {
+          console.log('Error al crear el log de la trackingstorage')
+        }
+      );
+  }
+
+  getRecursoTrackingStorage(): TrackingStorage {
+
+    const trackingStorage = new TrackingStorage();
+    const currentUser = this.authSerice.getCurrentUser();
+    trackingStorage.idRecurso = currentUser?.id_recurso;
+    trackingStorage.rol = currentUser?.roles?.[0]?.rol ?? 'Sin especificar';
+    trackingStorage.idServicio = this.servicioRecibido.idServicio;
+    return trackingStorage;
   }
 
 }
