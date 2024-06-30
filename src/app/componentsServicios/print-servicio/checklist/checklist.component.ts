@@ -6,9 +6,11 @@ import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvanc
 
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
+import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { Params } from 'src/app/models/Params';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
+import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -31,7 +33,7 @@ export class ChecklistComponent implements OnInit {
 
   constructor(
     private dataShared: DataSharedService,
-    private popupService: PopupService,
+    private _snackBar: PopupService,
     private servicioService: ServicioService,
     private itemChecklistService: ItemChecklistService,
     private authService: AuthService,
@@ -39,7 +41,9 @@ export class ChecklistComponent implements OnInit {
     private calcularAvancePipe: CalcularAvancePipe,
     private fb: FormBuilder,
     public params: Params,
-    public dialogRef: MatDialogRef<ChecklistComponent>
+    public dialogRef: MatDialogRef<ChecklistComponent>,
+    private authSerice: AuthService,
+    private trackingService: TrackingStorageService,
   ) {
     this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
@@ -86,9 +90,11 @@ export class ChecklistComponent implements OnInit {
   }
 
   completo: boolean = false;
+  lastChanges: { [key: string]: any } = {};
   updateAvance(item: ItemChecklistDto) {
     this.completo = !this.completo;
-    item.completo = !item.completo
+    item.completo = !item.completo;
+
     // Encuentra el índice del elemento en la lista
     const index = this.dataSourceItems.findIndex((element: any) => element.idItemChecklist === item.idItemChecklist);
 
@@ -100,20 +106,53 @@ export class ChecklistComponent implements OnInit {
 
       // Calcula el nuevo avance
       this.avance = this.calcularAvancePipe.transform(this.dataShared.getSharedObject().itemChecklistDto);
+
+      // Guarda el cambio en lastChanges con la clave itemId_{id}
+      const itemKey = `itemId_${item.idItemChecklist}`;
+      this.lastChanges[itemKey] = {
+        ...this.lastChanges[itemKey],
+        completo: item.completo
+      };
+
     } else {
       // Maneja el caso en que el elemento no se encuentre o sea undefined
       console.error('No se encontró el elemento con ID:', item.idItemChecklist);
     }
   }
 
+  getLastChanges(itemId: string): { [key: string]: any } {
+    const itemKey = `itemId_${itemId}`;
+    return this.lastChanges[itemKey] || {};
+  }
+
+
+  updateNotificado(item: any) {
+    item.notificado = !item.notificado;
+    
+    // Guarda el cambio en lastChanges con la clave itemId_{id}
+    const itemKey = `itemId_${item.idItemChecklist}`;
+    this.lastChanges[itemKey] = {
+      ...this.lastChanges[itemKey],
+      notificado: item.notificado
+    };
+  }  
+
   getChange(controlName: string, item: any): void {
     const control = this.form.get(controlName);
     if (control) {
       const value = control.value;
-      // Aquí puedes hacer algo con el valor cambiado, como actualizar un estado o llamar a un servicio
-      console.log(`Changed ${controlName}:`, value);
-      // Por ejemplo, puedes actualizar `item` con el nuevo valor
       item[controlName] = value;
+
+      // Guardar el cambio en lastChanges
+      const itemKey = `itemId_${item.idItemChecklist}`;
+      this.lastChanges[itemKey] = {
+        ...this.lastChanges[itemKey],
+        [controlName]: value
+      };
+
+      // Imprime los cambios para verificación (opcional)
+      console.log(`itemId: ${itemKey} cambió ${controlName}:`, value);
+      console.log('Últimos cambios:', this.lastChanges);
     }
   }
 
@@ -143,6 +182,13 @@ export class ChecklistComponent implements OnInit {
           this.itemChecklistService.deleteListItems(this.itemsToDelete[indexToDelete])
             .subscribe(
               (data) => {
+                let trackingStorage = new TrackingStorage();
+                trackingStorage = this.getRecursoTrackingStorage();
+                trackingStorage.action = this.params.DELETE;
+                trackingStorage.eventLog = `Se elimino el ítem ${deletedItem.nombreItem}`;
+                trackingStorage.data = `ID: ${deletedItem.idItemChecklist}, Completo: ${deletedItem.completo}, Asignado a: ${deletedItem.responsable}`;
+                this.suscribeTracking(trackingStorage);
+
                 console.log('ID del itemChecklist eliminado: ', data);
                 this.refreshItemsCheckList();
               }, () => {
@@ -164,10 +210,6 @@ export class ChecklistComponent implements OnInit {
   }
   /* Fin Lógica para la eliminación */
 
-  /* Lógica para administrar los ítems del checklist */
-  updateNotificado(item: any) {
-    item.notificado = !item.notificado;
-  }
 
   itemManagement(item: ItemChecklistDto): boolean {
     return this.isAdmin || item.idRecurso === this.authService.getCurrentUser()?.id_recurso;
@@ -200,10 +242,11 @@ export class ChecklistComponent implements OnInit {
   }
 
   managElement() {
-    /* const sameChange = JSON.stringify(this.initDataSourceItems) === JSON.stringify(this.dataSourceItems);
-    if (sameChange) {
+    /*
+    const noChange = JSON.stringify(this.initDataSourceItems) === JSON.stringify(this.dataSourceItems);
+    if (noChange) {
       console.log('No hay cambios que hacer :/')
-      this.popupService.warnSnackBar('No hay cambios que hacer', 'Ok');
+      this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
       return;
     }*/
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
@@ -211,6 +254,13 @@ export class ChecklistComponent implements OnInit {
     if (this.dataSourceItems) {
       this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
         (data: ItemChecklistDto[]) => {
+          let trackingStorage = new TrackingStorage();
+          trackingStorage = this.getRecursoTrackingStorage();
+          trackingStorage.action = this.params.UPDATE;
+          trackingStorage.eventLog = `CheckList actualizado`;
+          trackingStorage.data = `${JSON.stringify(this.lastChanges)}`;
+          this.suscribeTracking(trackingStorage);
+
           this.servicio.itemChecklistDto = data;
           this.dataShared.setSharedObject(this.servicio);
           console.log('Items Actualizados', data);
@@ -239,5 +289,27 @@ export class ChecklistComponent implements OnInit {
         console.log('No se guardaron los cambios')
       }
     });
+  }
+
+  suscribeTracking(trackingStorage: TrackingStorage) {
+    this.trackingService.createTrackingStorage(trackingStorage)
+      .subscribe(
+        (trackingData) => {
+          console.log('log registrado: ', trackingData);
+        },
+        () => {
+          console.log('Error al crear el log de la trackingstorage')
+        }
+      );
+  }
+
+  getRecursoTrackingStorage(): TrackingStorage {
+
+    const trackingStorage = new TrackingStorage();
+    const currentUser = this.authSerice.getCurrentUser();
+    trackingStorage.idRecurso = currentUser?.id_recurso;
+    trackingStorage.rol = currentUser?.roles?.[0]?.rol ?? 'Sin especificar';
+    trackingStorage.idServicio = this.servicio.idServicio;
+    return trackingStorage;
   }
 }
