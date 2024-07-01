@@ -18,7 +18,7 @@ export class Params {
   DEFAULT_PASS = '1234'
 
   // acciones por defecto para la tracking storage
-  CREATE = 'create';
+  CREATE = 'add';
   UPDATE = 'update';
-  DELETE = 'delete';
+  DELETE = 'remove';
 };

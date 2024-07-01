@@ -25,6 +25,7 @@ import { Params } from 'src/app/models/Params';
 import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvance';
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
+import { TrackingComponent } from './tracking/tracking.component';
 
 @Component({
   selector: 'app-print-servicio',
@@ -177,6 +178,11 @@ export class PrintServicioComponent implements OnInit {
   isEditable: boolean = false;
   editarServicio() {
     this.isEditable = this.authService.isAdmin();
+  }
+
+  openTracking() {
+    const servicio = this.getServicio();
+    const dialogRef = this.dialog.open(TrackingComponent, { data: servicio.idServicio });
   }
 
   checkDelete(): void {
@@ -409,7 +415,7 @@ export class PrintServicioComponent implements OnInit {
           (response) => {
             // data para el segundo tracking storage
             trackingStorage.eventLog = 'Presupuesto del servicio actualizado';
-            trackingStorage.data =  `$${servicio.total_presupuestado}`;
+            trackingStorage.data = `$${servicio.total_presupuestado}`;
             trackingStorage.action = this.params.UPDATE;
             this.suscribeTracking(trackingStorage);
 
@@ -444,7 +450,7 @@ export class PrintServicioComponent implements OnInit {
       if (recordatorioCambiado) {
         // data para el tercer tracking storage
         trackingStorage.eventLog = 'Recordatorio del servicio actualizado';
-        trackingStorage.data =  this.extractDateFromISO(servicio.fecha_notificacion);
+        trackingStorage.data = this.extractDateFromISO(servicio.fecha_notificacion);
         trackingStorage.action = this.params.UPDATE;
         this.suscribeTracking(trackingStorage);
       }
@@ -452,7 +458,7 @@ export class PrintServicioComponent implements OnInit {
       if (expedienteCambiado) {
         // data para el tercer tracking storage
         trackingStorage.eventLog = 'Expediente del servicio actualizado';
-        trackingStorage.data =  servicix.expediente;
+        trackingStorage.data = servicix.expediente;
         trackingStorage.action = this.params.UPDATE;
         this.suscribeTracking(trackingStorage);
       }
@@ -460,7 +466,7 @@ export class PrintServicioComponent implements OnInit {
       if (cometarioCambiado) {
         // data para el tercer tracking storage
         trackingStorage.eventLog = 'Comentario del servicio actualizado';
-        trackingStorage.data =  servicio.comentario;
+        trackingStorage.data = servicio.comentario;
         trackingStorage.action = this.params.UPDATE;
         this.suscribeTracking(trackingStorage);
       }
@@ -512,8 +518,8 @@ export class PrintServicioComponent implements OnInit {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Los meses van de 0 a 11
     const day = date.getDate().toString().padStart(2, '0');
-    return `${year}-${month}-${day}`; 
-  }  
+    return `${year}-${month}-${day}`;
+  }
 
 }
 
