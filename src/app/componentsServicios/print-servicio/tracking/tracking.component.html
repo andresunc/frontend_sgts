@@ -4,7 +4,8 @@
     <!-- Action Column -->
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef>Acción</th>
-      <td mat-cell *matCellDef="let element"><mat-icon [ngClass]="{
+      <td mat-cell *matCellDef="let element">
+        <mat-icon [ngClass]="{
         'icon-add': element.action === 'add',
         'icon-remove': element.action === 'remove',
         'icon-update': element.action === 'update'
@@ -37,7 +38,11 @@
 
     <!-- Expand Button Column -->
     <ng-container matColumnDef="expand">
-      <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+      <th mat-header-cell *matHeaderCellDef aria-label="row actions">
+        <mat-icon mat-dialog-close class="close-icon">
+          close
+        </mat-icon>
+      </th>
       <td mat-cell *matCellDef="let element">
         <button mat-icon-button aria-label="expand row"
           (click)="expandedElement = expandedElement === element ? null : element; $event.stopPropagation()">
