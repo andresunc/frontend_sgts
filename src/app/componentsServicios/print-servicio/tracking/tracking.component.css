@@ -3,6 +3,11 @@ table .card {
     overflow: scroll;
 }
 
+table th {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
 tr.example-detail-row {
     width: auto;
     height: auto;
@@ -79,7 +84,19 @@ tr.example-element-row:not(.example-expanded-row):active {
     overflow-x: auto;
 }
 
-mat-header-cell, mat-cell {
+mat-header-cell,
+mat-cell {
     /*white-space: nowrap;  Evitar que el contenido se divida en varias líneas */
     word-break: break-word;
-  }
+}
+
+.close-icon {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding-top: 6px;
+}
+
+.close-icon:hover {
+    color: var(--primary);
+    cursor: pointer;
+}
