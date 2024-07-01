@@ -128,14 +128,14 @@ export class ChecklistComponent implements OnInit {
 
   updateNotificado(item: any) {
     item.notificado = !item.notificado;
-    
+
     // Guarda el cambio en lastChanges con la clave itemId_{id}
     const itemKey = `itemId_${item.idItemChecklist}`;
     this.lastChanges[itemKey] = {
       ...this.lastChanges[itemKey],
       notificado: item.notificado
     };
-  }  
+  }
 
   getChange(controlName: string, item: any): void {
     const control = this.form.get(controlName);
@@ -249,6 +249,7 @@ export class ChecklistComponent implements OnInit {
       this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
       return;
     }*/
+    const transformedChanges = this.transformLastChanges(this.lastChanges);
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
     this.dataShared.mostrarSpinner();
     if (this.dataSourceItems) {
@@ -258,7 +259,7 @@ export class ChecklistComponent implements OnInit {
           trackingStorage = this.getRecursoTrackingStorage();
           trackingStorage.action = this.params.UPDATE;
           trackingStorage.eventLog = `CheckList actualizado`;
-          trackingStorage.data = `${JSON.stringify(this.lastChanges)}`;
+          trackingStorage.data = `${transformedChanges}`;
           this.suscribeTracking(trackingStorage);
 
           this.servicio.itemChecklistDto = data;
@@ -272,6 +273,17 @@ export class ChecklistComponent implements OnInit {
       )
     }
 
+  }
+
+  transformLastChanges(lastChanges: { [key: string]: any }): string {
+    const transformedEntries = Object.entries(lastChanges).map(([key, changes]) => {
+      const transformedChanges = Object.entries(changes).map(([prop, value]) => {
+        const displayValue = value === true ? 'sí' : value === false ? 'no' : value;
+        return `${prop}: ${displayValue}`;
+      }).join(', ');
+      return `${key}: ${transformedChanges}`;
+    });
+    return transformedEntries.join('; ');
   }
 
   openAddItemComponent() {

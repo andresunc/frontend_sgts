@@ -1,5 +1,5 @@
-table {
-    width: auto;
+table .card {
+    width: 100%;
     overflow: scroll;
 }
 
@@ -9,11 +9,13 @@ tr.example-detail-row {
 }
 
 tr.example-element-row:not(.example-expanded-row):hover {
+    width: auto;
     background: whitesmoke;
     font-size: 0.8rem;
 }
 
 tr.example-element-row:not(.example-expanded-row):active {
+    width: auto;
     background: #efefef;
 }
 
@@ -21,7 +23,8 @@ tr.example-element-row:not(.example-expanded-row):active {
     border-bottom-width: 0;
     font-size: 0.8rem;
     padding: 4px;
-    /* Ajustar padding según sea necesario */
+    width: auto;
+    cursor: pointer;
 }
 
 .example-element-detail {
@@ -77,5 +80,6 @@ tr.example-element-row:not(.example-expanded-row):active {
 }
 
 mat-header-cell, mat-cell {
-    white-space: nowrap; /* Evitar que el contenido se divida en varias líneas */
+    /*white-space: nowrap;  Evitar que el contenido se divida en varias líneas */
+    word-break: break-word;
   }
