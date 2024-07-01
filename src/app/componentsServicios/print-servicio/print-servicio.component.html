@@ -26,10 +26,17 @@
               <mat-icon *ngIf="menuEditable" class="mat-icon">tune</mat-icon>
             </button>
             <mat-menu id="matMenu" #menu="matMenu" xPosition="before">
+
               <button mat-menu-item (click)="editarServicio()" class="editMenu">
                 <mat-icon>edit</mat-icon>
                 <span>Editar</span>
               </button>
+
+              <button mat-menu-item (click)="openTracking()" class="editMenu">
+                <mat-icon>visibility</mat-icon>
+                <span>Seguimiento</span>
+              </button>
+
               <button mat-menu-item (click)="checkDelete()" class="deleteMenu">
                 <mat-icon>delete</mat-icon>
                 <span>Eliminar</span>

@@ -1,0 +1,81 @@
+table {
+    width: auto;
+    overflow: scroll;
+}
+
+tr.example-detail-row {
+    width: auto;
+    height: auto;
+}
+
+tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+    font-size: 0.8rem;
+}
+
+tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+}
+
+.example-element-row td {
+    border-bottom-width: 0;
+    font-size: 0.8rem;
+    padding: 4px;
+    /* Ajustar padding según sea necesario */
+}
+
+.example-element-detail {
+    overflow: hidden;
+    display: flex;
+    font-size: 0.8rem;
+    padding: 4px;
+    /* Ajustar padding según sea necesario */
+}
+
+.example-element-diagram {
+    min-width: 60px;
+    border: 2px solid black;
+    padding: 0px;
+    font-weight: lighter;
+    margin: 0;
+    height: 54px;
+}
+
+.example-element-symbol {
+    font-weight: bold;
+    font-size: 0.8rem;
+    line-height: normal;
+}
+
+.example-element-description {
+    padding: 0;
+    margin: 0;
+    /* Eliminar márgenes */
+}
+
+.example-element-description-attribution {
+    opacity: 0.5;
+}
+
+.icon-add {
+    color: #28a745;
+}
+
+.icon-remove {
+    color: #dc3545;
+}
+
+.icon-update {
+    color: #007bff8e;
+}
+
+.dataTable {
+    position: relative;
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+mat-header-cell, mat-cell {
+    white-space: nowrap; /* Evitar que el contenido se divida en varias líneas */
+  }
