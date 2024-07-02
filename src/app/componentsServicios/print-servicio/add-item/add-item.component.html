@@ -82,7 +82,7 @@
                                     <label for="fechaHoraRealizacion" *ngIf="!selectItem">
                                         Establecer una fecha máxima para terminar con esta tarea
                                     </label>
-                                    <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="date"
+                                    <input id="fechaHoraRealizacion" name="fechaHoraRealizacion" type="datetime-local"
                                         class="form-control" [(ngModel)]="fechaHoraRealizacion" [min]="minDate" required
                                         [disabled]="!selectItem" style="color: #dc3545;">
                                 </div>
