@@ -436,7 +436,7 @@ export class CfgClientesComponent implements OnInit {
 
   private _filter(value: string): EmpresaDto[] {
     const filterValue = value ? value.toLowerCase() : '';
-    return this.empresas.filter(empresa => empresa.cliente?.toLowerCase().startsWith(filterValue));
+    return this.empresas.filter(em => em.cliente?.toLowerCase().startsWith(filterValue));
   }
 
   refresh() {
