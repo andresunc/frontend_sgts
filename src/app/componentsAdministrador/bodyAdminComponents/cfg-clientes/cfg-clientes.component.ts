@@ -161,10 +161,10 @@ export class CfgClientesComponent implements OnInit {
 
   obtenerEmpresas() {
     this.empresaDtoService.getEmpresas()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((data: EmpresaDto[]) => {
-        this.empresas = data;
-      });
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((data: EmpresaDto[]) => {
+      this.empresas = data.sort((a, b) => a.cliente!.localeCompare(b.cliente!));
+    });
   }
 
   obtenerContactosEmpresa(idEmpresa: number) {
