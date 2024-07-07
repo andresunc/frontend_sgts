@@ -1,0 +1,35 @@
+h2 {
+    padding: 1rem;
+    align-items: center;
+    text-align: center;
+}
+
+.card {
+    width: 50vw;
+    background-image: url('src\assets\img\porcelana2.jpg');
+    background-size: auto;
+    background-position: top;
+}
+
+.container {
+    padding: 1rem;
+    background-color: transparent;
+}
+
+.form-container mat-form-field {
+    display: block;
+    width: 100%;
+}
+
+/* Para navegadores basados en WebKit (Chrome, Safari) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.limited-height-panel {
+    max-height: 10px;
+    /* Ajusta la altura máxima según tus necesidades */
+    overflow-y: auto;
+}

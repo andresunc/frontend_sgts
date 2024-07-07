@@ -2,6 +2,10 @@ p {
   font-size: 0.8rem;
 }
 
+.colorSignoPeso {
+  color: rgba(0, 0, 2, 0.096)
+}
+
 .moduleContainer {
   height: 100%;
   width: 100%;
@@ -71,4 +75,17 @@ span {
 /* Estilo para cuando se pasa el cursor sobre el elemento de eliminación */
 .deleteMenu:hover, .deleteMenu:hover span, .deleteMenu:hover mat-icon {
   color: #f44336
+}
+
+.autorenew {
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: transform 0.25s ease;
+}
+
+.autorenew:hover {
+  transform: rotate(30deg);
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary);
 }

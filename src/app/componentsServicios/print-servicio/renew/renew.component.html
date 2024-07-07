@@ -1,0 +1,44 @@
+<div class="container">
+    <div class="card">
+        <h2>Renovar servicio N° {{idServicio}}</h2>
+        <mat-dialog-content>
+            <form class="form-container">
+
+                <div [formGroup]="form">
+
+                    <mat-form-field floatLabel="always">
+                        <mat-label>Presupuesto</mat-label>
+                        <input matInput type="number" formControlName="presupuesto" placeholder="0"
+                            oninput="this.value = Math.max(0, this.value)" maxlength="9" />
+                        <span matTextPrefix>$&nbsp;</span>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Responsable general</mat-label>
+                        <mat-select formControlName="responsable" panelClass="limited-height-panel">
+                            <mat-option *ngFor="let recurso of recursoList" [value]="recurso">
+                                <span>{{ recurso.nombre + ', ' + recurso.apellido }}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field>
+                        <mat-label>Estado</mat-label>
+                        <mat-select formControlName="estado">
+                            <mat-option *ngFor="let estado of estadosPermitidos" [value]="estado">
+                                <span>{{estado.tipoEstado}}</span>
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </div>
+
+            </form>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+            <button mat-button [mat-dialog-close]="false">Cerrar</button>
+            <button cdkFocusInitial mat-raised-button color="primary" 
+            (click)="renovar()" [mat-dialog-close]="true" [disabled]="form.invalid">Renovar</button>
+        </mat-dialog-actions>
+    </div>
+</div>

@@ -26,6 +26,9 @@ import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvanc
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import { TrackingComponent } from './tracking/tracking.component';
+import { RenewComponent } from './renew/renew.component';
+import { Categoria } from 'src/app/models/DomainModels/Categoria';
+import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
 
 @Component({
   selector: 'app-print-servicio',
@@ -52,6 +55,7 @@ export class PrintServicioComponent implements OnInit {
   params: Params = new Params();
   onServicio: Servicios;
   estadoServicio!: Estado | undefined;
+  categorias: Categoria[] = [];
 
   constructor(
     private dataShared: DataSharedService,
@@ -65,8 +69,8 @@ export class PrintServicioComponent implements OnInit {
     private estadoService: EstadosService,
     private historicoEstado: HistoricoEstadoService,
     private avancePipe: CalcularAvancePipe,
-    private authSerice: AuthService,
     private trackingService: TrackingStorageService,
+    private categoriaService: CategoriaService,
   ) {
     this.minDate = new Date();
     this.maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 6, this.minDate.getDate());
@@ -114,9 +118,22 @@ export class PrintServicioComponent implements OnInit {
   setParams() {
     this.getContactoEmpresa();
     this.getEstados();
+    this.getCategorias();
     this.getServicio();
+    this.CheckServicioRenovado();
+    this.showBtnRenewInit();
   }
 
+  showBtnRenewInit() {
+    this.canRenew = this.getServicio().estado === this.params.FINALIZADO;
+  }
+
+  getCategorias() {
+    this.categoriaService.getAllCategorias()
+      .subscribe((data) => {
+        this.categorias = data;
+      })
+  }
 
   getServicio(): Servicios {
     return this.dataShared.getSharedObject();
@@ -293,7 +310,8 @@ export class PrintServicioComponent implements OnInit {
      * La categoria "Finalizado" tiene el id: 3
      * Si la categoria del estado seleccionado es igual a 3 no se podrá editar el servicio
      */
-    return this.estadoMatch?.idCategoria === 3;
+    const categoria = this.categorias.find(ca => ca.categoria === this.params.FINALIZADO)
+    return this.estadoMatch?.idCategoria === categoria?.idCategoria;
   }
   /* Fin de la sección de lógica para los estados */
 
@@ -369,6 +387,7 @@ export class PrintServicioComponent implements OnInit {
 
                 console.log('Historico con blockOrder = true:', response);
                 this.blockOrder = true;
+                this.setShowBtnRenew();
               },
               (error) => console.error('Error al agregar HistoricoEstado:', error),
               handleComplete, // Llamar a handleComplete después de completar la solicitud
@@ -387,6 +406,7 @@ export class PrintServicioComponent implements OnInit {
                 this.dataShared.setSharedObject(servicio)
                 console.log('Historico con blockOrder = false:', response);
                 this.blockOrder = true;
+                this.setShowBtnRenew();
               },
               (error) => console.error('Error al agregar HistoricoEstado:', error),
               handleComplete, // Llamar a handleComplete después de completar la solicitud
@@ -507,7 +527,7 @@ export class PrintServicioComponent implements OnInit {
   getRecursoTrackingStorage(): TrackingStorage {
 
     const trackingStorage = new TrackingStorage();
-    const currentUser = this.authSerice.getCurrentUser();
+    const currentUser = this.authService.getCurrentUser();
     trackingStorage.idRecurso = currentUser?.id_recurso;
     trackingStorage.rol = currentUser?.roles?.[0]?.rol ?? 'Sin especificar';
     return trackingStorage;
@@ -519,6 +539,29 @@ export class PrintServicioComponent implements OnInit {
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Los meses van de 0 a 11
     const day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
+  }
+
+  canRenew: boolean = false;
+  CheckServicioRenovado() {
+    const servicio = this.getServicio();
+    this.servicioService.CheckServicioRenovado(servicio.idServicio)
+      .subscribe(
+        (isRenovado) => {
+          if (isRenovado) {
+            this.canRenew = isRenovado;
+          }
+        }
+      )
+  }
+
+  showBtnRenew: boolean = false;
+  setShowBtnRenew() {
+    this.showBtnRenew = this.checkEditable();
+  }
+
+  openRenovar() {
+    const servicio = this.getServicio();
+    this.dialog.open(RenewComponent, { data: servicio.idServicio });
   }
 
 }

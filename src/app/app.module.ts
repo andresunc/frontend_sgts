@@ -37,6 +37,7 @@ import { EficienciaPipe } from './componentsShared/pipes/EficienciaPipe';
 import { ChangePassComponent } from './componentsAdministrador/bodyAdminComponents/cfg-usuarios/change-pass/change-pass.component';
 import { ReportDialogComponent } from './componentsReportes/report-dialog/report-dialog.component';
 import { TrackingComponent } from './componentsServicios/print-servicio/tracking/tracking.component';
+import { RenewComponent } from './componentsServicios/print-servicio/renew/renew.component';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -71,6 +72,7 @@ export const MY_FORMATS: MatDateFormats = {
     ChangePassComponent,
     ReportDialogComponent,
     TrackingComponent,
+    RenewComponent,
           ],
   imports: [
     BrowserModule,
