@@ -63,6 +63,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     let empresa: EmpresaDto = this.servicioForm.get('empresa')?.value;
 
     nuevoServicioDto.servicio.tipoServicioIdTipoServicio = tipoServicio.idTipoServicio;
+    nuevoServicioDto.servicio.recurrencia = 0;
     nuevoServicioDto.historicoEstado.estadoIdEstado = estado.idEstado;
     nuevoServicioDto.servicioEmpresa.recursoGgIdRecursoGg = recurso.idRecurso;
     nuevoServicioDto.servicioEmpresa.empresaIdEmpresa = empresa.idEmpresa;
