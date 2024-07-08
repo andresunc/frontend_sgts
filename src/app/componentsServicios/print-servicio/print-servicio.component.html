@@ -89,7 +89,7 @@
               <mat-label>Tipo de servicio</mat-label>
               <input matInput [value]="onServicio.tipo" [readonly]="true" [disabled]="true">
               <mat-icon matIconSuffix (click)="openRenovar()" 
-              class="autorenew" matTooltip="Renovar servicio" *ngIf="!canRenew && showBtnRenew">autorenew</mat-icon>
+              class="autorenew" matTooltip="Renovar servicio" *ngIf="showBtnRenew && !isRenovado">autorenew</mat-icon>
             </mat-form-field>
 
           </mat-grid-tile>

@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { MaterialModule } from 'src/app/componentsShared/material/material.module';
 import { ContactoEmpresa } from 'src/app/models/DomainModels/ContactoEmpresa';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
-import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { PrintService } from 'src/app/services/print.service';
@@ -121,17 +120,13 @@ export class PrintServicioComponent implements OnInit {
     this.getCategorias();
     this.getServicio();
     this.CheckServicioRenovado();
-    this.showBtnRenewInit();
-  }
-
-  showBtnRenewInit() {
-    this.canRenew = this.getServicio().estado === this.params.FINALIZADO;
   }
 
   getCategorias() {
     this.categoriaService.getAllCategorias()
       .subscribe((data) => {
         this.categorias = data;
+        this.setShowBtnRenew();
       })
   }
 
@@ -310,7 +305,7 @@ export class PrintServicioComponent implements OnInit {
      * La categoria "Finalizado" tiene el id: 3
      * Si la categoria del estado seleccionado es igual a 3 no se podrá editar el servicio
      */
-    const categoria = this.categorias.find(ca => ca.categoria === this.params.FINALIZADO)
+    const categoria = this.categorias.find(ca => ca.categoria == this.params.FINALIZADO)
     return this.estadoMatch?.idCategoria === categoria?.idCategoria;
   }
   /* Fin de la sección de lógica para los estados */
@@ -384,10 +379,12 @@ export class PrintServicioComponent implements OnInit {
                 trackingStorage.data = `Establecido a: ${this.estadoMatch?.tipoEstado}`;
                 trackingStorage.action = this.params.UPDATE;
                 this.suscribeTracking(trackingStorage);
-
+                this.dataShared.setSharedObject(servicio);
                 console.log('Historico con blockOrder = true:', response);
                 this.blockOrder = true;
-                this.setShowBtnRenew();
+
+                const categoria = this.categorias.find(ca => ca.categoria === this.params.FINALIZADO)
+                this.showBtnRenew = this.estadoMatch?.idCategoria === categoria?.idCategoria;
               },
               (error) => console.error('Error al agregar HistoricoEstado:', error),
               handleComplete, // Llamar a handleComplete después de completar la solicitud
@@ -406,7 +403,9 @@ export class PrintServicioComponent implements OnInit {
                 this.dataShared.setSharedObject(servicio)
                 console.log('Historico con blockOrder = false:', response);
                 this.blockOrder = true;
-                this.setShowBtnRenew();
+                
+                const categoria = this.categorias.find(ca => ca.categoria === this.params.FINALIZADO)
+                this.showBtnRenew = this.estadoMatch?.idCategoria === categoria?.idCategoria;
               },
               (error) => console.error('Error al agregar HistoricoEstado:', error),
               handleComplete, // Llamar a handleComplete después de completar la solicitud
@@ -541,14 +540,14 @@ export class PrintServicioComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  canRenew: boolean = false;
+  isRenovado: boolean = false;
   CheckServicioRenovado() {
     const servicio = this.getServicio();
     this.servicioService.CheckServicioRenovado(servicio.idServicio)
       .subscribe(
         (isRenovado) => {
           if (isRenovado) {
-            this.canRenew = isRenovado;
+            this.isRenovado = isRenovado
           }
         }
       )
@@ -556,7 +555,8 @@ export class PrintServicioComponent implements OnInit {
 
   showBtnRenew: boolean = false;
   setShowBtnRenew() {
-    this.showBtnRenew = this.checkEditable();
+    const categoria = this.categorias.find(ca => ca.categoria === this.params.FINALIZADO)
+    this.showBtnRenew = this.getServicio().idCategoria === categoria?.idCategoria;
   }
 
   openRenovar() {
