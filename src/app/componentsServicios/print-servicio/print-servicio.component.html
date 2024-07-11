@@ -101,6 +101,7 @@
               <input matInput *ngIf="!isEditable" [value]="getServicio().estado" [readonly]="!isEditable">
               <mat-icon matIconPrefix class="advertIcon" *ngIf="getServicio() | hayNotificados"
                 (click)="alertaNotificado()">error</mat-icon>
+
               <mat-select *ngIf="isEditable" [(ngModel)]="getServicio().estado" (ngModelChange)="onEstadoChange()"
                 [disabled]="getServicio() | hayNotificados">
                 <mat-option class="option" *ngFor="let estado of estadosList" [value]="estado.tipoEstado" #optionRef
@@ -108,6 +109,7 @@
                   {{ estado.tipoEstado }}
                 </mat-option>
               </mat-select>
+
             </mat-form-field>
 
           </mat-grid-tile>
@@ -215,7 +217,7 @@
 
             <div style="display: flex; justify-content: space-between;">
               <button style="width: 48%;" (click)="loadChanges()" mat-flat-button color="accent" *ngIf="isEditable"
-                [disabled]="!isEditable">
+                [disabled]="!isEditable || checkListNotCompleted">
                 GUARDAR
               </button>
               <button style="width: 48%;" (click)="loadChanges()" mat-flat-button *ngIf="isEditable"
