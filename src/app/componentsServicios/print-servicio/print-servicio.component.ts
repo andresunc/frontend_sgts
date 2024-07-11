@@ -294,9 +294,27 @@ export class PrintServicioComponent implements OnInit {
    * Llamar a this.checkEditable()
    */
   estadoMatch: Estado | undefined;
+  checkListNotCompleted: boolean = false;
   onEstadoChange() {
+    // No se puede presentar si no está completo. No se puede finalizar si esta incompleto
+    const inEstado = this.getServicio().estado;
+    const estPresentado = this.params.PRESENTADO
+
+    // Lógica para evitar que se pueda presentar si no esta completo el checklist
+    // Si el estado es presentado y el checklist no esta completo
+    if (inEstado === estPresentado && !this.isCheckListComplete()) {
+      this.checkListNotCompleted = true;
+      this._snackBar.warnSnackBar('Debes completar el CheckList')
+    } else {
+      this.checkListNotCompleted = false;
+    }
+
     this.estadoMatch = this.estadosList.find(estado => estado.tipoEstado === this.getServicio().estado);
     this.checkEditable();
+  }
+
+  isCheckListComplete(): boolean {
+    return this.getServicio().itemChecklistDto.every(item => item.completo === true);
   }
 
   checkEditable(): boolean {
@@ -403,7 +421,7 @@ export class PrintServicioComponent implements OnInit {
                 this.dataShared.setSharedObject(servicio)
                 console.log('Historico con blockOrder = false:', response);
                 this.blockOrder = true;
-                
+
                 const categoria = this.categorias.find(ca => ca.categoria === this.params.FINALIZADO)
                 this.showBtnRenew = this.estadoMatch?.idCategoria === categoria?.idCategoria;
               },

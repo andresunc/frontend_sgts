@@ -57,4 +57,9 @@ export class Servicios {
         this.itemChecklistDto = itemChecklistDto;
     }
 
+    checkItemsCompletos(): boolean {
+        // Verificar si todos los items del checklist están completos
+        return this.itemChecklistDto.every(item => item.completo === true);
+    }
+
 }
