@@ -297,14 +297,13 @@ export class PrintServicioComponent implements OnInit {
   checkListNotCompleted: boolean = false;
   onEstadoChange() {
     // No se puede presentar si no está completo. No se puede finalizar si esta incompleto
-    const inEstado = this.getServicio().estado;
-    const estPresentado = this.params.PRESENTADO
+    const isPresentado = (this.getServicio().estado === this.params.PRESENTADO);
 
     // Lógica para evitar que se pueda presentar si no esta completo el checklist
     // Si el estado es presentado y el checklist no esta completo
-    if (inEstado === estPresentado && !this.isCheckListComplete()) {
+    if (isPresentado && !this.isCheckListComplete()) {
       this.checkListNotCompleted = true;
-      this._snackBar.warnSnackBar('Debes completar el CheckList')
+      this._snackBar.warnSnackBar('Debes completar el CheckList');
     } else {
       this.checkListNotCompleted = false;
     }

@@ -14,6 +14,9 @@ import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { AuthService } from 'src/app/services/auth.service';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import { Params } from 'src/app/models/Params';
+import { EmailDTO } from 'src/app/models/ModelsDto/EmailDTO';
+import { EmailService } from 'src/app/services/ServiciosDto/email.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-add-item',
@@ -52,6 +55,7 @@ export class AddItemComponent implements OnInit {
     private authSerice: AuthService,
     public params: Params,
     private trackingService: TrackingStorageService,
+    private emailService: EmailService,
   ) { }
 
   ngOnInit(): void {
@@ -240,10 +244,23 @@ export class AddItemComponent implements OnInit {
         trackingStorage.data = `ID: ${idItem}, Valor de tasa $${tasa}, Hojas: ${hojas}, Repositorio: ${url}`;
         this.suscribeTracking(trackingStorage);
 
-        const requisito = this.requisito
         addItemToCheckList = data;
         console.log('ItemChecklist persistido: ', addItemToCheckList);
         this.dialogRef.close(true);
+
+        const mensajero: EmailDTO = new EmailDTO();
+        mensajero.toUser = [`${recurso?.mail}`];
+        mensajero.subject = `${recurso?.nombre}, se te asigno una tarea`;
+        const finestandar = `${addItemToCheckList.finEstandar}`;
+        const fechaFormateada: string | undefined = finestandar.split("T")[0];
+        mensajero.message = `Hola ${recurso?.nombre} ${recurso?.apellido}. Se te asignó el requisito "${this.requisito}" para que puedas gestionarlo preferentemente antes del ${fechaFormateada}`;
+
+        // Enviar el mail
+        this.emailService.sendEmail(mensajero)
+        .subscribe((data) => {
+          console.log('mensaje enviado: ', data);
+        })
+
         this.dataShared.ocultarSpinner();
       }, () => {
         this.dataShared.ocultarSpinner();
