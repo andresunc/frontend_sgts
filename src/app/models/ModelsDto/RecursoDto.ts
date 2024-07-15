@@ -6,6 +6,7 @@ export class RecursoDto {
     dni?: string;
     idRol?: number;
     rol?:string;
+    mail?:string;
 
     constructor(){}
         
