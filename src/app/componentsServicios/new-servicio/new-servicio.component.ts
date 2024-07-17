@@ -156,6 +156,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
         .subscribe(
           (data) => {
             this.categorias = data;
+            this.setEstadosPermitidos();
           }
         )
       // 1 Obtener los tipos de servicios
@@ -197,7 +198,6 @@ export class NewServicioComponent implements OnInit, OnDestroy {
       ).subscribe((data) => {
         this.estadoList = data;
         this.setEstadosPermitidos();
-        console.log(this.estadoList);
       });
 
       // 3 Obtener los recursos gg
@@ -276,6 +276,8 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     this.estadosPermitidos = this.estadoList.filter(
       est => est.idCategoria === categoriaPermitida?.idCategoria &&
         est.tipoEstado !== this.params.PRESUPUESTO_RECHAZADO);
+
+    console.log(categoriaPermitida , this.estadoList, this.categorias);
   }
 
 }
