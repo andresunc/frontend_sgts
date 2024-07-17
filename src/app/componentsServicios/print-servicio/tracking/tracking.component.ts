@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-tracking',
@@ -40,5 +41,9 @@ export class TrackingComponent implements OnInit {
       this.trackingList = data;
       this.dataSource = data;
     });
+  }
+
+  formatTimestamp(timestamp: string): string {
+    return moment(timestamp).format('YYYY-MM-DD HH:mm:ss');
   }
 }
