@@ -3,86 +3,194 @@
   <div class="childContainer">
     <div class="cardContainer">
 
+      <mat-card appearance="outlined" (click)="openReporte(7)">
+        <mat-card-header>
+          <mat-card-title>Servicios</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra el listado de servicios activos con su respectivo avance de gestión.</mat-card-content>
+      </mat-card>
+      <ng-template #reporte7>
+        <iframe title="Servicios" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiOGJiMjM5ODgtZDE2OS00MWYwLTg0YTMtZDljMzE4MTdlNjk4IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
       <mat-card appearance="outlined" (click)="openReporte(0)">
         <mat-card-header>
           <mat-card-title>Servicios por Estado</mat-card-title>
-          <img mat-card-avatar src="\assets\img\barra.png">
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
         </mat-card-header>
-        <mat-card-content>Muestra el listado de servicios activos, clasificados por estado y rubros.</mat-card-content>
+        <mat-card-content>Muestra el listado de servicios activos, clasificados por estado.</mat-card-content>
       </mat-card>
       <ng-template #reporte0>
-        <iframe title="Servicios por Estado" width="100%" height="100%" 
-        src="https://app.powerbi.com/view?r=eyJrIjoiMGVkYmQyODEtNTFjOC00YzgwLWIzMWEtYjNhYzVmYzQ4MDk3IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
-        frameborder="0" allowFullScreen="true"></iframe>
+        <iframe title="Servicios por Estado" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiMGVkYmQyODEtNTFjOC00YzgwLWIzMWEtYjNhYzVmYzQ4MDk3IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          frameborder="0" allowFullScreen="true"></iframe>
       </ng-template>
 
-        <mat-card appearance="outlined" (click)="openReporte(1)">
-          <mat-card-header>
-            <mat-card-title>Desvío por Trámite</mat-card-title>
-            <img mat-card-avatar src="\assets\img\barra.png">
-          </mat-card-header>
-          <mat-card-content>Se basa en el listado de los trámites que presentaron desvíos respecto a
-            las fechas estándares de inicio y finalización estimados.</mat-card-content>
-        </mat-card>
-        <ng-template #reporte1>
-          <iframe title="Desvío por Trámite" width="100%" height="100%" 
-          src="https://app.powerbi.com/view?r=eyJrIjoiYWM1YmRmNmEtZjUwYi00MTE0LTgzYTctM2UxMzFmYzhiOWQzIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
-          frameborder="0" allowFullScreen="true"></iframe>
-        </ng-template>
-      
 
-        <mat-card appearance="outlined" (click)="openReporte(2)">
-          <mat-card-header>
-            <mat-card-title>Análisis de Rebote</mat-card-title>
-            <img mat-card-avatar src="\assets\img\linea.webp">
-          </mat-card-header>
-          <mat-card-content>Se basa en los últimos 30 registros de las veces en que se presentó documentación, ante una entidad reguladora, y no fué aprobada debido a documentación incorrecta o insuficiente.</mat-card-content>
-        </mat-card>
-        <ng-template #reporte2>
-          <iframe title="Análisis de rebote" width="100%" height="100%" 
-          src="https://app.powerbi.com/view?r=eyJrIjoiNDM0YmE5NzctMmExMC00NDFiLWFhMDAtOTY5ODU5MTdhM2M3IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
+      <mat-card appearance="outlined" (click)="openReporte(10)">
+        <mat-card-header>
+          <mat-card-title>Servicios por Rubro</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra los rubros con mayor demanda. </mat-card-content>
+      </mat-card>
+      <ng-template #reporte10>
+        <iframe title="Servicios por Rubro" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiYjYwMGJkNWUtZDg5OS00ZTEzLWE5OGUtNGQyYzYxN2Q1ZWE2IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
           frameborder="0" allowFullScreen="true"></iframe>
-        </ng-template>
+      </ng-template>
 
-        <mat-card appearance="outlined" (click)="openReporte(3)">
-          <mat-card-header>
-            <mat-card-title>Desvío por Rubro</mat-card-title>
-            <img mat-card-avatar src="\assets\img\linea.webp">
-          </mat-card-header>
-          <mat-card-content>Se basa en el listado de los trámites que presentaron desvíos y que están agrupados por rubros, respecto a
-            las fechas estándares de inicio y finalización estimados.</mat-card-content>
-        </mat-card>
-        <ng-template #reporte3>
-          <iframe title="Desvío por Rubro" width="100%" height="100%"
-           src="https://app.powerbi.com/view?r=eyJrIjoiODY3MGQyNTMtODA3MS00ODhhLWI5ZWEtMzdlMDhmNGExOTY0IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
-            frameborder="0" allowFullScreen="true"></iframe>
-        </ng-template>
-
-        <mat-card appearance="outlined" (click)="openReporte(4)">
-          <mat-card-header>
-            <mat-card-title>Distribución de Tareas por Tipo de Rol</mat-card-title>
-            <img mat-card-avatar src="\assets\img\torta.png">
-          </mat-card-header>
-          <mat-card-content>Se basa en la asignación de tareas o ítems a usuarios según sus roles para visualizar y analizar cómo se distribuyen las tareas entre los distintos roles e identificar posibles desbalances en la carga de trabajo.</mat-card-content>
-        </mat-card>
-        <ng-template #reporte4>
-          <iframe title="Asignación por tipo de rol" width="100%" height="100%" 
-          src="https://app.powerbi.com/view?r=eyJrIjoiMTIzYjNkYTUtODA3OC00YTI0LTgxNjEtZGE3NThkMTU0NDVmIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
+      <mat-card appearance="outlined" (click)="openReporte(6)">
+        <mat-card-header>
+          <mat-card-title>Servicios por Vencer</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra un listado de servicios proximos a vencer. </mat-card-content>
+      </mat-card>
+      <ng-template #reporte6>
+        <iframe title="Servicios por Vencer" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiYWM5ZjJiYzAtNWMwOS00YWU4LTg4MzktMGI3Y2FlOWU3MzZhIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
           frameborder="0" allowFullScreen="true"></iframe>
-        </ng-template>
+      </ng-template>
 
-        <mat-card appearance="outlined" (click)="openReporte(5)">
-          <mat-card-header>
-            <mat-card-title>Items por Dependencia</mat-card-title>
-            <img mat-card-avatar src="\assets\img\torta.png">
-          </mat-card-header>
-          <mat-card-content>Muestra el total de items activos por dependencia</mat-card-content>
-        </mat-card>
-        <ng-template #reporte5>
-          <iframe title="Items por Dependencia" width="100%" height="100%" 
-          src="https://app.powerbi.com/view?r=eyJrIjoiMDdhYTExMGQtYzkyOS00MDk4LWI0ZDYtMzhkZmE0YzYxODdiIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9" 
+
+      <mat-card appearance="outlined" (click)="openReporte(8)">
+        <mat-card-header>
+          <mat-card-title>Servicios por Empresa</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra el listado de servicios contratados por cada cliente. </mat-card-content>
+      </mat-card>
+      <ng-template #reporte8>
+        <iframe title="Servicios por Empresa" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiOWE5NTRhOWMtYWYzYi00YWFkLWIzM2QtNjVmYzUxNTg5ZjBjIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
           frameborder="0" allowFullScreen="true"></iframe>
-        </ng-template>
+      </ng-template>
+
+      <mat-card appearance="outlined" (click)="openReporte(9)">
+        <mat-card-header>
+          <mat-card-title>Clientes con más Renovaciones</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra el listado de Clientes que realizaron renovaciones de los servicios prestados.
+        </mat-card-content>
+      </mat-card>
+      <ng-template #reporte9>
+        <iframe title="Clientes con mas Renovaciones" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiNGNjMTcyZmUtMjBiNC00YjhiLTkyZGEtZmY0MTY1NzkzMTdkIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
+
+      <mat-card appearance="outlined" (click)="openReporte(2)">
+        <mat-card-header>
+          <mat-card-title>Análisis de Rebote</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Se basa en los últimos 30 registros de las veces en que se presentó documentación, ante una
+          entidad reguladora, y no fué aprobada debido a documentación incorrecta o insuficiente.</mat-card-content>
+      </mat-card>
+      <ng-template #reporte2>
+        <iframe title="Análisis de rebote" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiNDM0YmE5NzctMmExMC00NDFiLWFhMDAtOTY5ODU5MTdhM2M3IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
+      <mat-card appearance="outlined" (click)="openReporte(3)">
+        <mat-card-header>
+          <mat-card-title>Desvío por Rubro</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Se basa en el listado de los trámites que presentaron desvíos y que están agrupados por
+          rubros, respecto a
+          las fechas estándares de inicio y finalización estimados.</mat-card-content>
+      </mat-card>
+      <ng-template #reporte3>
+        <iframe title="Desvío por Rubro" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiODY3MGQyNTMtODA3MS00ODhhLWI5ZWEtMzdlMDhmNGExOTY0IiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
+      <mat-card appearance="outlined" (click)="openReporte(1)">
+        <mat-card-header>
+          <mat-card-title>Desvío por Trámite</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Se basa en el listado de los trámites que presentaron desvíos respecto a
+          las fechas estándares de inicio y finalización estimados.</mat-card-content>
+      </mat-card>
+      <ng-template #reporte1>
+        <iframe title="Desvío por Trámite" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiYWM1YmRmNmEtZjUwYi00MTE0LTgzYTctM2UxMzFmYzhiOWQzIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
+      <mat-card appearance="outlined" (click)="openReporte(5)">
+        <mat-card-header>
+          <mat-card-title>Items por Dependencia</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra el total de items activos por dependencia</mat-card-content>
+      </mat-card>
+      <ng-template #reporte5>
+        <iframe title="Items por Dependencia" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiMDdhYTExMGQtYzkyOS00MDk4LWI0ZDYtMzhkZmE0YzYxODdiIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
+
+      <mat-card appearance="outlined" (click)="openReporte(4)">
+        <mat-card-header>
+          <mat-card-title>Distribución de Tareas por Tipo de Rol</mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Se basa en la asignación de tareas o ítems a usuarios según sus roles para visualizar y
+          analizar cómo se distribuyen las tareas entre los distintos roles e identificar posibles desbalances en la
+          carga de trabajo.</mat-card-content>
+      </mat-card>
+      <ng-template #reporte4>
+        <iframe title="Asignación por tipo de rol" width="100%" height="100%"
+          src="https://app.powerbi.com/view?r=eyJrIjoiMTIzYjNkYTUtODA3OC00YTI0LTgxNjEtZGE3NThkMTU0NDVmIiwidCI6IjBjYmU1ZjNlLTUzM2YtNDAzMC04MzQ0LWQ4Mzc5YmExMzU2YiIsImMiOjR9"
+          frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
+
+      <mat-card appearance="outlined" (click)="openReporte(11)">
+        <mat-card-header>
+          <mat-card-title></mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra... </mat-card-content>
+      </mat-card>
+      <ng-template #reporte11>
+        <iframe title="" width="100%" height="100%" src="" frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
+      <mat-card appearance="outlined" (click)="openReporte(12)">
+        <mat-card-header>
+          <mat-card-title></mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra... </mat-card-content>
+      </mat-card>
+      <ng-template #reporte12>
+        <iframe title="" width="100%" height="100%" src="" frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
+      <mat-card appearance="outlined" (click)="openReporte(13)">
+        <mat-card-header>
+          <mat-card-title></mat-card-title>
+          <img mat-card-avatar src="\assets\img\informe-grafico.png">
+        </mat-card-header>
+        <mat-card-content>Muestra... </mat-card-content>
+      </mat-card>
+      <ng-template #reporte13>
+        <iframe title="" width="100%" height="100%" src="" frameborder="0" allowFullScreen="true"></iframe>
+      </ng-template>
+
     </div>
   </div>
 </div>

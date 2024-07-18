@@ -89,7 +89,7 @@
                 </mat-tab>
 
                 <!-- Tab del RESUMEN -->
-                <mat-tab label="Guardar">
+                <mat-tab label="RESUMEN">
                     <div class="formContainer">
                         <div class="formContent">
                             <h2>RESUMEN</h2>
@@ -119,7 +119,7 @@
                                 </div>
                             </div>
                             <button (click)="sendNewServicio()" id="btnSave" mat-raised-button color="primary" [disabled]="!servicioForm.valid || sending">
-                                {{ servicioForm.valid ? 'Guardar' : 'Completar campos'}}
+                                {{ servicioForm.valid ? 'Crear' : 'Completar campos'}}
                             </button>
                             <mat-error class="p-2" style="font-size: 0.9rem; margin-top: 0.5rem" *ngIf="!servicioForm.valid">
                                 <span>Hay campos requeridos* incompletos</span>
