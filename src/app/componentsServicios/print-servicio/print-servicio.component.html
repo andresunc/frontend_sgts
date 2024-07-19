@@ -118,10 +118,11 @@
 
             <mat-form-field floatLabel="always">
               <mat-label>Presupuesto</mat-label>
-              <input matInput type="number" style="text-align: start; padding-left: 0.2rem;"
-                [(ngModel)]="getServicio().total_presupuestado" placeholder="0" [disabled]="true"
+              <input matInput type="text" style="text-align: start; padding-left: 0.2rem;"
+                [(ngModel)]="txtPresupuesto" placeholder="0" [disabled]="true"
                 (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
-              <span matTextPrefix style="color: rgba(0, 0, 0, 0.38);">$</span>
+              <span *ngIf="menuEditable" matTextPrefix style="color: rgba(0, 0, 0, 0.38);">$</span>
+              <mat-icon *ngIf="!menuEditable" matTextPrefix style="color: rgba(0, 0, 0, 0.38);">visibility_off</mat-icon>
             </mat-form-field>
 
           </mat-grid-tile>

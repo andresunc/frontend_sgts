@@ -5,6 +5,9 @@ import { Router } from '@angular/router';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { ServicioService } from '../ServiciosDto/ServicioService';
 import { Subject, takeUntil } from 'rxjs';
+import { Params } from 'src/app/models/Params';
+import { AuthService } from '../auth.service';
+import { PopupService } from './popup.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +18,13 @@ import { Subject, takeUntil } from 'rxjs';
  */
 export default class ManagerService implements OnDestroy {
 
-  constructor(private dataShared: DataSharedService,
+  constructor(
+    private dataShared: DataSharedService,
     private servicioService: ServicioService,
-    private router: Router) { }
+    private router: Router,
+    private params: Params,
+    private authService: AuthService,
+    private _snackBar: PopupService) { }
 
   editable: boolean = false;
   changeEditable(): boolean {
@@ -37,6 +44,17 @@ export default class ManagerService implements OnDestroy {
 
   // Método para enviar el objeto al componente print-servicio
   enviarObjeto(servicio: Servicios) {
+
+    const isEnCurso = (servicio.categoria === this.params.EN_CURSO);
+    const isAdmin = (this.authService.isAdmin());
+
+    if (!isAdmin && !isEnCurso) {
+      console.log('Sin permisos para avanzar, el servicio no está en curso.');
+      this._snackBar.warnSnackBar('Este servicio no está en curso');
+      return;
+    }
+
+
     // Si existe el objeto en localStorage, eliminarlo
     if (localStorage.getItem('servicioRecibido')) localStorage.removeItem('servicioRecibido');
     // Enviar el objeto al componente print-servicio
