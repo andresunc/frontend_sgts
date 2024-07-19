@@ -47,6 +47,7 @@ export class PrintServicioComponent implements OnInit {
   menuEditable!: boolean;
 
   presupuestOriginal!: number;
+  txtPresupuesto!: string;
   recordatoriOriginal!: any;
   expedienteOriginal!: string;
   idEstadOriginal!: string;
@@ -85,6 +86,7 @@ export class PrintServicioComponent implements OnInit {
     this.getServicioById(servicio.idServicio);
 
     this.presupuestOriginal = servicio.total_presupuestado;
+    this.txtPresupuesto = this.authService.isAdmin() ? servicio.total_presupuestado.toString() : '***************';
     this.recordatoriOriginal = servicio.fecha_notificacion;
     this.comentariOriginal = servicio.comentario;
     this.idEstadOriginal = servicio.estado;
