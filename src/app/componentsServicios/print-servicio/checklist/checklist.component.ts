@@ -3,16 +3,18 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsServicios/print-servicio/add-item/add-item.component';
 import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvance';
+import { Estado } from 'src/app/models/DomainModels/Estado';
+import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
 
-import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { Params } from 'src/app/models/Params';
+import { EstadosService } from 'src/app/services/DomainServices/estados.service';
+import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
-import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -30,10 +32,12 @@ export class ChecklistComponent implements OnInit {
   servicio: Servicios;
   isAdmin: boolean;
   form!: FormGroup;
+  estadosList: Estado[] = [];
+  estadoPresAprob!: Estado | undefined;
+  estadoEnRelevamiento!: Estado | undefined;
 
   constructor(
     private dataShared: DataSharedService,
-    private _snackBar: PopupService,
     private servicioService: ServicioService,
     private itemChecklistService: ItemChecklistService,
     private authService: AuthService,
@@ -44,6 +48,8 @@ export class ChecklistComponent implements OnInit {
     public dialogRef: MatDialogRef<ChecklistComponent>,
     private authSerice: AuthService,
     private trackingService: TrackingStorageService,
+    private estadoService: EstadosService,
+    private historicoEstado: HistoricoEstadoService,
   ) {
     this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
@@ -60,6 +66,18 @@ export class ChecklistComponent implements OnInit {
     });
     this.disableItemsTasa();
     this.canNotify();
+    this.getEstados();
+  }
+
+  getEstados() {
+    this.dataShared.mostrarSpinner();
+    this.estadoService.getStatusNotDeleted().subscribe(
+      (data) => {
+        this.estadosList = data;
+        this.estadoPresAprob = this.estadosList.find(estado => estado.tipoEstado === this.params.PRESUPUESTO_APROBADO);
+        this.estadoEnRelevamiento = this.estadosList.find(estado => estado.tipoEstado === this.params.EN_RELEVAMIENTO);
+        console.log('Estados cargados OK');
+      })
   }
 
   notifyIsVisible: boolean = false;
@@ -255,6 +273,9 @@ export class ChecklistComponent implements OnInit {
     if (this.dataSourceItems) {
       this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
         (data: ItemChecklistDto[]) => {
+
+          this.checkPresupuestoAprobado();
+
           let trackingStorage = new TrackingStorage();
           trackingStorage = this.getRecursoTrackingStorage();
           trackingStorage.action = this.params.UPDATE;
@@ -271,6 +292,38 @@ export class ChecklistComponent implements OnInit {
       ).add(
         this.dataShared.ocultarSpinner()
       )
+    }
+
+  }
+
+  checkPresupuestoAprobado() {
+
+    const correntUserName = this.authService.getCurrentName();
+    const isPresupuestoAprobado = (this.estadoPresAprob?.tipoEstado === this.dataShared.getSharedObject().estado);
+    
+    if (isPresupuestoAprobado) {
+      // Set tracking storage
+    let trackingStorage = new TrackingStorage();
+    trackingStorage = this.getRecursoTrackingStorage();
+    trackingStorage.idServicio = this.servicio.idServicio;
+
+    // Armo el objeto historico de estado
+    let historicoEstado = new HistoricoEstado();
+    historicoEstado.estadoIdEstado = this.estadoEnRelevamiento?.idEstado
+    historicoEstado.servicioIdServicio = this.servicio.idServicio;
+
+    this.historicoEstado.addHistoricoEstado(historicoEstado)
+      .subscribe(
+        () => {
+          // data para el primer tracking storages
+          trackingStorage.eventLog = 'Actualización automática';
+          trackingStorage.data = `El estado cambió a "${this.estadoEnRelevamiento?.tipoEstado}" porque ${correntUserName} inicio la ejecución de las actividades`;
+          trackingStorage.action = this.params.UPDATE;
+          this.suscribeTracking(trackingStorage);
+          this.dataShared.setSharedObject(this.servicio);
+        },
+        (error) => console.error('Error al agregar el estado automáticamente:', error),
+      );
     }
 
   }

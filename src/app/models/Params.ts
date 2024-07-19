@@ -3,6 +3,8 @@ export class Params {
   // Estados
   PRESENTADO = 'Presentado';
   PRESUPUESTO_RECHAZADO = 'Presupuesto rechazado';
+  PRESUPUESTO_APROBADO = 'Presupuesto aprobado';
+  EN_RELEVAMIENTO = 'En relevamiento';
   
   // Categorías
   SIN_INICIAR = 'Sin iniciar';
