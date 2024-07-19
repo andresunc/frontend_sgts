@@ -175,7 +175,7 @@
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
             <mat-form-field>
-              <mat-label [style.color]="isEditable && checkEditable() ? '#dc3545' : ''">Fecha de recordatorio</mat-label>
+              <mat-label [style.color]="isEditable && checkEditable() ? '#dc3545' : ''">Fecha de Vencimiento</mat-label>
               <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate"
                 [(ngModel)]="getServicio().fecha_notificacion" [value]="getServicio().fecha_notificacion"
                 [readonly]="true" [disabled]="!isEditable || !checkEditable()">
