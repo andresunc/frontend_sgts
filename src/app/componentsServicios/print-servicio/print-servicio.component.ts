@@ -72,7 +72,7 @@ export class PrintServicioComponent implements OnInit {
     private categoriaService: CategoriaService,
   ) {
     this.minDate = new Date();
-    this.maxDate = new Date(this.minDate.getFullYear(), this.minDate.getMonth() + 6, this.minDate.getDate());
+    this.maxDate = new Date(this.minDate.getFullYear() + 1, this.minDate.getMonth(), this.minDate.getDate());
     this.onServicio = this.getServicioLocalStorage();
     this.dataShared.setSharedObject(this.onServicio);
     this.menuEditable = this.enableMenuEdit();
