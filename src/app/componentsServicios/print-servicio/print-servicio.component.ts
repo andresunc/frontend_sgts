@@ -260,7 +260,7 @@ export class PrintServicioComponent implements OnInit {
   openChecklistPopUp() {
     // si no está finalizado
     const servicio = this.getServicio();
-    if (servicio.categoria != this.params.FINALIZADO) {
+    if (servicio.categoria === this.params.EN_CURSO) {
       this.dataShared.setSharedObject(servicio);
       const dialogRef = this.dialog.open(ChecklistComponent);
 
@@ -268,8 +268,10 @@ export class PrintServicioComponent implements OnInit {
         // Se ejecutará cuando se cierre el modal del checklist
         this.getServicioById(servicio.idServicio);
       });
-    } else {
+    } else if (servicio.categoria === this.params.FINALIZADO) {
       this._snackBar.warnSnackBar(`El servicio ha ${servicio.categoria.toLowerCase() || undefined}`)
+    } else {
+      this._snackBar.warnSnackBar('Este servicio aún no ha inicializado')
     }
   }
 
