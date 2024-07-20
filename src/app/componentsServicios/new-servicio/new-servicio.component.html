@@ -47,7 +47,7 @@
                         <div class="formContent">
                             <h2>DETALLES DE LA ASIGNACIÓN DEL SERVICIO</h2>
                             <div class="row p-5">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <h5>Personal que presta el servicio</h5>
                                     <mat-form-field>
                                         <mat-label>Responsable</mat-label>
@@ -59,19 +59,8 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <h5>Empresa a la que se le presta el servicio</h5>
-                                    <mat-form-field>
-                                        <mat-label>Empresa</mat-label>
-                                        <mat-select formControlName="empresa" placeholder="Seleccionar empresa">
-                                            <mat-option *ngFor="let empresa of empresaList" [value]="empresa">
-                                                <span>{{empresa.cliente + ' Cuit: ' + empresa.cuit}}</span>
-                                            </mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="col-md-4">
+                                
+                                <div class="col-md-6">
                                     <h5>Presupuesto del servicio</h5>
                                     <mat-form-field>
                                         <mat-label>$ {{presupuesto | number:'1.2'}}</mat-label>
@@ -81,6 +70,18 @@
                                         <mat-error *ngIf="servicioForm.get('monto')?.hasError('pattern')">
                                             Ejemplo .
                                         </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <h5 style=" margin-top: 3%;">Empresa a la que se le presta el servicio</h5>
+                                    <mat-form-field class="mat-empresa" >
+                                        <mat-label>Empresa</mat-label>
+                                        <mat-select formControlName="empresa" placeholder="Seleccionar empresa">
+                                            <mat-option *ngFor="let empresa of empresaList" [value]="empresa">
+                                                <span>{{empresa.cliente + ' Cuit: ' + empresa.cuit}}</span>
+                                            </mat-option>
+                                        </mat-select>
                                     </mat-form-field>
                                 </div>
                             </div>
