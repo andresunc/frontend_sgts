@@ -55,7 +55,14 @@ mat-tab-group {
     padding: 2rem;
 }
 
+
+.mat-empresa{
+    width: 75%;
+}
+
+
 .formContainer {
+    
     justify-content: center;
     align-items: center;
     padding: 3rem;
@@ -65,6 +72,7 @@ mat-tab-group {
 }
 
 .formContent {
+    
     text-align: center;
     align-items: center;
 
@@ -107,4 +115,11 @@ h5 {
 
 #btnSave {
     margin-top: 1rem;
+}
+
+@media screen and (max-width: 700px) {
+
+    .mat-empresa{
+        width: 100%;
+    }
 }
