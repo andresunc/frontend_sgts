@@ -60,7 +60,6 @@ export class RenewComponent implements OnInit {
     try {
       this.getRecursos();
       this.getCategorias();
-      this.getEstados();
     } catch (error) {
       console.log('Error al cargar parámetros', error);
     }
@@ -70,6 +69,7 @@ export class RenewComponent implements OnInit {
     this.categoriaService.getAllCategorias()
       .subscribe((data) => {
         this.categorias = data;
+        this.getEstados();
       })
   }
 
@@ -77,6 +77,7 @@ export class RenewComponent implements OnInit {
     this.estadoService.getStatusNotDeleted()
       .subscribe((data) => {
         this.estadoList = data;
+        console.log('get estados: ', this.estadoList)
         this.setEstadosPermitidos();
       });
   }
