@@ -95,7 +95,7 @@
                         <div class="formContent">
                             <h2>RESUMEN</h2>
                             <div class="row" style="min-height: 10rem; align-items: center; margin: 0 auto;">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <h5>Datos del cliente:</h5>
                                     <mat-card class="cardResume">
                                         <span>{{ 'Empresa: ' + (servicioForm.get('empresa')?.value ? servicioForm.get('empresa')?.value.cliente + ' / Cuit: ' + servicioForm.get('empresa')?.value.cuit : '*') }}</span>
@@ -103,7 +103,7 @@
                                         <span>{{ 'Ubicación: ' + (servicioForm.get('empresa')?.value ? servicioForm.get('empresa')?.value.direccion : '*') }}</span>
                                     </mat-card>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <h5>Datos del servicio:</h5>
                                     <mat-card class="cardResume">
                                         <span>{{ 'Tipo de servicio: ' + (servicioForm.get('tipo')?.value ? servicioForm.get('tipo')?.value.tipoServicio : '*') }}</span>
@@ -111,11 +111,11 @@
                                         <span>{{ 'Presupuesto: ' + (servicioForm.get('monto')?.value ? '$' + (servicioForm.get('monto')?.value | number:'1.2') : '*') }}</span>
                                     </mat-card>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <h5>Datos del Responsable general:</h5>
                                     <mat-card class="cardResume">
                                         <span>{{ 'Responsable: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.nombre + ' ' + servicioForm.get('responsable')?.value.apellido : '*') }}</span>
-                                        <span>{{ 'DNI: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.dni : '*') }}</span>
+                                        <span>{{ 'Rol: ' + (servicioForm.get('responsable')?.value ? servicioForm.get('responsable')?.value.rol : '*') }}</span>
                                     </mat-card>
                                 </div>
                             </div>
