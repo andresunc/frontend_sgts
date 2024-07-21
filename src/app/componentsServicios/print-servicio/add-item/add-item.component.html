@@ -63,7 +63,7 @@
                                     <label for="selectItem">Establezca el requisito del ítem</label><br>
                                     <select class="form-select" id="selectItem" name="selectItem"
                                         [(ngModel)]="selectItem" required
-                                        (ngModelChange)="recomendarFechaHoraRealizacion(selectItem!)">
+                                        (ngModelChange)="recomendarFechaHoraRealizacion(selectItem!); filterItems()">
                                         <option [ngValue]="null" selected>- - -</option>
                                         <option *ngFor="let item of filteredItems" [value]="item.idItem">
                                             {{ item.descripcion }}

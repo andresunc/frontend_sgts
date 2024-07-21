@@ -9,14 +9,13 @@ import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.ser
 import { SelectItemService } from 'src/app/services/ServiciosDto/select-item.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
-import { ChecklistComponent } from '../checklist/checklist.component';
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { AuthService } from 'src/app/services/auth.service';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import { Params } from 'src/app/models/Params';
 import { EmailDTO } from 'src/app/models/ModelsDto/EmailDTO';
 import { EmailService } from 'src/app/services/ServiciosDto/email.service';
-import { formatDate } from '@angular/common';
+import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
 
 @Component({
   selector: 'app-add-item',
@@ -28,6 +27,7 @@ export class AddItemComponent implements OnInit {
   isChecked = true;
   minDate: any;
   servicioRecibido!: Servicios;
+  listServicios!: Servicios[];
 
   selectItemList: SelectItemDto[] = [];
   filteredItems: SelectItemDto[] = [];
@@ -56,9 +56,11 @@ export class AddItemComponent implements OnInit {
     public params: Params,
     private trackingService: TrackingStorageService,
     private emailService: EmailService,
+    private servicioService: ServicioService
   ) { }
 
   ngOnInit(): void {
+    this.servicioRecibido = this.dataShared.getSharedObject();
     this.setDateTime();
     this.getParameters();
     this.setParameters();
@@ -78,6 +80,7 @@ export class AddItemComponent implements OnInit {
 
         // Filtrar los elementos al recibirlos por primera vez
         this.filterItems();
+        console.log('Inició GetParameters')
       },
       error => {
         console.error(error); // Manejo de errores
@@ -89,8 +92,6 @@ export class AddItemComponent implements OnInit {
         this.recursoList = data;
       }
     )
-
-    this.servicioRecibido = this.dataShared.getSharedObject();
 
   }
 
@@ -109,7 +110,7 @@ export class AddItemComponent implements OnInit {
 
   getUniqueRubro() {
     // Verificar si al menos un elemento en selectItemList tiene el mismo rubro que this.servicioRecibido.rubro
-    // voy a configurar por defecto el la lista de rubro a seleccionar
+    // voy a configurar por defecto la lista de rubro a seleccionar
     if (this.selectItemList.some(item => item.rubro === this.servicioRecibido.rubro || !this.servicioRecibido.rubro)) {
       this.uniqueRubros = [this.servicioRecibido.rubro];
     } else {
@@ -119,7 +120,7 @@ export class AddItemComponent implements OnInit {
 
   filterItems() {
     // Aplicar filtro
-
+    console.log('se aplicó el filtro', this.filteredItems, this.servicioRecibido.itemChecklistDto)
     this.filteredItems = this.selectItemList.filter(item => {
       // Verificar si tipoServicio ha sido seleccionado o si idTipoServicio es null
       const tipoServicioMatch = !this.selectedTipoServicio || item.tipoServicio === this.selectedTipoServicio || item.tipoServicio === null;
@@ -129,12 +130,11 @@ export class AddItemComponent implements OnInit {
       const rubroMatch = !this.selectedRubro || item.rubro === this.selectedRubro;
       // Verificar si tipoItem ha sido seleccionado o si coincide
       const tipoItemMatch = !this.selectedTipoItem || item.tipoItem === this.selectedTipoItem;
-      // Comprobar si el ID del elemento no está presente en itemChecklistDto
-      const idNotInDto = !this.servicioRecibido.itemChecklistDto.some(dtoItem => dtoItem.nombreItem === item.descripcion);
+      // Comprobar que el elemento no esté presente en el CheckList
+      const notInCheckList = !this.servicioRecibido.itemChecklistDto.some(dtoItem => dtoItem.nombreItem === item.descripcion);
       // Retornar true solo si todas las condiciones coinciden
-      return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch && idNotInDto;
+      return tipoServicioMatch && dependenciaMatch && rubroMatch && tipoItemMatch && notInCheckList;
     });
-    console.log('asdasd', this.filteredItems)
 
     // Verificar si el elemento seleccionado todavía está presente en la lista filtrada
     const selectedItemExists = this.filteredItems.some(item => item.idItem === parseInt(this.selectItem!));
@@ -226,16 +226,29 @@ export class AddItemComponent implements OnInit {
 
     // Actualzar lista de items del checklist
     this.servicioRecibido.itemChecklistDto.push(addItemToCheckList);
-    this.dataShared.setSharedObject(this.servicioRecibido);
+    //this.dataShared.setSharedObject(this.servicioRecibido);
 
     // Persistir item del checklist
     this.itemChecklistService.addItemCheckList(addItemToCheckList).subscribe(
       (data: ItemChecklist) => {
 
+        this.servicioService.getTopServices(10)
+          .subscribe(
+            (data) => {
+              this.listServicios = data.filter(servicio => servicio.idServicio === this.servicioRecibido.idServicio);
+              if (this.listServicios.length > 0) {
+                this.dataShared.setSharedObject(this.listServicios[0]);
+              } else {
+                console.log("No se encontraron servicios con el id proporcionado.");
+              }
+            }
+          )
+
+
         let trackingStorage = new TrackingStorage();
         trackingStorage = this.getRecursoTrackingStorage();
         trackingStorage.action = this.params.CREATE;
-        const recurso = this.recursoList.find( r => r.idRecurso === addItemToCheckList.recursoGgIdRecursoGg);
+        const recurso = this.recursoList.find(r => r.idRecurso === addItemToCheckList.recursoGgIdRecursoGg);
         trackingStorage.eventLog = `Se agregó el requisito: ${this.requisito}, Asignado a: ${recurso?.nombre} ${recurso?.apellido}`;
         const idItem = data.idItemChecklist;
         const tasa = addItemToCheckList.tasaValor;
@@ -257,11 +270,10 @@ export class AddItemComponent implements OnInit {
 
         // Enviar el mail
         this.emailService.sendEmail(mensajero)
-        .subscribe((data) => {
-          console.log('mensaje enviado: ', data);
-        })
+          .subscribe((data) => {
+            console.log('mensaje enviado: ', data);
+          })
 
-        this.dataShared.ocultarSpinner();
       }, () => {
         this.dataShared.ocultarSpinner();
         this.dialogRef.close(false);
