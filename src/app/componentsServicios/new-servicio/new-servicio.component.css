@@ -94,6 +94,7 @@ h2 {
 }
 
 h5 {
+    margin-top: 2rem;
     font-weight: 500;
     font-style: oblique;
     text-decoration: underline;
@@ -121,5 +122,9 @@ h5 {
 
     .mat-empresa{
         width: 100%;
+    }
+
+    h5 {
+        margin-top: 1rem;
     }
 }
