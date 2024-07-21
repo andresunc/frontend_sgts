@@ -240,6 +240,7 @@ export class AddItemComponent implements OnInit {
                 this.dataShared.setSharedObject(this.listServicios[0]);
               } else {
                 console.log("No se encontraron servicios con el id proporcionado.");
+                window.location.reload();
               }
             }
           )
