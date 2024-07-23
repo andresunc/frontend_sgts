@@ -259,6 +259,7 @@ export class ChecklistComponent implements OnInit {
     this.form.get('urlComprobanteTasa')!.disable();
   }
 
+  save: boolean = false;
   managElement() {
     /*
     const noChange = JSON.stringify(this.initDataSourceItems) === JSON.stringify(this.dataSourceItems);
@@ -267,31 +268,35 @@ export class ChecklistComponent implements OnInit {
       this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
       return;
     }*/
+    this.save = true;
+    this.dataShared.mostrarSpinner();
     const transformedChanges = this.transformLastChanges(this.lastChanges);
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
-    this.dataShared.mostrarSpinner();
+    
     if (this.dataSourceItems) {
-      this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe(
-        (data: ItemChecklistDto[]) => {
-
+      this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe({
+        next: (data: ItemChecklistDto[]) => {
           this.checkPresupuestoAprobado();
-
+      
           let trackingStorage = new TrackingStorage();
           trackingStorage = this.getRecursoTrackingStorage();
           trackingStorage.action = this.params.UPDATE;
           trackingStorage.eventLog = `CheckList actualizado`;
           trackingStorage.data = `${transformedChanges}`;
           this.suscribeTracking(trackingStorage);
-
+      
           this.servicio.itemChecklistDto = data;
           this.dataShared.setSharedObject(this.servicio);
           console.log('Items Actualizados', data);
           this.dialogRef.close();
+          this.save = false;
           this.dataShared.ocultarSpinner();
+        },
+        error: (error) => {
+          this.dataShared.ocultarSpinner();
+          console.error('Error actualizando el checklist:', error);
         }
-      ).add(
-        this.dataShared.ocultarSpinner()
-      )
+      });
     }
 
   }
