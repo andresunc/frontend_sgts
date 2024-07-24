@@ -61,8 +61,9 @@ td .coment {
 }
 
 .mat-mdc-paginator {
-  max-height: 49px;
+  max-height: 45px;
   min-height: 49px;
+  
 }
 
 
@@ -72,8 +73,8 @@ table {
   border-collapse: separate;
   border-spacing: 0 0.1rem;
   background-color: #4DBDEB;
-  width: 90%;
-  max-width: 90%; /* Establece el ancho máximo */
+  width: 95%;
+  max-width: 95%; /* Establece el ancho máximo */
   padding-top:0px;
 }
 
@@ -81,8 +82,8 @@ table {
 /* Estilos de las celdas cabeceras */
 th {
   border: 0.05rem solid #ddd;
-  border-top: 0.3rem solid #ffffff;
-  padding: 0.5rem;
+  border-top: 0.1rem solid #ffffff;
+  padding: 0.2rem;
   top: 0;
   background-color: #ffffff;
   position: sticky;
@@ -93,7 +94,7 @@ th {
 /* Estilos de las filas */
 .dataTable {
   position: relative;
-  max-height: 51.3vh;
+  max-height: 53vh;
   overflow-y: auto;
   overflow-x: auto;
 }
@@ -140,6 +141,7 @@ tr.estiloRow:hover {
 
 .buscador {
   width: 99%;
+  line-height: 0%;
 }
 
 .lastServices {
@@ -149,6 +151,7 @@ tr.estiloRow:hover {
 .gestor-svs{
   display: flex; 
   justify-content: space-between;
+  max-height: 71px;
 }
 
 .buscador-field{
@@ -168,11 +171,21 @@ las tres etiquetas que siguen de la tabla de servicios*/
 
 .mat-mdc-cell{
   font-family:'Quicksand', sans-serif;
+  
 } /*fuente para las filas de la tabla de servicios*/
 
 .mat-mdc-option{
   font-family:'Quicksand', sans-serif;
 } 
+
+.mat-mdc-header-row {
+  height: 10px; 
+}
+
+.mat-mdc-row{
+  height: 30px;
+}
+
 
 /* Estilos para el modal del comentario */
 #comentario {
