@@ -35,15 +35,20 @@ span {
 }
 
 td .coment {
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: font-size 0.1s ease;
+}
+
+td .mat-icon{
+  height: 15px;
+  width: 20px;
 }
 
 /* fin de la zona de estilos para las distintas fuentes   */
 
 .contentTable {
-  font-size: 0.8rem;
+  font-size: 0.77rem;
   color: #464545;
 }
 
@@ -55,8 +60,8 @@ td .coment {
 }
 
 .mat-paginator {
-  margin-top: 1rem; /* Agregar un espacio superior */
-  margin-bottom: 1rem; /* Agregar un espacio inferior */
+  margin-top: 0.5rem; /* Agregar un espacio superior */
+  margin-bottom: rem; /* Agregar un espacio inferior */
   
 }
 
@@ -190,7 +195,7 @@ las tres etiquetas que siguen de la tabla de servicios*/
 /* Estilos para el modal del comentario */
 #comentario {
   h6, h2 {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
   p {
     font-size: 1rem;
