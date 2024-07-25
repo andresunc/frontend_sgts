@@ -216,35 +216,102 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 
 
 
-  efiAMBI: string = '';
-  efiHYS: string = '';
-  efiHOL: string = '';
+  strReboteAmbi: string = '';
+  strReboteHYS: string = '';
+  strReboteHOL: string = '';
   resultAMBI: number = 0;
   resultHYS: number = 0;
   resultHOL: number = 0;
+
   calcularEficiencia() {
+    console.clear();
+    const startDateStr = this.startDate!.toISOString().substring(0, 10);
+    const endDateStr = this.endDate!.toISOString().substring(0, 10);
 
-    /**
-        1 Calcular la diferencia absoluta (DA) entre la fecha A y la fecha B. Es decir: DA = A-B
-        2 Aumento relativo: (DA/B)*1
-    */
+    // Filtrar los datos dentro del rango de fechas
+    const reboteListInRange = this.reboteList.filter(rb => {
+      const fechaStr = new Date(rb.fecha!).toISOString().substring(0, 10);
+      return fechaStr >= startDateStr && fechaStr <= endDateStr;
+    });
 
-    const reboteA = this.reboteList.find(rb => new Date(rb.fecha!).toISOString().substring(0, 10) === this.startDate!.toISOString().substring(0, 10));
-    const reboteB = this.reboteList.find(rb => new Date(rb.fecha!).toISOString().substring(0, 10) === this.endDate!.toISOString().substring(0, 10));
+    // Ordenar los datos por fecha de manera ascendente
+    reboteListInRange.sort((a, b) => new Date(a.fecha!).getTime() - new Date(b.fecha!).getTime());
 
-    const difAbsAMBI = (reboteA!.reboteAmbiente! - reboteB!.reboteAmbiente!);
-    const difAbsHYS = (reboteA!.reboteHys! - reboteB!.reboteHys!);
-    const difAbsHOL = (reboteA!.reboteHabilitaciones! - reboteB!.reboteHabilitaciones!);
+    console.log('Rebotes del rango seleccionado: ', reboteListInRange);
 
-    this.efiAMBI = (100 * (difAbsAMBI / reboteB!.reboteAmbiente!)).toFixed(2);
-    this.resultAMBI = parseFloat(this.efiAMBI);
+    if (reboteListInRange.length < 2) {
+      console.error('Rango de fechas no válido o insuficientes datos.');
+      return;
+    };
 
-    this.efiHYS = (100 * (difAbsHYS / reboteB!.reboteHys!)).toFixed(2);
-    this.resultHYS = parseFloat(this.efiHYS);
+    // Identificar el valor final
+    const ultimoRebote = reboteListInRange[reboteListInRange.length - 1];
+    console.log('');
+    console.log('Último registro de rebote para AMBI, HYS, HOL, que representa el (Valor final) respectivamente: ', ultimoRebote);
 
-    this.efiHOL = (100 * (difAbsHOL / reboteB!.reboteHabilitaciones!)).toFixed(2);
-    this.resultHOL = parseFloat(this.efiHOL);
+    // Calcular el promedio de los valores previos (valor inicial)
+    const previosRebotes = reboteListInRange.slice(0, -1);
+    console.log('');
+    console.log('-- Promedio Previos que no incluyen el valor del último rebote y que representan el (Valor incial) por tipo de servicio --')
+    const promedioPreviosAMBI = previosRebotes.reduce((sum, rb) => sum + rb.reboteAmbiente!, 0) / previosRebotes.length;
+    console.log('Promedio AMBI (valor inicial): ', promedioPreviosAMBI);
+    const promedioPreviosHYS = previosRebotes.reduce((sum, rb) => sum + rb.reboteHys!, 0) / previosRebotes.length;
+    console.log('Promedios HYS (valor inicial): ', promedioPreviosHYS);
+    const promedioPreviosHOL = previosRebotes.reduce((sum, rb) => sum + rb.reboteHabilitaciones!, 0) / previosRebotes.length;
+    console.log('promedios HOL (valor inicial): ', promedioPreviosHOL);
 
+    // Calcular la diferencia porcentual
+    console.log('');
+    console.log('-- Formula para calcular la diferencia porcentual entre el punto A (valor inicial) y el punto B (Valor final), respecto al rebote --');
+    console.log('Resultado: ((Valor final − valor inicial) / Valor inicial) * 100');
+    const difPorcentualAMBI = 100 * (ultimoRebote.reboteAmbiente! - promedioPreviosAMBI) / promedioPreviosAMBI;
+    const difPorcentualHYS = 100 * (ultimoRebote.reboteHys! - promedioPreviosHYS) / promedioPreviosHYS;
+    const difPorcentualHOL = 100 * (ultimoRebote.reboteHabilitaciones! - promedioPreviosHOL) / promedioPreviosHOL;
+
+    // Actualizar los resultados
+    this.strReboteAmbi = difPorcentualAMBI.toFixed(2);
+    this.resultAMBI = parseFloat(this.strReboteAmbi);
+
+    this.strReboteHYS = difPorcentualHYS.toFixed(2);
+    this.resultHYS = parseFloat(this.strReboteHYS);
+
+    this.strReboteHOL = difPorcentualHOL.toFixed(2);
+    this.resultHOL = parseFloat(this.strReboteHOL);
+
+    // Mostrar diferencias
+    console.log('');
+    console.log(`Rebote en Ambiente: ${resultadoRebote(this.resultAMBI)}`);
+    console.log(`${this.resultAMBI} = ((${ultimoRebote.reboteAmbiente} − ${promedioPreviosAMBI}) / ${promedioPreviosAMBI}) * 100`);
+
+    console.log(`Rebote en Ambiente: ${resultadoRebote(this.resultHYS)}`);
+    console.log(`${this.resultHYS} = ((${ultimoRebote.reboteHys} − ${promedioPreviosHYS}) / ${promedioPreviosHYS}) * 100`);
+
+    console.log(`Rebote en Ambiente: ${resultadoRebote(this.resultHOL)}`);
+    console.log(`${this.resultHOL} = ((${ultimoRebote.reboteHabilitaciones} − ${promedioPreviosHOL}) / ${promedioPreviosHOL}) * 100`);
+
+    // Transformar los signos de los resultados para hablar de eficiencia
+    this.resultAMBI = invertirSignos(this.resultAMBI)
+    this.resultHYS = invertirSignos(this.resultHYS)
+    this.resultHOL = invertirSignos(this.resultHOL)
+
+    function resultadoRebote(resultado: number) {
+      if (resultado > 0) {
+        return `El porcentaje aumentó en ${resultado}%`;
+      } else if (resultado < 0) {
+        return `El porcentaje disminuyó en ${resultado}%`;
+      } else {
+        return "Sin cambios";
+      }
+    }
+
+    function invertirSignos(number: number): number {
+      if (number > 0) {
+        return (number * -1)
+      } else if (number < 0) {
+        return Math.abs(number);
+      }
+      return 0
+    }
   }
 
 }
