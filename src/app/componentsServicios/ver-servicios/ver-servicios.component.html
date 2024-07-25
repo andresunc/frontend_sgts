@@ -52,19 +52,19 @@
 
                         <mat-form-field>
                             <mat-label>AMBI</mat-label>
-                            <input matInput [value]="efiAMBI | eficiencia" [readonly]="true">
+                            <input matInput [value]="strReboteAmbi | eficiencia" [readonly]="true">
                             <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="resultAMBI > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultAMBI < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>HYS</mat-label>
-                            <input matInput [value]="efiHYS | eficiencia" [readonly]="true">
+                            <input matInput [value]="strReboteHYS | eficiencia" [readonly]="true">
                             <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="resultHYS > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultHYS < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>HOL</mat-label>
-                            <input matInput [value]="efiHOL | eficiencia" [readonly]="true">
+                            <input matInput [value]="strReboteHOL | eficiencia" [readonly]="true">
                             <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="resultHOL > 0">arrow_upward</mat-icon>
                             <mat-icon color="warn" matSuffix *ngIf="resultHOL < 0">arrow_downward</mat-icon>
                         </mat-form-field>
