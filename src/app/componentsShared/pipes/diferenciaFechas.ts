@@ -15,22 +15,22 @@ export class DiferenciaFechasPipe implements PipeTransform {
     const diffDias = Math.floor(diffHoras / 24);
 
     if (diffDias === 0 && diffHoras === 0 && diffMinutos < 1) {
-      return 'hace unos segundos';
+      return 'unos segundos';
     } else if (diffDias === 0 && diffHoras === 0) {
-      return `hace ${diffMinutos} minuto${diffMinutos !== 1 ? 's' : ''}`;
+      return `${diffMinutos} minuto${diffMinutos !== 1 ? 's' : ''}`;
     } else if (diffDias === 0) {
-      return `hace ${diffHoras} hora${diffHoras !== 1 ? 's' : ''}`;
+      return `${diffHoras} hora${diffHoras !== 1 ? 's' : ''}`;
     } else if (diffDias === 1) {
-      return 'hace 1 día';
+      return '1 día';
     } else if (diffDias < 30) {
-      return `hace ${diffDias} día${diffDias !== 1 ? 's' : ''}`;
+      return `${diffDias} día${diffDias !== 1 ? 's' : ''}`;
     } else {
       const diffMeses = Math.floor(diffDias / 30);
       const diasAdicionales = diffDias % 30;
       if (diasAdicionales === 0) {
-        return `hace ${diffMeses} mes${diffMeses !== 1 ? 'es' : ''}`;
+        return `${diffMeses} mes${diffMeses !== 1 ? 'es' : ''}`;
       } else {
-        return `hace ${diffMeses} mes${diffMeses !== 1 ? 'es' : ''} y ${diasAdicionales} día${diasAdicionales !== 1 ? 's' : ''}`;
+        return `${diffMeses} mes${diffMeses !== 1 ? 'es' : ''} y ${diasAdicionales} día${diasAdicionales !== 1 ? 's' : ''}`;
       }
     }
   }

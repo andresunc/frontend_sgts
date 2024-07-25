@@ -52,7 +52,7 @@
 mat-tab-group {
     width: 100%;
     height: 100%;
-    padding: 2rem;
+    margin-bottom: 3%;
 }
 
 
@@ -65,7 +65,7 @@ mat-tab-group {
     
     justify-content: center;
     align-items: center;
-    padding: 3rem;
+    padding: 0.5rem;
     overflow: hidden;
     scrollbar-width: none;
     scroll-snap-type: none;
@@ -94,7 +94,7 @@ h2 {
 }
 
 h5 {
-    margin-top: 2rem;
+    margin-top: 1rem;
     font-weight: 500;
     font-style: oblique;
     text-decoration: underline;
