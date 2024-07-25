@@ -219,9 +219,9 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   strReboteAmbi: string = '';
   strReboteHYS: string = '';
   strReboteHOL: string = '';
-  resultAMBI: number = 0;
-  resultHYS: number = 0;
-  resultHOL: number = 0;
+  efiAMBI: number = 0;
+  efiHYS: number = 0;
+  efiHOL: number = 0;
 
   calcularEficiencia() {
     console.clear();
@@ -264,35 +264,40 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     console.log('');
     console.log('-- Formula para calcular la diferencia porcentual entre el punto A (valor inicial) y el punto B (Valor final), respecto al rebote --');
     console.log('Resultado: ((Valor final − valor inicial) / Valor inicial) * 100');
-    const difPorcentualAMBI = 100 * (ultimoRebote.reboteAmbiente! - promedioPreviosAMBI) / promedioPreviosAMBI;
-    const difPorcentualHYS = 100 * (ultimoRebote.reboteHys! - promedioPreviosHYS) / promedioPreviosHYS;
-    const difPorcentualHOL = 100 * (ultimoRebote.reboteHabilitaciones! - promedioPreviosHOL) / promedioPreviosHOL;
+    let difPorcentualAMBI = 100 * (ultimoRebote.reboteAmbiente! - promedioPreviosAMBI) / promedioPreviosAMBI;
+    difPorcentualAMBI = difPorcentualAMBI === Infinity ? 0 : difPorcentualAMBI;
+    
+    let difPorcentualHYS = 100 * (ultimoRebote.reboteHys! - promedioPreviosHYS) / promedioPreviosHYS;
+    difPorcentualHYS = difPorcentualHYS === Infinity ? 0 : difPorcentualHYS;
+
+    let difPorcentualHOL = 100 * (ultimoRebote.reboteHabilitaciones! - promedioPreviosHOL) / promedioPreviosHOL;
+    difPorcentualHOL = difPorcentualHOL === Infinity ? 0 : difPorcentualHOL;
 
     // Actualizar los resultados
     this.strReboteAmbi = difPorcentualAMBI.toFixed(2);
-    this.resultAMBI = parseFloat(this.strReboteAmbi);
+    this.efiAMBI = parseFloat(this.strReboteAmbi);
 
     this.strReboteHYS = difPorcentualHYS.toFixed(2);
-    this.resultHYS = parseFloat(this.strReboteHYS);
-
+    this.efiHYS = parseFloat(this.strReboteHYS);
+    
     this.strReboteHOL = difPorcentualHOL.toFixed(2);
-    this.resultHOL = parseFloat(this.strReboteHOL);
+    this.efiHOL = parseFloat(this.strReboteHOL);
 
     // Mostrar diferencias
     console.log('');
-    console.log(`Rebote en Ambiente: ${resultadoRebote(this.resultAMBI)}`);
-    console.log(`${this.resultAMBI} = ((${ultimoRebote.reboteAmbiente} − ${promedioPreviosAMBI}) / ${promedioPreviosAMBI}) * 100`);
+    console.log(`Rebote en Ambiente: ${resultadoRebote(this.efiAMBI)}`);
+    console.log(`${this.efiAMBI} = ((${ultimoRebote.reboteAmbiente} − ${promedioPreviosAMBI}) / ${promedioPreviosAMBI}) * 100`);
 
-    console.log(`Rebote en Ambiente: ${resultadoRebote(this.resultHYS)}`);
-    console.log(`${this.resultHYS} = ((${ultimoRebote.reboteHys} − ${promedioPreviosHYS}) / ${promedioPreviosHYS}) * 100`);
+    console.log(`Rebote en Ambiente: ${resultadoRebote(this.efiHYS)}`);
+    console.log(`${this.efiHYS} = ((${ultimoRebote.reboteHys} − ${promedioPreviosHYS}) / ${promedioPreviosHYS}) * 100`);
 
-    console.log(`Rebote en Ambiente: ${resultadoRebote(this.resultHOL)}`);
-    console.log(`${this.resultHOL} = ((${ultimoRebote.reboteHabilitaciones} − ${promedioPreviosHOL}) / ${promedioPreviosHOL}) * 100`);
+    console.log(`Rebote en Ambiente: ${resultadoRebote(this.efiHOL)}`);
+    console.log(`${this.efiHOL} = ((${ultimoRebote.reboteHabilitaciones} − ${promedioPreviosHOL}) / ${promedioPreviosHOL}) * 100`);
 
     // Transformar los signos de los resultados para hablar de eficiencia
-    this.resultAMBI = invertirSignos(this.resultAMBI)
-    this.resultHYS = invertirSignos(this.resultHYS)
-    this.resultHOL = invertirSignos(this.resultHOL)
+    this.efiAMBI = invertirSignos(this.efiAMBI)
+    this.efiHYS = invertirSignos(this.efiHYS)
+    this.efiHOL = invertirSignos(this.efiHOL)
 
     function resultadoRebote(resultado: number) {
       if (resultado > 0) {

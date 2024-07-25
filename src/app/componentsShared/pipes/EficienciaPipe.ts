@@ -6,17 +6,18 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class EficienciaPipe implements PipeTransform {
 
   // Analisis de aficiencia 
-  transform(strRebote: number): string {
+  transform(strEficiencia: number): string {
 
-    if (strRebote > 0) {
-      return `Aumentó ${strRebote}%`;
+    if (strEficiencia === Infinity || strEficiencia === -Infinity) {
+      return 'N/A';
     }
-    if (strRebote < 0) {
-      return `Disminuyó ${strRebote}%`;
+    if (strEficiencia > 0) {
+      return `Aumentó ${strEficiencia}%`;
     }
-    if (strRebote === 0) {
-      return `Sin cambios`;
+    if (strEficiencia < 0) {
+      return `Disminuyó ${strEficiencia}%`;
     }
+    
     return 'N/A';
   }
 }
