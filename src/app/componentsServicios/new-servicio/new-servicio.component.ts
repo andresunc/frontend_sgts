@@ -239,6 +239,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
         ),
       ).subscribe((data) => {
         this.empresaList = data;
+        this.empresaList.sort((a, b) => a.cliente!.localeCompare(b.cliente!));
         console.log(this.empresaList);
       });
 
