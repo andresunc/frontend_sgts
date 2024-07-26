@@ -6,34 +6,31 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   templateUrl: './report-dialog.component.html',
   styleUrls: ['./report-dialog.component.css']
 })
-export class ReportDialogComponent implements OnInit{
+export class ReportDialogComponent implements OnInit {
   title!: string;
-  @ViewChild('printableContent', { static: false }) printableContent?: ElementRef;
-  
+  @ViewChild('printableContent', { static: true }) printableContent?: ElementRef;
+
   constructor(
-    public dialogRef: MatDialogRef<ReportDialogComponent>, 
+    public dialogRef: MatDialogRef<ReportDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { templateRef: TemplateRef<HTMLElement>, title: string }
   ) {
-    this.title = data.title; // Asignar el título recibido
+    this.title = data.title;
   }
 
-  ngOnInit(): void {
-    // Código de inicialización si es necesario
-  }
+  ngOnInit(): void { }
 
   printContent(): void {
-    setTimeout(() => {
-      if (this.printableContent) {
-        const printContents = this.printableContent.nativeElement.innerHTML;
-        const originalContents = document.body.innerHTML;
-
-        document.body.innerHTML = printContents;
+    if (this.printableContent) {
+      const printContents = this.printableContent.nativeElement.innerHTML;
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContents;
+      setTimeout(() => {
         window.print();
         document.body.innerHTML = originalContents;
         window.location.reload();
-      } else {
-        console.error('printableContent is not available');
-      }
-    }, 1000); 
+      }, 10000);
+    } else {
+      console.error('printableContent is not available');
+    }
   }
 }
