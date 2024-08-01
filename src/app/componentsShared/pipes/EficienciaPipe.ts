@@ -17,6 +17,12 @@ export class EficienciaPipe implements PipeTransform {
     if (strEficiencia < 0) {
       return `Disminuyó ${strEficiencia}%`;
     }
+    if (strEficiencia === undefined) {
+      return `N/A`;
+    }
+    if (strEficiencia === 0) {
+      return `Sin cambios`;
+    }
     return 'N/A';
   }
 }
