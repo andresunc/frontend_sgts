@@ -73,8 +73,14 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
         (data) => {
-          this.listServicios = data; // Asigno los servicios a la lista
-          this.dataSource.data = this.listServicios; // Asigno los servicios a la tabla
+
+          if (this.authService.isAdmin()) {
+            this.listServicios = data;
+          } else {
+            this.listServicios = data.filter(s => s.itemChecklistDto.some(i => i.idRecurso === this.recursoId));
+          }
+          
+          this.dataSource.data = this.listServicios // Asigno los servicios a la tabla
           this.applyFilterByCheckbox(); // Aplico el filtro de estados y tipos de servicios
           /*
           limit === 0 ? this._snackBar.okSnackBar(`Todos los servicios cargados correctamente`)
