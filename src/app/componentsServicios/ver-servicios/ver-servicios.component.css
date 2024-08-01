@@ -208,6 +208,10 @@ las tres etiquetas que siguen de la tabla de servicios*/
   pointer-events: none; /* Impide eventos de ratón y teclado en la fila */
 }
 
+.filaVerde {
+  background-color: #acf3bc; /* Color verde claro si el recurso completó sus tareas */
+}
+
 .primary-bold {
   color: #673ab7;
   /*font-weight: bold;*/

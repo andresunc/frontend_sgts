@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, Pipe, PipeTransform, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,12 +10,9 @@ import { DataSharedService } from 'src/app/services/data-shared.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
-import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { Params } from 'src/app/models/Params';
-import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 import { memoize } from 'src/app/componentsShared/pipes/memoize';
-import { FormControl, FormGroup } from '@angular/forms';
 import { ReboteService } from 'src/app/services/RptServices/rebote.service';
 import { RptRebote } from 'src/app/models/RptModels/RptRebote';
 
@@ -31,6 +28,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   svService: ManagerService; // Trabaja para calcular algunos valores de los servicios
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
   params: Params = new Params();
+  recursoId: number | undefined;
 
   reboteList: RptRebote[] = [];
   minDate!: Date;
@@ -39,10 +37,11 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   endDate!: Date | null;
 
   constructor(public dialog: MatDialog, private dataShared: DataSharedService,
-    private servicioService: ServicioService, private svManager: ManagerService,
-    private _snackBar: PopupService, private authService: AuthService,
+    private servicioService: ServicioService, svManager: ManagerService,
+    private authService: AuthService,
     private rptRebote: ReboteService,) {
     this.svService = svManager;
+    this.recursoId = this.authService.getCurrentUser()?.id_recurso;
   }
 
   ngOnInit() {
@@ -56,8 +55,15 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 
   @memoize
   enableRow(serv: Servicios): boolean {
-    console.log('ENABLE ROW')
     return this.authService.canEditServicio(serv);
+  }
+
+  @memoize
+  checkAllDoneForResource(serv: Servicios): boolean {
+    const itemsPorRecurso = serv.itemChecklistDto.filter(item => item.idRecurso === this.recursoId);
+    const elRecursoTieneItems = itemsPorRecurso.length > 0
+    const todoHecho = itemsPorRecurso.every(item => item.completo === true);
+    return elRecursoTieneItems && todoHecho;
   }
 
   // Método para cargar los servicios con limite de cantidad

@@ -167,12 +167,11 @@
 
                     <!-- Configuración de filas y columnas -->
                     <ng-container>
-                        <tr mat-header-row
-                            *matHeaderRowDef="['idServicio', 'cliente', 'tipo', 'vigencia', 'avance', 'estado', 'condicion']"
+                        <tr mat-header-row *matHeaderRowDef="['idServicio', 'cliente', 'tipo', 'vigencia', 'avance', 'estado', 'condicion']"
                             style="background-color: #ffffff;">
                         </tr>
                         <tr mat-row *matRowDef="let row; columns: ['idServicio', 'cliente', 'tipo', 'vigencia', 'avance', 'estado', 'condicion']; 
-                            let element" class="estiloRow" [ngClass]="{'filaDeshabilitada': !enableRow(element)}">
+                            let element" class="estiloRow" [ngClass]="{'filaDeshabilitada': !enableRow(element), 'filaVerde': checkAllDoneForResource(element)}">
                         </tr>
                     </ng-container>
                 </table>
