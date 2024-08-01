@@ -52,21 +52,21 @@
 
                         <mat-form-field>
                             <mat-label>AMBI</mat-label>
-                            <input matInput [value]="efiAMBI | eficiencia" [readonly]="true">
-                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="efiAMBI > 0">arrow_upward</mat-icon>
-                            <mat-icon color="warn" matSuffix *ngIf="efiAMBI < 0">arrow_downward</mat-icon>
+                            <input matInput [value]="efiAMBI! | eficiencia" [readonly]="true">
+                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="efiAMBI! > 0">arrow_upward</mat-icon>
+                            <mat-icon color="warn" matSuffix *ngIf="efiAMBI! < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>HYS</mat-label>
-                            <input matInput [value]="efiHYS | eficiencia" [readonly]="true">
-                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="efiHYS > 0">arrow_upward</mat-icon>
-                            <mat-icon color="warn" matSuffix *ngIf="efiHYS < 0">arrow_downward</mat-icon>
+                            <input matInput [value]="efiHYS! | eficiencia" [readonly]="true">
+                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="efiHYS! > 0">arrow_upward</mat-icon>
+                            <mat-icon color="warn" matSuffix *ngIf="efiHYS! < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                         <mat-form-field>
                             <mat-label>HOL</mat-label>
-                            <input matInput [value]="efiHOL | eficiencia" [readonly]="true">
-                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="efiHOL > 0">arrow_upward</mat-icon>
-                            <mat-icon color="warn" matSuffix *ngIf="efiHOL < 0">arrow_downward</mat-icon>
+                            <input matInput [value]="efiHOL! | eficiencia" [readonly]="true">
+                            <mat-icon [style.color]="'#28a745'" matSuffix *ngIf="efiHOL! > 0">arrow_upward</mat-icon>
+                            <mat-icon color="warn" matSuffix *ngIf="efiHOL! < 0">arrow_downward</mat-icon>
                         </mat-form-field>
                     </div>
                 </div>

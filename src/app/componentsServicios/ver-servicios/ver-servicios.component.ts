@@ -79,7 +79,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
           } else {
             this.listServicios = data.filter(s => s.itemChecklistDto.some(i => i.idRecurso === this.recursoId));
           }
-          
+
           this.dataSource.data = this.listServicios // Asigno los servicios a la tabla
           this.applyFilterByCheckbox(); // Aplico el filtro de estados y tipos de servicios
           /*
@@ -231,9 +231,9 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   strReboteAmbi: string = '';
   strReboteHYS: string = '';
   strReboteHOL: string = '';
-  efiAMBI: number = 0;
-  efiHYS: number = 0;
-  efiHOL: number = 0;
+  efiAMBI: number | undefined = undefined;
+  efiHYS: number | undefined = undefined;
+  efiHOL: number | undefined = undefined;
 
   calcularEficiencia() {
     console.clear();
@@ -278,7 +278,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     console.log('Resultado: ((Valor final − valor inicial) / Valor inicial) * 100');
     let difPorcentualAMBI = 100 * (ultimoRebote.reboteAmbiente! - promedioPreviosAMBI) / promedioPreviosAMBI;
     difPorcentualAMBI = difPorcentualAMBI === Infinity ? 0 : difPorcentualAMBI;
-    
+
     let difPorcentualHYS = 100 * (ultimoRebote.reboteHys! - promedioPreviosHYS) / promedioPreviosHYS;
     difPorcentualHYS = difPorcentualHYS === Infinity ? 0 : difPorcentualHYS;
 
@@ -291,7 +291,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 
     this.strReboteHYS = difPorcentualHYS.toFixed(2);
     this.efiHYS = parseFloat(this.strReboteHYS);
-    
+
     this.strReboteHOL = difPorcentualHOL.toFixed(2);
     this.efiHOL = parseFloat(this.strReboteHOL);
 
