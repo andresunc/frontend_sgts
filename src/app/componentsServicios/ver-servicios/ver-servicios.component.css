@@ -99,7 +99,7 @@ th {
 /* Estilos de las filas */
 .dataTable {
   position: relative;
-  max-height: 53vh;
+  max-height: 57vh;
   overflow-y: auto;
   overflow-x: auto;
 }
@@ -232,7 +232,7 @@ las tres etiquetas que siguen de la tabla de servicios*/
   justify-content: center;
   margin-bottom: -2rem;
   margin-top: -0.5rem;
-  padding-left: 1.7rem;
+  padding-left: 5.7rem;
   overflow: hidden;
   overflow-x: scroll;
 }

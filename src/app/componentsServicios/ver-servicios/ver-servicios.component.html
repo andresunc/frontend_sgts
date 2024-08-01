@@ -106,7 +106,7 @@
                         <td id="tipoServicio" mat-cell *matCellDef="let element" class="text-center"
                             matTooltip="{{element.comentario ? 'Inlcuye comentarios' : null}}"
                             (click)="element.comentario !== null ? openDialog(element) : svService.enviarObjeto(element)">
-                            <span class="contentTable">{{ element.tipo | uppercase }}</span>
+                            <span class="contentTable">{{ element.tipo | replaceType | uppercase }}</span>
                             <mat-icon class="coment" *ngIf="element.comentario"
                                 color="warn">mark_unread_chat_alt</mat-icon>
                         </td>
@@ -181,7 +181,7 @@
             <mat-divider style="margin-top: 0.5rem;"></mat-divider>
 
             <!-- Paginador -->
-            <mat-paginator [pageSizeOptions]="[40]" showFirstLastButtons aria-label="Seleccionar página">
+            <mat-paginator [pageSizeOptions]="[100]" showFirstLastButtons aria-label="Seleccionar página">
 
             </mat-paginator>
 

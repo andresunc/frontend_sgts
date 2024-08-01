@@ -108,19 +108,44 @@ mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
     padding: 0;
     font-size: 0.8rem;
     color: #464545;
+    
 }
 
 .scrollContainerStatus {
-    max-height: 10.6rem;
-    overflow: auto;
-    scrollbar-width: auto;
-    scrollbar-color: #ddd #DFEEEE;
-    scroll-behavior: smooth;
+    height: 19rem;
+    overflow:auto;
+    scroll-behavior:smooth;
+ 
 }
 
-.scrollContainerTipoServicio {
-    max-height: 8rem;
-    overflow: auto;
-    scrollbar-width: auto;
-    scrollbar-color: #ddd #DFEEEE;
+.ContainerTipoServicio {
+    max-height: 9rem;
+    overflow: hidden;
+  
 }
+
+
+  /* Chrome, Edge, and Safari */
+.scrollContainerStatus::-webkit-scrollbar {
+    width: 3px;
+     /* Ancho del scroll bar */
+  }
+  
+  .scrollContainerStatus::-webkit-scrollbar-track {
+    background: #DFEEEE; /* Color de fondo del track */
+    border-radius: 5px;
+  }
+  
+  .scrollContainerStatus::-webkit-scrollbar-thumb {
+    background-color: #DFEEEE; /* Color del thumb */
+    border-radius: 1px;
+    border: 1px solid #DFEEEE; /* Espacio alrededor del thumb */
+    
+  }
+  
+  .scrollContainerStatus::-webkit-scrollbar-thumb:hover {
+    background: #DFEEEE; /* Color del thumb al pasar el mouse */
+  }
+
+
+ 

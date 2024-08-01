@@ -15,6 +15,8 @@ import { Params } from 'src/app/models/Params';
 import { memoize } from 'src/app/componentsShared/pipes/memoize';
 import { ReboteService } from 'src/app/services/RptServices/rebote.service';
 import { RptRebote } from 'src/app/models/RptModels/RptRebote';
+import { Pipe, PipeTransform } from '@angular/core';
+
 
 @Component({
   selector: 'app-ver-servicios',
@@ -331,6 +333,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     }
   }
 
+  
 }
 
 /**
@@ -348,4 +351,24 @@ export class DialogModal {
   constructor(private dataShared: DataSharedService) {
     this.servicio = this.dataShared.getSharedMessage();
   }
+}
+
+@Pipe({
+  name: 'replaceType'
+})
+export class ReplaceTypePipe implements PipeTransform {
+
+  transform(value: string): string {
+    switch (value.toLowerCase()) {
+      case 'ambiente':
+        return 'AMBI';
+      case 'habilitaciones':
+        return 'HOL';
+      case 'higiene y seguridad':
+        return 'HYS';
+      default:
+        return value;
+    }
+  }
+
 }

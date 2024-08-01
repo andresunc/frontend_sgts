@@ -11,7 +11,6 @@ import { LoginComponent } from './login/login.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatDateFormats, MatNativeDateModule } from '@angular/material/core';
 
-
 // Módulos compartidos
 import { MaterialModule } from './componentsShared/material/material.module';
 import { TitleBarModule } from './componentsShared/title-bar/title-bar.module';
@@ -38,6 +37,7 @@ import { ChangePassComponent } from './componentsAdministrador/bodyAdminComponen
 import { ReportDialogComponent } from './componentsReportes/report-dialog/report-dialog.component';
 import { TrackingComponent } from './componentsServicios/print-servicio/tracking/tracking.component';
 import { RenewComponent } from './componentsServicios/print-servicio/renew/renew.component';
+import { ReplaceTypePipe } from './replace-type.pipe';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -73,6 +73,7 @@ export const MY_FORMATS: MatDateFormats = {
     ReportDialogComponent,
     TrackingComponent,
     RenewComponent,
+    ReplaceTypePipe,
           ],
   imports: [
     BrowserModule,

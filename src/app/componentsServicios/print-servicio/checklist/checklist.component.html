@@ -121,7 +121,11 @@
                                     <fieldset class="form-group">
                                         <label for="hojas">Cantidad de hojas </label>
                                         <input type="number" id="hojas" formControlName="tasaCantidadHojas"
-                                            (change)="getChange('tasaCantidadHojas', item)" value="10">
+                                            (change)="getChange('tasaCantidadHojas', item)" value="10"
+                                            min="0" 
+                                            max="999" 
+                                            step="1" 
+                                            oninput="this.value = Math.abs(Math.floor(this.value))">
                                         <div
                                             *ngIf="form.get('tasaCantidadHojas')?.invalid && (form.get('tasaCantidadHojas')?.dirty || form.get('tasaCantidadHojas')?.touched)">
                                             <div class="text-danger"
