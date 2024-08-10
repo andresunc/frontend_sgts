@@ -9,6 +9,7 @@ import { CfgEstadosComponent } from '../bodyAdminComponents/cfg-estados/cfg-esta
 import { AuthGuard } from 'src/app/componentsShared/guards/auth.guard';
 import { CfgItemsComponent } from '../bodyAdminComponents/cfg-items/cfg-items.component';
 import { CfgUsuariosComponent } from '../bodyAdminComponents/cfg-usuarios/cfg-usuarios.component';
+import { ReasignacionComponent } from '../bodyAdminComponents/reasignacion/reasignacion.component';
 
 const routes: Routes = [
   { path: '', 
@@ -20,6 +21,7 @@ const routes: Routes = [
     { path: 'riesgos', component: CfgRiesgosComponent,canActivate: [AuthGuard] },
     { path: 'estados', component: CfgEstadosComponent, canActivate: [AuthGuard]},
     { path: 'items', component: CfgItemsComponent, canActivate: [AuthGuard]},
+    { path: 'reasignacion', component: ReasignacionComponent, canActivate: [AuthGuard]},
     { path: 'usuarios', component: CfgUsuariosComponent, /*canActivate: [AuthGuard]*/},
   ]
 },

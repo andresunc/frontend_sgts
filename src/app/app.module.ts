@@ -74,7 +74,7 @@ export const MY_FORMATS: MatDateFormats = {
     TrackingComponent,
     RenewComponent,
     ReplaceTypePipe,
-          ],
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
