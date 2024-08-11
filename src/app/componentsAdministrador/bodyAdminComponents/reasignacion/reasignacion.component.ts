@@ -3,11 +3,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
+import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { ReasignacionResponsablesDto } from 'src/app/models/ModelsDto/ReasignacionResponsablesDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { SelectItemDto } from 'src/app/models/ModelsDto/SelectitemsDto';
+import { Params } from 'src/app/models/Params';
+import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
+import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
 import { SelectItemService } from 'src/app/services/ServiciosDto/select-item.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
@@ -28,6 +32,7 @@ export class ReasignacionComponent implements OnInit {
   selectedRecurso: RecursoDto | undefined;
   selectedNewRecurso: RecursoDto | undefined;
   selectItemList: SelectItemDto[] = [];
+  params: Params = new Params();
 
   serviciosSeleccionados: number[] = [];
   itemsSeleccionados: number[] = [];
@@ -45,6 +50,8 @@ export class ReasignacionComponent implements OnInit {
     private dataShared: DataSharedService,
     private selectItemService: SelectItemService,
     private _snackBar: PopupService,
+    private authService: AuthService,
+    private trackingService: TrackingStorageService,
   ) { }
 
   ngOnInit(): void {
@@ -151,6 +158,13 @@ export class ReasignacionComponent implements OnInit {
           }, {} as ItemsPorServicio);
 
           console.log('Items agrupados por servicio:', this.ItemsPorServicio);
+          
+          if (Object.keys(this.ItemsPorServicio).length > 0) {
+            this.stepper.selectedIndex = 1;
+          } else {
+            this._snackBar.warnSnackBar(`${this.selectedRecurso?.nombre}, no registra tareas`)
+          }
+
           this.dataShared.ocultarSpinner();
         },
         (error: HttpErrorResponse) => {
@@ -177,39 +191,89 @@ export class ReasignacionComponent implements OnInit {
   }
 
   callReasignarResponsables() {
-    const obl = new ReasignacionResponsablesDto();
-    obl.items = this.itemsSeleccionados;
-    obl.servicios = this.serviciosSeleccionados;
-    obl.responsableActual = this.selectedRecurso?.idRecurso;
-    obl.nuevoResponsable = this.selectedNewRecurso?.idRecurso;
+    const objReasignar = new ReasignacionResponsablesDto();
+    objReasignar.items = this.itemsSeleccionados;
+    objReasignar.servicios = this.serviciosSeleccionados;
+    objReasignar.responsableActual = this.selectedRecurso?.idRecurso;
+    objReasignar.nuevoResponsable = this.selectedNewRecurso?.idRecurso;
 
     // Mostrar el spinner al inicio
     this.dataShared.mostrarSpinner();
 
-    this.itemChecklistService.reasignarResponsables(obl)
-    .subscribe((data) =>{
-      console.log(data)
+    this.itemChecklistService.reasignarResponsables(objReasignar)
+      .subscribe((data) => {
+        console.log(data)
 
-      // Limpiar formularios
-      this.firstFormGroup.reset();
-      this.secondFormGroup.reset();
+        // Crear logs de los eventos
+        this.crearLogs(objReasignar);
 
-      // Resetear variables relacionadas con la selección
-      this.selectedRecurso = undefined;
-      this.selectedNewRecurso = undefined;
-      this.itemsSeleccionados = [];
-      this.serviciosSeleccionados = [];
+        // Limpiar formularios
+        this.firstFormGroup.reset();
+        this.secondFormGroup.reset();
 
-      // Volver al primer paso
-      this.stepper.reset();
-      this.dataShared.ocultarSpinner();
-      this._snackBar.okSnackBar('Reasignación exitosa')
-    },
-    error => {
-      console.error(error);
-      this.dataShared.ocultarSpinner();
-    })
+        // Resetear variables relacionadas con la selección
+        this.selectedRecurso = undefined;
+        this.selectedNewRecurso = undefined;
+        this.itemsSeleccionados = [];
+        this.serviciosSeleccionados = [];
+
+        // Volver al primer paso
+        this.stepper.selectedIndex = 0;
+        this.dataShared.ocultarSpinner();
+        this._snackBar.okSnackBar('Reasignación exitosa');
+      },
+        error => {
+          console.error(error);
+          this.dataShared.ocultarSpinner();
+        })
   }
 
+  crearLogs(obj: ReasignacionResponsablesDto) {
 
+    const currentUser = this.authService.getCurrentUser();
+    const fullNameRecurso = `${this.selectedRecurso?.nombre} ${this.selectedRecurso?.apellido}, DNI: ${this.selectedRecurso?.dni}`
+    const fullNameNuevoRecurso = `${this.selectedNewRecurso?.nombre} ${this.selectedNewRecurso?.apellido}, DNI: ${this.selectedNewRecurso?.dni}`
+    const trackingStorages: TrackingStorage[] = [];
+
+    // Verificar si 'servicios' existe y tiene elementos
+    if (obj.servicios && obj.servicios.length > 0) {
+
+      // Iterar sobre los servicios
+      obj.servicios.forEach(idServicio => {
+
+        // Datos del usuario que gestiona la reasignación
+        const trackingStorage = new TrackingStorage();
+        trackingStorage.idRecurso = currentUser?.id_recurso;//
+        trackingStorage.rol = currentUser?.roles?.[0]?.rol ?? 'Sin especificar';//
+
+        // Acciones que se llevaron a cabo
+        trackingStorage.action = this.params.UPDATE;//
+        trackingStorage.eventLog = 'Se ejecuto el proceso de reasignación';//
+        trackingStorage.data = `Lo asignado a ${fullNameRecurso} ha sido reasignado a ${fullNameNuevoRecurso}`;//
+
+        // Asignar el id del servicio al que se va a asociar el trackeo
+        trackingStorage.idServicio = idServicio; // ** Asignar los id de los servicios correspondientes a cada iteración
+
+        // Agregar tracking al array de logs
+        trackingStorages.push(trackingStorage);
+      })
+    } else {
+      console.warn("No se encontraron servicios para asignar en ReasignacionComponent");
+    }
+
+    // Suscribir multiples trackingstorages
+    this.crearRegistros(trackingStorages);
+  }
+
+  crearRegistros(trackingStorages: TrackingStorage[]) {
+    this.trackingService.createMultipleTrackingStorages(trackingStorages)
+      .subscribe(
+        (trackingData) => {
+          console.log('Tracking Data: ', trackingData);
+        },
+        () => {
+          console.error('Error al crear multiples registros en ReasignacionComponent')
+        }
+      );
+  }
 }

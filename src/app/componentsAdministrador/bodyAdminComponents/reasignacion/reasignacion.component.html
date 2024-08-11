@@ -13,9 +13,9 @@
                 </mat-select>
             </mat-form-field>
 
-            <div>
+            <!-- <div>
                 <button mat-button matStepperNext>Siguiente</button>
-            </div>
+            </div> -->
         </form>
     </mat-step>
 
@@ -35,7 +35,13 @@
                         <mat-checkbox [checked]="itemSeleccionado(item.idItemChecklist!)"
                             (change)="toggleItem(item.idItemChecklist!, $event.checked)">
                             {{ item.idItemChecklist }} - {{ item.inicioEstandar | date }}
-                            - {{ getItemDescription(item.itemIdItem!) }}
+                            - {{ getItemDescription(item.itemIdItem!) }} -
+                            <span [ngClass]="{
+                                'text-success': item.completo, 
+                                'text-danger': !item.completo }">
+                                
+                                {{ item.completo ? 'Tarea hecha' : 'Por hacer' }}
+                            </span>
                         </mat-checkbox>
                     </li>
                 </ul>
