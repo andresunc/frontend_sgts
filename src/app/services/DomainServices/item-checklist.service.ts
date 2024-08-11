@@ -68,7 +68,7 @@ export class ItemChecklistService {
   reasignarResponsables(dto: ReasignacionResponsablesDto): Observable<any> {
     const headers: HttpHeaders = this.authService.getHeader();
   
-    return this.http.post(this.reasignarResponsablesUrl , dto, { headers })
+    return this.http.post<any>(this.reasignarResponsablesUrl , dto, { headers })
       .pipe(
         catchError((error) => {
           console.error('Error al reasignar responsables', error);
