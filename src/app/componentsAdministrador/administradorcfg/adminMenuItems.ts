@@ -8,5 +8,6 @@ export const adminMenuItems: { label: string, link: string }[] = [
     { label: 'Riesgos', link: 'administrador/riesgos' },
     { label: 'Items', link: 'administrador/items' },
     { label: 'Estados', link: 'administrador/estados' },
-    { label: 'Usuarios', link: 'administrador/usuarios' }
+    { label: 'Usuarios', link: 'administrador/usuarios' },
+    { label: 'Reasignación', link: 'administrador/reasignacion' }
 ];

@@ -1,0 +1,80 @@
+<mat-stepper [linear]="true" #stepper>
+
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Responsable actual</ng-template>
+            <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <mat-select formControlName="respActual" placeholder="Responsable actual"
+                    (onchange)="subscribeToFormChanges()">
+                    <mat-option *ngFor="let recurso of recursoList" [value]="recurso">
+                        <span>{{ recurso.nombre + ', ' + recurso.apellido }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div>
+                <button mat-button matStepperNext>Siguiente</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>Lista de actividades</ng-template>
+        <p style="text-decoration: underline;">Lista de tareas {{ selectedRecurso?.nombre }}
+            {{ selectedRecurso?.apellido}} DNI: {{ selectedRecurso?.dni }}
+        </p>
+
+        <div *ngIf="ItemsPorServicio" class="anchoCajaItems">
+
+            <div *ngFor="let servicio of ItemsPorServicio | keyvalue">
+                <p><b style="font-weight: bold;">Servicio {{ servicio.key }}</b></p>
+
+                <ul>
+                    <li *ngFor="let item of servicio.value">
+                        <mat-checkbox [checked]="itemSeleccionado(item.idItemChecklist!)"
+                            (change)="toggleItem(item.idItemChecklist!, $event.checked)">
+                            {{ item.idItemChecklist }} - {{ item.inicioEstandar | date }}
+                            - {{ getItemDescription(item.itemIdItem!) }}
+                        </mat-checkbox>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+
+        <div style="justify-content: space-between; display: flex;">
+            <div>
+                <button mat-button matStepperPrevious>Volver</button>
+                <button mat-button matStepperNext>Siguiente</button>
+            </div>
+            <div>
+                <button mat-button (click)="stepper.reset()" color="warn">Limpiar</button>
+            </div>
+        </div>
+    </mat-step>
+
+
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Nuevo responsable</ng-template>
+            <mat-form-field>
+                <mat-label>Nombre</mat-label>
+                <mat-select formControlName="nuevoResp" placeholder="Nuevo responsable">
+                    <mat-option *ngFor="let recurso of recursoList" [value]="recurso">
+                        <span>{{ recurso.nombre + ', ' + recurso.apellido }}</span>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div>
+                <button mat-button matStepperNext [disabled]="secondFormGroup.invalid 
+                || !(itemsSeleccionados.length > 0) 
+                && !(serviciosSeleccionados.length > 0)" (click)="callReasignarResponsables()">Reasignar</button>
+                <button mat-button (click)="stepper.reset()" color="warn">Limpiar</button>
+            </div>
+        </form>
+    </mat-step>
+
+</mat-stepper>
