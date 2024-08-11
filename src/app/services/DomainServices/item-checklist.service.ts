@@ -5,6 +5,7 @@ import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { UrlBackend } from 'src/app/models/Url';
 import { AuthService } from '../auth.service';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
+import { ReasignacionResponsablesDto } from 'src/app/models/ModelsDto/ReasignacionResponsablesDto';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +13,11 @@ import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
 export class ItemChecklistService {
 
   urlBackend = new UrlBackend().getUrlBackend();
-  addNewItemCheckListUrl = this.urlBackend + '/itemChecklist/create';
-  updateItemCheckListUrl = this.urlBackend + '/itemChecklist/update';
-  deleteItemCheckListUrl = this.urlBackend + '/itemChecklist/delete';
+  private addNewItemCheckListUrl = this.urlBackend + '/itemChecklist/create';
+  private updateItemCheckListUrl = this.urlBackend + '/itemChecklist/update';
+  private deleteItemCheckListUrl = this.urlBackend + '/itemChecklist/delete';
+  private reasignarResponsablesUrl = this.urlBackend + '/itemChecklist/reasignar-responsables';
+  private getAllItemsByRecurso = this.urlBackend + '/itemChecklist/recurso/';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -57,6 +60,32 @@ export class ItemChecklistService {
         catchError((error) => {
           console.error('Error al eliminar el listado', error);
           return throwError(error);
+        })
+      );
+  }
+
+  // Método para reasignar responsables
+  reasignarResponsables(dto: ReasignacionResponsablesDto): Observable<any> {
+    const headers: HttpHeaders = this.authService.getHeader();
+  
+    return this.http.post<any>(this.reasignarResponsablesUrl , dto, { headers })
+      .pipe(
+        catchError((error) => {
+          console.error('Error al reasignar responsables', error);
+          return throwError(error); 
+        })
+      );
+  }
+
+  // Método para listar los ítems del Checklist, de servicios activos, segun un recurso
+  getItemsByRecursoGgId(recursoGgId: number): Observable<ItemChecklist[]> {
+    const headers: HttpHeaders = this.authService.getHeader();
+  
+    return this.http.get<ItemChecklist[]>(this.getAllItemsByRecurso + recursoGgId, { headers })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error al obtener items de checklist', error);
+          return throwError(error); 
         })
       );
   }

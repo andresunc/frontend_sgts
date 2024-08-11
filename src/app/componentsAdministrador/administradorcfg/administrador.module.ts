@@ -20,6 +20,7 @@ import {AsyncPipe} from '@angular/common';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { CfgItemsComponent } from '../bodyAdminComponents/cfg-items/cfg-items.component';
 import { CfgUsuariosComponent } from '../bodyAdminComponents/cfg-usuarios/cfg-usuarios.component';
+import { ReasignacionComponent } from '../bodyAdminComponents/reasignacion/reasignacion.component';
 
 
 
@@ -35,6 +36,7 @@ import { CfgUsuariosComponent } from '../bodyAdminComponents/cfg-usuarios/cfg-us
     CfgEstadosComponent,
     CfgItemsComponent,
     CfgUsuariosComponent,
+    ReasignacionComponent
   ],
   imports: [
     CommonModule,
