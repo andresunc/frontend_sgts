@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
 import { ItemChecklist } from 'src/app/models/DomainModels/ItemChecklist';
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
+import { EmailDTO } from 'src/app/models/ModelsDto/EmailDTO';
 import { ReasignacionResponsablesDto } from 'src/app/models/ModelsDto/ReasignacionResponsablesDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { SelectItemDto } from 'src/app/models/ModelsDto/SelectitemsDto';
@@ -12,6 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
+import { EmailService } from 'src/app/services/ServiciosDto/email.service';
 import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
 import { SelectItemService } from 'src/app/services/ServiciosDto/select-item.service';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
@@ -52,6 +54,7 @@ export class ReasignacionComponent implements OnInit {
     private _snackBar: PopupService,
     private authService: AuthService,
     private trackingService: TrackingStorageService,
+    private emailService: EmailService,
   ) { }
 
   ngOnInit(): void {
@@ -158,7 +161,7 @@ export class ReasignacionComponent implements OnInit {
           }, {} as ItemsPorServicio);
 
           console.log('Items agrupados por servicio:', this.ItemsPorServicio);
-          
+
           if (Object.keys(this.ItemsPorServicio).length > 0) {
             this.stepper.selectedIndex = 1;
           } else {
@@ -206,6 +209,9 @@ export class ReasignacionComponent implements OnInit {
 
         // Crear logs de los eventos
         this.crearLogs(objReasignar);
+
+        // Notificar al nuevo responsable
+        this.notificarReasignacion(objReasignar);
 
         // Limpiar formularios
         this.firstFormGroup.reset();
@@ -275,5 +281,33 @@ export class ReasignacionComponent implements OnInit {
           console.error('Error al crear multiples registros en ReasignacionComponent')
         }
       );
+  }
+
+  notificarReasignacion(obj: ReasignacionResponsablesDto) {
+
+    // Verificar si 'servicios' existe y tiene elementos
+    if (obj.servicios && obj.servicios.length > 0) {
+      const fullNameNuevoRecurso = `${this.selectedNewRecurso?.nombre} ${this.selectedNewRecurso?.apellido}`
+      const masDeUno = obj.servicios.length > 1;
+      const mensajero: EmailDTO = new EmailDTO();
+      mensajero.toUser = [`${this.selectedRecurso?.mail}`];
+      // Personalizar el asunto utilizando un operador ternario
+      mensajero.subject = `${this.selectedNewRecurso?.nombre}, se te ${masDeUno ? 'reasignaron tareas' : 'reasignó una tarea'}`;
+      
+      if (masDeUno) {
+        const serviciosIds = obj.servicios.join(', ');
+        mensajero.message = `${fullNameNuevoRecurso}, encontrarás tus actividades en los siguientes servicios: ${serviciosIds}.`;
+      } else {
+        mensajero.message = `${fullNameNuevoRecurso}, encontrarás la actividad reasignada en el servicio: ${obj.servicios[0]}.`;
+      }
+
+      // Enviar el mail
+      this.emailService.sendEmail(mensajero)
+      .subscribe((data) => {
+        console.log('Email enviado: ', data);
+      })
+
+    }
+
   }
 }
