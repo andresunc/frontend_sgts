@@ -68,7 +68,7 @@
             <mat-form-field>
                 <mat-label>Nombre</mat-label>
                 <mat-select formControlName="nuevoResp" placeholder="Nuevo responsable">
-                    <mat-option *ngFor="let recurso of recursoList" [value]="recurso">
+                    <mat-option *ngFor="let recurso of filteredRecursoList" [value]="recurso">
                         <span>{{ recurso.nombre + ', ' + recurso.apellido }}</span>
                     </mat-option>
                 </mat-select>
