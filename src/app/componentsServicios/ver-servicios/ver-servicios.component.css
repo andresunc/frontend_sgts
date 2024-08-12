@@ -9,7 +9,7 @@
   flex-direction: column; /* Alinear los elementos verticalmente */
   align-items: center; /* Centrar horizontalmente los elementos */
   width: 100%; /* Utiliza el 100% del ancho del padre */
-  height: calc(100% - 2.8rem); /* Ajusta la altura del contenedor hijo */
+  height: calc(100% - 1.9rem); /* Ajusta la altura del contenedor hijo */
   overflow: auto; /* Agrega desplazamiento vertical si es necesario */
 }
 
@@ -59,18 +59,11 @@ td .mat-icon{
   margin-top: 0.5rem; /* Agregar un espacio superior */
 }
 
-.mat-paginator {
-  margin-top: 0.5rem; /* Agregar un espacio superior */
-  margin-bottom: rem; /* Agregar un espacio inferior */
+mat-paginator {
+  
+  max-height: 40px;
   
 }
-
-.mat-mdc-paginator {
-  max-height: 45px;
-  min-height: 49px;
-  
-}
-
 
 
 /* Establece el espaciado vertical entre las filas */
@@ -142,11 +135,13 @@ tr.estiloRow:hover {
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  
 }
 
 .buscador {
   width: 99%;
   line-height: 0%;
+  height: 75px;
 }
 
 .lastServices {
@@ -156,15 +151,17 @@ tr.estiloRow:hover {
 .gestor-svs{
   display: flex; 
   justify-content: space-between;
-  max-height: 71px;
+  height: 80px;
 }
 
 .buscador-field{
   width: 99%;
+  height: 75px;
 }
 
 .listar-field{
   width: 99%;
+  height: 75px;
 }
 
 /*Pude forzar el cambio de fuente con el * en el css excepto por 
@@ -184,11 +181,11 @@ las tres etiquetas que siguen de la tabla de servicios*/
 } 
 
 .mat-mdc-header-row {
-  height: 10px; 
+  height: 8px; 
 }
 
 .mat-mdc-row{
-  height: 30px;
+  height: 25px;
 }
 
 
@@ -231,8 +228,8 @@ las tres etiquetas que siguen de la tabla de servicios*/
   align-content: center;
   justify-content: center;
   margin-bottom: -2rem;
-  margin-top: -0.5rem;
-  padding-left: 5.7rem;
+  margin-top: -1.5rem;
+  padding-left: 1.5rem;
   overflow: hidden;
   overflow-x: scroll;
 }
@@ -264,6 +261,9 @@ mat-label {
     
   }
 
+  .mat-mdc-paginator-container {
+    justify-content: flex-start;
+  }
   
  
 }
