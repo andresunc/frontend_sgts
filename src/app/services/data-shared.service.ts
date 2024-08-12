@@ -9,9 +9,10 @@ import { ReportDialogComponent } from '../componentsReportes/report-dialog/repor
   providedIn: 'root'
 })
 export class DataSharedService {
-
+  
   private sharedObject: any;
   private sharedMessage: any;
+  private sharedCategoria: any[] = [];
   private sharedEstado: any[] = [];
   private sharedTipoServicio: any[] = [];
   private filterByCheckbox: EventEmitter<void> = new EventEmitter<void>();
@@ -23,6 +24,7 @@ export class DataSharedService {
 
   private updateChecklistSubject = new BehaviorSubject<void>(undefined);
   updateChecklist$ = this.updateChecklistSubject.asObservable();
+ 
 
 
   constructor(private dialog: MatDialog) { }
@@ -62,6 +64,14 @@ export class DataSharedService {
 
   getSharedEstado() {
     return this.sharedEstado;
+  }
+
+  setSharedCategoria(data: any) {
+    this.sharedCategoria = data;
+  }
+
+  getSharedCategoria() {
+    return this.sharedCategoria;
   }
 
   triggerFilterByCheckbox() {

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router'; //servicio que permite la navegación entre vistas o componentes en una aplicación Angular.
 import { Estado } from 'src/app/models/DomainModels/Estado';
+import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
@@ -20,6 +21,7 @@ export class SidebarComponent implements OnInit {
 
   listEstados: Estado[] = [];
   tipoServicios: TipoServicio[] = [];
+  categorias: Categoria [] = [];
   shouldShowSidebar: boolean = true;
   canAddServicio: boolean;
 
@@ -59,6 +61,11 @@ export class SidebarComponent implements OnInit {
     this.preference.getTipoServicesNotDeleted().subscribe((data) => {
       console.log('Tipo de servicios cargados OK')
       this.tipoServicios = data;
+    });
+
+    this.preference.getAllCategorias().subscribe((data) => {
+      console.log('Categorias cargadas OK')
+      this.categorias = data;
     });
   }
 
@@ -106,24 +113,23 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  openAdminMenu() {
-    if (this.authService.isAdmin()) {
-      this.dialog.open(ConfigMenuComponent, {
-        data: {
-          menuTitle: adminMenuTitle,
-          menuItems: adminMenuItems
-        }
-      });
-      this.shouldShowSidebar = false;
+  selectedCategoriaToFilter: string[] = [];
+  sendCategoria(categoria: any) {
+
+    const index = this.selectedCategoriaToFilter.indexOf(categoria);
+
+    if (index === -1) {
+      this.selectedCategoriaToFilter.push(categoria);
+      this.dataShared.setSharedCategoria(this.selectedCategoriaToFilter);
+      this.dataShared.triggerFilterByCheckbox();
+    }
+    else {
+      this.selectedCategoriaToFilter.splice(index, 1)
+      this.dataShared.setSharedCategoria(this.selectedCategoriaToFilter);
+      this.dataShared.triggerFilterByCheckbox();
     }
   }
 
-  openReportes() {
-    if (this.authService.isAdmin()) {
-      this.router.navigate(['/reportes']);
-      this.shouldShowSidebar = false;
-  }
-}
 }
 
 
