@@ -126,6 +126,15 @@ export class ReasignacionComponent implements OnInit {
     });
 
   }
+  
+  /**
+   * get: Indica que es una propiedad calculada (computed property).
+   * Cada vez que se accede a filteredRecursoList,su valor se calcula en ese momento,
+   * en lugar de almacenarse en una variable.
+   * */ 
+  get filteredRecursoList(): RecursoDto[] {
+    return this.recursoList.filter(recurso => recurso !== this.selectedRecurso);
+  }
 
   // Obtener la lista de recursos
   getRecursoList(): void {
