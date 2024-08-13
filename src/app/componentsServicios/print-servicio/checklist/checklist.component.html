@@ -65,7 +65,7 @@
                         <p>Se ha iniciado el: {{ item.inicioEstimado | date:'dd/MM/yyyy' }}</p>
 
                         <p style="color: #f44336" *ngIf="item.completo && item.finReal">
-                            Se ha finalizado el: {{ item.finReal | date:'dd/MM/yyyy' }}
+                            Se ha finalizado el: {{ item.finReal | date:'dd/MM/yyyy' }} ( {{item.horasDesvio}} hs {{item.horasDesvio! > 0 ? 'después de lo previsto' : item.horasDesvio! < 0 ? 'antes de lo previsto' : 'de diferencia, según lo previsto'}} )
                         </p>
 
                         <!-- Mensaje según ítem finalizado -->
