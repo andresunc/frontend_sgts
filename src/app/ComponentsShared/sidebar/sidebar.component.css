@@ -11,12 +11,11 @@ body {
     position: fixed;
     top: 0;
     left: 0.17rem;
-    background-color: #DFEEEE;
+    background-color: #36cbf900;
     border-radius: 0.5rem;
-    border: 0.15rem solid #46454575;
-    padding-top: 0.75rem;
+    border: 0.15rem solid #46454500;
     padding-bottom: 0.75rem;
-
+   
 }
 
 .sideContainer {
@@ -41,61 +40,14 @@ mat-card {
 
 /* Estilos h2 normales dentro del sidebar*/
 h2 {
-    margin-top: 1rem;
-    margin-left: 0.75rem;
-    margin-bottom: 0.25rem;
-}
-
-/* Estilos para los botones normales */
-
-.btn {
-    margin-top: 0.35rem;
-    margin-left: 0.75rem;
-    width: 70%;
-    height: 1.8rem;
-    color: #464545;
-    background-color: #4dbeeb;
-    box-shadow: 0 0.3rem 0.1rem rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.btn:hover {
-    background-color: #ffd740;
-    box-shadow: 0px 0.1rem 0.5rem rgba(0, 0, 0, 0.3);
-    color: #673ab7;
-    transform: scale(1.05);
-}
-
-.btn-nuevo {
     text-align: center;
+    margin-top: 0.5rem;
+    margin-bottom: 0.25rem;
+    color:rgb(255, 255, 255);
+    background-color: #10b5f195;
+    border-radius: 8px;
 }
 
-/* Estilos reportes y backoffice */
-img {
-    height: 1.2rem;
-    width: 1.2rem;
-    margin-left: 0.5rem;
-}
-
-h2 a {
-    color: #464545;
-    transition: color 0.4s, font-size 0.3s ease;
-    cursor: pointer;
-
-}
-
-h2 a:hover>img {
-    transform: rotate(90deg);
-    border-radius: 50%;
-    transition: transform 0.4s ease;
-}
-
-/* Estilos para el divisior */
-.mat-divider {
-    border-top: 1px solid #ccc;
-    margin-top: 0.75rem;
-}
 
 mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
     justify-items: end;
@@ -107,19 +59,25 @@ mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
     margin: 0;
     padding: 0;
     font-size: 0.8rem;
-    color: #464545;
-    
+    color: #000000;
+       
 }
 
 .scrollContainerStatus {
-    height: 19rem;
+    height: 16rem;
     overflow:auto;
     scroll-behavior:smooth;
  
 }
 
-.ContainerTipoServicio {
-    max-height: 9rem;
+.scrollContainerTipoServicio {
+    height: 8.5rem;
+    overflow: hidden;
+  
+}
+
+.scrollContainerCondicion {
+    height: 8.5rem;
     overflow: hidden;
   
 }
@@ -147,5 +105,29 @@ mat-card[_ngcontent-dix-c45] *[_ngcontent-dix-c45] {
     background: #DFEEEE; /* Color del thumb al pasar el mouse */
   }
 
+  
+  @media screen and (max-width: 700px) {
 
+    .sidebar {
+        overflow-y: scroll;
+        
+    }
+
+    .sidebar::-webkit-scrollbar {
+        width: 3px;
+         /* Ancho del scroll bar */
+      }
+      
+      .sidebar::-webkit-scrollbar-track {
+        background: #dfeeee00; /* Color de fondo del track */
+        border-radius: 5px;
+      }
+      
+      .sidebar::-webkit-scrollbar-thumb {
+        background-color: #dfeeee00; /* Color del thumb */
+        border-radius: 1px;
+        border: 1px solid #dfeeee00; /* Espacio alrededor del thumb */
+        
+      }
+  }
  

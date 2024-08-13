@@ -2,30 +2,16 @@
 
   <div class="sideContainer">
 
-    <!-- Botón nuevo -->
+    <!-- Botón nuevo 
     <section class="btn-nuevo">
 
       <button routerLink="/nuevo" type="button" class="btn btn-sm" [disabled]="!canAddServicio"
       matTooltip="Crear nuevo servicio"><span>+ NUEVO</span></button>
       <mat-divider></mat-divider>
 
-    </section>
+    </section>-->
 
     <section id="serviceFilter">
-
-      <div>
-        <h2>Filtar Estados</h2>
-        <mat-card class="scrollContainerStatus">
-
-          <div class="checkboxContainer" *ngFor=" let estado of listEstados;">
-            <p>
-              <mat-checkbox (change)="sendStatus(estado.tipoEstado!)"></mat-checkbox>
-             {{estado.tipoEstado}}
-            </p>
-          </div>
-
-        </mat-card>
-      </div>
 
       <div>
         <h2>Tipo de Servicio</h2>
@@ -41,29 +27,35 @@
         </mat-card>
       </div>
 
-    </section>
-
-    <section id="Reportes">
-      <!-- Reportes -->
-      <mat-divider></mat-divider>
       <div>
-        <h2>
-          <a matTooltip="Panel de informes" (click)="openReportes()">Ver Reportes<img src="assets/img/arrowUp.png"></a>
-        </h2>
+        <h2>Condición</h2>
+        <mat-card class="scrollContainerCondicion">
+
+          <div class="checkboxContainer" *ngFor=" let categoria of categorias;">
+            <p>
+              <mat-checkbox  (change)="sendCategoria(categoria.categoria!)"></mat-checkbox>
+             {{ categoria.categoria}}
+            </p>
+          </div>
+
+        </mat-card>
       </div>
 
-    </section>
-
-    <section id="Administrar">
-
-      <!-- admin -->
-      <mat-divider></mat-divider>
       <div>
-        <h2>
-          <a matTooltip="Administrar elementos del sistema" (click)="openAdminMenu()">BackOffice<img
-              src="assets/img/arrowUp.png"></a>
-        </h2>
+        <h2>Filtar Estados</h2>
+        <mat-card class="scrollContainerStatus">
+
+          <div class="checkboxContainer" *ngFor=" let estado of listEstados;">
+            <p>
+              <mat-checkbox (change)="sendStatus(estado.tipoEstado!)"></mat-checkbox>
+             {{estado.tipoEstado}}
+            </p>
+          </div>
+
+        </mat-card>
       </div>
+
+     
 
     </section>
 

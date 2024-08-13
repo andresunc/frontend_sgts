@@ -146,6 +146,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     // Cargo las preferencias de estados y tipos de servicios seleccionados desde el sidebar
     const filterStatus: any[] = this.dataShared.getSharedEstado();
     const filterTipoServicio: any[] = this.dataShared.getSharedTipoServicio();
+    const filterCategoria: any[] = this.dataShared.getSharedCategoria();
 
     // Si la lista de "estados" o "tipo de servicios" a filtrar está vacía mostrar todos los servicios
     // Sino armar un nuevo array[Servicios] con los servicios que coincidan con las preferencias del filtro
@@ -159,6 +160,10 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
 
     if (filterStatus.length > 0) {
       filteredServices = filteredServices.filter(servicio => filterStatus.includes(servicio.estado));
+    }
+
+    if (filterCategoria.length > 0) {
+      filteredServices = filteredServices.filter(servicio => filterCategoria.includes(servicio.categoria));
     }
 
     // Actualizar la tabla con los servicios filtrados

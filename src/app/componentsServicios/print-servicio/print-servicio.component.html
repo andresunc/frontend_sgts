@@ -231,13 +231,13 @@
 
         </mat-grid-list>
 
-        <mat-grid-list cols="12" rowHeight="10rem">
+        <mat-grid-list cols="12" rowHeight="8rem">
 
           <mat-grid-tile [colspan]="12" [rowspan]="1" [style.background]="''">
 
             <mat-form-field appearance="fill">
               <mat-label [style.color]="isEditable ? '#dc3545' : '#673ab7'">Comentario</mat-label>
-              <textarea style="font-style: oblique; padding: 0; height: 120px;" class="" [(ngModel)]="getServicio().comentario"
+              <textarea style="font-style: oblique; padding: 0; height: 100px;" class="" [(ngModel)]="getServicio().comentario"
                 matInput [readonly]="!isEditable" [disabled]="checkEditable()" maxlength="500">
                 {{getServicio().comentario}}
               </textarea>
