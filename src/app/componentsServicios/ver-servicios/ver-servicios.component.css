@@ -6,11 +6,16 @@
 
 .childContainer {
   display: flex;
-  flex-direction: column; /* Alinear los elementos verticalmente */
-  align-items: center; /* Centrar horizontalmente los elementos */
-  width: 100%; /* Utiliza el 100% del ancho del padre */
-  height: calc(100% - 1.9rem); /* Ajusta la altura del contenedor hijo */
-  overflow: auto; /* Agrega desplazamiento vertical si es necesario */
+  flex-direction: column;
+  /* Alinear los elementos verticalmente */
+  align-items: center;
+  /* Centrar horizontalmente los elementos */
+  width: 100%;
+  /* Utiliza el 100% del ancho del padre */
+  height: calc(100% - 1.9rem);
+  /* Ajusta la altura del contenedor hijo */
+  overflow: auto;
+  /* Agrega desplazamiento vertical si es necesario */
 }
 
 .childContainer::-webkit-scrollbar {
@@ -20,27 +25,30 @@
 }
 
 .childContainer::-webkit-scrollbar-thumb {
-  background: #b3b3b3; 
-  border-radius: 5px; 
+  background: #b3b3b3;
+  border-radius: 5px;
 }
 
 
 /* Zona de estilos para las distintas fuentes */
 span {
-  font-size: 0.8rem; /* Tamaño de la fuente de las labels de los filtros */
+  font-size: 0.8rem;
+  /* Tamaño de la fuente de las labels de los filtros */
 }
+
 .headTable {
   font-weight: bold;
   color: #464545;
 }
 
 td .coment {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
+  font-weight: 100;
   cursor: pointer;
-  transition: font-size 0.1s ease;
+  vertical-align: super;
 }
 
-td .mat-icon{
+td .mat-icon {
   height: 15px;
   width: 20px;
 }
@@ -54,15 +62,18 @@ td .mat-icon{
 
 /* Ancho general de la tabla */
 .tablaContainer {
-  width: 98%; /* Reducir el ancho para evitar que quede pegado al borde de la pantalla */
-  max-width: 98%; /* Agregar un ancho máximo */
-  margin-top: 0.5rem; /* Agregar un espacio superior */
+  width: 98%;
+  /* Reducir el ancho para evitar que quede pegado al borde de la pantalla */
+  max-width: 98%;
+  /* Agregar un ancho máximo */
+  margin-top: 0.5rem;
+  /* Agregar un espacio superior */
 }
 
 mat-paginator {
-  
+
   max-height: 40px;
-  
+
 }
 
 
@@ -72,8 +83,9 @@ table {
   border-spacing: 0 0.1rem;
   background-color: #4DBDEB;
   width: 95%;
-  max-width: 95%; /* Establece el ancho máximo */
-  padding-top:0px;
+  max-width: 95%;
+  /* Establece el ancho máximo */
+  padding-top: 0px;
 }
 
 
@@ -97,19 +109,20 @@ th {
   overflow-x: auto;
 }
 
-.dataTable::-webkit-scrollbar{
+.dataTable::-webkit-scrollbar {
   width: 4px;
   height: 4px;
 }
 
 .dataTable::-webkit-scrollbar-thumb {
-  
-  background: #b3b3b3; 
-  border-radius: 50px; 
+
+  background: #b3b3b3;
+  border-radius: 50px;
 }
 
 .dataTable::-webkit-scrollbar-track {
-  background: #fefefe; /* Color de fondo de la pista de la barra de desplazamiento */
+  background: #fefefe;
+  /* Color de fondo de la pista de la barra de desplazamiento */
 }
 
 
@@ -135,7 +148,7 @@ tr.estiloRow:hover {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  
+
 }
 
 .buscador {
@@ -148,18 +161,18 @@ tr.estiloRow:hover {
   flex: 30%;
 }
 
-.gestor-svs{
-  display: flex; 
+.gestor-svs {
+  display: flex;
   justify-content: space-between;
   height: 80px;
 }
 
-.buscador-field{
+.buscador-field {
   width: 99%;
   height: 75px;
 }
 
-.listar-field{
+.listar-field {
   width: 99%;
   height: 75px;
 }
@@ -167,33 +180,40 @@ tr.estiloRow:hover {
 /*Pude forzar el cambio de fuente con el * en el css excepto por 
 las tres etiquetas que siguen de la tabla de servicios*/
 
-.mat-mdc-header-cell{
-  font-family:'Quicksand', sans-serif;
-} /*fuente para header de la tabla de servicios*/
-
-.mat-mdc-cell{
-  font-family:'Quicksand', sans-serif;
-  
-} /*fuente para las filas de la tabla de servicios*/
-
-.mat-mdc-option{
-  font-family:'Quicksand', sans-serif;
-} 
-
-.mat-mdc-header-row {
-  height: 8px; 
+.mat-mdc-header-cell {
+  font-family: 'Quicksand', sans-serif;
 }
 
-.mat-mdc-row{
+/*fuente para header de la tabla de servicios*/
+
+.mat-mdc-cell {
+  font-family: 'Quicksand', sans-serif;
+
+}
+
+/*fuente para las filas de la tabla de servicios*/
+
+.mat-mdc-option {
+  font-family: 'Quicksand', sans-serif;
+}
+
+.mat-mdc-header-row {
+  height: 8px;
+}
+
+.mat-mdc-row {
   height: 25px;
 }
 
 
 /* Estilos para el modal del comentario */
 #comentario {
-  h6, h2 {
+
+  h6,
+  h2 {
     font-size: 1rem;
   }
+
   p {
     font-size: 1rem;
     padding-top: 0.5rem;
@@ -201,20 +221,23 @@ las tres etiquetas que siguen de la tabla de servicios*/
 }
 
 .filaDeshabilitada {
-  opacity: 0.5; /* Ejemplo de estilo para deshabilitar la fila */
-  pointer-events: none; /* Impide eventos de ratón y teclado en la fila */
+  opacity: 0.5;
+  /* Ejemplo de estilo para deshabilitar la fila */
+  pointer-events: none;
+  /* Impide eventos de ratón y teclado en la fila */
 }
 
 .filaVerde {
-  background-color: #acf3bc; /* Color verde claro si el recurso completó sus tareas */
+  background-color: #acf3bc;
+  /* Color verde claro si el recurso completó sus tareas */
 }
 
 .primary-bold {
   color: #673ab7;
-  /*font-weight: bold;*/
+  font-weight: bold;
 }
 
-#servicioRow div{
+#servicioRow div {
   display: flex;
 }
 
@@ -235,7 +258,8 @@ las tres etiquetas que siguen de la tabla de servicios*/
 }
 
 
-.card, p{
+.card,
+p {
   font-size: small;
   color: #393839;
   font-weight: 600;
@@ -258,12 +282,12 @@ mat-label {
 
   .card mat-form-field {
     width: 25%;
-    
+
   }
 
   .mat-mdc-paginator-container {
     justify-content: flex-start;
   }
-  
- 
+
+
 }
