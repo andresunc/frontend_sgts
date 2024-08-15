@@ -107,8 +107,8 @@
                             matTooltip="{{element.comentario ? 'Inlcuye comentarios' : null}}"
                             (click)="element.comentario !== null ? openDialog(element) : svService.enviarObjeto(element)">
                             <span class="contentTable">{{ element.tipo | replaceType | uppercase }}</span>
-                            <mat-icon class="coment" *ngIf="element.comentario"
-                                color="warn">mark_unread_chat_alt</mat-icon>
+                        
+                            <mat-icon class="coment" *ngIf="element.comentario" color="warn"> sms </mat-icon>
                         </td>
                     </ng-container>
 
@@ -136,6 +136,20 @@
                         </td>
                     </ng-container>
 
+                    <!-- Gestión desvío Column -->
+                    <ng-container matColumnDef="gestionDesv">
+                        <th mat-header-cell *matHeaderCellDef class="text-center" matTooltip="Desvío acumulado">
+                            <span class="headTable">Σ+ DESVÍO</span>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="text-center" (click)="svService.enviarObjeto(element)">
+                            <span class="contentTable" *ngIf="element | promedioDesvio as desv"
+                                [ngClass]="{'text-danger': desv > 0}">
+                                {{ desv }} días
+                            </span>
+                            <span class="contentTable" *ngIf="!(element | promedioDesvio) as desv"> -- </span>
+                        </td>
+                    </ng-container>
+
                     <!-- estado Column -->
                     <ng-container matColumnDef="estado">
                         <th mat-header-cell *matHeaderCellDef class="text-center">
@@ -145,11 +159,9 @@
                             (click)="svService.enviarObjeto(element)"
                             matTooltip="{{ svService.checkNotificaciones(element) ? 'Contiene elementos notificado' : ''}}">
                             <span class="contentTable"
-                                [ngClass]="element.estado ? {'primary-bold': (element.estado | uppercase) === this.params.PRESENTADO} : null">
+                                [ngClass]="element.estado ? {'primary-bold': (element.estado) === this.params.PRESENTADO} : null">
                                 {{element.estado | uppercase }}
                             </span>
-                            <mat-icon class="coment" *ngIf="svService.checkNotificaciones(element)"
-                                color="warn">error</mat-icon>
                         </td>
                     </ng-container>
 
@@ -167,10 +179,10 @@
 
                     <!-- Configuración de filas y columnas -->
                     <ng-container>
-                        <tr mat-header-row *matHeaderRowDef="['idServicio', 'cliente', 'tipo', 'vigencia', 'avance', 'estado', 'condicion']"
+                        <tr mat-header-row *matHeaderRowDef="['idServicio', 'cliente', 'tipo', 'vigencia', 'avance', 'gestionDesv', 'estado', 'condicion']"
                             style="background-color: #ffffff;">
                         </tr>
-                        <tr mat-row *matRowDef="let row; columns: ['idServicio', 'cliente', 'tipo', 'vigencia', 'avance', 'estado', 'condicion']; 
+                        <tr mat-row *matRowDef="let row; columns: ['idServicio', 'cliente', 'tipo', 'vigencia', 'avance', 'gestionDesv', 'estado', 'condicion']; 
                             let element" class="estiloRow" [ngClass]="{'filaDeshabilitada': !enableRow(element), 'filaVerde': checkAllDoneForResource(element)}">
                         </tr>
                     </ng-container>
