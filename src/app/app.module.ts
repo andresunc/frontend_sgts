@@ -38,6 +38,7 @@ import { ReportDialogComponent } from './componentsReportes/report-dialog/report
 import { TrackingComponent } from './componentsServicios/print-servicio/tracking/tracking.component';
 import { RenewComponent } from './componentsServicios/print-servicio/renew/renew.component';
 import { ReplaceTypePipe } from './replace-type.pipe';
+import { PromedioDesvioPipe } from './componentsShared/pipes/promedio-desvio.pipe';
 
 export const MY_FORMATS: MatDateFormats = {
   parse: {
@@ -74,6 +75,7 @@ export const MY_FORMATS: MatDateFormats = {
     TrackingComponent,
     RenewComponent,
     ReplaceTypePipe,
+    PromedioDesvioPipe,
   ],
   imports: [
     BrowserModule,
@@ -91,6 +93,7 @@ export const MY_FORMATS: MatDateFormats = {
     DiferenciaFechasPipe,
     CalcularAvancePipe,
     HayNotificadosPipe,
+    PromedioDesvioPipe
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
