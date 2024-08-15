@@ -106,9 +106,7 @@
                         <td id="tipoServicio" mat-cell *matCellDef="let element" class="text-center"
                             matTooltip="{{element.comentario ? 'Inlcuye comentarios' : null}}"
                             (click)="element.comentario !== null ? openDialog(element) : svService.enviarObjeto(element)">
-                            <span class="contentTable">{{ element.tipo | replaceType | uppercase }}</span>
-                        
-                            <mat-icon class="coment" *ngIf="element.comentario" color="warn"> sms </mat-icon>
+                            <span class="contentTable" [ngClass]="{'primary-bold': element.comentario}"> {{ element.tipo | replaceType | uppercase }} </span>
                         </td>
                     </ng-container>
 
