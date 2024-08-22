@@ -218,12 +218,7 @@ las tres etiquetas que siguen de la tabla de servicios*/
 }
 
 .signo{
-  
-  vertical-align: middle;
-  font-weight: bolder;
-  font-size: x-large;
   color: rgb(252, 0, 0);
-  margin-left: 0.2rem;
 }
 
 /* Estilos para el modal del comentario */
