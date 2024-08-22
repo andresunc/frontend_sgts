@@ -160,8 +160,9 @@
                             matTooltip="{{ svService.checkNotificaciones(element) ? 'Contiene elementos notificado' : ''}}">
                             <span class="contentTable"
                                 [ngClass]="element.estado ? {'primary-bold': (element.estado) === this.params.PRESENTADO} : null">
-                                {{element.estado | uppercase }}
+                                {{element.estado | replaceEstado | uppercase }}
                             </span>
+                            <span class="signo" *ngIf="svService.checkNotificaciones(element)">!</span>
                         </td>
                     </ng-container>
 

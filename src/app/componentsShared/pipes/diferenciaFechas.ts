@@ -22,6 +22,12 @@ export class DiferenciaFechasPipe implements PipeTransform {
       return `${diffHoras} hora${diffHoras !== 1 ? 's' : ''}`;
     } else if (diffDias === 1) {
       return '1 día';
+    } else {
+      return `${diffDias} día${diffDias !== 1 ? 's' : ''}`;
+    }
+    /* Comente esto porque mostrar los meses y dias modifica mucho el ancho de los renglones de la tabla 
+    pero sino te gusta los volvemos.
+    
     } else if (diffDias < 30) {
       return `${diffDias} día${diffDias !== 1 ? 's' : ''}`;
     } else {
@@ -31,7 +37,7 @@ export class DiferenciaFechasPipe implements PipeTransform {
         return `${diffMeses} mes${diffMeses !== 1 ? 'es' : ''}`;
       } else {
         return `${diffMeses} mes${diffMeses !== 1 ? 'es' : ''} y ${diasAdicionales} día${diasAdicionales !== 1 ? 's' : ''}`;
-      }
+      }*/
     }
   }
-}
+
