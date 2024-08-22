@@ -205,6 +205,26 @@ las tres etiquetas que siguen de la tabla de servicios*/
   height: 25px;
 }
 
+.vigencia{
+  width: 6rem;
+}
+
+.desvio{
+  width: 6rem;
+}
+
+.estado{
+  width: 9.5rem;
+}
+
+.signo{
+  
+  vertical-align: middle;
+  font-weight: bolder;
+  font-size: x-large;
+  color: rgb(252, 0, 0);
+  margin-left: 0.2rem;
+}
 
 /* Estilos para el modal del comentario */
 #comentario {
@@ -228,12 +248,12 @@ las tres etiquetas que siguen de la tabla de servicios*/
 }
 
 .filaVerde {
-  background-color: #acf3bc;
+  background-color: #a1e8b8;
   /* Color verde claro si el recurso completó sus tareas */
 }
 
 .primary-bold {
-  color: #673ab7;
+  color: #060606;
   font-weight: bold;
 }
 
@@ -241,6 +261,10 @@ las tres etiquetas que siguen de la tabla de servicios*/
   display: flex;
 }
 
+.text-custom-color {
+  color: rgb(134, 22, 232);
+  font-weight: bold;
+}
 
 .card {
 

@@ -37,7 +37,8 @@ import { ChangePassComponent } from './componentsAdministrador/bodyAdminComponen
 import { ReportDialogComponent } from './componentsReportes/report-dialog/report-dialog.component';
 import { TrackingComponent } from './componentsServicios/print-servicio/tracking/tracking.component';
 import { RenewComponent } from './componentsServicios/print-servicio/renew/renew.component';
-import { ReplaceTypePipe } from './replace-type.pipe';
+import { ReplaceTypePipe } from './componentsShared/pipes/replace-type.pipe';
+import { ReplaceEstadoPipe } from './componentsShared/pipes/replace-estado.pipe';
 import { PromedioDesvioPipe } from './componentsShared/pipes/promedio-desvio.pipe';
 
 export const MY_FORMATS: MatDateFormats = {
@@ -75,6 +76,7 @@ export const MY_FORMATS: MatDateFormats = {
     TrackingComponent,
     RenewComponent,
     ReplaceTypePipe,
+    ReplaceEstadoPipe,
     PromedioDesvioPipe,
   ],
   imports: [

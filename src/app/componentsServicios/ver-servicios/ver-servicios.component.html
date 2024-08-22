@@ -106,7 +106,9 @@
                         <td id="tipoServicio" mat-cell *matCellDef="let element" class="text-center"
                             matTooltip="{{element.comentario ? 'Inlcuye comentarios' : null}}"
                             (click)="element.comentario !== null ? openDialog(element) : svService.enviarObjeto(element)">
-                            <span class="contentTable" [ngClass]="{'primary-bold': element.comentario}"> {{ element.tipo | replaceType | uppercase }} </span>
+                            <span class="contentTable" [ngClass]="{'text-custom-color': element.comentario}"> 
+                                {{ element.tipo ? (element.tipo | replaceType | uppercase) : (element.tipo | replaceType | uppercase) }} 
+                            </span>
                         </td>
                     </ng-container>
 
@@ -115,7 +117,7 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center" matTooltip="Antigüedad del servicio">
                             <span class="headTable">VIGENCIA</span>
                         </th>
-                        <td mat-cell *matCellDef="let element" class="text-center"
+                        <td mat-cell *matCellDef="let element" class="text-center vigencia"
                             (click)="svService.enviarObjeto(element)"
                             matTooltip="{{ element.fecha_alta | date:'dd-MMM-yy' }}">
                             <span>{{ element.fecha_alta ? (element.fecha_alta | diferenciaFechas ) : '' }}</span>
@@ -136,7 +138,7 @@
 
                     <!-- Gestión desvío Column -->
                     <ng-container matColumnDef="gestionDesv">
-                        <th mat-header-cell *matHeaderCellDef class="text-center" matTooltip="Desvío acumulado">
+                        <th mat-header-cell *matHeaderCellDef class="text-center desvio" matTooltip="Desvío acumulado">
                             <span class="headTable">Σ+ DESVÍO</span>
                         </th>
                         <td mat-cell *matCellDef="let element" class="text-center" (click)="svService.enviarObjeto(element)">
@@ -153,13 +155,14 @@
                         <th mat-header-cell *matHeaderCellDef class="text-center">
                             <span class="headTable">ESTADO</span>
                         </th>
-                        <td mat-cell *matCellDef="let element" class="text-center"
+                        <td mat-cell *matCellDef="let element" class="text-center estado"
                             (click)="svService.enviarObjeto(element)"
                             matTooltip="{{ svService.checkNotificaciones(element) ? 'Contiene elementos notificado' : ''}}">
                             <span class="contentTable"
                                 [ngClass]="element.estado ? {'primary-bold': (element.estado) === this.params.PRESENTADO} : null">
-                                {{element.estado | uppercase }}
+                                {{element.estado | replaceEstado | uppercase }}
                             </span>
+                            <span class="signo" *ngIf="svService.checkNotificaciones(element)">!</span>
                         </td>
                     </ng-container>
 
