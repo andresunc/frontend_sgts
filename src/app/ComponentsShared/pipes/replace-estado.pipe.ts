@@ -8,7 +8,9 @@ export class ReplaceEstadoPipe implements PipeTransform {
   transform(value: string): string {
     switch (value.toLowerCase()) {
       case 'presupuesto rechazado':
-        return 'RECHAZADO';
+        return 'P. RECHAZADO';
+      case 'presupuesto emitido':
+        return 'P. EMITIDO';
       default:
         return value;
     }
