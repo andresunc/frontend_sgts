@@ -17,7 +17,7 @@ export class DiferenciaFechasPipe implements PipeTransform {
     if (diffDias === 0 && diffHoras === 0 && diffMinutos < 1) {
       return 'unos segundos';
     } else if (diffDias === 0 && diffHoras === 0) {
-      return `${diffMinutos} minuto${diffMinutos !== 1 ? 's' : ''}`;
+      return `${diffMinutos} min`;
     } else if (diffDias === 0) {
       return `${diffHoras} hora${diffHoras !== 1 ? 's' : ''}`;
     } else if (diffDias === 1) {
