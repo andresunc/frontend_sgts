@@ -194,6 +194,10 @@ export class PrintServicioComponent implements OnInit {
     this.isEditable = this.authService.isAdmin();
   }
 
+  cancelEdit() {
+    this.isEditable = !this.isEditable 
+  }
+
   openTracking() {
     const servicio = this.getServicio();
     const dialogRef = this.dialog.open(TrackingComponent, { data: servicio.idServicio });
