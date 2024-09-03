@@ -221,7 +221,7 @@
                 [disabled]="!isEditable || checkListNotCompleted">
                 GUARDAR
               </button>
-              <button style="width: 48%;" (click)="loadChanges()" mat-flat-button *ngIf="isEditable"
+              <button style="width: 48%;" (click)="cancelEdit()" mat-flat-button *ngIf="isEditable"
                 [disabled]="!isEditable">
                 CANCELAR
               </button>
