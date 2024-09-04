@@ -27,8 +27,7 @@
 
                     <div id="accordionItem" (click)="accordionItem.toggle()">
                         <!-- Rotulo del item del checklist -->
-                        <div
-                            class="list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable">
+                        <div [ngClass]="{'list-group-item list-group-item-action checkboxContainer rowChecklist rowDetail editable': itemManagement(item)}">
                             <span>
                                 <mat-checkbox [checked]="item.completo" (change)="updateAvance(item)"
                                     (click)="$event.stopPropagation()" [disabled]="!itemManagement(item)">
