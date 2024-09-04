@@ -11,6 +11,8 @@ export class ReplaceEstadoPipe implements PipeTransform {
         return 'P. RECHAZADO';
       case 'presupuesto emitido':
         return 'P. EMITIDO';
+      case 'presupuesto aprobado':
+        return 'P. APROBADO';
       default:
         return value;
     }
