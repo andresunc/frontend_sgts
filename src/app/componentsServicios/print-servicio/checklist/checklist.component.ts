@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AddItemComponent } from 'src/app/componentsServicios/print-servicio/add-item/add-item.component';
 import { CalcularAvancePipe } from 'src/app/componentsShared/pipes/calcularAvance';
+import { memoize } from 'src/app/componentsShared/pipes/memoize';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
 
@@ -228,8 +229,10 @@ export class ChecklistComponent implements OnInit {
   }
   /* Fin Lógica para la eliminación */
 
-
+  // Es admin o el ítem es para el usuario conectado, puede gestionar.
+  @memoize
   itemManagement(item: ItemChecklistDto): boolean {
+    console.log('asdasd')
     return this.isAdmin || item.idRecurso === this.authService.getCurrentUser()?.id_recurso;
   }
 
