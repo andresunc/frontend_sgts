@@ -2,7 +2,8 @@
   font-size: 0.9rem;
 }
 
-h6, h4 {
+h6,
+h4 {
   font-size: 1rem;
 }
 
@@ -225,6 +226,10 @@ h6, h4 {
 
 label {
   padding-right: 0.5rem;
+}
+
+.filaVerde {
+  background-color: #a1e8b8;
 }
 
 @media screen and (max-width: 768px) {
