@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -9,13 +10,17 @@ import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
 
 import { Servicios } from 'src/app/models/DomainModels/Servicios';
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
+import { EmailDTO } from 'src/app/models/ModelsDto/EmailDTO';
 import { ItemChecklistDto } from 'src/app/models/ModelsDto/IItemChecklistDto';
+import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { Params } from 'src/app/models/Params';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
 import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
 import { ItemChecklistService } from 'src/app/services/DomainServices/item-checklist.service';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
+import { EmailService } from 'src/app/services/ServiciosDto/email.service';
+import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 
@@ -51,6 +56,8 @@ export class ChecklistComponent implements OnInit {
     private trackingService: TrackingStorageService,
     private estadoService: EstadosService,
     private historicoEstado: HistoricoEstadoService,
+    private recursoService: RecursoDtoService,
+    private emailService: EmailService,
   ) {
     this.isAdmin = this.authService.isAdmin();
     this.servicio = this.dataShared.getSharedObject();
@@ -71,7 +78,6 @@ export class ChecklistComponent implements OnInit {
   }
 
   getEstados() {
-    this.dataShared.mostrarSpinner();
     this.estadoService.getStatusNotDeleted().subscribe(
       (data) => {
         this.estadosList = data;
@@ -210,6 +216,7 @@ export class ChecklistComponent implements OnInit {
 
                 console.log('ID del itemChecklist eliminado: ', data);
                 this.refreshItemsCheckList();
+                this.checkListaCompleta();
               }, () => {
                 this.itemsToDelete.splice(indexToDelete, 1);
               }
@@ -264,35 +271,31 @@ export class ChecklistComponent implements OnInit {
 
   save: boolean = false;
   managElement() {
-    /*
-    const noChange = JSON.stringify(this.initDataSourceItems) === JSON.stringify(this.dataSourceItems);
-    if (noChange) {
-      console.log('No hay cambios que hacer :/')
-      this._snackBar.warnSnackBar('No hay cambios que hacer', 'Ok');
-      return;
-    }*/
+
     this.save = true;
     this.dataShared.mostrarSpinner();
     const transformedChanges = this.transformLastChanges(this.lastChanges);
     console.log('Lista de items a actualizar: ', this.dataSourceItems)
-    
+
     if (this.dataSourceItems) {
       this.itemChecklistService.updateItemCheckList(this.dataSourceItems).subscribe({
         next: (data: ItemChecklistDto[]) => {
           this.checkPresupuestoAprobado();
-      
+
           let trackingStorage = new TrackingStorage();
           trackingStorage = this.getRecursoTrackingStorage();
           trackingStorage.action = this.params.UPDATE;
           trackingStorage.eventLog = `CheckList actualizado`;
           trackingStorage.data = `${transformedChanges}`;
           this.suscribeTracking(trackingStorage);
-      
+
           this.servicio.itemChecklistDto = data;
           this.dataShared.setSharedObject(this.servicio);
           console.log('Items Actualizados', data);
+          const AllItemsCompletos = data.every(i => i.completo === true)
           this.dialogRef.close();
           this.save = false;
+          AllItemsCompletos ? this.checkListaCompleta() : null;
           this.dataShared.ocultarSpinner();
         },
         error: (error) => {
@@ -304,34 +307,69 @@ export class ChecklistComponent implements OnInit {
 
   }
 
+  checkListaCompleta() {
+    this.getRecursoList();
+  }
+
+  notificarResponsable(responsable: RecursoDto) {
+    const servicio = this.dataShared.getSharedObject();
+    const mensajero: EmailDTO = new EmailDTO();
+    mensajero.toUser = [responsable.mail!]
+    mensajero.subject = 'La lista de ítems se ha completado'
+    mensajero.message = `Hola ${responsable.nombre}, revisa el servicio ${servicio.idServicio}, todas las tareas se han completado.`
+
+    // Enviar el mail
+    this.emailService.sendEmail(mensajero)
+      .subscribe((data) => {
+        console.log('Email enviado: ', data);
+      })
+
+  }
+
+  // Obtener la lista de recursos
+  recursoList: RecursoDto[] = [];
+  getRecursoList(): void {
+    this.recursoService.getRecursos().subscribe(
+      (data) => {
+        this.recursoList = data;
+        const responsablegral = this.recursoList.find(r => r.idRecurso === this.dataShared.getSharedObject().idRecurso)
+        this.notificarResponsable(responsablegral!);
+        console.log('Responsable general encontrado: ', responsablegral!);
+      },
+      (error: HttpErrorResponse) => {
+        console.error('Error fetching recursos:', error);
+      }
+    );
+  }
+
   checkPresupuestoAprobado() {
 
     const correntUserName = this.authService.getCurrentName();
     const isPresupuestoAprobado = (this.estadoPresAprob?.tipoEstado === this.dataShared.getSharedObject().estado);
-    
+
     if (isPresupuestoAprobado) {
       // Set tracking storage
-    let trackingStorage = new TrackingStorage();
-    trackingStorage = this.getRecursoTrackingStorage();
-    trackingStorage.idServicio = this.servicio.idServicio;
+      let trackingStorage = new TrackingStorage();
+      trackingStorage = this.getRecursoTrackingStorage();
+      trackingStorage.idServicio = this.servicio.idServicio;
 
-    // Armo el objeto historico de estado
-    let historicoEstado = new HistoricoEstado();
-    historicoEstado.estadoIdEstado = this.estadoEnRelevamiento?.idEstado
-    historicoEstado.servicioIdServicio = this.servicio.idServicio;
+      // Armo el objeto historico de estado
+      let historicoEstado = new HistoricoEstado();
+      historicoEstado.estadoIdEstado = this.estadoEnRelevamiento?.idEstado
+      historicoEstado.servicioIdServicio = this.servicio.idServicio;
 
-    this.historicoEstado.addHistoricoEstado(historicoEstado)
-      .subscribe(
-        () => {
-          // data para el primer tracking storages
-          trackingStorage.eventLog = 'Actualización automática';
-          trackingStorage.data = `El estado cambió a "${this.estadoEnRelevamiento?.tipoEstado}" porque ${correntUserName} inicio la ejecución de las actividades`;
-          trackingStorage.action = this.params.UPDATE;
-          this.suscribeTracking(trackingStorage);
-          this.dataShared.setSharedObject(this.servicio);
-        },
-        (error) => console.error('Error al agregar el estado automáticamente:', error),
-      );
+      this.historicoEstado.addHistoricoEstado(historicoEstado)
+        .subscribe(
+          () => {
+            // data para el primer tracking storages
+            trackingStorage.eventLog = 'Actualización automática';
+            trackingStorage.data = `El estado cambió a "${this.estadoEnRelevamiento?.tipoEstado}" porque ${correntUserName} inicio la ejecución de las actividades`;
+            trackingStorage.action = this.params.UPDATE;
+            this.suscribeTracking(trackingStorage);
+            this.dataShared.setSharedObject(this.servicio);
+          },
+          (error) => console.error('Error al agregar el estado automáticamente:', error),
+        );
     }
 
   }
@@ -340,9 +378,9 @@ export class ChecklistComponent implements OnInit {
     const transformedEntries = Object.entries(lastChanges).map(([key, changes]) => {
       const transformedChanges = Object.entries(changes).map(([prop, value]) => {
         const displayValue = value === true ? 'sí' : value === false ? 'no' : value;
-        return `${prop}: ${displayValue}`;
+        return `${prop}: ${displayValue} `;
       }).join(', ');
-      return `${key}: ${transformedChanges}`;
+      return `${key}: ${transformedChanges} `;
     });
     return transformedEntries.join('; ');
   }

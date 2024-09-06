@@ -9,6 +9,7 @@ export class Servicios {
     idServicio: number;
     idTipoServicio: number;
     fecha_alta: string;
+    idRecurso: number;
     tipo: string;
     idCliente: number;
     cliente: string;
@@ -26,16 +27,18 @@ export class Servicios {
     fullname_responsable: string;
     comentario: string;
     expediente: string;
+    vencido?: number;
     itemChecklistDto: ItemChecklistDto[];
     svManager!: ManagerService;
 
-    constructor(idServicio: number, idTipoServicio: number, fecha_alta: string, tipo: string, idCliente: number,
+    constructor(idServicio: number, idTipoServicio: number, fecha_alta: string, idRecurso: number, tipo: string, idCliente: number,
         cliente: string, idEstado: number, estado: string, idCategoria: number, categoria: string,
-        recurrencia: number, referencia: number, fecha_notificacion: string, idRubro: number,rubro: string,
-        idServicioEmpresa: number,total_presupuestado: number, fullname_responsable: string, comentario: string, expediente: string, itemChecklistDto: ItemChecklistDto[]) {
+        recurrencia: number, referencia: number, fecha_notificacion: string, idRubro: number, rubro: string,
+        idServicioEmpresa: number, total_presupuestado: number, fullname_responsable: string, comentario: string, expediente: string, itemChecklistDto: ItemChecklistDto[]) {
         this.idServicio = idServicio;
         this.idTipoServicio = idTipoServicio;
         this.fecha_alta = fecha_alta;
+        this.idRecurso = idRecurso;
         this.tipo = tipo;
         this.idCliente = idCliente;
         this.cliente = cliente;
