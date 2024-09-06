@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { Estado } from 'src/app/models/DomainModels/Estado';
+import { HistoricoEstado } from 'src/app/models/DomainModels/HistoricoEstado';
 import { RenovarServicio } from 'src/app/models/DomainModels/RenovarServicio';
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
@@ -13,6 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DataSharedService } from 'src/app/services/data-shared.service';
 import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
 import { EstadosService } from 'src/app/services/DomainServices/estados.service';
+import { HistoricoEstadoService } from 'src/app/services/DomainServices/historico-estado.service';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
 import { RecursoDtoService } from 'src/app/services/ServiciosDto/recurso-dto.service';
 import { ServicioService } from 'src/app/services/ServiciosDto/ServicioService';
@@ -47,6 +49,7 @@ export class RenewComponent implements OnInit {
     private _snackBar: PopupService,
     private router: Router,
     private dataShared: DataSharedService,
+    private historicoEstado: HistoricoEstadoService,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.idServicio = data;
   }
@@ -121,6 +124,9 @@ export class RenewComponent implements OnInit {
     this.servicioService.renewServicio(dataRenew)
       .subscribe((data: number) => {
 
+        // Cambiar el estado del servicio viejo a renovado
+        this.goEstadoRenovado(this.idServicio);
+
         // Set tracking storage para el servicio actual;
         let trackingStorage = new TrackingStorage();
         trackingStorage = this.getRecursoTrackingStorage();
@@ -169,5 +175,22 @@ export class RenewComponent implements OnInit {
 
   }
 
-}
+  estadoMatch: Estado | undefined;
+  goEstadoRenovado(idEstado: number) {
 
+    this.estadoMatch = this.estadoList.find(e => e.tipoEstado === this.params.RENOVADO)!;
+    let historicoEstado = new HistoricoEstado();
+    historicoEstado.estadoIdEstado = this.estadoMatch.idEstado;
+    historicoEstado.servicioIdServicio = idEstado;
+
+    this.historicoEstado.addHistoricoEstado(historicoEstado)
+      .subscribe(
+        (response) => {
+          console.log('Servicio renovado OK')
+        },
+        (error) => console.error('Error al agregar HistoricoEstado:', error),
+      );
+
+  }
+
+}

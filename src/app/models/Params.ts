@@ -5,6 +5,7 @@ export class Params {
   PRESUPUESTO_RECHAZADO = 'Presupuesto rechazado';
   PRESUPUESTO_APROBADO = 'Presupuesto aprobado';
   EN_RELEVAMIENTO = 'En relevamiento';
+  RENOVADO = 'Renovado';
   
   // Categorías
   SIN_INICIAR = 'Sin iniciar';
