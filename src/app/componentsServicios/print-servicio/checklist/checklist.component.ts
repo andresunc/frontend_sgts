@@ -78,7 +78,6 @@ export class ChecklistComponent implements OnInit {
   }
 
   getEstados() {
-    //this.dataShared.mostrarSpinner();
     this.estadoService.getStatusNotDeleted().subscribe(
       (data) => {
         this.estadosList = data;
