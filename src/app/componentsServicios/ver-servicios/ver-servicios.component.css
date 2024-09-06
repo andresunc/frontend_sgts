@@ -247,6 +247,10 @@ las tres etiquetas que siguen de la tabla de servicios*/
   /* Color verde claro si el recurso completó sus tareas */
 }
 
+.filaRoja {
+  background-color: #e8a1a1;
+}
+
 .primary-bold {
   color: #060606;
   font-weight: bold;

@@ -27,6 +27,7 @@ export class Servicios {
     fullname_responsable: string;
     comentario: string;
     expediente: string;
+    vencido?: number;
     itemChecklistDto: ItemChecklistDto[];
     svManager!: ManagerService;
 
