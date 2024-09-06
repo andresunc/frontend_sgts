@@ -56,6 +56,8 @@ export class PrintServicioComponent implements OnInit {
   onServicio: Servicios;
   estadoServicio!: Estado | undefined;
   categorias: Categoria[] = [];
+  esResponsableGeneral: boolean;
+  isAdmin: boolean;
 
   constructor(
     private dataShared: DataSharedService,
@@ -76,7 +78,9 @@ export class PrintServicioComponent implements OnInit {
     this.maxDate = new Date(this.minDate.getFullYear() + 1, this.minDate.getMonth(), this.minDate.getDate());
     this.onServicio = this.getServicioLocalStorage();
     this.dataShared.setSharedObject(this.onServicio);
+    this.esResponsableGeneral = this.getServicio().idRecurso === this.authService.getCurrentUser()?.id_recurso;
     this.menuEditable = this.enableMenuEdit();
+    this.isAdmin = this.authService.isAdmin();
   }
 
   ngOnInit() {
@@ -181,7 +185,7 @@ export class PrintServicioComponent implements OnInit {
 
 
   enableMenuEdit(): boolean {
-    return this.authService.isAdmin()
+    return this.authService.isAdmin() || this.esResponsableGeneral;
   }
 
 
@@ -191,7 +195,7 @@ export class PrintServicioComponent implements OnInit {
 
   isEditable: boolean = false;
   editarServicio() {
-    this.isEditable = this.authService.isAdmin();
+    this.isEditable = this.authService.isAdmin() || this.esResponsableGeneral;
   }
 
   cancelEdit() {
@@ -281,7 +285,7 @@ export class PrintServicioComponent implements OnInit {
 
   // Lógica para los estados
   getEstados() {
-    if (this.authService.isAdmin()) {
+    if (this.authService.isAdmin() || this.esResponsableGeneral) {
       const servicio = this.getServicio();
       this.dataShared.mostrarSpinner();
       this.estadoService.getStatusNotDeleted().subscribe(
