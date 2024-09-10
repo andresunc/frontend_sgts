@@ -90,7 +90,7 @@ export class PrintServicioComponent implements OnInit {
     this.getServicioById(servicio.idServicio);
 
     this.presupuestOriginal = servicio.total_presupuestado;
-    this.txtPresupuesto = this.mostrarPresupuesto(servicio);
+    this.mostrarPresupuesto(servicio);
     this.recordatoriOriginal = servicio.fecha_notificacion;
     this.comentariOriginal = servicio.comentario;
     this.idEstadOriginal = servicio.estado;
@@ -99,9 +99,9 @@ export class PrintServicioComponent implements OnInit {
 
   }
 
-  mostrarPresupuesto(servicio: Servicios): string {
+  mostrarPresupuesto(servicio: Servicios) {
     const sumaTasaValor = this.calcularSumaTasaValor(servicio);
-    return this.authService.isAdmin() ? `${servicio.total_presupuestado.toString()} + ${sumaTasaValor}` : '***************';
+    this.txtPresupuesto =  this.authService.isAdmin() ? `${servicio.total_presupuestado.toString()} + ${sumaTasaValor}` : '***************';
   }
 
   private calcularSumaTasaValor(servicios: Servicios): number {
@@ -290,6 +290,7 @@ export class PrintServicioComponent implements OnInit {
       dialogRef.afterClosed().subscribe(() => {
         // Se ejecutará cuando se cierre el modal del checklist
         this.getServicioById(servicio.idServicio);
+        this.mostrarPresupuesto(this.dataShared.getSharedObject());
       });
     } else if (servicio.categoria === this.params.FINALIZADO) {
       this._snackBar.warnSnackBar(`El servicio ha ${servicio.categoria.toLowerCase() || undefined}`)
