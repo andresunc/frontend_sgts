@@ -117,7 +117,7 @@
           <mat-grid-tile [colspan]="3" [rowspan]="1" [style.background]="''">
 
             <mat-form-field floatLabel="always">
-              <mat-label>Presupuesto</mat-label>
+              <mat-label>Presupuesto + Impuestos</mat-label>
               <input matInput type="text" style="text-align: start; padding-left: 0.2rem;"
                 [(ngModel)]="txtPresupuesto" placeholder="0" [disabled]="true"
                 (blur)="validarPresupuesto()" (input)="limitarLongitud($event)" #presupuestoInput>
