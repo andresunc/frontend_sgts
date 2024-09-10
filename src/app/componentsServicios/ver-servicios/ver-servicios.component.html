@@ -35,7 +35,7 @@
                         <mat-form-field>
                             <mat-label class="filerLabel"><span>Periodo</span></mat-label>
                             <mat-date-range-input [rangePicker]="rangePicker" [min]="minDate" [max]="maxDate"
-                                (dateChange)="onDateChange($event)">
+                                (dateChange)="onDateChange($event)" [disabled]="!isAdmin">
                                 <input matStartDate placeholder="Start date" [(ngModel)]="startDate" [readonly]="true">
                                 <input matEndDate placeholder="End date" [(ngModel)]="endDate" [readonly]="true">
                             </mat-date-range-input>
