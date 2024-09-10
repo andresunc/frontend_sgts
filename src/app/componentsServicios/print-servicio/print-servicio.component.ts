@@ -90,13 +90,28 @@ export class PrintServicioComponent implements OnInit {
     this.getServicioById(servicio.idServicio);
 
     this.presupuestOriginal = servicio.total_presupuestado;
-    this.txtPresupuesto = this.authService.isAdmin() ? servicio.total_presupuestado.toString() : '***************';
+    this.txtPresupuesto = this.mostrarPresupuesto(servicio);
     this.recordatoriOriginal = servicio.fecha_notificacion;
     this.comentariOriginal = servicio.comentario;
     this.idEstadOriginal = servicio.estado;
     this.recurrencia = servicio.recurrencia;
     this.expedienteOriginal = servicio.expediente;
 
+  }
+
+  mostrarPresupuesto(servicio: Servicios): string {
+    const sumaTasaValor = this.calcularSumaTasaValor(servicio);
+    return this.authService.isAdmin() ? `${servicio.total_presupuestado.toString()} + ${sumaTasaValor}` : '***************';
+  }
+
+  private calcularSumaTasaValor(servicios: Servicios): number {
+    let suma = 0;
+    for (const item of servicios.itemChecklistDto) {
+      if (item.tasaValor !== undefined && item.tasaValor !== null) {
+        suma += item.tasaValor;
+      }
+    }
+    return suma;
   }
 
 

@@ -31,6 +31,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource(this.listServicios); // cfg data de la tabla: Recibe un listado de objetos a mostrar
   params: Params = new Params();
   recursoId: number | undefined;
+  isAdmin: boolean;
 
   reboteList: RptRebote[] = [];
   minDate!: Date;
@@ -44,6 +45,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
     private rptRebote: ReboteService,) {
     this.svService = svManager;
     this.recursoId = this.authService.getCurrentUser()?.id_recurso;
+    this.isAdmin = this.authService.isAdmin();
   }
 
   ngOnInit() {
@@ -76,7 +78,7 @@ export class VerServiciosComponent implements OnInit, OnDestroy {
       .subscribe(
         (data) => {
 
-          if (this.authService.isAdmin()) {
+          if (this.isAdmin) {
             this.listServicios = data;
           } else {
             this.listServicios = data.filter(s => s.itemChecklistDto.some(i => i.idRecurso === this.recursoId));
