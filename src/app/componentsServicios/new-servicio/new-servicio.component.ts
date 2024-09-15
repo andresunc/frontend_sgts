@@ -6,12 +6,14 @@ import { Categoria } from 'src/app/models/DomainModels/Categoria';
 import { Estado } from 'src/app/models/DomainModels/Estado';
 import { TipoServicio } from 'src/app/models/DomainModels/TipoServicio';
 import { TrackingStorage } from 'src/app/models/DomainModels/TrackingStorage';
+import { EmailDTO } from 'src/app/models/ModelsDto/EmailDTO';
 import { EmpresaDto } from 'src/app/models/ModelsDto/EmpresaDto';
 import { NuevoServicioDto } from 'src/app/models/ModelsDto/NuevoServicioDto';
 import { RecursoDto } from 'src/app/models/ModelsDto/RecursoDto';
 import { Params } from 'src/app/models/Params';
 import { CategoriaService } from 'src/app/services/DomainServices/categoria.service';
 import { TrackingStorageService } from 'src/app/services/DomainServices/tracking-storage.service';
+import { EmailService } from 'src/app/services/ServiciosDto/email.service';
 import ManagerService from 'src/app/services/SupportServices/ManagerService';
 import { PopupService } from 'src/app/services/SupportServices/popup.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -47,6 +49,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
     private _snackBar: PopupService,
     private svManager: ManagerService,
     private trackingService: TrackingStorageService,
+    private emailService: EmailService,
     private authSerice: AuthService) {
   }
 
@@ -94,14 +97,14 @@ export class NewServicioComponent implements OnInit, OnDestroy {
           // Enviar info a la tracking
           trackingStorage.idServicio = response.servicio.idServicio;
           this.trackingService.createTrackingStorage(trackingStorage)
-          .subscribe(
-            (trackingData) => {
-              console.log('log registrado: ', trackingData);
-            },
-            () => {
-              console.log('Error al crear el log de la trackingstorage')
-            }
-          );
+            .subscribe(
+              (trackingData) => {
+                console.log('log registrado: ', trackingData);
+              },
+              () => {
+                console.log('Error al crear el log de la trackingstorage')
+              }
+            );
 
           this.svManager.castNewServicio(response);
           console.log('Servicio creado exitosamente:', response);
@@ -109,6 +112,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
           this.servicioForm.reset();
           this.goToNextTab(0);
           this.sending = false;
+          this.notificarResposable(recurso.idRecurso!, response.servicio.idServicio!);
           this.dataShared.ocultarSpinner();
         },
         () => {
@@ -118,6 +122,21 @@ export class NewServicioComponent implements OnInit, OnDestroy {
         }
       );
 
+  }
+
+  notificarResposable(idRecurso: number, idServicio: number) {
+
+    const recurso = this.recursoList.find(r => r.idRecurso === idRecurso);
+    const mensajero: EmailDTO = new EmailDTO();
+    mensajero.toUser = [`${recurso?.mail}`];
+    mensajero.subject = `${recurso?.nombre}, tenés un servicio asignado para gestionar`;
+    mensajero.message = `El Servicio ${idServicio} está bajo tu responsabilidad. Te recordamos que deberás encargarte de su supervisión y toma de decisiones durante el tiempo de ejecución. Si tienes alguna consulta o necesitas asistencia, no dudes en comunicarte con nosotros. ¡Buena Suerte!`;
+
+    // Enviar el mail
+    this.emailService.sendEmail(mensajero)
+      .subscribe((data) => {
+        console.log('mensaje enviado: ', data);
+      })
   }
 
   // Desuscribirse de los observables al destruirse el componente. Evitar probelmas de memoria.
@@ -278,7 +297,7 @@ export class NewServicioComponent implements OnInit, OnDestroy {
       est => est.idCategoria === categoriaPermitida?.idCategoria &&
         est.tipoEstado !== this.params.PRESUPUESTO_RECHAZADO);
 
-    console.log(categoriaPermitida , this.estadoList, this.categorias);
+    console.log(categoriaPermitida, this.estadoList, this.categorias);
   }
 
 }
